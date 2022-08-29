@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Template files &mdash; hdlregression 0.28.0
+ documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Test Automation Server" href="ci.html" />
+    <link rel="prev" title="Testbench" href="testbench.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #F5F5F5" >
+            <a href="index.html">
+            <img src="_static/hdlregression_scaled.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html#usage">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html#installation">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">Application Programming Interface (API)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">Command Line Interface (CLI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gui.html">Graphical User Interface (GUI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testbench.html">Testbench</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Template files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#basic-usage">Basic usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#basic-example">Basic example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#advanced-usage">Advanced usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#advanced-example">Advanced example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rtl-and-netlist-script-example">RTL and Netlist script example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ci.html">Test Automation Server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output.html">Generated output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tips.html">Tips</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #F5F5F5" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">hdlregression</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Template files</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/templates.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="template-files">
+<h1>Template files<a class="headerlink" href="#template-files" title="Permalink to this headline"></a></h1>
+<section id="basic-usage">
+<h2>Basic usage<a class="headerlink" href="#basic-usage" title="Permalink to this headline"></a></h2>
+<p>The HDLRegression package comes with a basic template file to ease the process of getting started for new users.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="linenos"> 2</span><span class="c1"># ----------- USER HDLRegression PATH -----------------</span>
+<span class="linenos"> 3</span><span class="c1"># If HDLRegression is not installed as a Python package (see doc)</span>
+<span class="linenos"> 4</span><span class="c1"># then uncomment the following line and set the path for</span>
+<span class="linenos"> 5</span><span class="c1"># the HDLRegression install folder :</span>
+<span class="linenos"> 6</span><span class="c1">#sys.path.append(&lt;full_or_relative_path_to_hdlregression_install&gt;)</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="c1"># Import the HDLRegression module to the Python script:</span>
+<span class="linenos"> 9</span><span class="kn">from</span> <span class="nn">hdlregression</span> <span class="kn">import</span> <span class="n">HDLRegression</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="c1"># Define a HDLRegression item to access the HDLRegression functionality:</span>
+<span class="linenos">12</span><span class="n">hr</span> <span class="o">=</span> <span class="n">HDLRegression</span><span class="p">()</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span><span class="c1"># ------------ USER CONFIG START ---------------</span>
+<span class="linenos">15</span><span class="c1"># =&gt; hr.add_files(&lt;filename&gt;)                   # Use default library my_work_lib</span>
+<span class="linenos">16</span><span class="c1"># =&gt; hr.add_files(&lt;filename&gt;, &lt;library_name&gt;)   # or specify a library name.</span>
+<span class="linenos">17</span>
+<span class="linenos">18</span><span class="c1"># ------------ USER CONFIG END ---------------</span>
+<span class="linenos">19</span><span class="n">hr</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</pre></div>
+</div>
+<section id="basic-example">
+<h3>Basic example<a class="headerlink" href="#basic-example" title="Permalink to this headline"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="linenos"> 2</span><span class="c1"># User specify HDLRegression install path:</span>
+<span class="linenos"> 3</span><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;c:/tools/hdlregression/&#39;</span><span class="p">)</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="c1"># Import the HDLRegression module to the Python script:</span>
+<span class="linenos"> 6</span><span class="kn">from</span> <span class="nn">hdlregression</span> <span class="kn">import</span> <span class="n">HDLRegression</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="c1"># Define a HDLRegression item to access the HDLRegression functionality:</span>
+<span class="linenos"> 9</span><span class="n">hr</span> <span class="o">=</span> <span class="n">HDLRegression</span><span class="p">()</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="c1"># ------------ USER CONFIG START ---------------</span>
+<span class="linenos">12</span>
+<span class="linenos">13</span><span class="c1"># Add all .vhd files in the /src directory to library my_dut_lib:</span>
+<span class="linenos">14</span><span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="s2">&quot;./src/*.vhd&quot;</span><span class="p">,</span> <span class="s2">&quot;my_dut_lib&quot;</span><span class="p">)</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span><span class="c1"># Add testbech file to library my_tb_lib:</span>
+<span class="linenos">17</span><span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="s2">&quot;./tb/my_tb.vhd&quot;</span><span class="p">,</span> <span class="s2">&quot;my_tb_lib&quot;</span><span class="p">)</span>
+<span class="linenos">18</span>
+<span class="linenos">19</span><span class="c1"># ------------ USER CONFIG END ---------------</span>
+<span class="linenos">20</span><span class="n">hr</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="advanced-usage">
+<h2>Advanced usage<a class="headerlink" href="#advanced-usage" title="Permalink to this headline"></a></h2>
+<p>The HDLRegression package comes with an advanced template file for advanced users to extend with even more
+functionality.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="linenos"> 2</span><span class="c1"># ----------- USER HDLRegression PATH -----------------</span>
+<span class="linenos"> 3</span><span class="c1"># If HDLRegression is not installed as a Python package (see doc)</span>
+<span class="linenos"> 4</span><span class="c1"># then uncomment the following line and set the path for</span>
+<span class="linenos"> 5</span><span class="c1"># the HDLRegression install folder :</span>
+<span class="linenos"> 6</span><span class="c1">#sys.path.append(&lt;full_or_relative_path_to_hdlregression_install&gt;)</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="c1"># Import the HDLRegression module to the Python script:</span>
+<span class="linenos"> 9</span><span class="kn">from</span> <span class="nn">hdlregression</span> <span class="kn">import</span> <span class="n">HDLRegression</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="c1"># ----------- USER IMPORT -----------------</span>
+<span class="linenos">12</span><span class="c1"># Import other Python package(s):</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span><span class="c1"># Define a HDLRegression item to access the HDLRegression functionality:</span>
+<span class="linenos">15</span><span class="n">hr</span> <span class="o">=</span> <span class="n">HDLRegression</span><span class="p">()</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span><span class="c1"># ------------ USER CONFIG START ---------------</span>
+<span class="linenos">18</span>
+<span class="linenos">19</span><span class="c1"># Add Python functions here if needed:</span>
+<span class="linenos">20</span>
+<span class="linenos">21</span><span class="c1"># Add design files, repeat call if needed:</span>
+<span class="linenos">22</span><span class="c1"># =&gt; hr.add_files(&lt;src_files&gt;, &lt;compile_library&gt;)</span>
+<span class="linenos">23</span>
+<span class="linenos">24</span><span class="c1"># Add testbench and related files:</span>
+<span class="linenos">25</span><span class="c1"># =&gt; hr.add_files(&lt;src_files&gt;, &lt;compile_library&gt;)</span>
+<span class="linenos">26</span>
+<span class="linenos">27</span><span class="c1"># Define testbench configurations/generics if any, repeat call if needed:</span>
+<span class="linenos">28</span><span class="c1"># =&gt; hr.add_generics(entity=&lt;testbench_name&gt;, architecture=&lt;architecture_name&gt;, generics=&lt;generics_list&gt;)</span>
+<span class="linenos">29</span>
+<span class="linenos">30</span><span class="c1"># Define simulation report format:</span>
+<span class="linenos">31</span><span class="c1"># =&gt; hr.gen_report() # default is full report (testbench, testcase, configurations, pass/fail) to report.txt</span>
+<span class="linenos">32</span>
+<span class="linenos">33</span>
+<span class="linenos">34</span><span class="c1"># ------------ USER CONFIG END ---------------</span>
+<span class="linenos">35</span><span class="n">hr</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</pre></div>
+</div>
+<section id="advanced-example">
+<h3>Advanced example<a class="headerlink" href="#advanced-example" title="Permalink to this headline"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">product</span>
+<span class="linenos"> 2</span><span class="kn">from</span> <span class="nn">hdlregression</span> <span class="kn">import</span> <span class="n">HDLRegression</span>
+<span class="linenos"> 3</span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="linenos"> 4</span><span class="c1"># User specify HDLRegression install path:</span>
+<span class="linenos"> 5</span><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;c:/tools/hdlregression/&#39;</span><span class="p">)</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="c1"># Import the HDLRegression module to the Python script:</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="c1"># Import other Python package(s):</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span><span class="c1"># Define a HDLRegression item to access the HDLRegression functionality:</span>
+<span class="linenos">13</span><span class="n">hr</span> <span class="o">=</span> <span class="n">HDLRegression</span><span class="p">()</span>
+<span class="linenos">14</span>
+<span class="linenos">15</span><span class="c1"># ------------ USER CONFIG START ---------------</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span><span class="c1"># Add Python functions here if needed:</span>
+<span class="linenos">18</span>
+<span class="linenos">19</span><span class="c1"># Return a list with the product of the generics</span>
+<span class="linenos">20</span>
+<span class="linenos">21</span>
+<span class="linenos">22</span><span class="k">def</span> <span class="nf">create_generics</span><span class="p">(</span><span class="n">bus_width</span><span class="p">,</span> <span class="n">master_mode</span><span class="p">,</span> <span class="n">input_file</span><span class="p">,</span> <span class="n">output_file</span><span class="p">):</span>
+<span class="linenos">23</span>    <span class="n">generics</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos">24</span>    <span class="k">for</span> <span class="n">bus_width</span><span class="p">,</span> <span class="n">master_mode</span><span class="p">,</span> <span class="n">input_file</span><span class="p">,</span> <span class="n">output_file</span> <span class="ow">in</span> <span class="n">product</span><span class="p">(</span><span class="n">bus_width</span><span class="p">,</span> <span class="n">master_mode</span><span class="p">,</span> <span class="n">input_file</span><span class="p">,</span> <span class="n">output_file</span><span class="p">):</span>
+<span class="linenos">25</span>        <span class="n">generics</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s2">&quot;GC_BUS_WIDTH&quot;</span><span class="p">,</span><span class="n">bus_width</span><span class="p">,</span> <span class="s2">&quot;GC_MASTER_MODE&quot;</span><span class="p">,</span><span class="n">master_mode</span><span class="p">,</span> <span class="s2">&quot;GC_INPUT_FILE&quot;</span><span class="p">,</span><span class="n">input_file</span><span class="p">,</span> <span class="s2">&quot;GC_OUTPUT_FILE&quot;</span><span class="p">,</span><span class="n">output_file</span><span class="p">])</span>
+<span class="linenos">26</span>    <span class="k">return</span> <span class="n">generics</span>
+<span class="linenos">27</span>
+<span class="linenos">28</span>
+<span class="linenos">29</span><span class="c1"># Add all source files to library my_dut_lib:</span>
+<span class="linenos">30</span><span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="s2">&quot;./src/*.vhd&quot;</span><span class="p">,</span> <span class="s2">&quot;my_dut_lib&quot;</span><span class="p">)</span>
+<span class="linenos">31</span>
+<span class="linenos">32</span>
+<span class="linenos">33</span><span class="c1"># Add all testbench related files to library my_tb_lib:</span>
+<span class="linenos">34</span><span class="n">hr</span><span class="o">.</span><span class="n">set_library</span><span class="p">(</span><span class="s2">&quot;my_tb_lib&quot;</span><span class="p">)</span>
+<span class="linenos">35</span><span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="s2">&quot;./tb/my_dut_tb.vhd&quot;</span><span class="p">)</span>
+<span class="linenos">36</span><span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="s2">&quot;./tb/my_dut_th.vhd&quot;</span><span class="p">)</span>
+<span class="linenos">37</span><span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="s2">&quot;./tb/my_dut_if_stuck_tb.vhd&quot;</span><span class="p">)</span>
+<span class="linenos">38</span><span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="s2">&quot;./tb/my_dut_pin_pulse_tb.vhd&quot;</span><span class="p">)</span>
+<span class="linenos">39</span>
+<span class="linenos">40</span>
+<span class="linenos">41</span><span class="c1"># Get a list with the product of selected generics:</span>
+<span class="linenos">42</span><span class="n">generics</span> <span class="o">=</span> <span class="n">create_generics</span><span class="p">(</span><span class="n">bus_width</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">16</span><span class="p">],</span> <span class="n">master_mode</span><span class="o">=</span><span class="p">[</span>
+<span class="linenos">43</span>                           <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">],</span> <span class="n">input_file</span><span class="o">=</span><span class="s2">&quot;in_data.txt&quot;</span><span class="p">,</span> <span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;out_data.txt&quot;</span><span class="p">)</span>
+<span class="linenos">44</span>
+<span class="linenos">45</span><span class="c1"># Add generics for testbench run:</span>
+<span class="linenos">46</span><span class="n">hr</span><span class="o">.</span><span class="n">add_generics</span><span class="p">(</span><span class="n">entity</span><span class="o">=</span><span class="s2">&quot;my_dut_tb&quot;</span><span class="p">,</span> <span class="n">generics</span><span class="o">=</span><span class="n">generics</span><span class="p">)</span>
+<span class="linenos">47</span>
+<span class="linenos">48</span><span class="c1"># Specify output report as CSV:</span>
+<span class="linenos">49</span><span class="n">hr</span><span class="o">.</span><span class="n">gen_report</span><span class="p">(</span><span class="n">report_file</span><span class="o">=</span><span class="s2">&quot;project_report.csv&quot;</span><span class="p">)</span>
+<span class="linenos">50</span>
+<span class="linenos">51</span><span class="c1"># ------------ USER CONFIG END ---------------</span>
+<span class="linenos">52</span><span class="n">hr</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">regression_mode</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="rtl-and-netlist-script-example">
+<h3>RTL and Netlist script example<a class="headerlink" href="#rtl-and-netlist-script-example" title="Permalink to this headline"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="linenos"> 2</span><span class="c1"># ----------- USER HDLRegression PATH -----------------</span>
+<span class="linenos"> 3</span><span class="c1"># If HDLRegression is not installed as a Python package (see doc)</span>
+<span class="linenos"> 4</span><span class="c1"># then uncomment the following line and set the path for</span>
+<span class="linenos"> 5</span><span class="c1"># the HDLRegression install folder :</span>
+<span class="linenos"> 6</span><span class="c1">#sys.path.append(&lt;full_or_relative_path_to_HDLRegression_install&gt;)</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="c1"># Import the HDLRegression module to the Python script:</span>
+<span class="linenos"> 9</span><span class="kn">from</span> <span class="nn">hdlregression</span> <span class="kn">import</span> <span class="n">HDLRegression</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span><span class="k">def</span> <span class="nf">run_rtl</span><span class="p">():</span>
+<span class="linenos">13</span>    <span class="sd">&#39;&#39;&#39;</span>
+<span class="linenos">14</span><span class="sd">    Setup test environment for RTL simulations.</span>
+<span class="linenos">15</span><span class="sd">    &#39;&#39;&#39;</span>
+<span class="linenos">16</span>    <span class="c1"># Define a HDLRegression item to access the HDLRegression functionality:</span>
+<span class="linenos">17</span>    <span class="n">hr</span> <span class="o">=</span> <span class="n">HDLRegression</span><span class="p">()</span>
+<span class="linenos">18</span>
+<span class="linenos">19</span>    <span class="c1"># ------------ USER CONFIG START ---------------</span>
+<span class="linenos">20</span>    <span class="c1"># =&gt; hr.add_files(&lt;filename&gt;)                   # Use default library my_work_lib</span>
+<span class="linenos">21</span>    <span class="c1"># =&gt; hr.add_files(&lt;filename&gt;, &lt;library_name&gt;)   # or specify a library name.</span>
+<span class="linenos">22</span>
+<span class="linenos">23</span>    <span class="c1"># ------------ USER CONFIG END ---------------</span>
+<span class="linenos">24</span>    <span class="n">hr</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="linenos">25</span>
+<span class="linenos">26</span>
+<span class="linenos">27</span>
+<span class="linenos">28</span><span class="k">def</span> <span class="nf">run_netlist</span><span class="p">():</span>
+<span class="linenos">29</span>    <span class="sd">&#39;&#39;&#39;</span>
+<span class="linenos">30</span><span class="sd">    Setup test environment for Netlist simulations.</span>
+<span class="linenos">31</span><span class="sd">    &#39;&#39;&#39;</span>
+<span class="linenos">32</span>    <span class="c1"># Define a HDLRegression item to access the HDLRegression functionality:</span>
+<span class="linenos">33</span>    <span class="n">hr</span> <span class="o">=</span> <span class="n">HDLRegression</span><span class="p">()</span>
+<span class="linenos">34</span>
+<span class="linenos">35</span>    <span class="c1"># ------------ USER CONFIG START ---------------</span>
+<span class="linenos">36</span>    <span class="c1"># =&gt; hr.add_files(&lt;filename&gt;)                   # Use default library my_work_lib</span>
+<span class="linenos">37</span>    <span class="c1"># =&gt; hr.add_files(&lt;filename&gt;, &lt;library_name&gt;)   # or specify a library name.</span>
+<span class="linenos">38</span>
+<span class="linenos">39</span>    <span class="c1"># ------------ USER CONFIG END ---------------</span>
+<span class="linenos">40</span>    <span class="n">hr</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="linenos">41</span>
+<span class="linenos">42</span>
+<span class="linenos">43</span><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="linenos">44</span>    <span class="sd">&#39;&#39;&#39;</span>
+<span class="linenos">45</span><span class="sd">    Main method, selecting RTL or Netlist simulations.</span>
+<span class="linenos">46</span><span class="sd">    &#39;&#39;&#39;</span>
+<span class="linenos">47</span>
+<span class="linenos">48</span>    <span class="n">args</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+<span class="linenos">49</span>
+<span class="linenos">50</span>    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+<span class="linenos">51</span>        <span class="n">selection</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+<span class="linenos">52</span>        <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">selection</span><span class="p">)</span>
+<span class="linenos">53</span>
+<span class="linenos">54</span>        <span class="k">if</span> <span class="s1">&#39;rtl&#39;</span> <span class="o">==</span> <span class="n">selection</span><span class="p">:</span>
+<span class="linenos">55</span>            <span class="n">run_rtl</span><span class="p">()</span>
+<span class="linenos">56</span>        <span class="k">elif</span> <span class="s1">&#39;netlist&#39;</span> <span class="o">==</span> <span class="n">selection</span><span class="p">:</span>
+<span class="linenos">57</span>            <span class="n">run_netlist</span><span class="p">()</span>
+<span class="linenos">58</span>        <span class="k">else</span><span class="p">:</span>
+<span class="linenos">59</span>            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Please select &quot;rtl&quot; or &quot;netlist&quot; run.&#39;</span><span class="p">)</span>
+<span class="linenos">60</span>    <span class="k">else</span><span class="p">:</span>
+<span class="linenos">61</span>        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Please select &quot;rtl&quot; or &quot;netlist&quot; run.&#39;</span><span class="p">)</span>
+<span class="linenos">62</span>
+<span class="linenos">63</span>
+<span class="linenos">64</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<span class="linenos">65</span>    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="testbench.html" class="btn btn-neutral float-left" title="Testbench" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ci.html" class="btn btn-neutral float-right" title="Test Automation Server" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, UVVM.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>  
+
+  <style>
+         .wy-nav-content { max-width: none; }
+  </style>
+
+
+
+</body>
+</html>
