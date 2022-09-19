@@ -84,6 +84,8 @@ can be called several times in the regressions script, addressing the same or a 
 +--------------------+-----------+---------------+---------------+
 | com_options        | string    |               | optional      |
 +--------------------+-----------+---------------+---------------+
+| parse_file         | boolean   | True          | optional      |
++--------------------+-----------+---------------+---------------+
 | netlist_inst       | string    |               | optional      |
 +--------------------+-----------+---------------+---------------+
 | code_coverage      | boolean   |               | optional      |
@@ -133,7 +135,8 @@ can be called several times in the regressions script, addressing the same or a 
 
 .. note::
 
-  A back annotated timing file (SDF) require the ``netlist_inst`` arguments.
+  A back annotated timing file (SDF) require the ``netlist_inst`` arguments and a back annotated timing file (VHD)
+  require the ``parse_file`` argument set to ``True``.
 
   #. The ``netlist_inst`` argument is a string that has to be set to design instantiation path in the design.
   #. Any number of back-annotated timing files can be added.

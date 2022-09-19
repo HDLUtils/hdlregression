@@ -61,8 +61,8 @@
 
 
 \title{hdlregression}
-\date{Aug 25, 2022}
-\release{0.28.0
+\date{Sep 16, 2022}
+\release{0.29.0
 }
 \author{UVVM}
 \newcommand{\sphinxlogo}{\vbox{}}
@@ -560,6 +560,19 @@ optional
 \\
 \hline
 \sphinxAtStartPar
+parse\_file
+&
+\sphinxAtStartPar
+boolean
+&
+\sphinxAtStartPar
+True
+&
+\sphinxAtStartPar
+optional
+\\
+\hline
+\sphinxAtStartPar
 netlist\_inst
 &
 \sphinxAtStartPar
@@ -629,7 +642,8 @@ and not where the regression script is called from.
 
 \begin{sphinxadmonition}{note}{Note:}
 \sphinxAtStartPar
-A back annotated timing file (SDF) require the \sphinxcode{\sphinxupquote{netlist\_inst}} arguments.
+A back annotated timing file (SDF) require the \sphinxcode{\sphinxupquote{netlist\_inst}} arguments and a back annotated timing file (VHD)
+require the \sphinxcode{\sphinxupquote{parse\_file}} argument set to \sphinxcode{\sphinxupquote{True}}.
 \begin{enumerate}
 \sphinxsetlistlabels{\arabic}{enumi}{enumii}{}{.}%
 \item {} 

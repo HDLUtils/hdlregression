@@ -54,6 +54,7 @@ def setup_function():
                       library="my_work_lib",
                       code_coverage=False,
                       hdl_version="2008",
+                      parse_file=True,
                       com_options=None)
 
 

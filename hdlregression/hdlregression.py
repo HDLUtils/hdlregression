@@ -197,6 +197,7 @@ class HDLRegression:
                   library_name: str = None,
                   hdl_version: str = None,
                   com_options: str = None,
+                  parse_file = True,
                   netlist_inst: str = None,
                   code_coverage: bool = False):
         '''
@@ -212,6 +213,8 @@ class HDLRegression:
         :type hdl_version: str
         :param com_options: Compile options to use with file
         :type com_options: str
+        :param parse_file: Enable HDL file parsing
+        :type parse_file: bool
         :param netlist_inst: Instantiation path of netlist
         :type netlist_inst: str
         :param code_coverage: Enable code coverage for this file
@@ -231,6 +234,7 @@ class HDLRegression:
         library.add_file(filename=filename,
                          hdl_version=hdl_version,
                          com_options=com_options,
+                         parse_file = parse_file,
                          code_coverage=code_coverage,
                          netlist_instance=netlist_inst)
 
@@ -239,6 +243,7 @@ class HDLRegression:
                  library_name: str = None,
                  hdl_version: str = None,
                  com_options: str = None,
+                 parse_file = True,
                  netlist_inst: str = None,
                  code_coverage: bool = False):
         '''
@@ -248,7 +253,7 @@ class HDLRegression:
                        library_name=library_name,
                        hdl_version=hdl_version,
                        com_options=com_options,
-                       netlist_inst=netlist_inst,
+                       parse_file=parse_file,
                        code_coverage=code_coverage)
 
     def set_dependency(self,

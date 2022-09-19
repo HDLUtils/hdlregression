@@ -143,13 +143,14 @@ class HDLLibrary(Library):
     def set_never_recompile(self, stop_recompile) -> None:
         self.no_recompile = stop_recompile
 
-    def _get_new_hdlfile_obj(self, file_item, hdl_version, com_options, code_coverage, netlist_instance):
+    def _get_new_hdlfile_obj(self, file_item, hdl_version, com_options, parse_file, code_coverage, netlist_instance):
         # VHDL file
         if file_item.lower().endswith('.vhdl') or file_item.lower().endswith('.vhd'):
             return VHDLFile(filename_with_path=file_item,
                             library=self,
                             hdl_version=hdl_version,
                             com_options=com_options,
+                            parse_file=parse_file,
                             code_coverage=code_coverage,
                             project=self.project)
 
@@ -159,6 +160,7 @@ class HDLLibrary(Library):
                                library=self,
                                hdl_version=hdl_version,
                                com_options=com_options,
+                               parse_file=parse_file,
                                code_coverage=code_coverage,
                                project=self.project)
         elif file_item.lower().endswith('.sdf'):
@@ -166,6 +168,7 @@ class HDLLibrary(Library):
                                library=self,
                                hdl_version=hdl_version,
                                com_options=com_options,
+                               parse_file=parse_file,
                                code_coverage=code_coverage,
                                netlist_instance=netlist_instance,
                                project=self.project)
@@ -173,7 +176,7 @@ class HDLLibrary(Library):
             self.logger.warning('Unknown file type: %s' % (file_item))
         return None
 
-    def add_file(self, filename, hdl_version, com_options, code_coverage, netlist_instance) -> None:
+    def add_file(self, filename, hdl_version, com_options, parse_file, code_coverage, netlist_instance) -> None:
         '''
         Locates the file and creates a HDLFile object
         that is added to the internal list.
@@ -194,6 +197,7 @@ class HDLLibrary(Library):
                 hdlfile_obj = self._get_new_hdlfile_obj(file_item=file_item,
                                                         hdl_version=hdl_version,
                                                         com_options=com_options,
+                                                        parse_file=parse_file,
                                                         netlist_instance=netlist_instance,
                                                         code_coverage=code_coverage)
                 self.hdlfile_container.add(hdlfile_obj)

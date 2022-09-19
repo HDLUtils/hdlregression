@@ -27,7 +27,7 @@ else:
 
 class HDLFile:
 
-    def __init__(self, filename_with_path, project, library, hdl_version, com_options, code_coverage):
+    def __init__(self, filename_with_path, project, library, hdl_version, com_options, parse_file, code_coverage):
         self.project = project
         self.library = library
         self.hdl_version = hdl_version
@@ -38,6 +38,9 @@ class HDLFile:
         self.compile_time = 0
         self.hdlfile_this_dep_on_list = []
         self.hdlfile_dep_on_this_list = []
+        
+        # Netlist file is not parsed        
+        self.parse_file = parse_file
 
         # Setup defaults
         self.file_change_date = os.path.getmtime(filename_with_path)
@@ -209,13 +212,13 @@ class HDLFile:
 
     def _get_com_options(self, simulator) -> str:
         return ""
-
+    
 
 class VHDLFile(HDLFile):
 
-    def __init__(self, filename_with_path, project, library, hdl_version, com_options, code_coverage):
+    def __init__(self, filename_with_path, project, library, hdl_version, com_options, parse_file, code_coverage):
         super().__init__(filename_with_path, project,
-                         library, hdl_version, com_options, code_coverage)
+                         library, hdl_version, com_options, parse_file, code_coverage)
 
     def parse_file_content(self) -> bool:
         '''
@@ -224,14 +227,19 @@ class VHDLFile(HDLFile):
         check of TB pragma, find generics and testcases, create module
         objects+++.
         '''
-        file_content_list = self._get_file_content_as_list()
+        
+        # Check if file should be parsed
+        if self.parse_file is False:
+            return True
 
+        file_content_list = self._get_file_content_as_list()
+    
         # Create an Inspector() object for tokenizing and parsing
         self.scanner = VHDLScanner(project=self.project,
                                    library=self.get_library(),
                                    filename=self.get_filename(),
                                    hdlfile=self)
-
+    
         if self.scanner is None:
             return False
         else:
@@ -308,9 +316,9 @@ class VHDLFile(HDLFile):
 
 class NetlistFile(VHDLFile):
 
-    def __init__(self, filename_with_path, project, library, hdl_version, com_options, netlist_instance, code_coverage):
+    def __init__(self, filename_with_path, project, library, hdl_version, com_options, parse_file, netlist_instance, code_coverage):
         super().__init__(filename_with_path, project,
-                         library, hdl_version, com_options, code_coverage)
+                         library, hdl_version, com_options, parse_file, code_coverage)
         self.netlist_instance = netlist_instance
 
     def get_is_netlist(self) -> bool:
@@ -325,9 +333,9 @@ class NetlistFile(VHDLFile):
 
 class VerilogFile(HDLFile):
 
-    def __init__(self, filename_with_path, project, library, hdl_version, com_options, code_coverage):
+    def __init__(self, filename_with_path, project, library, hdl_version, com_options, parse_file, code_coverage):
         super().__init__(filename_with_path, project,
-                         library, hdl_version, com_options, code_coverage)
+                         library, hdl_version, com_options, parse_file, code_coverage)
 
     def parse_file_content(self) -> bool:
         '''
@@ -336,6 +344,10 @@ class VerilogFile(HDLFile):
         check of TB pragma, find generics and testcases, create module
         objects+++.
         '''
+        # Check if file should be parsed
+        if self.parse_file is False:
+            return True
+        
         file_content_list = self._get_file_content_as_list()
         self.scanner = VerilogScanner(project=self.project,
                                       library=self.get_library(),
