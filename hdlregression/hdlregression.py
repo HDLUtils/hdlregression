@@ -74,7 +74,7 @@ if __package__ is None or __package__ == '':
     from hdlregression_pkg import simulator_detector
     from hdlregression_pkg import adjust_generic_value_paths
     from arg_parser import arg_parser_reader
-    from hdlcodecoverage import HdlCodeCoverage
+    from hdlcodecoverage import *
 else:
     from .configurator import SettingsConfigurator
     from .struct.hdllibrary import HDLLibrary, PrecompiledLibrary
@@ -98,7 +98,7 @@ else:
     from .hdlregression_pkg import simulator_detector
     from .hdlregression_pkg import adjust_generic_value_paths
     from .arg_parser import arg_parser_reader
-    from .hdlcodecoverage import HdlCodeCoverage
+    from .hdlcodecoverage import *
 
 # pylint: enable=import-error
 
@@ -169,6 +169,11 @@ class HDLRegression:
         if simulator:
             if not self.settings.get_simulator_is_cli_selected():
                 self.set_simulator(simulator)
+                self.hdlcodecoverage.get_code_coverage_obj(simulator)
+            else:
+                self.hdlcodecoverage.get_code_coverage_obj(self.settings.get_simulator_name())
+        else:
+            self.hdlcodecoverage.get_code_coverage_obj()
 
         # Reporter object
         self.reporter = None
@@ -399,6 +404,7 @@ class HDLRegression:
         self.settings.set_simulator_path(path)
         if com_options is not None:
             self.settings.set_com_options(com_options)
+            
 
     def set_result_check_string(self,
                                 check_string: str):
@@ -527,6 +533,8 @@ class HDLRegression:
         self._prepare_libraries()
 
         self._setup_simulation_runner()
+        
+        self.hdlcodecoverage.get_code_coverage_obj(self.settings.get_simulator_name())
 
         # ========================================
         # Case on what to execute/do
@@ -985,6 +993,14 @@ class HDLRegression:
                 # Check if running with defaults
                 if self.settings.get_is_default_com_options() is True:
                     self.settings.remove_com_options()
+
+        if 'ignore_simulator_exit_codes' in kwargs:
+            exit_codes = kwargs.get('ignore_simulator_exit_codes')
+            if isinstance(exit_codes, list) is False:
+                self.logger.warning('ignore_simulator_exit_codes is not list.')
+            else:
+                self.settings.set_ignored_simulator_exit_codes(exit_codes)
+
 
     def _clean_generated_output(self, restore_settings=False):
         saved_settings = self.settings

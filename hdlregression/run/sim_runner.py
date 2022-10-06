@@ -504,6 +504,8 @@ class SimRunner:
             test.clear_output()
 
         error_detected = False
+        ignored_simulator_exit_codes = self.project.settings.get_ignored_simulator_exit_codes()
+
         for line, success in cmd_runner.run(command=command,
                                             path=path,
                                             env=self.env_var,
@@ -513,6 +515,10 @@ class SimRunner:
 
             # Sim output direction
             self._direct_sim_output(test, line)
+
+            # Check if simulator exit code should be ignored
+            if success in ignored_simulator_exit_codes:
+                success = 0
 
             # Error detection
             if re.search(re_error_detection_str, line) or not success:

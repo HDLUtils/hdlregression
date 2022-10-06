@@ -196,25 +196,27 @@ yet this can be changed using the available arguments or by using the :doc:`comm
 
   start(<gui_mode>, <stop_on_failure>, <regression_mode>, <threading>, <sim_options>, <netlist_timing>)
 
-+-------------------------+-----------------------+---------------+---------------+
-| Argument                | Options & Type        | Default       | Required      |
-+=========================+=======================+===============+===============+
-| gui_mode                | True/False (boolean)  | False         | optional      |
-+-------------------------+-----------------------+---------------+---------------+
-| regression_mode         | True/False (boolean)  | True          | optional      |
-+-------------------------+-----------------------+---------------+---------------+
-| stop_on_failure         | True/False (boolean)  | False         | optional      |
-+-------------------------+-----------------------+---------------+---------------+
-| threading               | True/False (boolean)  | False         | optional      |
-+-------------------------+-----------------------+---------------+---------------+
-| sim_options             | string/list of string | None          | optional      |
-+-------------------------+-----------------------+---------------+---------------+
-| netlist_timing          | string                | None          | optional      |
-+-------------------------+-----------------------+---------------+---------------+
-| keep_code_coverage      | True/False (boolean)  | False         | optional      |
-+-------------------------+-----------------------+---------------+---------------+
-| no_default_com_options  | True/False (boolean)  | False         | optional      |
-+-------------------------+-----------------------+---------------+---------------+
++------------------------------+-----------------------+---------------+---------------+
+| Argument                     | Options & Type        | Default       | Required      |
++==============================+=======================+===============+===============+
+| gui_mode                     | True/False (boolean)  | False         | optional      |
++------------------------------+-----------------------+---------------+---------------+
+| regression_mode              | True/False (boolean)  | True          | optional      |
++------------------------------+-----------------------+---------------+---------------+
+| stop_on_failure              | True/False (boolean)  | False         | optional      |
++------------------------------+-----------------------+---------------+---------------+
+| threading                    | True/False (boolean)  | False         | optional      |
++------------------------------+-----------------------+---------------+---------------+
+| sim_options                  | string/list of string | None          | optional      |
++------------------------------+-----------------------+---------------+---------------+
+| netlist_timing               | string                | None          | optional      |
++------------------------------+-----------------------+---------------+---------------+
+| keep_code_coverage           | True/False (boolean)  | False         | optional      |
++------------------------------+-----------------------+---------------+---------------+
+| no_default_com_options       | True/False (boolean)  | False         | optional      |
++------------------------------+-----------------------+---------------+---------------+
+| ignore_simulator_exit_codes  | list of int           | []            | optional      |
++------------------------------+-----------------------+---------------+---------------+
 
 
 

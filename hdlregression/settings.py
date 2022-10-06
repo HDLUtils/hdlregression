@@ -68,6 +68,8 @@ class HDLRegressionSettings:
         self.gui_compile_changes = False
 
         self.libraries = []
+        
+        self.ignored_simulator_exit_codes = []
 
     def set_return_code(self, return_code: int):
         self.return_code = return_code
@@ -245,6 +247,12 @@ class HDLRegressionSettings:
 
     def get_cli_override(self) -> bool:
         return self.cli_override
+
+    def set_ignored_simulator_exit_codes(self, codes):
+        self.ignored_simulator_exit_codes = codes
+
+    def get_ignored_simulator_exit_codes(self) -> list:
+        return self.ignored_simulator_exit_codes
 
     # ----------------------------------
     # Logging / reporting

@@ -24,7 +24,7 @@ else:
 
 class HdlCodeCoverage:
 
-    ID_CODE_COVERAGE = ['-', 'b', 'c', 'e', 's', 't', 'x', 'f']
+    ID_CODE_COVERAGE = []
 
     def __init__(self, project):
         self.project = project
@@ -164,6 +164,106 @@ class HdlCodeCoverage:
         Executes code coverage merge with all UCDB files found
         in hdlregression/test/ sub-folders.
         '''
+        return ''
+
+    def _apply_exceptions(self) -> str:
+        '''
+        Executes code coverage exceptions (TCL file) if set and
+        returns the correct UCDB file to generate reports from.
+        '''
+        return ''
+
+    def _create_code_coverage_sub_folder(self, path_name) -> str:
+        '''
+        Creates a folder inside the test/coverage folder and
+        returns the folder path.
+        '''
+        path = os.path.join(self.get_code_coverage_path(), path_name)
+        path = os.path.abspath(path)
+        path = path.replace('\\', '/')
+        self._create_path_if_missing(path)
+        return path
+
+    def _generate_html_report(self, ucdb_file):
+        '''
+        Executes code coverage command for HTML report.
+        '''
+        pass
+
+    def _generate_txt_report(self, ucdb_file):
+        '''
+        Executes code coverage command for TXT report.
+        '''
+        pass
+
+    def merge_code_coverage(self) -> bool:
+        '''
+        Search for code coverage files in hdlregression/test sub-folders and
+        save a merge in hdlregression/test/coverage.
+        '''
+        simulator = self.project.settings.get_simulator_name()
+
+        if self.get_code_coverage_file() is not None:
+            if simulator == 'GHDL':
+                self.project.logger.warning(
+                    'Code coverage not supported for GHDL simulator.')
+                return False
+            else:
+                self.project.logger.info('Creating code coverage reports...')
+                code_coverage_files_found = self._find_code_coverage_files()
+
+                if code_coverage_files_found:
+                    # Create test/coverage output folder
+                    code_coverage_path = os.path.join(
+                        self.project.settings.get_test_path(), 'coverage')
+                    code_coverage_path = os.path.abspath(code_coverage_path)
+                    self._create_path_if_missing(code_coverage_path)
+
+                    # Merge coverage files to one combined coverage file.
+                    self._merge_code_coverage_files()
+
+                    # Apply coverage exceptions.
+                    ucdb_file = self._apply_exceptions()
+
+                    # Write coverage reports.
+                    self._generate_html_report(ucdb_file)
+                    self._generate_txt_report(ucdb_file)
+                    return True
+                else:
+                    return False
+
+        # Coverage not enabled
+        else:
+            # Don't trigger warning in HDLRegression
+            return True
+
+    def get_code_coverage_obj(self, simulator=None):
+        '''
+        Changes the HDLCodeCoverage instance to a sub-class object.
+        '''
+        if simulator is None:
+            self.__class__ = ModelsimCodeCoverage
+        elif simulator == 'MODELSIM':
+            self.__class__ = ModelsimCodeCoverage
+        elif simulator == 'GHDL':
+            self.__class__ = GHDLCodeCoverage
+        else:
+            self.__class__ = ModelsimCodeCoverage
+
+
+class ModelsimCodeCoverage(HdlCodeCoverage):
+
+    ID_CODE_COVERAGE = ['-', 'b', 'c', 'e', 's', 't', 'x', 'f']
+
+    def __init__(self, project):
+        super().__init__(project=project)
+        self.project = project
+
+    def _merge_code_coverage_files(self) -> str:
+        '''
+        Executes code coverage merge with all UCDB files found
+        in hdlregression/test/ sub-folders.
+        '''
         merge_ucdb = self.get_code_coverage_file()
         merge_ucdb = self._insert_to_code_coverage_file_name(merge_ucdb, '_merge')
 
@@ -209,17 +309,6 @@ class HdlCodeCoverage:
         else:
             return merge_ucdb
 
-    def _create_code_coverage_sub_folder(self, path_name) -> str:
-        '''
-        Creates a folder inside the test/coverage folder and
-        returns the folder path.
-        '''
-        path = os.path.join(self.get_code_coverage_path(), path_name)
-        path = os.path.abspath(path)
-        path = path.replace('\\', '/')
-        self._create_path_if_missing(path)
-        return path
-
     def _generate_html_report(self, ucdb_file):
         '''
         Executes code coverage command for HTML report.
@@ -246,43 +335,9 @@ class HdlCodeCoverage:
                                                                             ucdb_file)
         self._run_command_str(report_command)
 
-    def merge_code_coverage(self) -> bool:
-        '''
-        Search for code coverage files in hdlregression/test sub-folders and
-        save a merge in hdlregression/test/coverage.
-        '''
-        simulator = self.project.settings.get_simulator_name()
 
-        if self.get_code_coverage_file() is not None:
-            if simulator == 'GHDL':
-                self.project.logger.warning(
-                    'Code coverage not supported for GHDL simulator.')
-                return False
-            else:
-                self.project.logger.info('Creating code coverage reports...')
-                code_coverage_files_found = self._find_code_coverage_files()
-
-                if code_coverage_files_found:
-                    # Create test/coverage output folder
-                    code_coverage_path = os.path.join(
-                        self.project.settings.get_test_path(), 'coverage')
-                    code_coverage_path = os.path.abspath(code_coverage_path)
-                    self._create_path_if_missing(code_coverage_path)
-
-                    # Merge coverage files to one combined coverage file.
-                    self._merge_code_coverage_files()
-
-                    # Apply coverage exceptions.
-                    ucdb_file = self._apply_exceptions()
-
-                    # Write coverage reports.
-                    self._generate_html_report(ucdb_file)
-                    self._generate_txt_report(ucdb_file)
-                    return True
-                else:
-                    return False
-
-        # Coverage not enabled
-        else:
-            # Don't trigger warning in HDLRegression
-            return True
+class GHDLCodeCoverage(HdlCodeCoverage):
+    
+    def __init__(self, project):
+        super().__init__(project=project)
+        self.project = project
