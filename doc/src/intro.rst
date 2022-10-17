@@ -168,6 +168,14 @@ Execute the two following commands to install HDLRegression as package:
 
   python3 setup.py develop
 
+
+Or use the Python package-management system
+
+.. code-block:: console
+
+  pip install .
+
+
 HDLRegression can be imported directly in the regression script as any standard Python module
 
 .. code-block:: python
@@ -183,6 +191,13 @@ Uninstalling can be done with the commands:
 .. code-block:: console
 
   python3 setup.py develop --uninstall
+  
+
+Or if installed using pip:
+
+.. code-block:: console
+
+  pip uninstall hdlregression
 
 
 Python PATH

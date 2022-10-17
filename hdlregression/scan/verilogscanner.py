@@ -13,19 +13,12 @@
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH UVVM OR THE USE OR OTHER DEALINGS IN HDLRegression.
 #
 
-
 from multiprocessing.pool import ThreadPool
 
-if __package__ is None or __package__ == '':
-    from hdlscanner import HDLScanner
-    from hdl_modules_pkg import VerilogModule
-    from logger import Logger
-    from hdl_regex_pkg import *
-else:
-    from .hdlscanner import HDLScanner
-    from ..struct.hdl_modules_pkg import VerilogModule
-    from ..report.logger import Logger
-    from .hdl_regex_pkg import *
+from .hdlscanner import HDLScanner
+from ..construct.hdl_modules_pkg import VerilogModule
+from ..report.logger import Logger
+from .hdl_regex_pkg import *
 
 
 class VerilogScanner(HDLScanner):
@@ -77,7 +70,7 @@ class VerilogScanner(HDLScanner):
         # Finalize module on end of file if not already done
         for module in self.get_module_container().get():
             if not module.get_complete():
-                self.logger.debug("Module %s was not finalized." %
+                self.logger.debug("Module %s was not finalized." % 
                                   (module.get_name()))
                 module.set_complete()
 

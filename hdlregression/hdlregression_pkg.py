@@ -13,17 +13,11 @@
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH UVVM OR THE USE OR OTHER DEALINGS IN HDLRegression.
 #
 
-
 import platform
 import os
 
-
-if __package__ is None or __package__ == '':
-    from settings import HDLRegressionSettings
-    from logger import Logger
-else:
-    from .settings import HDLRegressionSettings
-    from .report.logger import Logger
+from .settings import HDLRegressionSettings
+from .report.logger import Logger
 
 
 def dict_keys_to_lower(dictionary) -> dict:
@@ -32,7 +26,6 @@ def dict_keys_to_lower(dictionary) -> dict:
     '''
     dictionary = dict((k.lower(), v) for k, v in dictionary.items())
     return dictionary
-
 
 # ====================================================================
 # Listing methods
@@ -115,7 +108,6 @@ def list_testcases(runner) -> str:
 
     return tc_string
 
-
 # ========================================================
 #
 # Helper class and methods
@@ -153,6 +145,7 @@ def adjust_generic_value_paths(generic_list, settings, logger) -> list:
     Check generic values if they are marked as PATH and pad
     paths with user script path information.
     '''
+
     # Helper methods
     def check_if_generic_value_is_path(generic_data) -> bool:
         if isinstance(generic_data, str):
@@ -182,8 +175,8 @@ def adjust_generic_value_paths(generic_list, settings, logger) -> list:
 
 
 def convert_from_millisec(millis):
-    seconds = (millis/1000) % 60
-    minutes = (millis/(1000*60)) % 60
-    hours = (millis/(1000*60*60)) % 24
+    seconds = (millis / 1000) % 60
+    minutes = (millis / (1000 * 60)) % 60
+    hours = (millis / (1000 * 60 * 60)) % 24
     return int(seconds), int(minutes), int(hours)
 

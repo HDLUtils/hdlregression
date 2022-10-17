@@ -17,10 +17,7 @@
 import os
 from glob import glob
 
-if __package__ is None or __package__ == '':
-    from logger import Logger
-else:
-    from .report.logger import Logger
+from .report.logger import Logger
 
 
 class HDLFinder:

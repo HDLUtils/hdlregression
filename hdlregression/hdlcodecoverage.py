@@ -13,13 +13,9 @@
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH UVVM OR THE USE OR OTHER DEALINGS IN HDLRegression.
 #
 
-
 import os
 
-if __package__ is None or __package__ == '':
-    from cmd_runner import CommandRunner
-else:
-    from .run.cmd_runner import CommandRunner
+from .run.cmd_runner import CommandRunner
 
 
 class HdlCodeCoverage:

@@ -13,21 +13,13 @@
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH UVVM OR THE USE OR OTHER DEALINGS IN HDLRegression.
 #
 
-
 import os
 
-if __package__ is None or __package__ == '':
-    from cmd_runner import CommandRunner
-    from runner_modelsim import ModelsimRunner
-    from testbuilder import TestBuilder
-    from logger import Logger
-    from hdlregression_pkg import os_adjust_path
-else:
-    from .cmd_runner import CommandRunner
-    from .runner_modelsim import ModelsimRunner
-    from .testbuilder import TestBuilder
-    from ..report.logger import Logger
-    from ..hdlregression_pkg import os_adjust_path
+from .cmd_runner import CommandRunner
+from .runner_modelsim import ModelsimRunner
+from .testbuilder import TestBuilder
+from ..report.logger import Logger
+from ..hdlregression_pkg import os_adjust_path
 
 
 class TclRunner(ModelsimRunner):
@@ -71,7 +63,6 @@ class TclRunner(ModelsimRunner):
         self.test_call += ' '.join(self.project.settings.get_sim_options())
 
         self.test_call += self._get_netlist_call()
-
 
     def simulate(self) -> None:
 
@@ -235,7 +226,6 @@ proc ra {} {
 ''' % (cmd, cmd)
         return txt
 
-
     def _recompile_all_only(self) -> str:
         cmd = '{*}python -c "import sys; sys.path.append(\'%s\'); ' % (
             self.project._get_install_path())
@@ -263,7 +253,6 @@ proc ro {} {
 }
 ''' % (cmd, cmd)
         return txt
-
 
     @staticmethod
     def _restart_and_run() -> str:
@@ -310,7 +299,7 @@ proc qc {} {
         modelsim_ini = self._get_modelsim_ini_path()
         test_call = 'vsim '
         test_call += self.test_call
-        test_call += ' -modelsimini {'+modelsim_ini+'};'
+        test_call += ' -modelsimini {' + modelsim_ini + '};'
 
         txt = '''
 # Define exit codes

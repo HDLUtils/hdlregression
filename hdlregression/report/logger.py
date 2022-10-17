@@ -90,3 +90,35 @@ class Logger():
 
     def reset_color(self):
         return bcolors.ENDC
+
+    def str_info(self, msg, color='white', end='\n') -> str:
+        if self.is_gui_mode():
+            return str(msg, end=end)
+        elif color.lower() == 'green':
+            return str(bcolors.OKGREEN + msg + bcolors.ENDC, end=end)
+        elif color.lower() == 'blue':
+            return str(bcolors.OKBLUE + msg + bcolors.ENDC, end=end)
+        elif color.lower() == 'header':
+            return str(bcolors.HEADER + msg + bcolors.ENDC, end=end)
+        else:
+            return str(msg, end=end)
+
+    def str_warning(self, msg, end='\n') -> str:
+        if self.is_gui_mode():
+            return str(msg, end=end)
+        else:
+            return str(bcolors.WARNING + msg + bcolors.ENDC, end=end)
+
+    def str_error(self, msg, end='\n') -> str:
+        if self.is_gui_mode():
+            return str(msg, end=end)
+        else:
+            return str(bcolors.FAIL + msg + bcolors.ENDC, end=end)
+
+    def str_debug(self, msg, end='\n') -> str:
+        current_level = self.levels.get(self.level)
+        if current_level <= self.levels.get('debug'):
+            if self.is_gui_mode():
+                return str(msg, end=end)
+            else:
+                return str(bcolors.HEADER + '[' + self.name + ':debug] ' + msg + bcolors.ENDC, end=end)

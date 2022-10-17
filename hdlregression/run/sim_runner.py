@@ -13,7 +13,6 @@
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH UVVM OR THE USE OR OTHER DEALINGS IN HDLRegression.
 #
 
-
 import os
 import re
 import time
@@ -22,25 +21,14 @@ from threading import Thread
 from queue import Queue
 from shutil import copytree
 
-if __package__ is None or __package__ == '':
-    from testbuilder import TestBuilder
-    from hdl_modules_pkg import *
-    from cmd_runner import CommandRunner
-    from logger import Logger
-    from hdlregression_pkg import convert_from_millisec
-    from hdlregression_pkg import os_adjust_path
-    from hdltests import VHDLTest, VerilogTest
-    from hdlfile import VHDLFile, VerilogFile
-
-else:
-    from .testbuilder import TestBuilder
-    from ..struct.hdl_modules_pkg import *
-    from .cmd_runner import CommandRunner
-    from ..report.logger import Logger
-    from ..hdlregression_pkg import convert_from_millisec
-    from ..hdlregression_pkg import os_adjust_path
-    from .hdltests import VHDLTest, VerilogTest
-    from ..struct.hdlfile import VHDLFile, VerilogFile
+from .testbuilder import TestBuilder
+from ..construct.hdl_modules_pkg import *
+from .cmd_runner import CommandRunner
+from ..report.logger import Logger
+from ..hdlregression_pkg import convert_from_millisec
+from ..hdlregression_pkg import os_adjust_path
+from .hdltests import VHDLTest, VerilogTest
+from ..construct.hdlfile import VHDLFile, VerilogFile
 
 
 class HDLRunnerError(Exception):
@@ -48,6 +36,7 @@ class HDLRunnerError(Exception):
 
 
 class OutputFileError(HDLRunnerError):
+
     def __init__(self, filename):
         self.filename = filename
 
@@ -56,6 +45,7 @@ class OutputFileError(HDLRunnerError):
 
 
 class TestOutputPathError(HDLRunnerError):
+
     def __init__(self, path):
         self.path = path
 
@@ -173,7 +163,7 @@ class SimRunner:
             force_compile = self._check_for_forcompile(library, lib_path_missing)
 
             if compile_required or force_compile:
-                self.logger.info('Compiling library: %s' %
+                self.logger.info('Compiling library: %s' % 
                                  (library.get_name()), end=' ')
                 compiled_library = self._compile_library(
                     library=library, force_compile=force_compile)
@@ -223,7 +213,6 @@ class SimRunner:
                             'Simulations stopped because of failing testcase.')
                 test_queue.task_done()
 
-
         # default
         success = True
 
@@ -252,19 +241,18 @@ class SimRunner:
 
         # run threads
         for _ in range(num_threads):
-            thread = Thread(target=run_test, args=(test_queue, ))
+            thread = Thread(target=run_test, args=(test_queue,))
             thread.daemon = True
             thread.start()
 
         # wait for test queue to finish
         test_queue.join()
 
-
         # Calculate and update timing
         finish_time = round(time.time() * 1000)
         elapsed_time = finish_time - start_time
         sim_sec, sim_min, sim_hrs = convert_from_millisec(elapsed_time)
-        self.logger.info('Simulation run time: %dh:%dm:%ds.' %
+        self.logger.info('Simulation run time: %dh:%dm:%ds.' % 
                          (sim_hrs, sim_min, sim_sec))
         self.project.settings.set_sim_time(elapsed_time)
 
@@ -329,9 +317,10 @@ class SimRunner:
         Returns
             test_list (list) : a list of 'num_threads' lists of tests.
         '''
+
         # Internal method for dividing test list
         def devide_list_for_threads(lst, sz): return [
-            lst[i:i+sz] for i in range(0, len(lst), sz)]
+            lst[i:i + sz] for i in range(0, len(lst), sz)]
 
         if num_threads > 1:
             devided_list = devide_list_for_threads(test_list, num_threads)
@@ -487,24 +476,28 @@ class SimRunner:
         self._save_cmd(command)
 
         cmd_runner = CommandRunner(project=self.project)
-        line = ''
 
         # Set simulator error detection
         if self._is_simulator("ghdl"):
             error_detection_str = r'[\r\n\s]?ghdl:'
+            ignored_errors_detection_str = None
         elif self._is_simulator("nvc"):
             error_detection_str = r'^[\r\n\s]?.*: (error|fatal): '
+            ignored_errors_detection_str = None
         else:
             error_detection_str = r'^[\r\n\s]?\*\*\sError[\s+]?[:]?'
+            ignored_errors_detection_str = r'^\/\/  (Reconnected|Lost connection) to license server'
 
-        re_error_detection_str = re.compile(error_detection_str,
-                                            flags=re.IGNORECASE | re.MULTILINE)
+        re_error_detection_str= re.compile(error_detection_str,
+                                           flags=re.IGNORECASE | re.MULTILINE)
+        if ignored_errors_detection_str is not None:
+            re_ignored_errors_detection_str = re.compile(ignored_errors_detection_str,
+                                                         flags=re.IGNORECASE | re.MULTILINE)
 
         if test is not None:
             test.clear_output()
 
         error_detected = False
-        ignored_simulator_exit_codes = self.project.settings.get_ignored_simulator_exit_codes()
 
         for line, success in cmd_runner.run(command=command,
                                             path=path,
@@ -516,15 +509,11 @@ class SimRunner:
             # Sim output direction
             self._direct_sim_output(test, line)
 
-            # Check if simulator exit code should be ignored
-            if success in ignored_simulator_exit_codes:
-                success = 0
-
             # Error detection
             if re.search(re_error_detection_str, line) or not success:
                 if not error_detected:
                     error_detected = True
-                    self.logger.error('') # Add newline
+                    self.logger.error('')  # Add newline
                 self.logger.error(line)
 
         return (error_detected is False)
@@ -637,7 +626,7 @@ class SimRunner:
         if not self.project.settings.get_result_check_str():
             self.logger.debug("Checking for UVVM summary report")
         else:
-            self.logger.debug("Checking for %s." %
+            self.logger.debug("Checking for %s." % 
                               (self.project.settings.get_result_check_str()))
 
         lines = self._read_transcript_file(test.get_test_path())
@@ -672,16 +661,16 @@ class SimRunner:
 
         # Calculate timing
         sim_end_time = round(time.time() * 1000)
-        elapsed_time = sim_end_time-sim_start_time
+        elapsed_time = sim_end_time - sim_start_time
         sim_sec, sim_min, sim_hrs = convert_from_millisec(elapsed_time)
 
         # Set test result
         if test_ok is True:
-            test_str_result = self.logger.green()+'PASS'
+            test_str_result = self.logger.green() + 'PASS'
             if test_ok_no_minor_alerts is False:
-                test_str_result += self.logger.yellow()+' (with minor alerts)'
+                test_str_result += self.logger.yellow() + ' (with minor alerts)'
         else:
-            test_str_result = self.logger.red()+'FAIL'
+            test_str_result = self.logger.red() + 'FAIL'
         test_str_result += self.logger.reset_color()
 
         test_details_str = '%s%s (%dh:%dm:%ds).\n' % (test.get_terminal_test_string(),

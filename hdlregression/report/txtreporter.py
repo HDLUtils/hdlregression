@@ -13,11 +13,7 @@
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH UVVM OR THE USE OR OTHER DEALINGS IN HDLRegression.
 #
 
-
-if __package__ is None or __package__ == '':
-    from hdlreporter import HDLReporter
-else:
-    from .hdlreporter import HDLReporter
+from .hdlreporter import HDLReporter
 
 
 class TXTReporter(HDLReporter):
@@ -77,7 +73,7 @@ class TXTReporter(HDLReporter):
                     testgroup_items_list = testgroup_container.get()
                     for idx, testgroup_items_list in enumerate(testgroup_container.get()):
                         entity, architecture, testcase, generics = tuple(testgroup_items_list)
-                        tg_str = '%d: %s' % (idx+1, entity)
+                        tg_str = '%d: %s' % (idx + 1, entity)
                         if architecture:
                             tg_str += '.%s' % (architecture)
                         if testcase:
@@ -93,7 +89,7 @@ class TXTReporter(HDLReporter):
                         lf.write('Library ' + library.get_name() + ':\n')
                         for idx, module_instance in enumerate(library.get_compile_order_list()):
                             tb = "(TB)" if module_instance.get_is_tb() else ""
-                            lf.write('  File %d: %s %s\n' % (idx+1, module_instance.get_filename(), tb))
+                            lf.write('  File %d: %s %s\n' % (idx + 1, module_instance.get_filename(), tb))
 
                 # Write library information
                 if self.get_report_library():

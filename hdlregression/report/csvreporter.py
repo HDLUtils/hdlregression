@@ -13,13 +13,9 @@
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH UVVM OR THE USE OR OTHER DEALINGS IN HDLRegression.
 #
 
-
 import csv
 
-if __package__ is None or __package__ == '':
-    from hdlreporter import HDLReporter
-else:
-    from .hdlreporter import HDLReporter
+from .hdlreporter import HDLReporter
 
 
 class CSVReporter(HDLReporter):
@@ -88,7 +84,7 @@ class CSVReporter(HDLReporter):
                     testgroup_items_list = testgroup_container.get()
                     for idx, testgroup_items_list in enumerate(testgroup_container.get()):
                         entity, architecture, testcase, generics = tuple(testgroup_items_list)
-                        tg_str = '%d %s' % (idx+1, entity)
+                        tg_str = '%d %s' % (idx + 1, entity)
                         if architecture:
                             tg_str += '.%s' % (architecture)
                         if testcase:
@@ -107,7 +103,7 @@ class CSVReporter(HDLReporter):
                         lf.writerow(['Library', library.get_name()])
                         for idx, module_instance in enumerate(library.get_compile_order_list()):
                             tb = "(TB)" if module_instance.get_is_tb() else ""
-                            lf.writerow(['File %d' % (idx+1), module_instance.get_filename(), tb])
+                            lf.writerow(['File %d' % (idx + 1), module_instance.get_filename(), tb])
 
                 # Write library information
                 if self.get_report_library():

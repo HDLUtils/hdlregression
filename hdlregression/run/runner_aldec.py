@@ -13,17 +13,11 @@
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH UVVM OR THE USE OR OTHER DEALINGS IN HDLRegression.
 #
 
-
 import os
 
-if __package__ is None or __package__ == '':
-    from sim_runner import SimRunner, OutputFileError
-    from logger import Logger
-    from hdlregression_pkg import os_adjust_path
-else:
-    from .sim_runner import SimRunner, OutputFileError
-    from ..report.logger import Logger
-    from ..hdlregression_pkg import os_adjust_path
+from .sim_runner import SimRunner, OutputFileError
+from ..report.logger import Logger
+from ..hdlregression_pkg import os_adjust_path
 
 
 class AldecRunner(SimRunner):
@@ -226,7 +220,7 @@ class AldecRunner(SimRunner):
                          sim_options,
                          netlist_call,
                          code_coverage_call_enable,
-                         '-modelsimini {'+modelsim_ini+'};',
+                         '-modelsimini {' + modelsim_ini + '};',
                          'onerror {quit -code 1};',
                          'onbreak {resume};',
                          'run', '-all;',

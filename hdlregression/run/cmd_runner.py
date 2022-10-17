@@ -13,17 +13,13 @@
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH UVVM OR THE USE OR OTHER DEALINGS IN HDLRegression.
 #
 
-
 import subprocess
 import os
 import sys
 from threading import Thread
 from queue import Queue, Empty
 
-if __package__ is None or __package__ == '':
-    from logger import Logger
-else:
-    from ..report.logger import Logger
+from ..report.logger import Logger
 
 
 class HDLRunnerError(Exception):
@@ -46,7 +42,7 @@ class CommandExecuteError(HDLRunnerError):
         self.logger = Logger(name=__name__)
 
     def __str__(self):
-        return self.logger.error(f"Error executing: {self.command}.")
+        return self.logger.str_error(f"Error executing: {self.command}.") 
 
 
 class CommandRunner:
@@ -82,10 +78,9 @@ class CommandRunner:
         return subprocess.Popen(command,
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE,
-                                universal_newlines=True, # Stdout/stderr are opened in text mode
+                                universal_newlines=True,  # Stdout/stderr are opened in text mode
                                 cwd=path,
-                                close_fds=self.ON_POSIX) # Close filehandles when done (Only Linux)
-
+                                close_fds=self.ON_POSIX)  # Close filehandles when done (Only Linux)
 
     def run(self, command, path='./', env=None, output_file=None) -> tuple:
         command = self._convert_to_list(command)
@@ -94,6 +89,8 @@ class CommandRunner:
 
         return_code = None
         popen = None
+        
+        ignored_simulator_exit_codes = self.project.settings.get_ignored_simulator_exit_codes()
 
         try:
             popen = self._get_process(command, path)
@@ -131,7 +128,8 @@ class CommandRunner:
         if return_code is None and popen is not None:
             return_code = popen.returncode
         if return_code != 0:
-            yield f"Error: Program ended with exit code {return_code}", False
+            if return_code not in ignored_simulator_exit_codes:
+              yield f"Error: Program ended with exit code {return_code}", False
         return
 
     def _convert_to_list(self, command) -> list:

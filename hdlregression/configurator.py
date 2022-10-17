@@ -13,15 +13,9 @@
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH UVVM OR THE USE OR OTHER DEALINGS IN HDLRegression.
 #
 
-
-if __package__ is None or __package__ == '':
-    from arg_parser import arg_parser_update_settings
-    from settings import HDLRegressionSettings
-    from logger import Logger
-else:
-    from .arg_parser import arg_parser_update_settings
-    from .settings import HDLRegressionSettings
-    from .report.logger import Logger
+from .arg_parser import arg_parser_update_settings
+from .settings import HDLRegressionSettings
+from .report.logger import Logger
 
 
 class SettingsConfigurator:

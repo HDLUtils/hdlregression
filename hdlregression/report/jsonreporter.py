@@ -13,11 +13,7 @@
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH UVVM OR THE USE OR OTHER DEALINGS IN HDLRegression.
 #
 
-
-if __package__ is None or __package__ == '':
-    from hdlreporter import HDLReporter
-else:
-    from .hdlreporter import HDLReporter
+from .hdlreporter import HDLReporter
 
 
 class JSONReporter(HDLReporter):

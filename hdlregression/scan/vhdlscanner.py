@@ -13,21 +13,14 @@
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH UVVM OR THE USE OR OTHER DEALINGS IN HDLRegression.
 #
 
-
 import re
 from multiprocessing.pool import ThreadPool
 from _multiprocessing import flags
 
-if __package__ is None or __package__ == '':
-    from hdlscanner import HDLScanner
-    from hdl_modules_pkg import EntityModule, ContextModule, ConfigurationModule, ArchitectureModule, PackageModule, PackageBodyModule
-    from logger import Logger
-    from hdl_regex_pkg import *
-else:
-    from .hdlscanner import HDLScanner
-    from ..struct.hdl_modules_pkg import EntityModule, ContextModule, ConfigurationModule, ArchitectureModule, PackageModule, PackageBodyModule
-    from ..report.logger import Logger
-    from .hdl_regex_pkg import *
+from .hdlscanner import HDLScanner
+from ..construct.hdl_modules_pkg import EntityModule, ContextModule, ConfigurationModule, ArchitectureModule, PackageModule, PackageBodyModule
+from ..report.logger import Logger
+from .hdl_regex_pkg import *
 
 
 class VHDLScanner(HDLScanner):
@@ -125,8 +118,9 @@ class VHDLScanner(HDLScanner):
         '''
         Scan code for dependencies and modules.
         '''
+
         def devide_list_for_threads(lst, sz): return [
-            lst[i:i+sz] for i in range(0, len(lst), sz)]
+            lst[i:i + sz] for i in range(0, len(lst), sz)]
 
         code = ' '.join(map(str, file_content_list))
 
@@ -165,7 +159,7 @@ class VHDLScanner(HDLScanner):
         # Finalize module on end of file if not already done
         for module in self.get_module_container().get():
             if not module.get_complete():
-                self.logger.debug("Module %s was not finalized." %
+                self.logger.debug("Module %s was not finalized." % 
                                   (module.get_name()))
                 module.set_complete()
 
@@ -377,6 +371,7 @@ class LibraryParser(BaseParser):
                 use_list = use.split('.')
                 use = list(filter(None, use_list))[0]
                 self.master.add_int_dep(use)
+
 
 class ContextParser(BaseParser):
     '''

@@ -13,14 +13,10 @@
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH UVVM OR THE USE OR OTHER DEALINGS IN HDLRegression.
 #
 
-
 import sys
 import argparse
 
-if __package__ is None or __package__ == '':
-    from settings import HDLRegressionSettings
-else:
-    from .settings import HDLRegressionSettings
+from .settings import HDLRegressionSettings
 
 
 def arg_parser_reader():
@@ -114,6 +110,5 @@ def arg_parser_update_settings(settings, args) -> 'HDLRegressionSettings':
         settings.empty_testcase_list()
         settings.set_testcase(args.testCase[0])
         settings.set_cli_override(True)
-
 
     return settings

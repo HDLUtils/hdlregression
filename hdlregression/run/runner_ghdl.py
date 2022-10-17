@@ -13,15 +13,10 @@
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH UVVM OR THE USE OR OTHER DEALINGS IN HDLRegression.
 #
 
-
 import os
 
-if __package__ is None or __package__ == '':
-    from sim_runner import SimRunner
-    from logger import Logger
-else:
-    from .sim_runner import SimRunner
-    from ..report.logger import Logger
+from .sim_runner import SimRunner
+from ..report.logger import Logger
 
 
 class GHDLRunner(SimRunner):

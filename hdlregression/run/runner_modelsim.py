@@ -16,14 +16,10 @@
 
 import os
 
-if __package__ is None or __package__ == '':
-    from sim_runner import SimRunner, OutputFileError
-    from logger import Logger
-    from hdlregression_pkg import os_adjust_path
-else:
-    from .sim_runner import SimRunner, OutputFileError
-    from ..report.logger import Logger
-    from ..hdlregression_pkg import os_adjust_path
+
+from .sim_runner import SimRunner, OutputFileError
+from ..report.logger import Logger
+from ..hdlregression_pkg import os_adjust_path
 
 
 class ModelsimRunner(SimRunner):

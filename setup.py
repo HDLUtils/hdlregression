@@ -13,7 +13,6 @@
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH UVVM OR THE USE OR OTHER DEALINGS IN HDLRegression.
 #
 
-
 import os
 import sys
 from setuptools import setup
@@ -26,17 +25,18 @@ def read(fname):
 version = read('version.txt').strip()
 description = read('./doc/src/description.rst')
 
-
 setup(name="hdlregression",
       version=version,
       description=(description),
       license="MIT",
       keywords="regression vhdl",
       url="https://github.com/hdlutils/hdlregression",
+      include_package_data=True,
       packages=['hdlregression',
                 'hdlregression.report',
                 'hdlregression.run',
                 'hdlregression.scan',
-                'hdlregression.struct'],
+                'hdlregression.construct'],
+      data_files=[('.', ['version.txt'])],
       long_description=read('README.rst'),
       )

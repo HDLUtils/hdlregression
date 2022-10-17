@@ -13,19 +13,12 @@
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH UVVM OR THE USE OR OTHER DEALINGS IN HDLRegression.
 #
 
-
 import fnmatch
 
-if __package__ is None or __package__ == '':
-    from container import Container
-    from logger import Logger
-    from hdlfile import VHDLFile, VerilogFile
-    from hdltests import VHDLTest, VerilogTest
-else:
-    from ..struct.container import Container
-    from ..report.logger import Logger
-    from ..struct.hdlfile import VHDLFile, VerilogFile
-    from .hdltests import VHDLTest, VerilogTest
+from ..construct.container import Container
+from ..report.logger import Logger
+from ..construct.hdlfile import VHDLFile, VerilogFile
+from .hdltests import VHDLTest, VerilogTest
 
 
 class TestBuilder:
@@ -173,7 +166,6 @@ class TestBuilder:
                         test.set_tc(tc)
                         self.test_container.add(test)
 
-
             # ------------------------------------
             # VHDL TB
             # ------------------------------------
@@ -265,10 +257,9 @@ class TestBuilder:
         def _get_testcase_index_number() -> int:
             testcase_index = int(testcase_list[0][0])
             if testcase_index >= 1:
-                return testcase_index - 1 #  return testcase listed number as listed in termial.
+                return testcase_index - 1  #  return testcase listed number as listed in termial.
             else:
                 return None
-            
         
         # Get user seleceted testcase
         testcase_list = self._get_user_testcase_list()

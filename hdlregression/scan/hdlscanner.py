@@ -15,12 +15,8 @@
 
 from abc import abstractmethod
 
-if __package__ is None or __package__ == '':
-    from container import Container
-    from logger import Logger
-else:
-    from ..struct.container import Container
-    from ..report.logger import Logger
+from ..construct.container import Container
+from ..report.logger import Logger
 
 
 class HDLScanner:

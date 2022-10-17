@@ -15,7 +15,7 @@ import os
 import shutil
 import pytest
 
-from hdlregression.struct.hdlfile import HDLFile
+from hdlregression.construct.hdlfile import HDLFile
 from hdlregression import HDLRegression
 
 
