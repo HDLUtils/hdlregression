@@ -1,2 +1,52 @@
+
+# test files
+test/*.txt
+test/hdlregression
+test/modelsim.ini
+test/transcript
+test/uvvm_*
+test/bitvis_*
+
+# simulations
+sim/
+
+# backup files
+*.*~
 .DS_Store
 
+# Editor
+.vscode/
+.project
+.pydevproject
+.settings/
+.library_mapping.xml
+
+# documentation
+doc/src/_build/doctrees
+doc/src/_build/latex/
+.css
+.js
+
+
+# unit testing
+test/unit/__pycache__/
+test/unit/hdlregression/
+test/unit/modelsim.ini
+test/verilog/
+
+
+# pycache files
+hdlregression/__pycache__/
+hdlregression/report/__pycache__/
+hdlregression/run/__pycache__/
+hdlregression/scan/__pycache__/
+hdlregression/struct/__pycache__/
+__pycache__/
+.pyc
+
+# build files
+hdlregression.egg-info/
+build/
+dist/
+
+/.pytest_cache/
