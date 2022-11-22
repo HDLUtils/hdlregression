@@ -25,6 +25,7 @@ import os
 import shutil
 import pickle
 import inspect
+import argparse
 from multiprocessing.pool import ThreadPool
 from signal import signal, SIGINT
 
@@ -57,7 +58,7 @@ from .construct.container import Container
 from .settings import HDLRegressionSettings
 from .report.logger import Logger
 from .hdlregression_pkg import *
-from .arg_parser import arg_parser_reader
+from .arg_parser import arg_parser_reader, get_parser
 from .hdlcodecoverage import *
 
 
@@ -78,7 +79,8 @@ class HDLRegression:
 
     def __init__(self,
                  simulator: str=None,
-                 init_from_gui: bool=False):
+                 init_from_gui: bool=False,
+                 arg_parser=None):
         '''
         Initializes the HDLRegression class which provides a set
         of API methods for controlling the regression flow.
@@ -101,7 +103,8 @@ class HDLRegression:
         # Create settings object
         self.settings = HDLRegressionSettings()
 
-        self.args = arg_parser_reader()
+        self.args = arg_parser_reader(arg_parser=arg_parser)
+
         self.logger = Logger(__name__, project=self)
         self.hdlcodecoverage = HdlCodeCoverage(project=self)
         
@@ -515,7 +518,7 @@ class HDLRegression:
             print(list_testgroup(self.testgroup_collection_container))
 
         # pylint: enable=protected-access
-        elif self.runner._gui_mode():
+        elif self._run_from_gui() is True:
             '''
             HDLRegression is started with argument "-g" for GUI and will
             create a tcl file and start Modelsim with this file.
@@ -809,6 +812,9 @@ class HDLRegression:
             self.logger.warning('Unsupported simulator')
             return None
 
+    def get_args(self):
+      return self.args
+
     # pylint: enable=too-many-arguments
 
     # ========================================================
@@ -816,6 +822,12 @@ class HDLRegression:
     # Non-public methods
     #
     # ========================================================
+
+    def _run_from_gui(self) -> bool:
+      if self.settings.get_gui_mode():
+        return self.settings.get_simulator_name() == "MODELSIM"
+      else:
+        return False
 
     # pylint: disable=too-many-arguments
     def _validate_testgroup_parameters(self,

@@ -363,16 +363,6 @@ class SimRunner:
             self.RE_USER = re.compile(
                 self.project.settings.get_result_check_str(), flags=re.IGNORECASE)
 
-    def _gui_mode(self) -> bool:
-        '''
-        Return True if gui mode is possible with this simulator
-        '''
-        # Check with sub-class that simulator is not GHDL
-        simulator_has_gui = not (self._is_simulator('ghdl') or self._is_simulator('nvc'))
-        # Check if gui mode is enabled in config
-        gui_mode_enabled = self.project.settings.get_gui_mode()
-        return (simulator_has_gui and gui_mode_enabled)
-
     # ---------------------------------------------------------
     # File handling
     # ---------------------------------------------------------
@@ -459,6 +449,12 @@ class SimRunner:
         with open(self.command_file, 'a') as file:
             file.write(cmd + '\n')
 
+    def _get_error_detection_str(self) -> str:
+      return ''
+    
+    def _get_ignored_error_detection_str(self) -> str:
+      return ''
+
     def _run_cmd(self, command, path='./', output_file=None, test=None) -> bool:
         '''
         Runs selected command(s), checks for simulator warning/error.
@@ -478,17 +474,10 @@ class SimRunner:
         cmd_runner = CommandRunner(project=self.project)
 
         # Set simulator error detection
-        if self._is_simulator("ghdl"):
-            error_detection_str = r'[\r\n\s]?ghdl:'
-            ignored_errors_detection_str = None
-        elif self._is_simulator("nvc"):
-            error_detection_str = r'^[\r\n\s]?.*: (error|fatal): '
-            ignored_errors_detection_str = None
-        else:
-            error_detection_str = r'^[\r\n\s]?\*\*\sError[\s+]?[:]?'
-            ignored_errors_detection_str = r'^\/\/  (Reconnected|Lost connection) to license server'
+        error_detection_str = self._get_error_detection_str()
+        ignored_errors_detection_str = self._get_ignored_error_detection_str()
 
-        re_error_detection_str= re.compile(error_detection_str,
+        re_error_detection_str = re.compile(error_detection_str,
                                            flags=re.IGNORECASE | re.MULTILINE)
         if ignored_errors_detection_str is not None:
             re_ignored_errors_detection_str = re.compile(ignored_errors_detection_str,

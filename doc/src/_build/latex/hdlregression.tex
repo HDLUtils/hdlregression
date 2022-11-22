@@ -61,8 +61,8 @@
 
 
 \title{hdlregression}
-\date{Oct 17, 2022}
-\release{0.31.0
+\date{Nov 22, 2022}
+\release{0.32.0
 }
 \author{UVVM}
 \newcommand{\sphinxlogo}{\vbox{}}
@@ -470,17 +470,63 @@ string
 optional
 \\
 \hline
+\sphinxAtStartPar
+arg\_parser
+&
+\sphinxAtStartPar
+argparser obj
+&
+\sphinxAtStartPar
+regression\_parser
+&
+\sphinxAtStartPar
+None
+&
+\sphinxAtStartPar
+optional
+\\
+\hline
 \end{tabulary}
 \par
 \sphinxattableend\end{savenotes}
 
 \sphinxAtStartPar
-\sphinxstylestrong{Example:}
+\sphinxstylestrong{Example 1:}
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{l+m+mf}{1.} \PYG{n}{hr} \PYG{o}{=} \PYG{n}{HDLRegression}\PYG{p}{(}\PYG{p}{)}
 
 \PYG{l+m+mf}{2.} \PYG{n}{hr} \PYG{o}{=} \PYG{n}{HDLRegression}\PYG{p}{(}\PYG{n}{simulator}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{ghdl}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+An argparser object can be created in the regression script and passed on to the HDLRegression() object creation to allow
+for having local argument parsing in the regression script. When an argparser object is passed on to HDLRegression it will
+add all its arguments to the argparser object. The parsed arguments can be collected using the {\hyperref[\detokenize{api:get-args}]{\sphinxcrossref{get\_args()}}} method as show
+in example 2.
+
+\sphinxAtStartPar
+\sphinxstylestrong{Example 2:}
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{import} \PYG{n+nn}{argparse}
+\PYG{k+kn}{from} \PYG{n+nn}{hdlregression} \PYG{k+kn}{import} \PYG{n}{HDLRegression}
+
+\PYG{n}{arg\PYGZus{}parser} \PYG{o}{=} \PYG{n}{argparse}\PYG{o}{.}\PYG{n}{ArgumentParser}\PYG{p}{(}\PYG{n}{description}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{Regression script parser}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{arg\PYGZus{}parser}\PYG{o}{.}\PYG{n}{add\PYGZus{}argument}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{\PYGZhy{}\PYGZhy{}rtl}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{n}{action}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{store\PYGZus{}true}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{n}{help}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{run RTL simulations}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{arg\PYGZus{}parser}\PYG{o}{.}\PYG{n}{add\PYGZus{}argument}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{\PYGZhy{}\PYGZhy{}netlist}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{n}{action}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{store\PYGZus{}true}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{n}{help}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{run netlist simulations}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}
+
+\PYG{n}{hr} \PYG{o}{=} \PYG{n}{HDLRegression}\PYG{p}{(}\PYG{n}{arg\PYGZus{}parser}\PYG{o}{=}\PYG{n}{arg\PYGZus{}parser}\PYG{p}{)}
+
+\PYG{n}{args} \PYG{o}{=} \PYG{n}{hr}\PYG{o}{.}\PYG{n}{get\PYGZus{}args}\PYG{p}{(}\PYG{p}{)}
+\PYG{k}{if} \PYG{n}{args}\PYG{o}{.}\PYG{n}{rtl}\PYG{p}{:}
+  \PYG{c+c1}{\PYGZsh{} add rtl files}
+  \PYG{n}{hr}\PYG{o}{.}\PYG{n}{add\PYGZus{}files}\PYG{p}{(}\PYG{o}{.}\PYG{o}{.}\PYG{o}{.}\PYG{p}{)}
+\PYG{k}{if} \PYG{n}{args}\PYG{o}{.}\PYG{n}{netlist}\PYG{p}{:}
+  \PYG{c+c1}{\PYGZsh{} add netlist files}
+  \PYG{n}{hr}\PYG{o}{.}\PYG{n}{add\PYGZus{}files}\PYG{p}{(}\PYG{o}{.}\PYG{o}{.}\PYG{o}{.}\PYG{p}{)}
+
+\PYG{n}{hr}\PYG{o}{.}\PYG{n}{start}\PYG{p}{(}\PYG{p}{)}
 \end{sphinxVerbatim}
 
 
@@ -2219,7 +2265,7 @@ string
 \subsection{run\_command()}
 \label{\detokenize{api:run-command}}
 \sphinxAtStartPar
-The command is executed by HLDUnit at the given stage in the regression script. I.e. pre\sphinxhyphen{}simulation commands will have
+The command is executed by HLDRegression at the given stage in the regression script. I.e. pre\sphinxhyphen{}simulation commands will have
 to be called prior to {\hyperref[\detokenize{api:start}]{\sphinxcrossref{start()}}} and post\sphinxhyphen{}simulation commands need to be called after {\hyperref[\detokenize{api:start}]{\sphinxcrossref{start()}}}.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
@@ -2286,6 +2332,21 @@ be changed by setting the \sphinxcode{\sphinxupquote{verbose}} argument to \sphi
 Relative paths will be relative to the regression script
 and not where the regression script is called from.
 \end{sphinxadmonition}
+
+
+\subsection{get\_args()}
+\label{\detokenize{api:get-args}}
+\sphinxAtStartPar
+The command is used for getting the parsed arguments from HDLRegression.
+This method can be used when there is a argparser object that is created in the regression script.
+See {\hyperref[\detokenize{api:hdlregression}]{\sphinxcrossref{HDLRegression()}}} example 2 for usage.
+
+\sphinxAtStartPar
+\sphinxstylestrong{Example:}
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{n}{args} \PYG{o}{=} \PYG{n}{hr}\PYG{o}{.}\PYG{n}{get\PYGZus{}args}\PYG{p}{(}\PYG{p}{)}
+\end{sphinxVerbatim}
 
 
 \section{Statistical methods}
@@ -2866,6 +2927,9 @@ A failing testcase will be reported as \sphinxstylestrong{FAIL} with a short sum
 
 \chapter{Graphical User Interface (GUI)}
 \label{\detokenize{gui:graphical-user-interface-gui}}\label{\detokenize{gui::doc}}
+
+\section{Modelsim}
+\label{\detokenize{gui:modelsim}}
 \sphinxAtStartPar
 Sometimes debugging a design or test require the use of GUI (graphical user interface)
 and HDLRegression can run tests in GUI when called with the \sphinxcode{\sphinxupquote{\sphinxhyphen{}g}} or \sphinxcode{\sphinxupquote{\sphinxhyphen{}\sphinxhyphen{}gui}} arugument.
@@ -2880,6 +2944,22 @@ HDLRegression in GUI mode provides a set of functions for compiling and running 
 test:
 
 \noindent{\hspace*{\fill}\sphinxincludegraphics[width=550\sphinxpxdimen]{{gui_menu}.png}\hspace*{\fill}}
+
+
+\section{GHDL}
+\label{\detokenize{gui:ghdl}}
+\sphinxAtStartPar
+GHDL does not have a GUI, but can create simulation waveform files that can be opened to have a graphical representation
+of the signals in a VCD format (Value Change Dump).
+
+\sphinxAtStartPar
+When HDLRegression is called with GUI arguments and runnning with GHDL simulator it will create \sphinxcode{\sphinxupquote{sim.vcd}} files
+inside every testcase run folder. The VCD files can then be opened in a graphical wavefarm viewer such as GTKWave.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{g+go}{\PYGZgt{} python ../test/regression.py \PYGZhy{}tc uart\PYGZus{}vvc\PYGZus{}tb.func.check\PYGZus{}simple\PYGZus{}transmit \PYGZhy{}g \PYGZhy{}s ghdl}
+\PYG{g+go}{\PYGZgt{} gtkwave ./hdlregression/test/uart\PYGZus{}vvc\PYGZus{}tb/54005228/sim.vcd \PYGZam{}}
+\end{sphinxVerbatim}
 
 
 \chapter{Testbench}

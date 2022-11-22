@@ -19,7 +19,10 @@ import argparse
 from .settings import HDLRegressionSettings
 
 
-def arg_parser_reader():
+def get_parser() -> argparse.ArgumentParser:
+  return argparse.ArgumentParser(description='HDLRegression CLI options')
+
+def arg_parser_reader(arg_parser=None):
     # Python 2
     if sys.version_info.major < 3:
         opts_short = [opt.lower() for opt in sys.argv[1:] if opt.startswith("-")]
@@ -30,7 +33,9 @@ def arg_parser_reader():
 
     # Python 3
     else:
-        arg_parser = argparse.ArgumentParser(description='HDLRegression CLI options')
+        if arg_parser is None:
+          arg_parser = get_parser()
+
         arg_parser.add_argument('-v', '--verbose', action='store_true', help='enable full verbosity')
         arg_parser.add_argument('-d', '--debug', action='store_true', help='enable debug mode')
         arg_parser.add_argument('-g', '--gui', action='store_true', help='enable simulator GUI mode')

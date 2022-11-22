@@ -30,20 +30,51 @@ in example 2 or using :doc:`cli` :
    HDLRegression(<simulator>)
 
 
-+-----------------+-----------+-------------------------------+---------------+---------------+
-| Argument        | Type      | Example                       | Default       | Required      |
-+=================+===========+===============================+===============+===============+
-| simulator       | string    | "ghdl", "modelsim", "nvc"     | "modelsim"    | optional      |
-+-----------------+-----------+-------------------------------+---------------+---------------+
++-----------------+---------------+-------------------------------+---------------+---------------+
+| Argument        | Type          | Example                       | Default       | Required      |
++=================+===============+===============================+===============+===============+
+| simulator       | string        | "ghdl", "modelsim", "nvc"     | "modelsim"    | optional      |
++-----------------+---------------+-------------------------------+---------------+---------------+
+| arg_parser      | argparser obj | regression_parser             | None          | optional      |
++-----------------+---------------+-------------------------------+---------------+---------------+
 
 
-**Example:**
+**Example 1:**
 
 .. code-block:: python
 
   1. hr = HDLRegression()
 
   2. hr = HDLRegression(simulator="ghdl")
+
+
+An argparser object can be created in the regression script and passed on to the HDLRegression() object creation to allow
+for having local argument parsing in the regression script. When an argparser object is passed on to HDLRegression it will
+add all its arguments to the argparser object. The parsed arguments can be collected using the `get_args()`_ method as show
+in example 2.
+
+**Example 2:**
+
+.. code-block:: python
+
+  import argparse
+  from hdlregression import HDLRegression
+  
+  arg_parser = argparse.ArgumentParser(description='Regression script parser')
+  arg_parser.add_argument('--rtl', action='store_true', help='run RTL simulations')
+  arg_parser.add_argument('--netlist', action='store_true', help='run netlist simulations')
+  
+  hr = HDLRegression(arg_parser=arg_parser)
+  
+  args = hr.get_args()
+  if args.rtl:
+    # add rtl files
+    hr.add_files(...)
+  if args.netlist:
+    # add netlist files
+    hr.add_files(...)
+
+  hr.start()
 
 
 
@@ -761,7 +792,7 @@ but any name can be given.
 run_command()
 =======================================================================================================================
 
-The command is executed by HLDUnit at the given stage in the regression script. I.e. pre-simulation commands will have 
+The command is executed by HLDRegression at the given stage in the regression script. I.e. pre-simulation commands will have 
 to be called prior to `start()`_ and post-simulation commands need to be called after `start()`_.
 
 .. code-block:: python
@@ -782,11 +813,10 @@ to be called prior to `start()`_ and post-simulation commands need to be called 
   No output is printed to the terminal by default, but this can
   be changed by setting the ``verbose`` argument to ``True``.
 
-
 **Example:**
 
 .. code-block:: python
-
+  
   hr.run_command('python3 ../script/run_spec_cov.py --config ../script/config.txt')
 
   hr.run_command('vsim -version', verbose=True)
@@ -794,6 +824,22 @@ to be called prior to `start()`_ and post-simulation commands need to be called 
 
 .. include:: file_reference_note.rst
 
+
+
+
+get_args()
+=======================================================================================================================
+
+The command is used for getting the parsed arguments from HDLRegression.
+This method can be used when there is a argparser object that is created in the regression script.
+See `HDLRegression()`_ example 2 for usage.
+
+
+**Example:**
+
+.. code-block:: python
+
+  args = hr.get_args()
 
 
 

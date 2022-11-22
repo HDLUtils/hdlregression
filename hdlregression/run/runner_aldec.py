@@ -250,3 +250,9 @@ class AldecRunner(SimRunner):
                                 path=test.get_test_path(),
                                 test=test)
         return success
+
+    def _get_error_detection_str(self) -> str:
+      return ''
+    
+    def _get_ignored_error_detection_str(self) -> str:
+      return ''

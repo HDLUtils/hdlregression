@@ -256,3 +256,9 @@ class ModelsimRunner(SimRunner):
 
         success = self._run_cmd(command=command, path=test.get_test_path(), test=test)
         return success
+
+    def _get_error_detection_str(self) -> str:
+      return r'^[\r\n\s]?\*\*\sError[\s+]?[:]?'
+    
+    def _get_ignored_error_detection_str(self) -> str:
+      return r'^\/\/  (Reconnected|Lost connection) to license server'

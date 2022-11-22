@@ -18,6 +18,14 @@ import platform
 import datetime
 
 
+class SettingsError(Exception):
+    pass
+
+
+class ItemExistError(SettingsError):
+    pass
+
+
 class HDLRegressionSettings:
 
     def __init__(self):
@@ -391,6 +399,9 @@ class HDLRegressionSettings:
     def get_sim_options(self) -> list:
         return self.simulator_settings.get_sim_options()
 
+    def add_sim_options(self, options, warning=True):
+        self.simulator_settings.add_sim_options(options, warning)
+
     # ----------------------------------
     # Gui
     # ----------------------------------
@@ -556,8 +567,18 @@ class SimulatorSettings():
         elif isinstance(options, list):
             self.sim_options = options
         else:
+          if options:
             raise TypeError(
                 "sim_options parameter needs to be given as a list or a string")
+
+    def add_sim_options(self, options, warning=True):
+      for item in self.sim_options:
+        if options in item:
+          if warning is True:
+            raise ItemExistError(
+                "sim_options %s already set." % (options))
+          return 
+      self.sim_options.append(options)
 
     def get_sim_options(self) -> list:
         return self.sim_options

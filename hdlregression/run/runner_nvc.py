@@ -134,3 +134,9 @@ class NVCRunner(SimRunner):
                                 output_file=transcript_file,
                                 test=test)
         return success
+
+    def _get_error_detection_str(self) -> str:
+      return r'^[\r\n\s]?.*: (error|fatal): '
+    
+    def _get_ignored_error_detection_str(self) -> str:
+      return ''

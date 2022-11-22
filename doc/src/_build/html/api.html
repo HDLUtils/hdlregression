@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Application Programming Interface (API) &mdash; hdlregression 0.31.0
+  <title>Application Programming Interface (API) &mdash; hdlregression 0.32.0
  documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
@@ -67,6 +67,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#set-simulator">set_simulator()</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#set-testcase-identifier-name">set_testcase_identifier_name()</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#run-command">run_command()</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#get-args">get_args()</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#statistical-methods">Statistical methods</a><ul>
@@ -150,11 +151,11 @@ in example 2 or using <a class="reference internal" href="cli.html"><span class=
 </div>
 <table class="docutils align-default">
 <colgroup>
-<col style="width: 19%" />
-<col style="width: 12%" />
-<col style="width: 35%" />
-<col style="width: 17%" />
-<col style="width: 17%" />
+<col style="width: 18%" />
+<col style="width: 16%" />
+<col style="width: 33%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Argument</p></th>
@@ -171,12 +172,43 @@ in example 2 or using <a class="reference internal" href="cli.html"><span class=
 <td><p>“modelsim”</p></td>
 <td><p>optional</p></td>
 </tr>
+<tr class="row-odd"><td><p>arg_parser</p></td>
+<td><p>argparser obj</p></td>
+<td><p>regression_parser</p></td>
+<td><p>None</p></td>
+<td><p>optional</p></td>
+</tr>
 </tbody>
 </table>
-<p><strong>Example:</strong></p>
+<p><strong>Example 1:</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="mf">1.</span> <span class="n">hr</span> <span class="o">=</span> <span class="n">HDLRegression</span><span class="p">()</span>
 
 <span class="mf">2.</span> <span class="n">hr</span> <span class="o">=</span> <span class="n">HDLRegression</span><span class="p">(</span><span class="n">simulator</span><span class="o">=</span><span class="s2">&quot;ghdl&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>An argparser object can be created in the regression script and passed on to the HDLRegression() object creation to allow
+for having local argument parsing in the regression script. When an argparser object is passed on to HDLRegression it will
+add all its arguments to the argparser object. The parsed arguments can be collected using the <a class="reference internal" href="#get-args">get_args()</a> method as show
+in example 2.</p>
+<p><strong>Example 2:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">from</span> <span class="nn">hdlregression</span> <span class="kn">import</span> <span class="n">HDLRegression</span>
+
+<span class="n">arg_parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Regression script parser&#39;</span><span class="p">)</span>
+<span class="n">arg_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--rtl&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;run RTL simulations&#39;</span><span class="p">)</span>
+<span class="n">arg_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--netlist&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;run netlist simulations&#39;</span><span class="p">)</span>
+
+<span class="n">hr</span> <span class="o">=</span> <span class="n">HDLRegression</span><span class="p">(</span><span class="n">arg_parser</span><span class="o">=</span><span class="n">arg_parser</span><span class="p">)</span>
+
+<span class="n">args</span> <span class="o">=</span> <span class="n">hr</span><span class="o">.</span><span class="n">get_args</span><span class="p">()</span>
+<span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">rtl</span><span class="p">:</span>
+  <span class="c1"># add rtl files</span>
+  <span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">netlist</span><span class="p">:</span>
+  <span class="c1"># add netlist files</span>
+  <span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+
+<span class="n">hr</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 </pre></div>
 </div>
 </section>
@@ -1213,7 +1245,7 @@ and if-matched strings.</p></li>
 </section>
 <section id="run-command">
 <h3>run_command()<a class="headerlink" href="#run-command" title="Permalink to this headline"></a></h3>
-<p>The command is executed by HLDUnit at the given stage in the regression script. I.e. pre-simulation commands will have
+<p>The command is executed by HLDRegression at the given stage in the regression script. I.e. pre-simulation commands will have
 to be called prior to <a class="reference internal" href="#start">start()</a> and post-simulation commands need to be called after <a class="reference internal" href="#start">start()</a>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">run_command</span><span class="p">(</span><span class="o">&lt;</span><span class="n">command</span><span class="o">&gt;</span><span class="p">)</span>
 </pre></div>
@@ -1256,6 +1288,16 @@ be changed by setting the <code class="docutils literal notranslate"><span class
 <p class="admonition-title">Note</p>
 <p>Relative paths will be relative to the regression script
 and not where the regression script is called from.</p>
+</div>
+</section>
+<section id="get-args">
+<h3>get_args()<a class="headerlink" href="#get-args" title="Permalink to this headline"></a></h3>
+<p>The command is used for getting the parsed arguments from HDLRegression.
+This method can be used when there is a argparser object that is created in the regression script.
+See <a class="reference internal" href="#hdlregression">HDLRegression()</a> example 2 for usage.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">args</span> <span class="o">=</span> <span class="n">hr</span><span class="o">.</span><span class="n">get_args</span><span class="p">()</span>
+</pre></div>
 </div>
 </section>
 </section>

@@ -86,8 +86,6 @@ class GHDLRunner(SimRunner):
         if not os.path.exists(library_compile_path):
             os.mkdir(library_compile_path)
 
-        sim_options = self.project.settings.get_sim_options()
-
         return_list += hdlfile._get_com_options(simulator=self.simulator_name)
 
         return_list += ['--workdir=' + library_compile_path]
@@ -102,6 +100,10 @@ class GHDLRunner(SimRunner):
             if generic_call:
                 return_list += generic_call.split(' ')
 
+            if self.project.settings.get_gui_mode() is True:
+              self.project.settings.add_sim_options('--vcd=sim.vcd', warning=False)
+
+            sim_options = self.project.settings.get_sim_options()
             return_list += sim_options
 
         return return_list
@@ -149,3 +151,9 @@ class GHDLRunner(SimRunner):
                                 output_file=transcript_file,
                                 test=test)
         return success
+
+    def _get_error_detection_str(self) -> str:
+      return r'[\r\n\s]?ghdl:'
+    
+    def _get_ignored_error_detection_str(self) -> str:
+      return ''
