@@ -92,7 +92,7 @@ class GHDLRunner(SimRunner):
         return_list += ['--work=' + hdlfile.get_library().get_name()]
         return_list += ["-P" + output_path + "/"]
 
-        return_list += [module.get_name()] if module else [hdlfile.get_filename()]
+        return_list += [module.get_name()] if module else [hdlfile.get_filename_with_path()]
 
         if elab_run:
             if module_call:
@@ -123,7 +123,7 @@ class GHDLRunner(SimRunner):
                 cmd = self._get_simulator_call(hdlfile=hdlfile)
                 # Call command runner in super-class
                 if not self._run_cmd(cmd):
-                    file_name = hdlfile.get_filename()
+                    file_name = hdlfile.get_filename_with_path()
                     self.logger.error('Failed to compile %s!' % (file_name))
                     success = False
                 else:

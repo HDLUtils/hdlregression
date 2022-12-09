@@ -19,7 +19,6 @@ from pathlib import Path
 from hdlregression import HDLRegression
 from pickle import FALSE
 
-
 if len(sys.argv) >= 2:
     '''
     Remove pytest from argument list
@@ -120,7 +119,7 @@ def test_never_recompile_library_compilation():
     clear_output()
     hr = HDLRegression()
     hr.set_result_check_string('passing testcase')
-    #filename = get_file_path(os.path.join(TEST_DIR, '../tb/tb_passing.vhd'))
+    # filename = get_file_path(os.path.join(TEST_DIR, '../tb/tb_passing.vhd'))
     filename = get_file_path('../tb/tb_passing.vhd')
 
     hr.add_files(filename, "test_lib_never_recompile")
@@ -169,3 +168,62 @@ def test_precompiled_library():
                 precompiled_exists = True
 
     assert precompiled_exists is True, "check precompiled library and path in modelsim.ini"
+
+    
+def test_empty_library_and_library_with_files_no_threads():
+    '''
+    Check that an empty library is ignored
+    '''
+    clear_output()
+    hr = HDLRegression()
+
+    hr.set_result_check_string('passing testcase')
+
+    filename = get_file_path('../tb/no_such_file.foo')
+    hr.add_files(filename, "empty_lib")
+
+    filename = get_file_path('../tb/tb_passing.vhd')
+    hr.add_files(filename, "test_lib")
+
+    hr.start(threading=False)
+    dirs = os.listdir("./hdlregression/library")
+    assert "empty_lib" not in dirs, "checking empty library not in compiled libraries"
+    assert "test_lib" in dirs, "checking compiled library in compiled libraries"
+
+
+def test_library_without_file_and_library_with_file_one_thread():
+    '''
+    Check that an empty library is ignored
+    '''
+    clear_output()
+    hr = HDLRegression()
+
+    hr.set_result_check_string('passing testcase')
+
+    filename = get_file_path('../tb/no_such_file.foo')
+    hr.add_files(filename, "empty_lib")
+
+    filename = get_file_path('../tb/tb_passing.vhd')
+    hr.add_files(filename, "test_lib")
+
+    hr.start(threading=True)
+    dirs = os.listdir("./hdlregression/library")
+    assert "empty_lib" not in dirs, "checking empty library not in compiled libraries"
+    assert "test_lib" in dirs, "checking compiled library in compiled libraries"
+
+
+def test_empty_library():
+    '''
+    Check that an empty library is ignored
+    '''
+    clear_output()
+    hr = HDLRegression()
+
+    hr.set_result_check_string('passing testcase')
+
+    filename = get_file_path('../tb/no_such_file.foo')
+    hr.add_files(filename, "empty_lib")
+
+    hr.start()
+    dirs = os.listdir("./hdlregression/library")
+    assert "empty_lib" not in dirs, "checking empty library not in compiled libraries"

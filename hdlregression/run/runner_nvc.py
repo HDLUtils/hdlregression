@@ -85,7 +85,7 @@ class NVCRunner(SimRunner):
             return_list += self.project.settings.get_sim_options()
         else:
             return_list += ["-a"]
-            return_list += [hdlfile.get_filename()]
+            return_list += [hdlfile.get_filename_with_path()]
             if hdlfile._get_com_options(simulator=self.simulator_name):
                 return_list += hdlfile._get_com_options(simulator=self.simulator_name)
 
@@ -106,7 +106,7 @@ class NVCRunner(SimRunner):
                 cmd = self._get_simulator_call(hdlfile=hdlfile)
                 # Call command runner in super-class
                 if not self._run_cmd(cmd):
-                    file_name = hdlfile.get_filename()
+                    file_name = hdlfile.get_filename_with_path()
                     self.logger.error('Failed to compile %s!' % (file_name))
                     success = False
                 else:

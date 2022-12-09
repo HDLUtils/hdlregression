@@ -35,7 +35,7 @@ class BaseModule:
     def set_hdlfile(self, hdlfile):
         self.hdlfile = hdlfile
         self.logger.debug("[%s] file=%s" % (self.get_name(),
-                                            self.hdlfile.get_filename()))
+                                            self.hdlfile.get_filename_with_path()))
 
     def get_hdlfile(self) -> 'HDLFile':
         return self.hdlfile

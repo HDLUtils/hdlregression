@@ -68,7 +68,7 @@ def tear_down_function():
 
 
 def test_get_filename():
-    filename = hdlFile.get_filename()
+    filename = hdlFile.get_filename_with_path()
     exp_name = get_file_path('../tb/my_tb_rand.vhd')
     assert exp_name in filename, 'Expecting init file name'
 
@@ -76,7 +76,7 @@ def test_get_filename():
 def test_change_filename():
     exp_filename = get_file_path("../tb/tb_testcase.vhd")
     hdlFile.set_filename(exp_filename)
-    get_filename = hdlFile.get_filename()
+    get_filename = hdlFile.get_filename_with_path()
     assert get_filename == exp_filename, "Expecting changed file name"
 
 
@@ -93,6 +93,22 @@ def test_file_type():
     file_obj = lib_files[0]
 
     assert file_obj.get_is_vhdl() is True, "check correct file type"
+
+
+def test_remove():
+    hr = HDLRegression()
+    filename = get_file_path("../tb/tb_passing*.vhd")
+    hr.add_files(filename, 'remove_file_lib')
+
+    hr.remove_file("tb_passing_2.vhd", "remove_file_lib")
+
+    test_lib = hr._get_library_object('remove_file_lib')
+    lib_files = test_lib.get_hdlfile_list()
+    lib_files_names = [file.get_filename() for file in lib_files]
+
+    assert len(lib_files_names) == 1, "check number of files"
+    assert "tb_passing.vhd" in lib_files_names, "check not deleted file"
+    assert "tb_passing_2.vhd" not in lib_files_names, "check deleted file"
 
 
 # ==============================================================

@@ -77,8 +77,8 @@ def test_compile_order():
     library = hr._get_library_object('verilog_lib')
     file_list = library.get_hdlfile_list()
 
-    assert 'half_adder.v' in file_list[0].get_filename(), "check compile order"
-    assert 'half_adder_tb.v' in file_list[1].get_filename(
+    assert 'half_adder.v' in file_list[0].get_filename_with_path(), "check compile order"
+    assert 'half_adder_tb.v' in file_list[1].get_filename_with_path(
     ), "check compile order"
 
 

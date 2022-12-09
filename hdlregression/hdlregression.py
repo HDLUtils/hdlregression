@@ -176,8 +176,8 @@ class HDLRegression:
 
         :param filename; Name of file to be added to library
         :type filename: str
-        :param library: Name of library to add file
-        :type librart: str
+        :param library_name: Name of library to add file
+        :type library_name: str
         :param hdl_version: VHDL version to use with file
         :type hdl_version: str
         :param com_options: Compile options to use with file
@@ -224,6 +224,20 @@ class HDLRegression:
                        com_options=com_options,
                        parse_file=parse_file,
                        code_coverage=code_coverage)
+
+    def remove_file(self, filename, library_name):
+        '''
+        Remove a file that has been added to a library object
+
+        :param library_name: Name of library to add file
+        :type library_name: str        
+        
+        :param filename; Name of file to be added to library
+        :type filename: str
+        '''
+        # Get library object to store file objects
+        library = self._get_library_object(self.settings.get_library_name())
+        library.remove_file(filename)
 
     def set_dependency(self,
                        library_name: str,
@@ -455,7 +469,7 @@ class HDLRegression:
                           code_coverage_settings: str,
                           code_coverage_file: str,
                           exclude_file: str=None,
-                          merge_opions: str=None):
+                          merge_options: str=None):
         '''
         Defines the code coverage for all tests
 
@@ -471,7 +485,7 @@ class HDLRegression:
         self.hdlcodecoverage.set_code_coverage_settings(code_coverage_settings)
         self.hdlcodecoverage.set_code_coverage_file(code_coverage_file)
         self.hdlcodecoverage.set_exclude_file(exclude_file)
-        self.hdlcodecoverage.set_options(merge_opions)
+        self.hdlcodecoverage.set_options(merge_options)
 
     def start(self, **kwargs) -> int:
         '''
@@ -498,6 +512,8 @@ class HDLRegression:
         self._setup_simulation_runner()
         
         self.hdlcodecoverage.get_code_coverage_obj(self.settings.get_simulator_name())
+
+        self._remove_empty_libraries()
 
         # ========================================
         # Case on what to execute/do
@@ -1138,7 +1154,7 @@ class HDLRegression:
         print('''
 %s
   HDLRegression version %s
-  Please see /doc/hdlregression.pdf documentation for more information.
+  See /doc/hdlregression.pdf for documentation.
 %s
 
 ''' % ('=' * 70, version, '=' * 70))
@@ -1248,6 +1264,11 @@ class HDLRegression:
     # ====================================================================
     # Container methods
     # ====================================================================
+
+    def _remove_empty_libraries(self):
+      for lib in self.library_container.get():
+        if len(lib.get_hdlfile_list()) == 0 and lib.get_is_precompiled() is False:
+          self.library_container.remove(lib)
 
     def _get_library_container(self) -> 'Container':
         '''

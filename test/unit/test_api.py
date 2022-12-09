@@ -342,7 +342,7 @@ def test_set_code_coverage_updated():
     hr = HDLRegression()
     filename = get_file_path("../tb/tb_simple.vhd")
     hr.add_files(filename=filename, library_name="lib_1", code_coverage=True)
-    hr.set_code_coverage(code_coverage_settings="btc", code_coverage_file="test_cov.ucdb", exclude_file="exclude.tcl", merge_opions="some_option")
+    hr.set_code_coverage(code_coverage_settings="btc", code_coverage_file="test_cov.ucdb", exclude_file="exclude.tcl", merge_options="some_option")
 
     assert hr.hdlcodecoverage.get_code_coverage_settings() == "btc", "check code coverage settings"
     assert "test_cov.ucdb" in hr.hdlcodecoverage.get_code_coverage_file(), "check code coverage file without complete path"

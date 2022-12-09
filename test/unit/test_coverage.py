@@ -53,9 +53,10 @@ def test_set_code_coverage():
     clear_output()
     hr = HDLRegression()
 
-    hr.set_code_coverage(code_coverage_settings='bcestx', code_coverage_file='no_file.ucdb')
+    hr.set_code_coverage(code_coverage_settings='bcestx', code_coverage_file='no_file.ucdb', merge_options="some_option")
 
     assert hr.hdlcodecoverage.get_code_coverage_settings() == 'bcestx', 'check code coverage settings'
+    assert hr.hdlcodecoverage.get_options() == "some_option", "check merge options"
 
 
 def test_remove_leading_hyphen():

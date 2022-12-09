@@ -41,6 +41,7 @@ class HDLFile:
         # Setup defaults
         self.file_change_date = os.path.getmtime(filename_with_path)
         # self.filename = None  # Filename with '.vhd'
+        self.filename = None
         self.name_from_file = None  # Filename without '.vhd'
         self.filename_with_path = None
         # Get path and filename and update internal information
@@ -77,7 +78,7 @@ class HDLFile:
 
     def get_file_change_date(self) -> str:
         try:
-            self.file_change_date = os.path.getmtime(self.get_filename())
+            self.file_change_date = os.path.getmtime(self.get_filename_with_path())
         except:
             self.file_change_date = 0
         finally:
@@ -95,8 +96,12 @@ class HDLFile:
         # Sep path and file name
         _, name = os.path.split(filename_with_path)
         self.name_from_file = name[0:name.find('.')]
+        self.filename = name
 
     def get_filename(self) -> str:
+        return self.filename
+      
+    def get_filename_with_path(self) -> str:
         return self.filename_with_path
 
     def get_name(self) -> str:
@@ -233,7 +238,7 @@ class VHDLFile(HDLFile):
         # Create an Inspector() object for tokenizing and parsing
         self.scanner = VHDLScanner(project=self.project,
                                    library=self.get_library(),
-                                   filename=self.get_filename(),
+                                   filename=self.get_filename_with_path(),
                                    hdlfile=self)
     
         if self.scanner is None:
@@ -347,7 +352,7 @@ class VerilogFile(HDLFile):
         file_content_list = self._get_file_content_as_list()
         self.scanner = VerilogScanner(project=self.project,
                                       library=self.get_library(),
-                                      filename=self.get_filename(),
+                                      filename=self.get_filename_with_path(),
                                       hdlfile=self)
 
         if self.scanner is None:

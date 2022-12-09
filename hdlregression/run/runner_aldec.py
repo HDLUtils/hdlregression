@@ -76,7 +76,7 @@ class AldecRunner(SimRunner):
         libraries_path = os.path.join(self.project.settings.get_sim_path(), 'hdlregression', 'library')
         compile_path = os.path.join(libraries_path, hdlfile.get_library().get_name())
 
-        hdlfile_path = os.path.join(hdlfile.get_filename())
+        hdlfile_path = os.path.join(hdlfile.get_filename_with_path())
 
         if self.project.settings.get_os_platform() == "windows":
             compile_path = compile_path.replace('\\', '/')
@@ -190,7 +190,7 @@ class AldecRunner(SimRunner):
         for obj in netlist_obj:
             call += ' %s %s=%s' % (self.project.settings.get_netlist_timing(),
                                    obj.get_netlist_instance(),
-                                   obj.get_filename().replace('\\', '/'))
+                                   obj.get_filename_with_path().replace('\\', '/'))
         return call
 
     def _get_simulator_call(self, generic_call, module_call) -> str:

@@ -61,8 +61,8 @@
 
 
 \title{hdlregression}
-\date{Nov 22, 2022}
-\release{0.32.0
+\date{Dec 07, 2022}
+\release{0.33.0
 }
 \author{UVVM}
 \newcommand{\sphinxlogo}{\vbox{}}
@@ -1787,6 +1787,70 @@ optional
 \begin{sphinxadmonition}{important}{Important:}
 \sphinxAtStartPar
 Supported file types are \sphinxcode{\sphinxupquote{.txt}}, \sphinxcode{\sphinxupquote{.csv}} and \sphinxcode{\sphinxupquote{.json}} and the file type is extracted from the file name.
+\end{sphinxadmonition}
+
+
+\subsection{remove\_file()}
+\label{\detokenize{api:remove-file}}
+\sphinxAtStartPar
+Removes a file that has been added to a library, e.g. after using \sphinxcode{\sphinxupquote{add\_files()}} with asterix for adding several files.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{n}{remove\PYGZus{}file}\PYG{p}{(}\PYG{o}{\PYGZlt{}}\PYG{n}{filename}\PYG{o}{\PYGZgt{}}\PYG{p}{,} \PYG{o}{\PYGZlt{}}\PYG{n}{library\PYGZus{}name}\PYG{o}{\PYGZgt{}}\PYG{p}{)}
+\end{sphinxVerbatim}
+
+
+\begin{savenotes}\sphinxattablestart
+\centering
+\begin{tabulary}{\linewidth}[t]{|T|T|T|}
+\hline
+\sphinxstyletheadfamily 
+\sphinxAtStartPar
+Argument
+&\sphinxstyletheadfamily 
+\sphinxAtStartPar
+Type
+&\sphinxstyletheadfamily 
+\sphinxAtStartPar
+Required
+\\
+\hline
+\sphinxAtStartPar
+filename
+&
+\sphinxAtStartPar
+string
+&
+\sphinxAtStartPar
+\sphinxstylestrong{mandatory}
+\\
+\hline
+\sphinxAtStartPar
+library\_name
+&
+\sphinxAtStartPar
+string
+&
+\sphinxAtStartPar
+\sphinxstylestrong{mandatory}
+\\
+\hline
+\end{tabulary}
+\par
+\sphinxattableend\end{savenotes}
+
+\sphinxAtStartPar
+\sphinxstylestrong{Example:}
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{n}{hr}\PYG{o}{.}\PYG{n}{add\PYGZus{}files}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{../src/*.vhd}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{testbench\PYGZus{}lib}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+\PYG{n}{hr}\PYG{o}{.}\PYG{n}{remove\PYGZus{}file}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{unused\PYGZus{}file.vhd}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{testbench\PYGZus{}lib}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+\PYG{n}{hr}\PYG{o}{.}\PYG{n}{start}\PYG{p}{(}\PYG{p}{)}
+\end{sphinxVerbatim}
+
+\begin{sphinxadmonition}{note}{Note:}
+\sphinxAtStartPar
+The filename can not include the path to the file or any wildcards.
 \end{sphinxadmonition}
 
 

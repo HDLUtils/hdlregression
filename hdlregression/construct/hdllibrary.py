@@ -198,6 +198,13 @@ class HDLLibrary(Library):
                 self.logger.debug('%s add_file(%s) - existing file' % 
                                   (self.get_name(), file_item))
 
+    def remove_file(self, filename) -> bool:
+      for obj in self.hdlfile_container.get():
+        if obj.get_filename() == filename:
+          self.hdlfile_container.remove(obj)
+          return True
+      return False
+
     def get_hdlfile_obj(self, filename) -> 'HDLFile':
         '''
         Returns the file object if found in the file list.
@@ -205,7 +212,7 @@ class HDLLibrary(Library):
         '''
         # Check with all hdlfile objects in this library (container).
         for hdlfile in self.get_hdlfile_list():
-            hdlfile_name = hdlfile.get_filename()
+            hdlfile_name = hdlfile.get_filename_with_path()
             if hdlfile_name.lower() == filename.lower():
                 return hdlfile
 
@@ -231,7 +238,7 @@ class HDLLibrary(Library):
 
                 else:
                     self.logger.warning(
-                        'Unable to determine file type: %s' % (hdlfile.get_filename()))
+                        'Unable to determine file type: %s' % (hdlfile.get_filename_with_path()))
 
         # Get list of all HDL file objects in this library
         hdlfile_list = self.hdlfile_container.get()
@@ -435,7 +442,7 @@ class HDLLibrary(Library):
 
                     if check_file in with_file.get_hdlfile_this_dep_on():
                         if with_file in check_file.get_hdlfile_this_dep_on():
-                            if not check_file.get_filename() == with_file.get_filename():
+                            if not check_file.get_filename_with_path() == with_file.get_filename_with_path():
                                 self.logger.warning("%s : recursing dependency %s <-> %s." % 
                                                     (self.get_name(), check_file.get_name(), with_file.get_name()))
                                 continue
@@ -512,6 +519,6 @@ class HDLLibrary(Library):
                 ("="*20, self.get_name(), "="*20))
         for idx, hdlfile in enumerate(self.lib_hdlfile_compile_order_list):
             tb_str = "(TB)" if hdlfile.get_is_tb() else ""
-            txt += ("(%d) %s %s\n" % (idx + 1, hdlfile.get_filename(), tb_str))
+            txt += ("(%d) %s %s\n" % (idx + 1, hdlfile.get_filename_with_path(), tb_str))
 
         return txt

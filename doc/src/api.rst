@@ -589,6 +589,38 @@ should be given to the report name.
 
 
 
+remove_file()
+=======================================================================================================================
+
+Removes a file that has been added to a library, e.g. after using ``add_files()`` with asterix for adding several files.
+
+
+.. code-block:: python
+
+  remove_file(<filename>, <library_name>)
+
+
++--------------------+-----------+---------------+
+| Argument           | Type      | Required      |
++====================+===========+===============+
+| filename           | string    | **mandatory** |
++--------------------+-----------+---------------+
+| library_name       | string    | **mandatory** |
++--------------------+-----------+---------------+
+
+
+**Example:**
+
+.. code-block:: python
+
+  hr.add_files("../src/*.vhd", "testbench_lib")
+  hr.remove_file("unused_file.vhd", "testbench_lib")
+  hr.start()
+
+
+.. note::
+  
+  The filename can not include the path to the file or any wildcards.
 
 set_code_coverage()
 =======================================================================================================================
