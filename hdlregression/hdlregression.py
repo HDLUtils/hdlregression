@@ -20,6 +20,23 @@
 # DEALINGS IN HDLRegression.
 #
 
+from .hdlcodecoverage import *
+from .arg_parser import arg_parser_reader, get_parser
+from .hdlregression_pkg import *
+from .report.logger import Logger
+from .settings import HDLRegressionSettings
+from .construct.container import Container
+from .report.jsonreporter import JSONReporter
+from .report.csvreporter import CSVReporter
+from .report.txtreporter import TXTReporter
+from .run.tcl_runner import TclRunner
+from .run.cmd_runner import CommandRunner
+from .run.runner_modelsim import ModelsimRunner
+from .run.runner_nvc import NVCRunner
+from .run.runner_ghdl import GHDLRunner
+from .run.runner_aldec import AldecRunner
+from .construct.hdllibrary import HDLLibrary, PrecompiledLibrary
+from .configurator import SettingsConfigurator
 import sys
 import os
 import shutil
@@ -43,24 +60,6 @@ src_path = os.path.dirname(os.path.abspath(__file__))
 # Regression script path
 script_path = os.path.abspath(sys.path[0])
 
-from .configurator import SettingsConfigurator
-from .construct.hdllibrary import HDLLibrary, PrecompiledLibrary
-from .run.runner_aldec import AldecRunner
-from .run.runner_ghdl import GHDLRunner
-from .run.runner_nvc import NVCRunner
-from .run.runner_modelsim import ModelsimRunner
-from .run.cmd_runner import CommandRunner
-from .run.tcl_runner import TclRunner
-from .report.txtreporter import TXTReporter
-from .report.csvreporter import CSVReporter
-from .report.jsonreporter import JSONReporter
-from .construct.container import Container
-from .settings import HDLRegressionSettings
-from .report.logger import Logger
-from .hdlregression_pkg import *
-from .arg_parser import arg_parser_reader, get_parser
-from .hdlcodecoverage import *
-
 
 class HDLRegression:
     '''
@@ -78,8 +77,8 @@ class HDLRegression:
     # pylint: disable=too-many-public-methods
 
     def __init__(self,
-                 simulator: str=None,
-                 init_from_gui: bool=False,
+                 simulator: str = None,
+                 init_from_gui: bool = False,
                  arg_parser=None):
         '''
         Initializes the HDLRegression class which provides a set
@@ -99,7 +98,7 @@ class HDLRegression:
 
         # Init configuration obj
         self.settings_config = SettingsConfigurator(project=self)
-        
+
         # Create settings object
         self.settings = HDLRegressionSettings()
 
@@ -107,7 +106,7 @@ class HDLRegression:
 
         self.logger = Logger(__name__, project=self)
         self.hdlcodecoverage = HdlCodeCoverage(project=self)
-        
+
         # Load HDLRegression install version number.
         installed_version = self._get_install_version()
         self._display_info_text(version=installed_version)
@@ -135,7 +134,8 @@ class HDLRegression:
                 self.set_simulator(simulator)
                 self.hdlcodecoverage.get_code_coverage_obj(simulator)
             else:
-                self.hdlcodecoverage.get_code_coverage_obj(self.settings.get_simulator_name())
+                self.hdlcodecoverage.get_code_coverage_obj(
+                    self.settings.get_simulator_name())
         else:
             self.hdlcodecoverage.get_code_coverage_obj()
 
@@ -163,12 +163,12 @@ class HDLRegression:
 
     def add_files(self,
                   filename: str,
-                  library_name: str=None,
-                  hdl_version: str=None,
-                  com_options: str=None,
+                  library_name: str = None,
+                  hdl_version: str = None,
+                  com_options: str = None,
                   parse_file=True,
-                  netlist_inst: str=None,
-                  code_coverage: bool=False):
+                  netlist_inst: str = None,
+                  code_coverage: bool = False):
         '''
         Add files to HDLRegression file list:
         1. Get a new or existing library object
@@ -209,12 +209,12 @@ class HDLRegression:
 
     def add_file(self,
                  filename: str,
-                 library_name: str=None,
-                 hdl_version: str=None,
-                 com_options: str=None,
+                 library_name: str = None,
+                 hdl_version: str = None,
+                 com_options: str = None,
                  parse_file=True,
-                 netlist_inst: str=None,
-                 code_coverage: bool=False):
+                 netlist_inst: str = None,
+                 code_coverage: bool = False):
         '''
         Overloading for add_files()
         '''
@@ -230,8 +230,8 @@ class HDLRegression:
         Remove a file that has been added to a library object
 
         :param library_name: Name of library to add file
-        :type library_name: str        
-        
+        :type library_name: str
+
         :param filename; Name of file to be added to library
         :type filename: str
         '''
@@ -271,8 +271,8 @@ class HDLRegression:
 
     def add_generics(self,
                      entity: str,
-                     architecture: str=None,
-                     generics: list=None):
+                     architecture: str = None,
+                     generics: list = None):
         '''
         Adds generic info to a Container Object generic_container.
         Accepts input in format: [<test_name>, <architecture>, [<generic_name>, <generic_value>]].
@@ -314,10 +314,10 @@ class HDLRegression:
                 self.generic_container.add(container)
 
     def gen_report(self,
-                   report_file: str="report.txt",
-                   compile_order: bool=False,
-                   spec_cov: bool=False,
-                   library: bool=False):
+                   report_file: str = "report.txt",
+                   compile_order: bool = False,
+                   spec_cov: bool = False,
+                   library: bool = False):
         '''
         Setup the reporting method.
 
@@ -349,9 +349,9 @@ class HDLRegression:
                                        report_library=library)
 
     def set_simulator(self,
-                      simulator: str=None,
-                      path: str=None,
-                      com_options: str=None):
+                      simulator: str = None,
+                      path: str = None,
+                      com_options: str = None):
         '''
         Sets the simulator in the project config.
 
@@ -417,9 +417,9 @@ class HDLRegression:
     def add_to_testgroup(self,
                          testgroup_name: str,
                          entity: str,
-                         architecture: str=None,
-                         testcase: str=None,
-                         generic: list=None):
+                         architecture: str = None,
+                         testcase: str = None,
+                         generic: list = None):
         '''
         Adds one or more testbenches/testcases to a testgroup.
         The testgroup collection container holds testgroup containers, each
@@ -447,14 +447,14 @@ class HDLRegression:
             testgroup_container = self._get_testgroup_container(testgroup_name)
             test_to_run = (entity, architecture, testcase, generic)
             testgroup_container.add(test_to_run)
-            self.logger.debug('Added %s to container %s.' % 
+            self.logger.debug('Added %s to container %s.' %
                               (test_to_run, testgroup_container.get_name()))
         else:
             self.logger.warning('add_to_testgroup(%s, %s, %s, %s, %s failed.'
                                 % (testgroup_name, entity, architecture, testcase, generic))
 
     def set_testcase_identifier_name(self,
-                                     tc_id: str='gc_testcase'):
+                                     tc_id: str = 'gc_testcase'):
         '''
         Sets the generic value used for identifying testcases.
         Default is gc_testcase.
@@ -468,8 +468,8 @@ class HDLRegression:
     def set_code_coverage(self,
                           code_coverage_settings: str,
                           code_coverage_file: str,
-                          exclude_file: str=None,
-                          merge_options: str=None):
+                          exclude_file: str = None,
+                          merge_options: str = None):
         '''
         Defines the code coverage for all tests
 
@@ -510,8 +510,9 @@ class HDLRegression:
         self._prepare_libraries()
 
         self._setup_simulation_runner()
-        
-        self.hdlcodecoverage.get_code_coverage_obj(self.settings.get_simulator_name())
+
+        self.hdlcodecoverage.get_code_coverage_obj(
+            self.settings.get_simulator_name())
 
         self._remove_empty_libraries()
 
@@ -689,9 +690,9 @@ class HDLRegression:
         return self.runner.get_num_pass_with_minor_alerts_test()
 
     def check_run_results(self,
-                          exp_pass: int=None,
-                          exp_fail: int=None,
-                          exp_run: int=None) -> bool:
+                          exp_pass: int = None,
+                          exp_fail: int = None,
+                          exp_run: int = None) -> bool:
         '''
         Compares the expected outcome of a test run with actual.
 
@@ -750,7 +751,7 @@ class HDLRegression:
 
     def run_command(self,
                     command: str,
-                    verbose: bool=False) -> tuple:
+                    verbose: bool = False) -> tuple:
         '''
         Runs command in terminal and returns the exit code, i.e.
         0 for success and 1 for failure.
@@ -778,8 +779,8 @@ class HDLRegression:
 
     def configure_library(self,
                           library: str,
-                          never_recompile: bool=None,
-                          set_lib_dep: str=None):
+                          never_recompile: bool = None,
+                          set_lib_dep: str = None):
         '''
         Method allows for special configurations for libraries.
 
@@ -829,7 +830,7 @@ class HDLRegression:
             return None
 
     def get_args(self):
-      return self.args
+        return self.args
 
     # pylint: enable=too-many-arguments
 
@@ -840,10 +841,10 @@ class HDLRegression:
     # ========================================================
 
     def _run_from_gui(self) -> bool:
-      if self.settings.get_gui_mode():
-        return self.settings.get_simulator_name() == "MODELSIM"
-      else:
-        return False
+        if self.settings.get_gui_mode():
+            return self.settings.get_simulator_name() == "MODELSIM"
+        else:
+            return False
 
     # pylint: disable=too-many-arguments
     def _validate_testgroup_parameters(self,
@@ -918,7 +919,7 @@ class HDLRegression:
         # Compare current version with cached version
         if (cached_version != installed_version) and (cached_version != '0.0.0'):
             self.logger.warning('WARNING! HDLRegression v%s not compatible with cached v%s. '
-                                'Executing database rebuild.' % 
+                                'Executing database rebuild.' %
                                 (installed_version, cached_version))
             cached_version_ok = False
         return cached_version_ok
@@ -1036,7 +1037,7 @@ class HDLRegression:
                     self.logger.info(
                         'Setting up precompiled library: %s' % (lib.get_name()))
                     lib_string = '%s = %s\n' % (
-                        lib.get_name(), lib.get_compile_path())
+                        lib.get_name(), os.path.realpath(lib.get_compile_path()))
                     lib_to_remove.append(lib)
 
             # Remove precompiled libraries
@@ -1198,7 +1199,7 @@ class HDLRegression:
         # Clean output, i.e. delete all
         if os.path.isdir(self.settings.get_output_path()):
             shutil.rmtree(self.settings.get_output_path())
-            self.logger.info('Project output path %s cleaned.' % 
+            self.logger.info('Project output path %s cleaned.' %
                              (self.settings.get_output_path()))
             try:
                 os.mkdir(self.settings.get_output_path())
@@ -1206,7 +1207,7 @@ class HDLRegression:
                 self.logger.error(
                     'Unable to create output folder, %s.' % (error))
         else:
-            self.logger.info('No output folder to delete: %s.' % 
+            self.logger.info('No output folder to delete: %s.' %
                              (self.settings.get_output_path()))
 
     def _load_project_databases(self) -> None:
@@ -1266,9 +1267,9 @@ class HDLRegression:
     # ====================================================================
 
     def _remove_empty_libraries(self):
-      for lib in self.library_container.get():
-        if len(lib.get_hdlfile_list()) == 0 and lib.get_is_precompiled() is False:
-          self.library_container.remove(lib)
+        for lib in self.library_container.get():
+            if len(lib.get_hdlfile_list()) == 0 and lib.get_is_precompiled() is False:
+                self.library_container.remove(lib)
 
     def _get_library_container(self) -> 'Container':
         '''
@@ -1279,7 +1280,7 @@ class HDLRegression:
 
     def _get_testgroup_container(self,
                                  testgroup_name: str,
-                                 create_if_not_found: bool=True) -> 'Container':
+                                 create_if_not_found: bool = True) -> 'Container':
         '''
         Locate the testgroup container, or get a new if not found.
 
@@ -1309,8 +1310,8 @@ class HDLRegression:
 
     def _get_library_object(self,
                             library_name: str,
-                            create_new_if_missing: bool=True,
-                            precompiled: bool=False) -> 'Library':
+                            create_new_if_missing: bool = True,
+                            precompiled: bool = False) -> 'Library':
         '''
         Check if a library object has been created and returns it,
         creates a new and returns it if no library match was found.
@@ -1394,7 +1395,7 @@ class HDLRegression:
                               generic_cont: 'Container',
                               tg_cont: 'Container',
                               tg_col_cont: 'Container',
-                              settings: 'HDLRegressionSettings', reset: bool=True):
+                              settings: 'HDLRegressionSettings', reset: bool = True):
         '''
         Save project structure to files.
 
@@ -1488,7 +1489,7 @@ class HDLRegression:
             if settings.get_simulator_name() != self.settings.get_simulator_name()\
                     and not self.settings.get_clean():
                 self.logger.error('HDLRegression cache was run using %s simulator, '
-                                  'current simulator is %s. Aborting' % 
+                                  'current simulator is %s. Aborting' %
                                   (settings.get_simulator_name(),
                                    self.settings.get_simulator_name()))
                 sys.exit(1)
@@ -1509,4 +1510,3 @@ def exit_handler(signal_received, frame):
 Note! Aborting HDLRegression can create errors in the run structure, thus
 the next run should include the "-c" clean argument.''')
     os._exit(0)
-

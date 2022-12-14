@@ -149,7 +149,8 @@ def test_precompiled_library():
     lib_name = "pytest_lib"
     compile_path = "../precompiled_path"
 
-    hr.add_precompiled_library(compile_path=compile_path, library_name=lib_name)
+    hr.add_precompiled_library(
+        compile_path=compile_path, library_name=lib_name)
     hr.start()
 
     lib = hr._get_library_object(library_name=lib_name)
@@ -164,12 +165,12 @@ def test_precompiled_library():
 
     for line in lines:
         if line.startswith(lib_name) is True:
-            if compile_path in line:
+            if os.path.realpath(compile_path) in line:
                 precompiled_exists = True
 
     assert precompiled_exists is True, "check precompiled library and path in modelsim.ini"
 
-    
+
 def test_empty_library_and_library_with_files_no_threads():
     '''
     Check that an empty library is ignored
