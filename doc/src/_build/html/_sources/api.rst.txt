@@ -589,6 +589,38 @@ should be given to the report name.
 
 
 
+
+get_args()
+=======================================================================================================================
+
+The command is used for getting the parsed arguments from HDLRegression.
+This method can be used when there is a argparser object that is created in the regression script.
+See `HDLRegression()`_ example 2 for usage.
+
+
+**Example:**
+
+.. code-block:: python
+
+  args = hr.get_args()
+
+
+
+get_file_list()
+=======================================================================================================================
+
+The command is used for reading back the files added to the libraries in HDLRegression.
+All files from all libraries are returned in a list.
+
+
+**Example:**
+
+.. code-block:: python
+
+  file_list = hr.get_file_list()
+
+
+
 remove_file()
 =======================================================================================================================
 
@@ -621,6 +653,45 @@ Removes a file that has been added to a library, e.g. after using ``add_files()`
 .. note::
   
   The filename can not include the path to the file or any wildcards.
+
+
+
+run_command()
+=======================================================================================================================
+
+The command is executed by HLDRegression at the given stage in the regression script. I.e. pre-simulation commands will have 
+to be called prior to `start()`_ and post-simulation commands need to be called after `start()`_.
+
+.. code-block:: python
+
+  hr.run_command(<command>)
+
+
++-------------------+---------------------------+---------------+
+| Argument          | Type                      | Required      |
++===================+===========================+===============+
+| command           | string                    | **mandatory** |
++-------------------+---------------------------+---------------+
+| verbose           | boolean                   | optional      |
++-------------------+---------------------------+---------------+
+
+
+.. note::
+  No output is printed to the terminal by default, but this can
+  be changed by setting the ``verbose`` argument to ``True``.
+
+**Example:**
+
+.. code-block:: python
+  
+  hr.run_command('python3 ../script/run_spec_cov.py --config ../script/config.txt')
+
+  hr.run_command('vsim -version', verbose=True)
+
+
+.. include:: file_reference_note.rst
+
+
 
 set_code_coverage()
 =======================================================================================================================
@@ -820,58 +891,6 @@ but any name can be given.
   :linenos:
   :language: vhdl
 
-
-run_command()
-=======================================================================================================================
-
-The command is executed by HLDRegression at the given stage in the regression script. I.e. pre-simulation commands will have 
-to be called prior to `start()`_ and post-simulation commands need to be called after `start()`_.
-
-.. code-block:: python
-
-  hr.run_command(<command>)
-
-
-+-------------------+---------------------------+---------------+
-| Argument          | Type                      | Required      |
-+===================+===========================+===============+
-| command           | string                    | **mandatory** |
-+-------------------+---------------------------+---------------+
-| verbose           | boolean                   | optional      |
-+-------------------+---------------------------+---------------+
-
-
-.. note::
-  No output is printed to the terminal by default, but this can
-  be changed by setting the ``verbose`` argument to ``True``.
-
-**Example:**
-
-.. code-block:: python
-  
-  hr.run_command('python3 ../script/run_spec_cov.py --config ../script/config.txt')
-
-  hr.run_command('vsim -version', verbose=True)
-
-
-.. include:: file_reference_note.rst
-
-
-
-
-get_args()
-=======================================================================================================================
-
-The command is used for getting the parsed arguments from HDLRegression.
-This method can be used when there is a argparser object that is created in the regression script.
-See `HDLRegression()`_ example 2 for usage.
-
-
-**Example:**
-
-.. code-block:: python
-
-  args = hr.get_args()
 
 
 

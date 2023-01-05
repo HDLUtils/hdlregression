@@ -69,7 +69,8 @@ class NVCRunner(SimRunner):
                                             hdlfile.get_library().get_name())
 
         return_list += ['-L' + output_path]
-        return_list += ['--work=' + hdlfile.get_library().get_name() + ":" + library_compile_path]
+        return_list += ['--work=' + hdlfile.get_library().get_name() +
+                        ":" + library_compile_path]
         return_list += ["--std=" + hdl_version]
         return_list += ["-M" + "64m"]
         return_list += ["--messages=compact"]
@@ -87,7 +88,8 @@ class NVCRunner(SimRunner):
             return_list += ["-a"]
             return_list += [hdlfile.get_filename_with_path()]
             if hdlfile._get_com_options(simulator=self.simulator_name):
-                return_list += hdlfile._get_com_options(simulator=self.simulator_name)
+                return_list += hdlfile._get_com_options(
+                    simulator=self.simulator_name)
 
         return return_list
 
@@ -102,7 +104,8 @@ class NVCRunner(SimRunner):
         # Analyze files in library
         if library.get_need_compile() or force_compile:
             for hdlfile in library.get_compile_order_list():
-                self.logger.debug('Recompiling file: %s' % (hdlfile.get_name()))
+                self.logger.debug('Recompiling file: %s' %
+                                  (hdlfile.get_name()))
                 cmd = self._get_simulator_call(hdlfile=hdlfile)
                 # Call command runner in super-class
                 if not self._run_cmd(cmd):
@@ -136,7 +139,7 @@ class NVCRunner(SimRunner):
         return success
 
     def _get_error_detection_str(self) -> str:
-      return r'^[\r\n\s]?.*: (error|fatal): '
-    
+        return r'^[\r\n\s]?.*: (error|fatal): '
+
     def _get_ignored_error_detection_str(self) -> str:
-      return ''
+        return ''

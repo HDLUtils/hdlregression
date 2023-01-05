@@ -61,8 +61,8 @@
 
 
 \title{hdlregression}
-\date{Dec 07, 2022}
-\release{0.33.0
+\date{Jan 05, 2023}
+\release{0.34.0
 }
 \author{UVVM}
 \newcommand{\sphinxlogo}{\vbox{}}
@@ -1790,6 +1790,35 @@ Supported file types are \sphinxcode{\sphinxupquote{.txt}}, \sphinxcode{\sphinxu
 \end{sphinxadmonition}
 
 
+\subsection{get\_args()}
+\label{\detokenize{api:get-args}}
+\sphinxAtStartPar
+The command is used for getting the parsed arguments from HDLRegression.
+This method can be used when there is a argparser object that is created in the regression script.
+See {\hyperref[\detokenize{api:hdlregression}]{\sphinxcrossref{HDLRegression()}}} example 2 for usage.
+
+\sphinxAtStartPar
+\sphinxstylestrong{Example:}
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{n}{args} \PYG{o}{=} \PYG{n}{hr}\PYG{o}{.}\PYG{n}{get\PYGZus{}args}\PYG{p}{(}\PYG{p}{)}
+\end{sphinxVerbatim}
+
+
+\subsection{get\_file\_list()}
+\label{\detokenize{api:get-file-list}}
+\sphinxAtStartPar
+The command is used for reading back the files added to the libraries in HDLRegression.
+All files from all libraries are returned in a list.
+
+\sphinxAtStartPar
+\sphinxstylestrong{Example:}
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{n}{file\PYGZus{}list} \PYG{o}{=} \PYG{n}{hr}\PYG{o}{.}\PYG{n}{get\PYGZus{}file\PYGZus{}list}\PYG{p}{(}\PYG{p}{)}
+\end{sphinxVerbatim}
+
+
 \subsection{remove\_file()}
 \label{\detokenize{api:remove-file}}
 \sphinxAtStartPar
@@ -1851,6 +1880,78 @@ string
 \begin{sphinxadmonition}{note}{Note:}
 \sphinxAtStartPar
 The filename can not include the path to the file or any wildcards.
+\end{sphinxadmonition}
+
+
+\subsection{run\_command()}
+\label{\detokenize{api:run-command}}
+\sphinxAtStartPar
+The command is executed by HLDRegression at the given stage in the regression script. I.e. pre\sphinxhyphen{}simulation commands will have
+to be called prior to {\hyperref[\detokenize{api:start}]{\sphinxcrossref{start()}}} and post\sphinxhyphen{}simulation commands need to be called after {\hyperref[\detokenize{api:start}]{\sphinxcrossref{start()}}}.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{n}{hr}\PYG{o}{.}\PYG{n}{run\PYGZus{}command}\PYG{p}{(}\PYG{o}{\PYGZlt{}}\PYG{n}{command}\PYG{o}{\PYGZgt{}}\PYG{p}{)}
+\end{sphinxVerbatim}
+
+
+\begin{savenotes}\sphinxattablestart
+\centering
+\begin{tabulary}{\linewidth}[t]{|T|T|T|}
+\hline
+\sphinxstyletheadfamily 
+\sphinxAtStartPar
+Argument
+&\sphinxstyletheadfamily 
+\sphinxAtStartPar
+Type
+&\sphinxstyletheadfamily 
+\sphinxAtStartPar
+Required
+\\
+\hline
+\sphinxAtStartPar
+command
+&
+\sphinxAtStartPar
+string
+&
+\sphinxAtStartPar
+\sphinxstylestrong{mandatory}
+\\
+\hline
+\sphinxAtStartPar
+verbose
+&
+\sphinxAtStartPar
+boolean
+&
+\sphinxAtStartPar
+optional
+\\
+\hline
+\end{tabulary}
+\par
+\sphinxattableend\end{savenotes}
+
+\begin{sphinxadmonition}{note}{Note:}
+\sphinxAtStartPar
+No output is printed to the terminal by default, but this can
+be changed by setting the \sphinxcode{\sphinxupquote{verbose}} argument to \sphinxcode{\sphinxupquote{True}}.
+\end{sphinxadmonition}
+
+\sphinxAtStartPar
+\sphinxstylestrong{Example:}
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{n}{hr}\PYG{o}{.}\PYG{n}{run\PYGZus{}command}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{python3 ../script/run\PYGZus{}spec\PYGZus{}cov.py \PYGZhy{}\PYGZhy{}config ../script/config.txt}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}
+
+\PYG{n}{hr}\PYG{o}{.}\PYG{n}{run\PYGZus{}command}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{vsim \PYGZhy{}version}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{n}{verbose}\PYG{o}{=}\PYG{k+kc}{True}\PYG{p}{)}
+\end{sphinxVerbatim}
+
+\begin{sphinxadmonition}{note}{Note:}
+\sphinxAtStartPar
+Relative paths will be relative to the regression script
+and not where the regression script is called from.
 \end{sphinxadmonition}
 
 
@@ -2323,93 +2424,6 @@ string
 \PYG{+w}{    }\PYG{k}{wait}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} to stop completely        }
 \PYG{+w}{    }\PYG{k}{end}\PYG{+w}{ }\PYG{k}{process}\PYG{p}{;}
 \PYG{k}{end}\PYG{p}{;}
-\end{sphinxVerbatim}
-
-
-\subsection{run\_command()}
-\label{\detokenize{api:run-command}}
-\sphinxAtStartPar
-The command is executed by HLDRegression at the given stage in the regression script. I.e. pre\sphinxhyphen{}simulation commands will have
-to be called prior to {\hyperref[\detokenize{api:start}]{\sphinxcrossref{start()}}} and post\sphinxhyphen{}simulation commands need to be called after {\hyperref[\detokenize{api:start}]{\sphinxcrossref{start()}}}.
-
-\begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{n}{hr}\PYG{o}{.}\PYG{n}{run\PYGZus{}command}\PYG{p}{(}\PYG{o}{\PYGZlt{}}\PYG{n}{command}\PYG{o}{\PYGZgt{}}\PYG{p}{)}
-\end{sphinxVerbatim}
-
-
-\begin{savenotes}\sphinxattablestart
-\centering
-\begin{tabulary}{\linewidth}[t]{|T|T|T|}
-\hline
-\sphinxstyletheadfamily 
-\sphinxAtStartPar
-Argument
-&\sphinxstyletheadfamily 
-\sphinxAtStartPar
-Type
-&\sphinxstyletheadfamily 
-\sphinxAtStartPar
-Required
-\\
-\hline
-\sphinxAtStartPar
-command
-&
-\sphinxAtStartPar
-string
-&
-\sphinxAtStartPar
-\sphinxstylestrong{mandatory}
-\\
-\hline
-\sphinxAtStartPar
-verbose
-&
-\sphinxAtStartPar
-boolean
-&
-\sphinxAtStartPar
-optional
-\\
-\hline
-\end{tabulary}
-\par
-\sphinxattableend\end{savenotes}
-
-\begin{sphinxadmonition}{note}{Note:}
-\sphinxAtStartPar
-No output is printed to the terminal by default, but this can
-be changed by setting the \sphinxcode{\sphinxupquote{verbose}} argument to \sphinxcode{\sphinxupquote{True}}.
-\end{sphinxadmonition}
-
-\sphinxAtStartPar
-\sphinxstylestrong{Example:}
-
-\begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{n}{hr}\PYG{o}{.}\PYG{n}{run\PYGZus{}command}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{python3 ../script/run\PYGZus{}spec\PYGZus{}cov.py \PYGZhy{}\PYGZhy{}config ../script/config.txt}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}
-
-\PYG{n}{hr}\PYG{o}{.}\PYG{n}{run\PYGZus{}command}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{vsim \PYGZhy{}version}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{n}{verbose}\PYG{o}{=}\PYG{k+kc}{True}\PYG{p}{)}
-\end{sphinxVerbatim}
-
-\begin{sphinxadmonition}{note}{Note:}
-\sphinxAtStartPar
-Relative paths will be relative to the regression script
-and not where the regression script is called from.
-\end{sphinxadmonition}
-
-
-\subsection{get\_args()}
-\label{\detokenize{api:get-args}}
-\sphinxAtStartPar
-The command is used for getting the parsed arguments from HDLRegression.
-This method can be used when there is a argparser object that is created in the regression script.
-See {\hyperref[\detokenize{api:hdlregression}]{\sphinxcrossref{HDLRegression()}}} example 2 for usage.
-
-\sphinxAtStartPar
-\sphinxstylestrong{Example:}
-
-\begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{n}{args} \PYG{o}{=} \PYG{n}{hr}\PYG{o}{.}\PYG{n}{get\PYGZus{}args}\PYG{p}{(}\PYG{p}{)}
 \end{sphinxVerbatim}
 
 

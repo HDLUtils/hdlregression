@@ -66,6 +66,7 @@ def test_number_of_tests():
 
 
 def test_sequencer_generated_testcases():
+    from hdlregression.hdlregression_pkg import request_libraries_prepare, organize_libraries_by_dependency
     clear_output()
     hr = HDLRegression()
 
@@ -74,8 +75,8 @@ def test_sequencer_generated_testcases():
 
     hr.add_files(filename, "test_lib")
 
-    hr._request_libraries_prepare()
-    hr._organize_libraries_by_dependency()
+    request_libraries_prepare(project=hr)
+    organize_libraries_by_dependency(project=hr)
 
     runner = hr._get_runner_object('MODELSIM')
     runner.prepare_test_modules_and_objects()

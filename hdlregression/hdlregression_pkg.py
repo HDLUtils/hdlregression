@@ -15,6 +15,9 @@
 
 import platform
 import os
+import shutil
+from multiprocessing.pool import ThreadPool
+
 
 from .settings import HDLRegressionSettings
 from .report.logger import Logger
@@ -70,7 +73,8 @@ def list_testgroup(container) -> str:
 
         testgroup_items_list = testgroup_container.get()
         for testgroup_items_list in testgroup_container.get():
-            entity, architecture, testcase, generics = tuple(testgroup_items_list)
+            entity, architecture, testcase, generics = tuple(
+                testgroup_items_list)
 
             tg_str += "|   |--  %s" % (entity)
             if architecture:
@@ -180,3 +184,273 @@ def convert_from_millisec(millis):
     hours = (millis / (1000 * 60 * 60)) % 24
     return int(seconds), int(minutes), int(hours)
 
+
+def validate_testgroup_parameters(testgroup_name: str,
+                                  entity: str,
+                                  architecture: str,
+                                  testcase: str,
+                                  generic: list) -> bool:
+    '''
+    :param testgroup_name: Name of testgroup
+    :type testgroup_name: str
+    :param entity: Name of testbench entity
+    :type entity: str
+    :param architecture: Name of testbench architecture
+    :type architecture: str
+    :param testcase: Test sequencer built-in testcase
+    :type testcase: str
+    :param generic: Testcase run-generics
+    :type generic: list
+
+    :rtype: bool
+    :return: True if all validated OK, otherwise False.
+    '''
+    v_arguments_ok = True
+    if not architecture:
+        if testcase or generic:
+            v_arguments_ok = False
+    if not testcase:
+        if generic:
+            v_arguments_ok = False
+
+    if generic:
+        if not isinstance(generic, list):
+            v_arguments_ok = False
+    if not isinstance(testgroup_name, str):
+        v_arguments_ok = False
+    if not isinstance(entity, str):
+        v_arguments_ok = False
+
+    if architecture:
+        if not isinstance(architecture, str):
+            v_arguments_ok = False
+    if testcase:
+        if not isinstance(testcase, str):
+            v_arguments_ok = False
+    return v_arguments_ok
+
+
+def validate_cached_version(project,
+                            installed_version: str) -> bool:
+    '''
+    Compare installed version with cache version.
+
+    :rtype: bool
+    :return: True if cached version matches installed version.
+    '''
+    # Load cached HDLRegression version number
+    cached_version = project.settings.get_hdlregression_version()
+    # Compare current version with cached version
+    if (cached_version != installed_version) and (cached_version != '0.0.0'):
+        project.logger.warning('WARNING! HDLRegression v%s not compatible with cached v%s. '
+                               'Executing database rebuild.' %
+                               (installed_version, cached_version))
+        return False
+    return True
+
+
+def print_info_msg_when_no_test_has_run(project, runner):
+    ''' Display info message if no tests have been run. '''
+    if runner.get_num_tests() == 0:
+        project.logger.info('\nNo tests found.')
+        project.logger.info(
+            'Ensure that the "--hdlregression:tb" (VHDL) / "//hdlregression:tb"'
+            ' (Verilog) pragma is set in the testbench file(s).')
+    elif project.get_num_tests_run() == 0:
+        project.logger.info(
+            'Test run not required. Use "-fr"/"--fullRegression" to re-run all tests.')
+
+
+def display_info_text(version) -> None:
+    ''' Presents HDLRegression version number and QR info. '''
+    print('''
+%s
+  HDLRegression version %s
+  See /doc/hdlregression.pdf for documentation.
+%s
+
+''' % ('=' * 70, version, '=' * 70))
+
+
+def print_run_success(project):
+    if project.settings.get_return_code() == 0:
+        project.logger.info('SIMULATION SUCCESS: %d passing test(s).'
+                            % (project.get_num_pass_tests()), color='green')
+        num_minor_alerts = project.get_num_pass_with_minor_alert_tests()
+        if num_minor_alerts > 0:
+            project.logger.warning(
+                '%d test(s) passed with minor alert(s).'
+                % (num_minor_alerts))
+    else:
+        project.logger.warning('SIMULATION FAIL: %d tests run, %d test(s) failed.'
+                               % (project.get_num_tests_run(),
+                                  project.get_num_fail_tests()))
+
+
+def clean_generated_output(project, restore_settings=False):
+    saved_settings = project.settings
+    project.settings.set_clean(True)
+    project._rebuild_databases_if_required_or_requested(False)
+    if restore_settings is True:
+        project.settings = saved_settings
+
+
+def empty_project_folder(project):
+    # Clean output, i.e. delete all
+    if os.path.isdir(project.settings.get_output_path()):
+        shutil.rmtree(project.settings.get_output_path())
+        project.logger.info('Project output path %s cleaned.' %
+                            (project.settings.get_output_path()))
+        try:
+            os.mkdir(project.settings.get_output_path())
+        except OSError as error:
+            project.logger.error(
+                'Unable to create output folder, %s.' % (error))
+    else:
+        project.logger.info('No output folder to delete: %s.' %
+                            (project.settings.get_output_path()))
+
+
+def disable_threading(project):
+    ''' Disable threading so the next run will start as normal. '''
+    project.settings.set_threading(False)
+    project.settings.set_num_threads(1)
+
+
+def run_from_gui(project) -> bool:
+    if project.settings.get_gui_mode():
+        return project.settings.get_simulator_name() == "MODELSIM"
+    else:
+        return False
+
+
+def update_settings_from_arguments(project,
+                                   kwargs: dict):
+    '''
+    Adjust the run settings with scripted run arguments
+    passed on with the start() call.
+
+    :param kwargs: Keyword arguments
+    :type kwargs: dict
+    '''
+
+    # Update if GUI mode is selected without overriding terminal argument
+    if not project.settings.get_gui_mode():
+        if 'gui_mode' in kwargs:
+            project.settings.set_gui_mode(kwargs.get('gui_mode'))
+
+    # Set what to do if a testcase fails.
+    if not project.settings.get_stop_on_failure():
+        if 'stop_on_failure' in kwargs:
+            project.settings.set_stop_on_failure(
+                kwargs.get('stop_on_failure'))
+
+    # Regression_mode: only run new and changed code
+    if project.settings.get_run_all() is True:  # CLI argument
+        project.settings.set_run_all(True)
+    elif 'regression_mode' in kwargs:  # API argument
+        project.settings.set_run_all(kwargs.get('regression_mode'))
+    else:  # default
+        project.settings.set_run_all(False)
+
+    # Enable multi-threading
+    if 'threading' in kwargs:
+        project.logger.info('Threading active.')
+        project.settings.set_threading(kwargs.get('threading'))
+    # Verbosity
+    if 'verbose' in kwargs:
+        project.settings.set_verbose(True)
+    # Simulation options
+    if 'sim_options' in kwargs:
+        project.settings.set_sim_options(kwargs.get('sim_options'))
+    if 'netlist_timing' in kwargs:
+        project.settings.set_netlist_timing(kwargs.get('netlist_timing'))
+
+    # Coverage options
+    if 'keep_code_coverage' in kwargs:
+        if kwargs.get('keep_code_coverage') is True:
+            project.settings.set_keep_code_coverage(keep_code_coverage=True)
+
+    # UVVM specific
+    if 'no_default_com_options' in kwargs:
+        if kwargs.get('no_default_com_options') is True:
+            # Check if running with defaults
+            if project.settings.get_is_default_com_options() is True:
+                project.settings.remove_com_options()
+
+    if 'ignore_simulator_exit_codes' in kwargs:
+        exit_codes = kwargs.get('ignore_simulator_exit_codes')
+        if isinstance(exit_codes, list) is False:
+            project.logger.warning('ignore_simulator_exit_codes is not list.')
+        else:
+            project.settings.set_ignored_simulator_exit_codes(exit_codes)
+
+
+def request_libraries_prepare(project) -> None:
+    ''' Invoke all Library Objects to prepare for compile/simulate. '''
+
+    # Thread method
+    def library_prepare(library) -> None:
+        library.check_library_files_for_changes()
+        library.prepare_for_run()
+
+    # Get list of all libraries
+    library_list = project.library_container.get()
+    # Default number of threads
+    num_threads = 1
+    # Check if threading is enabled, i.e. > 0
+    if project.settings.get_num_threads() > 0:
+        if len(library_list) > 0:
+            num_threads = len(library_list)
+
+    # Execute using 1 or more threads
+    with ThreadPool(num_threads) as pool:
+        pool.map(library_prepare, library_list)
+
+
+def organize_libraries_by_dependency(project) -> None:
+    """
+    Organize libraries by dependency order.
+
+    :rtype: bool
+    :return: Status of setting up library dependencies.
+    """
+    # Skip if no libraries have changes.
+    lib_changes = any(lib.get_need_compile()
+                      for lib in project.library_container.get())
+    if lib_changes is False:
+        return True
+
+    # Organize by dependency - this value of i corresponds to
+    # how many values were sorted.
+    num_libraries = project.library_container.num_elements()
+    libraries = project.library_container.get()
+
+    swapped = True
+    while swapped:
+        swapped = False
+
+        for i in range(num_libraries):
+            # Assume that the first item of the unsorted
+            # segment has no dependencies.
+            lowest_value_index = i
+            # This loop iterates over the unsorted items.
+            for j in range(i + 1, num_libraries):
+                check_lib = libraries[j]
+                with_lib = libraries[lowest_value_index]
+
+                if check_lib.get_name() in with_lib.get_lib_dep():
+                    if with_lib.get_name() in check_lib.get_lib_dep():
+                        project.logger.error('Recursive library dependency: %s and %s.' % (
+                            check_lib.get_name(), with_lib.get_name()))
+                        continue
+                    lowest_value_index = j
+            # Swap values of the lowest unsorted element with the
+            # first unsorted element.
+            if i != lowest_value_index:
+                project.logger.debug(
+                    f"Swapping: {check_lib.get_name()} <-> {with_lib.get_name()}.")
+                (libraries[i], libraries[lowest_value_index]) = \
+                    (libraries[lowest_value_index], libraries[i])
+                swapped = True
+    return True

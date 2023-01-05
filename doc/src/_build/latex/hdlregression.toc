@@ -29,19 +29,20 @@
 \contentsline {subsection}{\numberline {4.3.6}compile\_osvvm()}{17}{subsection.4.3.6}%
 \contentsline {subsection}{\numberline {4.3.7}configure\_library()}{17}{subsection.4.3.7}%
 \contentsline {subsection}{\numberline {4.3.8}gen\_report()}{17}{subsection.4.3.8}%
-\contentsline {subsection}{\numberline {4.3.9}remove\_file()}{18}{subsection.4.3.9}%
-\contentsline {subsection}{\numberline {4.3.10}set\_code\_coverage()}{18}{subsection.4.3.10}%
-\contentsline {subsection}{\numberline {4.3.11}set\_dependency()}{19}{subsection.4.3.11}%
-\contentsline {subsection}{\numberline {4.3.12}set\_result\_check\_string()}{19}{subsection.4.3.12}%
-\contentsline {subsection}{\numberline {4.3.13}set\_simulator()}{20}{subsection.4.3.13}%
-\contentsline {subsection}{\numberline {4.3.14}set\_testcase\_identifier\_name()}{21}{subsection.4.3.14}%
-\contentsline {subsection}{\numberline {4.3.15}run\_command()}{22}{subsection.4.3.15}%
-\contentsline {subsection}{\numberline {4.3.16}get\_args()}{22}{subsection.4.3.16}%
+\contentsline {subsection}{\numberline {4.3.9}get\_args()}{18}{subsection.4.3.9}%
+\contentsline {subsection}{\numberline {4.3.10}get\_file\_list()}{18}{subsection.4.3.10}%
+\contentsline {subsection}{\numberline {4.3.11}remove\_file()}{18}{subsection.4.3.11}%
+\contentsline {subsection}{\numberline {4.3.12}run\_command()}{19}{subsection.4.3.12}%
+\contentsline {subsection}{\numberline {4.3.13}set\_code\_coverage()}{19}{subsection.4.3.13}%
+\contentsline {subsection}{\numberline {4.3.14}set\_dependency()}{20}{subsection.4.3.14}%
+\contentsline {subsection}{\numberline {4.3.15}set\_result\_check\_string()}{20}{subsection.4.3.15}%
+\contentsline {subsection}{\numberline {4.3.16}set\_simulator()}{21}{subsection.4.3.16}%
+\contentsline {subsection}{\numberline {4.3.17}set\_testcase\_identifier\_name()}{22}{subsection.4.3.17}%
 \contentsline {section}{\numberline {4.4}Statistical methods}{23}{section.4.4}%
 \contentsline {subsection}{\numberline {4.4.1}get\_results()}{23}{subsection.4.4.1}%
 \contentsline {subsection}{\numberline {4.4.2}get\_num\_tests\_run()}{23}{subsection.4.4.2}%
 \contentsline {subsection}{\numberline {4.4.3}get\_num\_pass\_tests()}{23}{subsection.4.4.3}%
-\contentsline {subsection}{\numberline {4.4.4}get\_num\_fail\_tests()}{23}{subsection.4.4.4}%
+\contentsline {subsection}{\numberline {4.4.4}get\_num\_fail\_tests()}{24}{subsection.4.4.4}%
 \contentsline {subsection}{\numberline {4.4.5}get\_num\_pass\_with\_minor\_alert\_tests()}{24}{subsection.4.4.5}%
 \contentsline {chapter}{\numberline {5}Command Line Interface (CLI)}{25}{chapter.5}%
 \contentsline {section}{\numberline {5.1}Examples}{25}{section.5.1}%

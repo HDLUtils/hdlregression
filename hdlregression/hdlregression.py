@@ -39,11 +39,9 @@ from .construct.hdllibrary import HDLLibrary, PrecompiledLibrary
 from .configurator import SettingsConfigurator
 import sys
 import os
-import shutil
 import pickle
 import inspect
 import argparse
-from multiprocessing.pool import ThreadPool
 from signal import signal, SIGINT
 
 # Enable terminal colors on windows OS∫
@@ -109,7 +107,7 @@ class HDLRegression:
 
         # Load HDLRegression install version number.
         installed_version = self._get_install_version()
-        self._display_info_text(version=installed_version)
+        display_info_text(version=installed_version)
 
         # Adjust settings with terminal arguments
         self.settings = self.settings_config.setup_settings(self.settings,
@@ -121,8 +119,8 @@ class HDLRegression:
         self._load_project_databases()
 
         # Validate cached HDLRegression version, i.e. saved DB.
-        version_ok = self._validate_cached_version(
-            installed_version=installed_version)
+        version_ok = validate_cached_version(project=self,
+                                             installed_version=installed_version)
         self._rebuild_databases_if_required_or_requested(version_ok)
 
         # Update cached version (settings) with installed version number.
@@ -223,6 +221,7 @@ class HDLRegression:
                        hdl_version=hdl_version,
                        com_options=com_options,
                        parse_file=parse_file,
+                       netlist_inst=netlist_inst,
                        code_coverage=code_coverage)
 
     def remove_file(self, filename, library_name):
@@ -436,11 +435,11 @@ class HDLRegression:
         :param generic: List of generic name and value pairs to use with test
         :type generic: list of str
         '''
-        v_params_ok = self._validate_testgroup_parameters(testgroup_name,
-                                                          entity,
-                                                          architecture,
-                                                          testcase,
-                                                          generic)
+        v_params_ok = validate_testgroup_parameters(testgroup_name,
+                                                    entity,
+                                                    architecture,
+                                                    testcase,
+                                                    generic)
 
         if v_params_ok is True:
             # Locate testgroup container
@@ -505,7 +504,7 @@ class HDLRegression:
         '''
         kwargs = dict_keys_to_lower(kwargs)
 
-        self._update_settings_from_arguments(kwargs)
+        update_settings_from_arguments(project=self, kwargs=kwargs)
 
         self._prepare_libraries()
 
@@ -535,7 +534,7 @@ class HDLRegression:
             print(list_testgroup(self.testgroup_collection_container))
 
         # pylint: enable=protected-access
-        elif self._run_from_gui() is True:
+        elif run_from_gui(project=self) is True:
             '''
             HDLRegression is started with argument "-g" for GUI and will
             create a tcl file and start Modelsim with this file.
@@ -617,13 +616,14 @@ class HDLRegression:
                         self.settings.set_success_run(True)
                         self.settings.set_time_of_run()
 
-                    self._print_info_msg_when_no_test_has_run()
+                    print_info_msg_when_no_test_has_run(project=self,
+                                                        runner=self.runner)
 
                 # Do not save running a selected testcase
                 self.settings.empty_testcase_list()
 
                 # Disable threading
-                self._disable_threading()
+                disable_threading(project=self)
 
                 # Save settings befor returning to project script.
                 self._save_project_to_disk(lib_cont=self.library_container,
@@ -633,7 +633,7 @@ class HDLRegression:
                                            settings=self.settings)
 
         if self.get_num_tests_run() > 0:
-            self._print_run_success()
+            print_run_success(project=self)
             self._generate_run_report_files()
 
         # Merge coverage files and generate reports.
@@ -830,7 +830,20 @@ class HDLRegression:
             return None
 
     def get_args(self):
+        '''
+        Returns the parsed arguments from HDLRegression
+        '''
         return self.args
+
+    def get_file_list(self) -> list:
+        '''
+        Returns a list of all files in the project.
+        '''
+        file_list = []
+        for lib in self.library_container.get():
+            for file in lib.get_hdlfile_list():
+                file_list.append(file.get_filename_with_path())
+        return file_list
 
     # pylint: enable=too-many-arguments
 
@@ -840,59 +853,6 @@ class HDLRegression:
     #
     # ========================================================
 
-    def _run_from_gui(self) -> bool:
-        if self.settings.get_gui_mode():
-            return self.settings.get_simulator_name() == "MODELSIM"
-        else:
-            return False
-
-    # pylint: disable=too-many-arguments
-    def _validate_testgroup_parameters(self,
-                                       testgroup_name: str,
-                                       entity: str,
-                                       architecture: str,
-                                       testcase: str,
-                                       generic: list) -> bool:
-        '''
-        :param testgroup_name: Name of testgroup
-        :type testgroup_name: str
-        :param entity: Name of testbench entity
-        :type entity: str
-        :param architecture: Name of testbench architecture
-        :type architecture: str
-        :param testcase: Test sequencer built-in testcase
-        :type testcase: str
-        :param generic: Testcase run-generics
-        :type generic: list
-
-        :rtype: bool
-        :return: True if all validated OK, otherwise False.
-        '''
-        v_arguments_ok = True
-        if not architecture:
-            if testcase or generic:
-                v_arguments_ok = False
-        if not testcase:
-            if generic:
-                v_arguments_ok = False
-
-        if generic:
-            if not isinstance(generic, list):
-                v_arguments_ok = False
-        if not isinstance(testgroup_name, str):
-            v_arguments_ok = False
-        if not isinstance(entity, str):
-            v_arguments_ok = False
-
-        if architecture:
-            if not isinstance(architecture, str):
-                v_arguments_ok = False
-        if testcase:
-            if not isinstance(testcase, str):
-                v_arguments_ok = False
-        return v_arguments_ok
-
-    # pylint: enable=too-many-arguments
     def _rebuild_databases_if_required_or_requested(self,
                                                     version_ok: bool):
         '''
@@ -902,129 +862,13 @@ class HDLRegression:
         :type version_ok: bool
         '''
         if (version_ok is False) or (self.settings.get_clean()):
-            self._empty_project_folder()
+            empty_project_folder(project=self)
             self._load_project_databases()
-
-    def _validate_cached_version(self,
-                                 installed_version: str) -> bool:
-        '''
-        Compare installed version with cache version.
-
-        :rtype: bool
-        :return: True if cached version matches installed version.
-        '''
-        # Load cached HDLRegression version number
-        cached_version = self.settings.get_hdlregression_version()
-        cached_version_ok = True
-        # Compare current version with cached version
-        if (cached_version != installed_version) and (cached_version != '0.0.0'):
-            self.logger.warning('WARNING! HDLRegression v%s not compatible with cached v%s. '
-                                'Executing database rebuild.' %
-                                (installed_version, cached_version))
-            cached_version_ok = False
-        return cached_version_ok
 
     def _generate_run_report_files(self):
         if not self.reporter:
             self.gen_report()
         self.reporter.report()
-
-    def _update_settings_from_arguments(self,
-                                        kwargs: dict):
-        '''
-        Adjust the run settings with scripted run arguments
-        passed on with the start() call.
-
-        :param kwargs: Keyword arguments
-        :type kwargs: dict
-        '''
-
-        # Update if GUI mode is selected without overriding terminal argument
-        if not self.settings.get_gui_mode():
-            if 'gui_mode' in kwargs:
-                self.settings.set_gui_mode(kwargs.get('gui_mode'))
-
-        # Set what to do if a testcase fails.
-        if not self.settings.get_stop_on_failure():
-            if 'stop_on_failure' in kwargs:
-                self.settings.set_stop_on_failure(
-                    kwargs.get('stop_on_failure'))
-
-        # Regression_mode: only run new and changed code
-        if self.settings.get_run_all() is True:  # CLI argument
-            self.settings.set_run_all(True)
-        elif 'regression_mode' in kwargs:  # API argument
-            self.settings.set_run_all(kwargs.get('regression_mode'))
-        else:  # default
-            self.settings.set_run_all(False)
-
-        # Enable multi-threading
-        if 'threading' in kwargs:
-            self.logger.info('Threading active.')
-            self.settings.set_threading(kwargs.get('threading'))
-        # Verbosity
-        if 'verbose' in kwargs:
-            self.settings.set_verbose(True)
-        # Simulation options
-        if 'sim_options' in kwargs:
-            self.settings.set_sim_options(kwargs.get('sim_options'))
-        if 'netlist_timing' in kwargs:
-            self.settings.set_netlist_timing(kwargs.get('netlist_timing'))
-
-        # Coverage options
-        if 'keep_code_coverage' in kwargs:
-            if kwargs.get('keep_code_coverage') is True:
-                self.settings.set_keep_code_coverage(keep_code_coverage=True)
-
-        # UVVM specific
-        if 'no_default_com_options' in kwargs:
-            if kwargs.get('no_default_com_options') is True:
-                # Check if running with defaults
-                if self.settings.get_is_default_com_options() is True:
-                    self.settings.remove_com_options()
-
-        if 'ignore_simulator_exit_codes' in kwargs:
-            exit_codes = kwargs.get('ignore_simulator_exit_codes')
-            if isinstance(exit_codes, list) is False:
-                self.logger.warning('ignore_simulator_exit_codes is not list.')
-            else:
-                self.settings.set_ignored_simulator_exit_codes(exit_codes)
-
-    def _clean_generated_output(self, restore_settings=False):
-        saved_settings = self.settings
-        self.settings.set_clean(True)
-        self._rebuild_databases_if_required_or_requested(False)
-        if restore_settings is True:
-            self.settings = saved_settings
-
-    def _print_info_msg_when_no_test_has_run(self):
-        ''' Display info message if no tests have been run. '''
-        if self.runner.get_num_tests() == 0:
-            self.logger.info('\nNo tests found.')
-            self.logger.info(
-                'Ensure that the "--hdlregression:tb" (VHDL) / "//hdlregression:tb"'
-                ' (Verilog) pragma is set in the testbench file(s).')
-        elif self.get_num_tests_run() == 0:
-            self.logger.info(
-                'Test run not required. Use "-fr"/"--fullRegression" to re-run all tests.')
-
-    def _disable_threading(self):
-        ''' Disable threading so the next run will start as normal. '''
-        self.settings.set_threading(False)
-        self.settings.set_num_threads(1)
-
-    def _print_run_success(self):
-        if self.settings.get_return_code() == 0:
-            self.logger.info('SIMULATION SUCCESS: %d passing test(s).'
-                             % (self.get_num_pass_tests()), color='green')
-            num_minor_alerts = self.get_num_pass_with_minor_alert_tests()
-            if num_minor_alerts > 0:
-                self.logger.warning(
-                    '%d test(s) passed with minor alert(s).'
-                    % (num_minor_alerts))
-        else:
-            self.logger.warning('SIMULATION FAIL: %d tests run, %d test(s) failed.'
-                                % (self.get_num_tests_run(), self.get_num_fail_tests()))
 
     def _add_precompiled_libraries_to_modelsim_ini(self,
                                                    modelsim_ini_file: str):
@@ -1065,10 +909,10 @@ class HDLRegression:
         '''
         # Make all Library objects prepare for compile/simulate
         self.logger.info('Scanning files...')
-        self._request_libraries_prepare()
+        request_libraries_prepare(project=self)
         # Organize the libraries by dependecy
         self.logger.info('Building test suite structure...')
-        self._organize_libraries_by_dependency()
+        organize_libraries_by_dependency(project=self)
 
     def _setup_simulation_runner(self):
         # Get runner object based on configuration settings
@@ -1103,9 +947,9 @@ class HDLRegression:
         self.settings.set_gui_compile_all(gui_compile_all)
 
         # Make all Library objects prepare for compile/simulate
-        self._request_libraries_prepare()
+        request_libraries_prepare(project=self)
         # Organize the libraries by dependecy
-        self._organize_libraries_by_dependency()
+        organize_libraries_by_dependency(project=self)
 
         # Prepare modelsim.ini file
         modelsim_ini_file = self.runner._setup_ini()
@@ -1150,16 +994,6 @@ class HDLRegression:
             self.logger.warning('Unable to read version.txt')
         return version
 
-    def _display_info_text(self, version) -> None:
-        ''' Presents HDLRegression version number and QR info. '''
-        print('''
-%s
-  HDLRegression version %s
-  See /doc/hdlregression.pdf for documentation.
-%s
-
-''' % ('=' * 70, version, '=' * 70))
-
     def _get_install_path(self) -> str:
         '''
         Returns the HDLRegression installation path as a string.
@@ -1195,21 +1029,6 @@ class HDLRegression:
                 "Unknown simulator: %s, using Modelsim." % (simulator))
         return runner_obj
 
-    def _empty_project_folder(self):
-        # Clean output, i.e. delete all
-        if os.path.isdir(self.settings.get_output_path()):
-            shutil.rmtree(self.settings.get_output_path())
-            self.logger.info('Project output path %s cleaned.' %
-                             (self.settings.get_output_path()))
-            try:
-                os.mkdir(self.settings.get_output_path())
-            except OSError as error:
-                self.logger.error(
-                    'Unable to create output folder, %s.' % (error))
-        else:
-            self.logger.info('No output folder to delete: %s.' %
-                             (self.settings.get_output_path()))
-
     def _load_project_databases(self) -> None:
         # Load previous run if available, or create new containers
         (self.library_container,
@@ -1240,27 +1059,6 @@ class HDLRegression:
         # Path of regression script, i.e. "/script"
         self.settings.set_script_path(script_path)
         self.settings.set_return_code(0)
-
-    def _request_libraries_prepare(self) -> None:
-        ''' Invoke all Library Objects to prepare for compile/simulate. '''
-
-        # Thread method
-        def library_prepare(library) -> None:
-            library.check_library_files_for_changes()
-            library.prepare_for_run()
-
-        # Get list of all libraries
-        library_list = self.library_container.get()
-        # Default number of threads
-        num_threads = 1
-        # Check if threading is enabled, i.e. > 0
-        if self.settings.get_num_threads() > 0:
-            if len(library_list) > 0:
-                num_threads = len(library_list)
-
-        # Execute using 1 or more threads
-        with ThreadPool(num_threads) as pool:
-            pool.map(library_prepare, library_list)
 
     # ====================================================================
     # Container methods
@@ -1343,52 +1141,6 @@ class HDLRegression:
             return lib_obj
         # else
         return None
-
-    def _organize_libraries_by_dependency(self) -> None:
-        """
-        Organize libraries by dependency order.
-
-        :rtype: bool
-        :return: Status of setting up library dependencies.
-        """
-        # Skip if no libraries have changes.
-        lib_changes = any(lib.get_need_compile()
-                          for lib in self.library_container.get())
-        if lib_changes is False:
-            return True
-
-        # Organize by dependency - this value of i corresponds to
-        # how many values were sorted.
-        num_libraries = self.library_container.num_elements()
-        libraries = self.library_container.get()
-
-        swapped = True
-        while swapped:
-            swapped = False
-
-            for i in range(num_libraries):
-                # Assume that the first item of the unsorted
-                # segment has no dependencies.
-                lowest_value_index = i
-                # This loop iterates over the unsorted items.
-                for j in range(i + 1, num_libraries):
-                    check_lib = libraries[j]
-                    with_lib = libraries[lowest_value_index]
-
-                    if check_lib.get_name() in with_lib.get_lib_dep():
-                        if with_lib.get_name() in check_lib.get_lib_dep():
-                            self.logger.error('Recursive library dependency: %s and %s.' % (
-                                check_lib.get_name(), with_lib.get_name()))
-                            continue
-                        lowest_value_index = j
-                # Swap values of the lowest unsorted element with the
-                # first unsorted element.
-                if i != lowest_value_index:
-                    self.logger.debug(
-                        f"Swapping: {check_lib.get_name()} <-> {with_lib.get_name()}.")
-                    (libraries[i], libraries[lowest_value_index]) = \
-                        (libraries[lowest_value_index], libraries[i])
-                    swapped = True
 
     def _save_project_to_disk(self,
                               lib_cont: 'Container',

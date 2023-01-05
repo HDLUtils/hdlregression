@@ -98,3 +98,66 @@ def test_add_files_name():
     file_list = library.get_hdlfile_list()
 
     assert len(file_list) == 3, "Check number of files added"
+
+
+def test_readback_file_list_one_library():
+    '''
+    Test readback of added files
+    '''
+    clear_output()
+    hr = HDLRegression()
+
+    test_files = ['../tb/my_tb_arch_1.vhd',
+                  '../tb/my_tb_arch_2.vhd',
+                  '../tb/my_tb_arch_3_4.vhd']
+
+    for test_file in test_files:
+        test_file = get_file_path(test_file)
+        hr.add_files(test_file, 'test_lib')
+
+    file_list = hr.get_file_list()
+
+    assert len(file_list) == len(test_files), "Check number of files added"
+
+    for test_file in test_files:
+        file_list_files = '\t'.join(file_list)
+        file = os.path.realpath(test_file)
+        assert file in file_list_files, "check file present"
+
+
+def test_readback_file_list_multiple_libraries():
+    '''
+    Test readback of added files
+    '''
+    clear_output()
+    hr = HDLRegression()
+
+    test_files_1 = ['../tb/my_tb_arch_1.vhd',
+                    '../tb/my_tb_arch_2.vhd',
+                    '../tb/my_tb_arch_3_4.vhd']
+
+    for test_file in test_files_1:
+        test_file = get_file_path(test_file)
+        hr.add_files(test_file, 'test_lib_1')
+
+    test_files_2 = ['../tb/tb_passing.vhd',
+                    '../tb/tb_passing_2.vhd']
+
+    for test_file in test_files_2:
+        test_file = get_file_path(test_file)
+        hr.add_files(test_file, 'test_lib_1')
+
+    test_files_3 = ['../tb/tb_failing.vhd']
+    test_file = get_file_path(test_files_3[0])
+    hr.add_files(test_file, 'test_lib_3')
+
+    file_list = hr.get_file_list()
+
+    test_files = test_files_1 + test_files_2 + test_files_3
+
+    assert len(file_list) == len(test_files), "Check number of files added"
+
+    for test_file in test_files:
+        file_list_files = '\t'.join(file_list)
+        file = os.path.realpath(test_file)
+        assert file in file_list_files, "check file present"
