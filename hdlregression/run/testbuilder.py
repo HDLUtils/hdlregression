@@ -289,7 +289,6 @@ class TestBuilder:
     def _get_testcase_from_string(self, testcase_list):
         ''' User selected testcase ny entity.arch.tc '''
         filtered_tests = []
-        print('---->>> %s' % (testcase_list))
 
         for test in self.test_container.get():
 
