@@ -61,8 +61,8 @@
 
 
 \title{hdlregression}
-\date{Jan 05, 2023}
-\release{0.34.0
+\date{Jan 12, 2023}
+\release{0.34.1
 }
 \author{UVVM}
 \newcommand{\sphinxlogo}{\vbox{}}
@@ -1523,7 +1523,7 @@ match all character not in seq
 Compiles UVVM to HDLRegression library folder, making UVVM available to all tests run by HDLRegression.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{n}{hr}\PYG{o}{.}\PYG{n}{compile\PYGZus{}uvvm}\PYG{p}{(}\PYG{o}{\PYGZlt{}}\PYG{n}{path\PYGZus{}to\PYGZus{}uvvm}\PYG{o}{\PYGZgt{}}\PYG{p}{)}
+\PYG{n}{hr}\PYG{o}{.}\PYG{n}{compile\PYGZus{}uvvm}\PYG{p}{(}\PYG{o}{\PYGZlt{}}\PYG{n}{path\PYGZus{}to\PYGZus{}uvvm}\PYG{o}{\PYGZgt{}}\PYG{p}{,} \PYG{o}{\PYGZlt{}}\PYG{n}{verbose}\PYG{o}{\PYGZgt{}}\PYG{p}{)}
 \end{sphinxVerbatim}
 
 
@@ -1552,6 +1552,16 @@ path\_to\_uvvm
 \sphinxstylestrong{mandatory}
 \\
 \hline
+\sphinxAtStartPar
+verbose
+&
+\sphinxAtStartPar
+True / False
+&
+\sphinxAtStartPar
+optional
+\\
+\hline
 \end{tabulary}
 \par
 \sphinxattableend\end{savenotes}
@@ -1563,10 +1573,28 @@ path\_to\_uvvm
 \PYG{n}{hr}\PYG{o}{.}\PYG{n}{compile\PYGZus{}uvvm}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{c:/development/tools/UVVM}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
 \end{sphinxVerbatim}
 
-\begin{sphinxadmonition}{important}{Important:}
+\begin{sphinxadmonition}{important}{Important:}\begin{itemize}
+\item {} 
 \sphinxAtStartPar
 The \sphinxcode{\sphinxupquote{compile\_uvvm()}} method will be changed to perform an internal ´add\_files()´ of the complete UVVM.
+
+\item {} 
+\sphinxAtStartPar
 Feel free to contribute.
+
+\item {} 
+\sphinxAtStartPar
+This feature is restricted to Modelsim simulator.
+
+\item {} 
+\sphinxAtStartPar
+Output from Modelsim is directed to stdout by default.
+
+\item {} 
+\sphinxAtStartPar
+The UVVM path has to absolute or relative to the regression script location.
+
+\end{itemize}
 \end{sphinxadmonition}
 
 

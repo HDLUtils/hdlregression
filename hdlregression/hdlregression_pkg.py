@@ -454,3 +454,7 @@ def organize_libraries_by_dependency(project) -> None:
                     (libraries[lowest_value_index], libraries[i])
                 swapped = True
     return True
+
+
+def check_file_exist(filename) -> bool:
+    return os.path.exists(filename)

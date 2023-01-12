@@ -773,6 +773,7 @@ class HDLRegression:
             self.logger.error(
                 "run_command() parameter should be list or string, not %s." % (type(command)))
         else:
+            self.logger.debug('run_command(): %s' % (command))
             (output, error_code) = CommandRunner(
                 project=self).script_run(command, verbose=verbose)
             return (output, error_code)
@@ -800,16 +801,19 @@ class HDLRegression:
             lib.add_lib_dep(set_lib_dep)
 
     def compile_uvvm(self,
-                     path_to_uvvm: str) -> str:
+                     path_to_uvvm: str,
+                     verbose=True) -> bool:
         '''
         Compiles the entire UVVM verification library to
         HDLRegression compile libraries.
 
         :param path_to_uvvm: the path to where UVVM is located on HD.
         :type path_to_uvvm: str
+        :param verbose: verbosity setting
+        :type verbose: boolean
 
-        :rtype: str
-        :return: The command executed for compiling UVVM
+        :rtype: bool
+        :return: True when command is valid
         '''
         if self.settings.get_simulator_name() in ["MODELSIM", "ALDEC"]:
             lib_compile_path = os.path.join(sim_path, 'hdlregression/library')
@@ -823,11 +827,19 @@ class HDLRegression:
             cmd_to_run = ['vsim', '-c', '-do', 'do %s %s %s; exit -f' % (uvvm_script_file,
                                                                          uvvm_script_path,
                                                                          lib_compile_path)]
-            self.run_command(cmd_to_run)
-            return ' '.join(cmd_to_run)
+
+            if check_file_exist(uvvm_script_file) is False:
+                self.logger.warning(
+                    "compile_uvvm(): file not found: %s\n"
+                    "Note that the UVVM path has to be absolute or "
+                    "be relative to the regression script location." % (uvvm_script_file))
+                return False
+
+            self.run_command(cmd_to_run, verbose=verbose)
+            return True
         else:
             self.logger.warning('Unsupported simulator')
-            return None
+            return False
 
     def get_args(self):
         '''

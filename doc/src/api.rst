@@ -474,12 +474,14 @@ Compiles UVVM to HDLRegression library folder, making UVVM available to all test
   
 .. code-block:: python
   
-  hr.compile_uvvm(<path_to_uvvm>)
+  hr.compile_uvvm(<path_to_uvvm>, <verbose>)
   
 +-------------------+-----------------------------------+---------------+
 | Argument          | Example                           | Required      |
 +===================+===================================+===============+
 | path_to_uvvm      | "../ip/UVVM"                      | **mandatory** |
++-------------------+-----------------------------------+---------------+
+| verbose           | True / False                      | optional      |
 +-------------------+-----------------------------------+---------------+
   
 **Example:**
@@ -491,8 +493,11 @@ Compiles UVVM to HDLRegression library folder, making UVVM available to all test
 
 .. important::
 
-  The ``compile_uvvm()`` method will be changed to perform an internal ´add_files()´ of the complete UVVM.
-  Feel free to contribute.
+  * The ``compile_uvvm()`` method will be changed to perform an internal ´add_files()´ of the complete UVVM.
+  * Feel free to contribute.
+  * This feature is restricted to Modelsim simulator.
+  * Output from Modelsim is directed to stdout by default.
+  * The UVVM path has to absolute or relative to the regression script location.
 
 
 compile_osvvm()

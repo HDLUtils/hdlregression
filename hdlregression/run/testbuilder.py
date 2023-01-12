@@ -171,13 +171,15 @@ class TestBuilder:
             # ------------------------------------
             else:
                 # Generics for non-specified architecture, i.e. all architectures
-                gc_list_no_arch = [gc for (gc_arch, gc) in gc_list_all if gc_arch is None]
+                gc_list_no_arch = [
+                    gc for (gc_arch, gc) in gc_list_all if gc_arch is None]
 
                 # Match with architecture
                 for arch in tb.get_architecture():
 
                     # Script generics set for this architecture
-                    gc_list_this_arch = [gc for (gc_arch, gc) in gc_list_all if gc_arch is not None if self._str_match(gc_arch, arch.get_name())]
+                    gc_list_this_arch = [gc for (
+                        gc_arch, gc) in gc_list_all if gc_arch is not None if self._str_match(gc_arch, arch.get_name())]
 
                     # Combined generics list with generics set without
                     # architecture and generics set for this architecture
@@ -233,7 +235,8 @@ class TestBuilder:
                                 test.set_tc(tc)
                                 self.test_container.add(test)
 
-        self.base_tests_container.add_element_from_list(self.test_container.get())
+        self.base_tests_container.add_element_from_list(
+            self.test_container.get())
 
     @staticmethod
     def _unix_match(search_string, pattern) -> bool:
@@ -250,27 +253,28 @@ class TestBuilder:
         Build a list of tests that match
         user selected testcase.
         '''
-        
+
         def _is_testcase_an_index_number():
             return all(tc[0].isdigit() for tc in testcase_list)
-        
+
         def _get_testcase_index_number() -> int:
             testcase_index = int(testcase_list[0][0])
             if testcase_index >= 1:
-                return testcase_index - 1  #  return testcase listed number as listed in termial.
+                # return testcase listed number as listed in termial.
+                return testcase_index - 1
             else:
                 return None
-        
+
         # Get user seleceted testcase
         testcase_list = self._get_user_testcase_list()
-        
+
         # Select based on user input as number og testcase name
         if _is_testcase_an_index_number() is True:
             index = _get_testcase_index_number()
             self._get_testcase_from_index(index)
         else:
             self._get_testcase_from_string(testcase_list)
-        
+
         # Verify if any testcases were found
         if self.test_container.num_elements() == 0:
             for testcase in testcase_list:
@@ -280,31 +284,32 @@ class TestBuilder:
         ''' User selected testcase by number. '''
         test = self.test_container.get_index(index)
         self.test_container.empty_list()
-        self.test_container.add(test)   
+        self.test_container.add(test)
 
     def _get_testcase_from_string(self, testcase_list):
-        ''' User selected testcase ny entity.arch.tc '''         
+        ''' User selected testcase ny entity.arch.tc '''
         filtered_tests = []
+        print('---->>> %s' % (testcase_list))
 
         for test in self.test_container.get():
-    
+
             for tc in testcase_list:
                 # User selection content
                 user_testbench = tc[0]
                 user_architecture = tc[1]
                 user_testcase = tc[2]
-    
+
                 # Test container test content
                 container_testbench = test.get_name()
                 container_architecture = test.get_arch().get_name()
                 container_testcase = test.get_tc()
-    
+
                 # Locate correct testbench
                 if self._unix_match(search_string=container_testbench, pattern=user_testbench):
                     # Locate correct architecture
                     if user_architecture:
                         if self._unix_match(search_string=container_architecture, pattern=user_architecture):
-    
+
                             # Selected sequencer/built-in testcase?
                             if container_testcase:
                                 # User selected testcase?
@@ -315,7 +320,7 @@ class TestBuilder:
                                     filtered_tests.append(test)
                             else:
                                 filtered_tests.append(test)
-    
+
                     # All architectures
                     else:
                         # Selected sequencer/built-in testcase?
@@ -328,7 +333,7 @@ class TestBuilder:
                                 filtered_tests.append(test)
                         else:
                             filtered_tests.append(test)
-    
+
         self.test_container.empty_list()
         for test in filtered_tests:
             self.test_container.add(test)
@@ -378,7 +383,8 @@ class TestBuilder:
             self.test_container.add(test)
 
         if self.test_container.num_elements() == 0:
-            self.logger.warning('No test found for test group: %s' % (testgroup_to_run))
+            self.logger.warning(
+                'No test found for test group: %s' % (testgroup_to_run))
 
     def _build_modified(self) -> None:
         '''
@@ -403,7 +409,8 @@ class TestBuilder:
         '''
         hdlfile = tb.get_hdlfile()
         if isinstance(hdlfile, VHDLFile):
-            test = VHDLTest(tb=tb, arch=arch, tc=tc, gc=gc, settings=self.project.settings)
+            test = VHDLTest(tb=tb, arch=arch, tc=tc, gc=gc,
+                            settings=self.project.settings)
             test.set_hdlfile(hdlfile)
             test.set_need_to_simulate(hdlfile.get_need_compile())
             return test
@@ -413,5 +420,6 @@ class TestBuilder:
             test.set_need_to_simulate(hdlfile.get_need_compile())
             return test
         else:
-            self.logger.warning('Filetype not detected for %s' % (type(tb.get_hdlfile())))
+            self.logger.warning('Filetype not detected for %s' %
+                                (type(tb.get_hdlfile())))
             return None

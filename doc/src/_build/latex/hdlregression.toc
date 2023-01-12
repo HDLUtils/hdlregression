@@ -28,7 +28,7 @@
 \contentsline {subsection}{\numberline {4.3.5}compile\_uvvm()}{16}{subsection.4.3.5}%
 \contentsline {subsection}{\numberline {4.3.6}compile\_osvvm()}{17}{subsection.4.3.6}%
 \contentsline {subsection}{\numberline {4.3.7}configure\_library()}{17}{subsection.4.3.7}%
-\contentsline {subsection}{\numberline {4.3.8}gen\_report()}{17}{subsection.4.3.8}%
+\contentsline {subsection}{\numberline {4.3.8}gen\_report()}{18}{subsection.4.3.8}%
 \contentsline {subsection}{\numberline {4.3.9}get\_args()}{18}{subsection.4.3.9}%
 \contentsline {subsection}{\numberline {4.3.10}get\_file\_list()}{18}{subsection.4.3.10}%
 \contentsline {subsection}{\numberline {4.3.11}remove\_file()}{18}{subsection.4.3.11}%
