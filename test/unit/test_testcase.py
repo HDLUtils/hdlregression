@@ -190,7 +190,7 @@ def test_list_testcases():
 
     tc_list = list_testcases(hr.runner)
 
-    assert tc_list.strip() == "1 - tb_passing.test", "checking list testcases"
+    assert tc_list.strip() == "TC:1 - tb_passing.test", "checking list testcases"
 
 
 def test_wildcard_asterix_testcases():
@@ -216,7 +216,7 @@ def test_wildcard_asterix_testcases():
     exp_test = 'testcase_lib.tb_testcase.testcase_arch.testcase_'
     for idx in range(1, 3):
         testcase = exp_test + str(idx)
-        assert testcase in pass_list
+        assert testcase in ''.join(pass_list)
 
 
 def test_wildcard_question_mark_testcases():
@@ -238,7 +238,7 @@ def test_wildcard_question_mark_testcases():
     assert return_code == 0, "check number of failing tests"
     assert len(fail_list) == 0, "check number of failing tests"
     assert len(pass_list) == 1, "check number of passing tests"
-    assert pass_list[0] == 'testcase_lib.tb_testcase.testcase_arch.testcase_2'
+    assert pass_list[0] == 'testcase_lib.tb_testcase.testcase_arch.testcase_2 (test_id: 3)'
 
 
 def test_wildcard_not_found_testcases():
@@ -285,4 +285,4 @@ def test_wildcard_asterix_architecture_and_testcase():
     exp_test = 'testcase_lib.tb_testcase.testcase_arch.testcase_'
     for idx in range(1, 3):
         testcase = exp_test + str(idx)
-        assert testcase in pass_list
+        assert testcase in ''.join(pass_list)

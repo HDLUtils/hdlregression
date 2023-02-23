@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Application Programming Interface (API) &mdash; hdlregression 0.34.1
+  <title>Application Programming Interface (API) &mdash; hdlregression 0.34.2
  documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
@@ -333,6 +333,11 @@ require the <code class="docutils literal notranslate"><span class="pre">parse_f
 <p>The <code class="docutils literal notranslate"><span class="pre">code_coverage</span></code> argument enables code coverage for a single file if an explicit filename is given, or
 a set of files when used with wildcards in the filename.</p>
 <p>It is required that the <a class="reference internal" href="#set-code-coverage">set_code_coverage()</a> method is used to set the code coverage settings.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>When <code class="docutils literal notranslate"><span class="pre">parse_file</span></code> is set to <code class="docutils literal notranslate"><span class="pre">False</span></code> HDLRregression will not parse the file content, not include the file in the
+compilation order and not compile the file.</p>
 </div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>

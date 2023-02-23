@@ -81,7 +81,7 @@ def test_fail():
     assert result == 1, "check number of failing tests"
     assert len(fail_list) == 1, "check number of failing tests"
     assert len(pass_list) == 0, "check number of passing tests"
-    assert 'failing_lib.tb_failing.test' in fail_list, "checking failing test"
+    assert 'failing_lib.tb_failing.test' in '\t'.join(fail_list), "checking failing test"
 
 
 def test_multiple_pass_one_fail():
@@ -105,7 +105,7 @@ def test_multiple_pass_one_fail():
     assert result == 1, "check number of failing tests"
     assert len(fail_list) == 1, "check number of failing tests"
     assert len(pass_list) == 3, "check number of passing tests"
-    assert 'regression_lib.tb_failing.test' in fail_list, "checking failing test in regression"
+    assert 'regression_lib.tb_failing.test' in '\t'.join(fail_list), "checking failing test in regression"
 
 
 def test_multiple_pass_mupltiple_fail():
@@ -129,5 +129,5 @@ def test_multiple_pass_mupltiple_fail():
     assert result == 1, "check number of failing tests"
     assert len(fail_list) == 2, "check number of failing tests"
     assert len(pass_list) == 3, "check number of passing tests"
-    assert 'regression_lib.tb_failing.test' in fail_list, "checking failing test in regression"
-    assert 'regression_lib.tb_failing_2.test' in fail_list, "checking failing test in regression"
+    assert 'regression_lib.tb_failing.test' in '\t'.join(fail_list), "checking failing test in regression"
+    assert 'regression_lib.tb_failing_2.test' in '\t'.join(fail_list), "checking failing test in regression"

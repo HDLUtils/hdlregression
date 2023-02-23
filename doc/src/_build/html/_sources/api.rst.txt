@@ -180,6 +180,10 @@ can be called several times in the regressions script, addressing the same or a 
 
   It is required that the `set_code_coverage()`_ method is used to set the code coverage settings.
 
+.. warning::
+
+  When ``parse_file`` is set to ``False`` HDLRregression will not parse the file content, not include the file in the
+  compilation order and not compile the file.
 
 
 .. include:: wildcards_reference_tip.rst

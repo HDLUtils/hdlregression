@@ -88,15 +88,16 @@ class ModelsimRunner(SimRunner):
             hdlfile_path = hdlfile_path.replace('\\', '\\\\')
 
         if hdlfile.check_file_type('vhdl') is True:
-            vcom_exec = self._get_simulator_executable('vcom')
+            sim_exec = self._get_simulator_executable('vcom')
         elif hdlfile.check_file_type('verilog') is True:
-            vcom_exec = self._get_simulator_executable('vlog')
+            sim_exec = self._get_simulator_executable('vlog')            
+        elif hdlfile.check_file_type('systemverilog') is True:
+            sim_exec = self._get_simulator_executable('vlog')            
         else:
             self.logger.error('Unknown HDLFile type')
             return []
 
-        return_list = [vcom_exec]
-
+        return_list = [sim_exec]
         return_list += hdlfile._get_com_options(simulator=self.simulator_name)
 
         # code_coverage compile arguments
@@ -221,8 +222,10 @@ class ModelsimRunner(SimRunner):
         sim_options = ' '.join(self.project.settings.get_sim_options())
 
         netlist_call = self._get_netlist_call()
+        
+        vsim_exec = self._get_simulator_executable('vsim')
 
-        return ' '.join(['vsim',
+        return ' '.join([vsim_exec,
                          generic_call,
                          module_call,
                          sim_options,

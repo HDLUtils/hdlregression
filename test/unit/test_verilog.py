@@ -18,6 +18,19 @@ import shutil
 from hdlregression import HDLRegression
 
 
+exp_modules = ['top',
+               'fifo',
+               'port_fsm',
+               'switch',
+               'simple_module',
+               'mydesignsub',
+               'tb_top',
+               'half_adder',
+               'half_adder_tb',
+               'tb',
+               'dff',
+               'd_ff']
+
 if len(sys.argv) >= 2:
     '''
     Remove pytest from argument list
@@ -129,8 +142,10 @@ def test_number_of_module_detected():
     library = hr._get_library_object('verilog_lib')
 
     modules = library._get_list_of_lib_modules()
+    
+    names = [module.get_name() for module in modules]
 
-    assert len(modules) == 11, "check number of detected verilog modules"
+    assert len(modules) == len(exp_modules), "check number of detected verilog modules %s" % (names)
 
 
 def test_modules_detected():
@@ -149,18 +164,6 @@ def test_modules_detected():
     modules = library._get_list_of_lib_modules()
 
     act_modules = [module.get_name() for module in modules]
-
-    exp_modules = ['top',
-                   'fifo',
-                   'port_fsm',
-                   'switch',
-                   'simple_module',
-                   'mydesignsub',
-                   'tb_top',
-                   'half_adder',
-                   'half_adder_tb',
-                   'tb',
-                   'dff']
 
     for act_module in act_modules:
         assert act_module in exp_modules, "check %s module" % (act_module)

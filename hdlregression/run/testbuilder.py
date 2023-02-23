@@ -35,6 +35,7 @@ class TestBuilder:
         self.test_container = Container(name='test_container')
         self.base_tests_container = Container(name='base_tests_container')
         self.run_tests = []
+        self.test_id_count = 0
 
     def build_tb_module_list(self) -> None:
         '''
@@ -127,6 +128,7 @@ class TestBuilder:
 
         sequencer_testcase_string = self.project.settings.get_testcase_identifier_name()
 
+        self.test_id_count = 0
         # Iterate all TBs
         for tb in self.testbench_container.get():
 
@@ -158,6 +160,7 @@ class TestBuilder:
                                 test.set_gc(gc)
                                 test.set_tc(tc)
                                 self.test_container.add(test)
+
                 # No scripted generics tests
                 else:
                     # Tests from detected sequencer testcases
@@ -215,7 +218,7 @@ class TestBuilder:
                                     test.set_tc(gc[1])
                                 else:
                                     test.set_gc(gc)
-
+                                    
                                 self.test_container.add(test)
 
                     # No scripted generics tests
@@ -271,6 +274,9 @@ class TestBuilder:
         # Select based on user input as number og testcase name
         if _is_testcase_an_index_number() is True:
             index = _get_testcase_index_number()
+            if index is None:
+              self.logger.error('Testcase is not a valid index (1 to %d).' % (self.test_id_count))
+              return None
             self._get_testcase_from_index(index)
         else:
             self._get_testcase_from_string(testcase_list)
@@ -282,6 +288,7 @@ class TestBuilder:
 
     def _get_testcase_from_index(self, index):
         ''' User selected testcase by number. '''
+        # Check testcase index
         test = self.test_container.get_index(index)
         self.test_container.empty_list()
         self.test_container.add(test)
@@ -412,13 +419,16 @@ class TestBuilder:
                             settings=self.project.settings)
             test.set_hdlfile(hdlfile)
             test.set_need_to_simulate(hdlfile.get_need_compile())
+            self.test_id_count += 1
+            test.set_test_id_number(self.test_id_count)
             return test
         elif isinstance(hdlfile, VerilogFile):
             test = VerilogTest(tb=tb, settings=self.project.settings)
             test.set_hdlfile(hdlfile)
             test.set_need_to_simulate(hdlfile.get_need_compile())
+            test.set_test_id_number(self.test_id_count)
             return test
         else:
-            self.logger.warning('Filetype not detected for %s' %
+            self.logger.warning('Filetype not detected for %s' % 
                                 (type(tb.get_hdlfile())))
             return None

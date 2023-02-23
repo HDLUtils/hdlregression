@@ -145,8 +145,7 @@ class SimRunner:
 
         # Update libraries for compile if a dependent library require compilation
         for lib in regular_lib:
-            dep_lib_compiled = any(dep_lib for dep_lib in lib.get_lib_obj_dep(
-            ) if dep_lib.get_need_compile() is True)
+            dep_lib_compiled = any(dep_lib for dep_lib in lib.get_lib_obj_dep() if dep_lib.get_need_compile() is True)
             if dep_lib_compiled is True:
                 lib.set_need_compile(True)
 
@@ -417,14 +416,16 @@ class SimRunner:
     # ---------------------------------------------------------
 
     def _get_simulator_executable(self, sim_exec='vsim') -> str:
-        if self.project.settings.get_simulator_path():
-            sim_exec = os.path.join(
-                self.project.settings.get_simulator_path(), sim_exec)
-            if os.path.isdir(self.project.settings.get_simulator_path()):
-                sim_exec = os_adjust_path(sim_exec)
-            else:
-                self.logger.warning(
-                    'Simulator exec %s not valid.' % (sim_exec))
+      '''
+      Returns the full path for the simulator executor file, e.g.
+      vsim, vlib etc.
+      '''
+      executor = self.project.settings.get_simulator_exec(sim_exec)
+      if executor is None:
+        self.logger.warning("Invalid executor call: %s" % (sim_exec))
+        return sim_exec
+      else:
+        sim_exec = os_adjust_path(executor)
         return sim_exec
 
     # ---------------------------------------------------------
@@ -691,6 +692,9 @@ class SimRunner:
         testcase = test.get_tc()
         if testcase:
             test_string += '.' + testcase
+
+        test_string += ' (test_id: %d)' % test.get_test_id_number()
+
         if generics:
             test_string += '\nGenerics: ' + generics
         if test.get_netlist_timing():

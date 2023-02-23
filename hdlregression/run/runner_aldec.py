@@ -213,8 +213,10 @@ class AldecRunner(SimRunner):
         sim_options = ' '.join(self.project.settings.get_sim_options())
 
         netlist_call = self._get_netlist_call()
+        
+        vsim_exec = self._get_simulator_executable('vsim')
 
-        return ' '.join(['vsim',
+        return ' '.join([vsim_exec,
                          generic_call,
                          module_call,
                          sim_options,

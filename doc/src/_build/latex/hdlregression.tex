@@ -61,8 +61,8 @@
 
 
 \title{hdlregression}
-\date{Jan 12, 2023}
-\release{0.34.1
+\date{Feb 23, 2023}
+\release{0.34.2
 }
 \author{UVVM}
 \newcommand{\sphinxlogo}{\vbox{}}
@@ -724,6 +724,12 @@ a set of files when used with wildcards in the filename.
 
 \sphinxAtStartPar
 It is required that the {\hyperref[\detokenize{api:set-code-coverage}]{\sphinxcrossref{set\_code\_coverage()}}} method is used to set the code coverage settings.
+\end{sphinxadmonition}
+
+\begin{sphinxadmonition}{warning}{Warning:}
+\sphinxAtStartPar
+When \sphinxcode{\sphinxupquote{parse\_file}} is set to \sphinxcode{\sphinxupquote{False}} HDLRregression will not parse the file content, not include the file in the
+compilation order and not compile the file.
 \end{sphinxadmonition}
 
 \begin{sphinxadmonition}{tip}{Tip:}

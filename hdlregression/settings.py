@@ -26,6 +26,10 @@ class ItemExistError(SettingsError):
     pass
 
 
+class InvalidPathError(SettingsError):
+    pass
+
+
 class HDLRegressionSettings:
 
     def __init__(self):
@@ -375,10 +379,14 @@ class HDLRegressionSettings:
         return self.simulator_settings.get_is_cli_selected()
 
     def set_simulator_path(self, path):
-        self.simulator_settings.set_simulator_path(path)
+        if path is not None:
+            self.simulator_settings.set_simulator_path(path)
 
     def get_simulator_path(self) -> str:
         return self.simulator_settings.get_simulator_path()
+
+    def get_simulator_exec(self, sim_exec) -> str:
+        return self.simulator_settings.get_simulator_exec(sim_exec)
 
     def set_com_options(self, com_options=None, hdl_lang=None):
         self.simulator_settings.set_com_options(
@@ -584,10 +592,22 @@ class SimulatorSettings():
         return self.sim_options
 
     def set_simulator_path(self, path):
-        self.simulator_path = path
+        if path is None or os.path.isdir(path) is False:
+            raise InvalidPathError(
+                'Simulator exec %s not valid.' % (path))
+        else:
+            self.simulator_path = path
 
     def get_simulator_path(self) -> str:
         return self.simulator_path
+
+    def get_simulator_exec(self, sim_exec) -> str:
+        if self.simulator_path is not None:
+            sim_exec = os.path.join(
+                self.simulator_path, sim_exec)
+            return sim_exec
+        else:
+            return sim_exec
 
     def set_modelsim_ini(self, modelsim_ini):
         self.modelsim_ini = modelsim_ini

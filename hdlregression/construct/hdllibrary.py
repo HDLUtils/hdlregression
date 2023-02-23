@@ -23,7 +23,7 @@ from .container import Container
 from .hdl_modules_pkg import *
 from ..settings import HDLRegressionSettings
 from ..report.logger import Logger
-from .hdlfile import VerilogFile, VHDLFile, NetlistFile
+from .hdlfile import *
 
 
 class Library:
@@ -161,8 +161,23 @@ class HDLLibrary(Library):
                                code_coverage=code_coverage,
                                netlist_instance=netlist_instance,
                                project=self.project)
+        elif file_item.lower().endswith('.sv'):
+            return SVFile(filename_with_path=file_item,
+                          library=self,
+                          hdl_version=hdl_version,
+                          com_options=com_options,
+                          parse_file=False,
+                          code_coverage=code_coverage,
+                          project=self.project)            
         else:
             self.logger.warning('Unknown file type: %s' % (file_item))
+            return UnknownFile(filename_with_path=file_item,
+                               library=self,
+                               hdl_version=hdl_version,
+                               com_options=com_options,
+                               parse_file=False,
+                               code_coverage=code_coverage,
+                               project=self.project)
         return None
 
     def add_file(self, filename, hdl_version, com_options, parse_file, code_coverage, netlist_instance) -> None:
@@ -199,11 +214,11 @@ class HDLLibrary(Library):
                                   (self.get_name(), file_item))
 
     def remove_file(self, filename) -> bool:
-      for obj in self.hdlfile_container.get():
-        if obj.get_filename() == filename:
-          self.hdlfile_container.remove(obj)
-          return True
-      return False
+        for obj in self.hdlfile_container.get():
+            if obj.get_filename() == filename:
+                self.hdlfile_container.remove(obj)
+                return True
+        return False
 
     def get_hdlfile_obj(self, filename) -> 'HDLFile':
         '''
@@ -230,15 +245,15 @@ class HDLLibrary(Library):
 
         def check_if_changed_and_parse(hdlfile) -> None:
             if hdlfile.get_need_compile() is True:
-                success = hdlfile.parse_file_content()
-                if success is True:
+                 recompile_needed = hdlfile.parse_file_if_needed()
+                 if recompile_needed is True:
                     self.set_need_compile(True)
                     for dep_hdlfile in hdlfile.get_hdlfile_dep_on_this():
                         dep_hdlfile.set_need_compile(True)
 
-                else:
+                 else:
                     self.logger.warning(
-                        'Unable to determine file type: %s' % (hdlfile.get_filename_with_path()))
+                        'File was not parsed: %s' % (hdlfile.get_filename_with_path()))
 
         # Get list of all HDL file objects in this library
         hdlfile_list = self.hdlfile_container.get()

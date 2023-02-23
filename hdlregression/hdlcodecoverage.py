@@ -107,6 +107,9 @@ class HdlCodeCoverage:
         legal = [cov_set in self.ID_CODE_COVERAGE for cov_set in code_coverage_settings]
         return all(legal)
 
+    def get_simulator_exec(self, command) -> str:
+      return self.project.settings.get_simulator_exec(command)
+
     def _run_command_str(self, command):
         verbose = self.project.settings.get_verbose()
         self.project.logger.debug('HDLCodeCoverage executing: %s' % (command))
@@ -263,7 +266,8 @@ class ModelsimCodeCoverage(HdlCodeCoverage):
         merge_ucdb = self.get_code_coverage_file()
         merge_ucdb = self._insert_to_code_coverage_file_name(merge_ucdb, '_merge')
 
-        merge_command = ['vcover',
+        vcover_exec = self.get_simulator_exec('vcover')
+        merge_command = [vcover_exec,
                          'merge']
 
         if self.get_options() is not None:
@@ -291,8 +295,10 @@ class ModelsimCodeCoverage(HdlCodeCoverage):
         if exclude_file is not None:
             filtered_ucdb = self._insert_to_code_coverage_file_name(
                 code_coverage_ucdb, '_filter')
+            
+            vsim_exec = self.get_simulator_exec('vsim')
 
-            exception_command = ['vsim',
+            exception_command = [vsim_exec,
                                  '-c',
                                  '-viewcov',
                                  merge_ucdb,
@@ -312,9 +318,11 @@ class ModelsimCodeCoverage(HdlCodeCoverage):
         html_path = os.path.join(self.get_code_coverage_path(), 'html')
         html_path = os.path.abspath(html_path)
         html_path = html_path.replace('\\', '/')
-        report_command = 'vcover report -verbose -code %s -html -output %s %s' % (self.get_code_coverage_settings(),
-                                                                                  html_path,
-                                                                                  ucdb_file)
+        vcover_exec = self.get_simulator_exec('vcover')
+        report_command = '%s report -verbose -code %s -html -output %s %s' % (vcover_exec,
+                                                                              self.get_code_coverage_settings(),
+                                                                              html_path,
+                                                                              ucdb_file)
         self._run_command_str(report_command)
 
     def _generate_txt_report(self, ucdb_file):
@@ -326,9 +334,11 @@ class ModelsimCodeCoverage(HdlCodeCoverage):
         code_coverage_report = os.path.join(txt_path, 'coverage.txt')
         code_coverage_report = os.path.abspath(code_coverage_report)
         code_coverage_report = code_coverage_report.replace('\\', '/')
-        report_command = 'vcover report -verbose -code %s -output %s %s' % (self.get_code_coverage_settings(),
-                                                                            code_coverage_report,
-                                                                            ucdb_file)
+        vcover_exec = self.get_simulator_exec('vcover')
+        report_command = '%s report -verbose -code %s -output %s %s' % (vcover_exec,
+                                                                        self.get_code_coverage_settings(),
+                                                                        code_coverage_report,
+                                                                        ucdb_file)
         self._run_command_str(report_command)
 
 

@@ -160,3 +160,38 @@ def test_netlist_detection_with_sdf_file():
     file_obj = lib_files[0]
 
     assert file_obj.get_is_netlist() is True, "check SDF file detected as netlist"
+
+
+# ==============================================================
+# Netlist SV file
+# ==============================================================
+
+
+def test_add_system_verilog_file_filename_accepted():
+    '''
+    Test adding SV files.
+    '''
+    clear_output()
+    hr = HDLRegression()
+
+    test_files = get_file_path('../tb/dummy_sv_file.sv')
+    hr.add_files(test_files, 'test_lib', parse_file=False)
+    library = hr._get_library_object('test_lib')
+    file_list = library.get_hdlfile_list()
+    assert file_list[0].get_filename() == 'dummy_sv_file.sv', "check filename"
+
+
+def test_add_system_verilog_file_filetype():
+    '''
+    Test adding SV files.
+    '''
+    from hdlregression.construct.hdlfile import SVFile
+    clear_output()
+    hr = HDLRegression()
+
+    test_files = get_file_path('../tb/dummy_sv_file.sv')
+    hr.add_files(test_files, 'test_lib', parse_file=False)
+    library = hr._get_library_object('test_lib')
+    file_list = library.get_hdlfile_list()
+    assert isinstance(file_list[0], SVFile) == True, "check filetype object"
+

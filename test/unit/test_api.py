@@ -14,10 +14,9 @@ import pytest
 import sys
 import os
 import shutil
-
+from glob import glob
 from hdlregression import HDLRegression
 from compileall import compile_path
-
 
 if len(sys.argv) >= 2:
     '''
@@ -61,7 +60,6 @@ def test_init_only():
 
     assert (num_pass == 0) and (
         num_fail == 0), "Checking initialization without test run"
-
 
 # def test_compile_uvvm():
 #     '''
@@ -296,13 +294,13 @@ def test_set_simulator():
     hr = HDLRegression()
 
     com_options = ["some_options_1"]
-    simulator_path = "c:/tools/ghdl/bin"
-    hr.set_simulator(simulator="GHDL", path=simulator_path,
+    simulator_dummy_path = "../../test"
+    hr.set_simulator(simulator="GHDL", path=simulator_dummy_path,
                      com_options=com_options)
 
     assert hr.settings.get_simulator_name() == "GHDL", "check simulator selection"
     assert hr.settings.get_com_options() == com_options, "checking simulator options"
-    assert hr.settings.get_simulator_path() == simulator_path, "checking simulator path"
+    assert hr.settings.get_simulator_path() == simulator_dummy_path, "checking simulator path"
 
 
 def test_set_result_check_string():
@@ -406,8 +404,9 @@ def test_compile_uvvm_wrong_path():
 
 
 def test_compile_uvvm_correct_path():
+  uvvm_path = '../../../uvvm'
+  if glob(uvvm_path):
     clear_output()
     hr = HDLRegression()
-    success = hr.compile_uvvm('../../../uvvm')
-
+    success = hr.compile_uvvm(uvvm_path)
     assert success is True, "check passing UVVM compilation"

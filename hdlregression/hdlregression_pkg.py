@@ -16,11 +16,12 @@
 import platform
 import os
 import shutil
+from glob import glob
 from multiprocessing.pool import ThreadPool
-
 
 from .settings import HDLRegressionSettings
 from .report.logger import Logger
+from pickle import FALSE
 
 
 def dict_keys_to_lower(dictionary) -> dict:
@@ -103,10 +104,10 @@ def list_testcases(runner) -> str:
     runner.testbuilder._build_base_tests()
     run_tests = runner.testbuilder.test_container.get()
 
-    for idx, test in enumerate(run_tests):
+    for test in run_tests:
         generics = test.get_gc_str().replace('-g', '') if test.get_gc_str() else ''
 
-        tc_string += '%d - %s\n' % (idx + 1, test.get_testcase_name())
+        tc_string += 'TC:%d - %s\n' % (test.get_test_id_number(), test.get_testcase_name())
         if generics:
             tc_string += '    Generics: %s\n' % (generics)
 
@@ -243,7 +244,7 @@ def validate_cached_version(project,
     # Compare current version with cached version
     if (cached_version != installed_version) and (cached_version != '0.0.0'):
         project.logger.warning('WARNING! HDLRegression v%s not compatible with cached v%s. '
-                               'Executing database rebuild.' %
+                               'Executing database rebuild.' % 
                                (installed_version, cached_version))
         return False
     return True
@@ -299,7 +300,7 @@ def empty_project_folder(project):
     # Clean output, i.e. delete all
     if os.path.isdir(project.settings.get_output_path()):
         shutil.rmtree(project.settings.get_output_path())
-        project.logger.info('Project output path %s cleaned.' %
+        project.logger.info('Project output path %s cleaned.' % 
                             (project.settings.get_output_path()))
         try:
             os.mkdir(project.settings.get_output_path())
@@ -307,7 +308,7 @@ def empty_project_folder(project):
             project.logger.error(
                 'Unable to create output folder, %s.' % (error))
     else:
-        project.logger.info('No output folder to delete: %s.' %
+        project.logger.info('No output folder to delete: %s.' % 
                             (project.settings.get_output_path()))
 
 
@@ -456,5 +457,23 @@ def organize_libraries_by_dependency(project) -> None:
     return True
 
 
+def validate_path(project, path=None, filename=None) -> bool:
+    file_or_path_to_check = path if path is not None else filename
+    if file_or_path_to_check is not None and glob(file_or_path_to_check):
+        return True
+    else:
+        print_invalid_path_warning(project, file_or_path_to_check)
+        return False
+
+
 def check_file_exist(filename) -> bool:
-    return os.path.exists(filename)
+    if glob(filename):
+        return True
+    else:
+        return False
+
+
+def print_invalid_path_warning(project, path):
+    project.logger.warning('Path or file not found: %s\n'
+                           ' -> In Python strings, the backslash "\\" is a special character, also called the "escape" character.\n'
+                           '    Use forwardslash "/", double backslash "\\\\" or raw text string r"path".' % (path))
