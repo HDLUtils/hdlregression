@@ -116,7 +116,7 @@ class HdlRegressionTest:
     def get_hdlfile(self):
         return self.hdlfile
 
-    def set_need_to_simulate(self, need_to_simulate:bool=False):
+    def set_need_to_simulate(self, need_to_simulate: bool = False):
         self.need_to_simulate = need_to_simulate
 
     def get_need_to_simulate(self) -> bool:
@@ -185,7 +185,9 @@ class HdlRegressionTest:
         if self.get_gc_str():
             test_map_name += ':' + self.get_gc_str().replace('-g', '')
 
-        map_string = self.get_test_output_folder() + ', ' + test_map_name + '\n'
+        test_id_str = str(self.get_test_id_number())
+        map_string = test_id_str + ', ' + self.get_test_output_folder() + ', ' + \
+            test_map_name + '\n'
         return map_string
 
     def get_test_path(self) -> str:

@@ -13,7 +13,6 @@
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH UVVM OR THE USE OR OTHER DEALINGS IN HDLRegression.
 #
 
-import sys
 import os
 import re
 from multiprocessing.pool import ThreadPool
@@ -21,7 +20,6 @@ from multiprocessing.pool import ThreadPool
 from ..hdlfinder import HDLFinder
 from .container import Container
 from .hdl_modules_pkg import *
-from ..settings import HDLRegressionSettings
 from ..report.logger import Logger
 from .hdlfile import *
 
@@ -52,9 +50,12 @@ class Library:
         filefinder = HDLFinder(filename=filename, project=self.project)
         # Raise a warning if no files were found
         if len(filefinder.get_file_list()) == 0:
-            self.logger.warning('File not found: %s' % 
+            self.logger.warning('File not found: %s' %
                                 (os.path.abspath(filename)))
         return filefinder.get_file_list()
+
+    def update_file_list(self) -> None:
+        pass
 
     def check_library_files_for_changes(self) -> None:
         pass
@@ -124,6 +125,7 @@ class HDLLibrary(Library):
         self.lib_hdlfile_compile_order_list = []  # hdlfile compile order list
         self.compile_req = False  # library compilation required
         self.hdlfile_container = Container()  # hdlfile container
+        self.temp_hdlfile_container = Container()  # temp storage for add_file()
         # self.netlist_hdlfile_container = Container()  # netlist hdlfile container
 
     def get_never_recompile(self) -> bool:
@@ -168,7 +170,7 @@ class HDLLibrary(Library):
                           com_options=com_options,
                           parse_file=False,
                           code_coverage=code_coverage,
-                          project=self.project)            
+                          project=self.project)
         else:
             self.logger.warning('Unknown file type: %s' % (file_item))
             return UnknownFile(filename_with_path=file_item,
@@ -204,21 +206,25 @@ class HDLLibrary(Library):
                                                         parse_file=parse_file,
                                                         netlist_instance=netlist_instance,
                                                         code_coverage=code_coverage)
-                self.hdlfile_container.add(hdlfile_obj)
-                self.logger.debug('%s add_file(%s) - new file' % 
+                self.logger.debug('%s add_file(%s) - new file' %
                                   (self.get_name(), file_item))
 
             # Existing file
             else:
-                self.logger.debug('%s add_file(%s) - existing file' % 
+                self.logger.debug('%s add_file(%s) - existing file' %
                                   (self.get_name(), file_item))
+            self.temp_hdlfile_container.add(hdlfile_obj)
 
     def remove_file(self, filename) -> bool:
+        file_found = False
         for obj in self.hdlfile_container.get():
             if obj.get_filename() == filename:
                 self.hdlfile_container.remove(obj)
-                return True
-        return False
+        for obj in self.temp_hdlfile_container.get():
+            if obj.get_filename() == filename:
+                self.temp_hdlfile_container.remove(obj)
+                file_found = True
+        return file_found
 
     def get_hdlfile_obj(self, filename) -> 'HDLFile':
         '''
@@ -234,6 +240,51 @@ class HDLLibrary(Library):
         # Filename not found
         return None
 
+    def update_file_list(self) -> None:
+        '''
+        Update cached file liste with any changes from new run.
+        Files that are no longer present in the regression script
+        are moved from cache.
+
+        Update library recompilation if necessary.
+        '''
+        def check_list(new_list, old_list) -> tuple:
+            new_names = [new_file.get_filename()
+                         for new_file in new_list.get()]
+            old_names = [old_file.get_filename()
+                         for old_file in old_list.get()]
+
+            new_files = [hdlfile for hdlfile in new_list.get(
+            ) if hdlfile.get_filename() not in old_names]
+            removed_files = [hdlfile for hdlfile in old_list.get(
+            ) if hdlfile.get_filename() not in new_names]
+            return (new_files, removed_files)
+
+        # This check is only for regression scripts that call start()
+        # multiple times - i.e. no add_files() call, only new regression run.
+        if self.temp_hdlfile_container.num_elements() > 0:
+
+            # Get lists of new files and removed files
+            (new_files, removed_files) = check_list(self.temp_hdlfile_container,
+                                                    self.hdlfile_container)
+
+            # Add new files to container
+            for new_file in new_files:
+                self.hdlfile_container.add(new_file)
+                self.logger.debug('Added: %s' % (new_file.get_filename()))
+            # Remove removed files from container
+            for removed_file in removed_files:
+                self.hdlfile_container.remove(removed_file)
+                self.logger.debug('Removed: %s' %
+                                  (removed_file.get_filename()))
+
+            # Updated library recompile when file number has changed.
+            if new_files or removed_files:
+                self.set_need_compile(True)
+
+            # Empty temporary storage for next regression run.
+            self.temp_hdlfile_container.empty_list()
+
     def check_library_files_for_changes(self) -> None:
         '''
         Request each file process/scan file content and
@@ -245,13 +296,13 @@ class HDLLibrary(Library):
 
         def check_if_changed_and_parse(hdlfile) -> None:
             if hdlfile.get_need_compile() is True:
-                 recompile_needed = hdlfile.parse_file_if_needed()
-                 if recompile_needed is True:
+                recompile_needed = hdlfile.parse_file_if_needed()
+                if recompile_needed is True:
                     self.set_need_compile(True)
                     for dep_hdlfile in hdlfile.get_hdlfile_dep_on_this():
                         dep_hdlfile.set_need_compile(True)
 
-                 else:
+                else:
                     self.logger.warning(
                         'File was not parsed: %s' % (hdlfile.get_filename_with_path()))
 
@@ -269,8 +320,9 @@ class HDLLibrary(Library):
             for item in devided_list:
                 hdlfile_list += item
         # Execute using 1 or more threads
-        with ThreadPool(processes=num_threads) as thread_pool:
-            thread_pool.map(check_if_changed_and_parse, hdlfile_list)
+        if num_threads > 0:
+            with ThreadPool(processes=num_threads) as thread_pool:
+                thread_pool.map(check_if_changed_and_parse, hdlfile_list)
 
     def get_hdlfile_list(self) -> list:
         return self.hdlfile_container.get()
@@ -295,7 +347,7 @@ class HDLLibrary(Library):
         # Gui request recompile all
         elif self.project.settings.get_gui_compile_all() is True:
             return True
-        # Library set for compile
+        # Library recompile setting
         else:
             return self.compile_req
 
@@ -448,7 +500,7 @@ class HDLLibrary(Library):
                 # has no dependencies.
                 lowest_value_index = i
 
-                self.logger.debug("Check dep on %s" % 
+                self.logger.debug("Check dep on %s" %
                                   (file_list[lowest_value_index].get_name()))
                 # This loop iterates over the unsorted items
                 for j in range(i + 1, num_files):
@@ -458,7 +510,7 @@ class HDLLibrary(Library):
                     if check_file in with_file.get_hdlfile_this_dep_on():
                         if with_file in check_file.get_hdlfile_this_dep_on():
                             if not check_file.get_filename_with_path() == with_file.get_filename_with_path():
-                                self.logger.warning("%s : recursing dependency %s <-> %s." % 
+                                self.logger.warning("%s : recursing dependency %s <-> %s." %
                                                     (self.get_name(), check_file.get_name(), with_file.get_name()))
                                 continue
                         else:
@@ -510,7 +562,7 @@ class HDLLibrary(Library):
         Printer method for presenting the library w/modules
         in dependency order and w/compile status.
         '''
-        txt = ("\n%s Library %s modules inter-connect %s\n" % 
+        txt = ("\n%s Library %s modules inter-connect %s\n" %
                ("="*20, self.get_name(), "="*20))
         for idx, module in enumerate(self.module_list):
             if (module.get_is_entity() or module.get_is_package() or
@@ -527,13 +579,14 @@ class HDLLibrary(Library):
                 for item in module.get_depend_of_this():
                     dep_on_me += item.get_name() + "(" + item.get_type() + ")" + ", "
 
-                txt += ("|-(%d) %s (%s):\n|      ---->:%s\n|      <----:%s\n" % 
+                txt += ("|-(%d) %s (%s):\n|      ---->:%s\n|      <----:%s\n" %
                         (idx + 1, module.get_name(), module.get_type(), my_dep, dep_on_me))
 
-        txt += ("\n%s Library %s files compile order %s\n" % 
+        txt += ("\n%s Library %s files compile order %s\n" %
                 ("="*20, self.get_name(), "="*20))
         for idx, hdlfile in enumerate(self.lib_hdlfile_compile_order_list):
             tb_str = "(TB)" if hdlfile.get_is_tb() else ""
-            txt += ("(%d) %s %s\n" % (idx + 1, hdlfile.get_filename_with_path(), tb_str))
+            txt += ("(%d) %s %s\n" %
+                    (idx + 1, hdlfile.get_filename_with_path(), tb_str))
 
         return txt

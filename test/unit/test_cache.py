@@ -88,29 +88,33 @@ def test_initial_simulator_setting():
     hr.set_result_check_string('passing testcase')
     hr.start()
 
-    discovered_files = glob.glob('./**/hdlregression/library/*', recursive=True)
-    filenames = [os.path.basename(filename).lower() for filename in discovered_files]
+    discovered_files = glob.glob(
+        './**/hdlregression/library/*', recursive=True)
+    filenames = [os.path.basename(filename).lower()
+                 for filename in discovered_files]
 
-    assert hr.settings.get_simulator_name() == 'MODELSIM', 'checking initial simulator setting'
+    assert hr.settings.get_simulator_name(
+    ) == 'MODELSIM', 'checking initial simulator setting'
     assert 'modelsim.ini' in filenames, "check modelsim.ini exsist"
 
 
-def test_simulator_change():
+def test_set_simulator_ghdl():
     clear_output()
     hr = HDLRegression()
     hr.set_simulator('ghdl')
     input_file = get_file_path('../tb/tb_passing.vhd')
     hr.add_files(input_file, 'library_2')
     hr.set_result_check_string('passing testcase')
-    hr.add_files(input_file)
 
     hr.start()
     num_tests = hr.get_num_pass_tests() + hr.get_num_fail_tests()
 
-    discovered_files = glob.glob('./**/hdlregression/library/*', recursive=True)
-    filenames = [os.path.basename(filename).lower() for filename in discovered_files]
+    discovered_files = glob.glob(
+        './**/hdlregression/library/*', recursive=True)
+    filenames = [os.path.basename(filename).lower()
+                 for filename in discovered_files]
 
-    assert hr.settings.get_simulator_name() == 'GHDL', 'checking initial simulator setting'
+    sim_name = hr.settings.get_simulator_name()
+    assert sim_name == 'GHDL', 'checking initial simulator setting'
     assert num_tests == 1, 'check number of tests'
     assert 'modelsim.ini' not in filenames, "check GHDL simulator used in test suite"
-

@@ -118,24 +118,20 @@ def test_never_recompile_library_compilation():
     '''
     clear_output()
     hr = HDLRegression()
-    hr.set_result_check_string('passing testcase')
-    # filename = get_file_path(os.path.join(TEST_DIR, '../tb/tb_passing.vhd'))
-    filename = get_file_path('../tb/tb_passing.vhd')
 
+    hr.set_result_check_string('passing testcase')
+    filename = get_file_path('../tb/tb_passing.vhd')
     hr.add_files(filename, "test_lib_never_recompile")
     hr.add_files(filename, "tesl_lib_recompile")
-
     hr.configure_library(
         library="test_lib_never_recompile", never_recompile=True)
-
     hr.start(verbose=True)
 
     # Touch file to create changes
     Path(filename).touch()
-
     hr.start()
-    compiled_lib_list = hr.settings.get_library_compile()
 
+    compiled_lib_list = hr.settings.get_library_compile()
     lib_name_list = [lib.get_name() for lib in compiled_lib_list]
 
     assert "test_lib_never_recompile" not in lib_name_list, "Check not recompiled"

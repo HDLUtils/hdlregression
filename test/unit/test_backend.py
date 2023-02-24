@@ -64,18 +64,18 @@ def test_test_folder():
     assert found is True, "checking test folder %s" % (test_dirs)
 
 
-def test_new_test_in_test_folder():
+def test_new_test_file_added_in_2nd_run():
     clear_output()
     hr = HDLRegression()
-    test_files = get_file_path('../tb/tb_passing.vhd')
-    hr.add_files(test_files, 'test_lib')
-    hr.set_result_check_string('passing testcase')
 
-    # 1st run
+    # 1st run, one file
+    hr.add_files(get_file_path('../tb/tb_passing.vhd'), 'test_lib')
+    hr.set_result_check_string('passing testcase')
     hr.start()
 
-    # 2nd run
+    # 2nd run, added extra file
     hr = HDLRegression()
+    hr.add_files(get_file_path('../tb/tb_passing.vhd'), 'test_lib')
     hr.add_files(get_file_path('../tb/tb_passing_2.vhd'), 'test_lib_2')
     hr.set_result_check_string('passing testcase')
     hr.start()
@@ -86,17 +86,16 @@ def test_new_test_in_test_folder():
     assert found is True, "checking test folder with new test %s" % (test_dirs)
 
 
-def test_old_test_not_in_test_folder_2nd_run():
+def test_new_test_file_in_2nd_run_replaces_test_file_in_1st_run():
     clear_output()
     hr = HDLRegression()
-    test_files = get_file_path('../tb/tb_passing.vhd')
-    hr.add_files(test_files, 'test_lib')
-    hr.set_result_check_string('passing testcase')
 
-    # 1st run
+    # 1st run, one file
+    hr.add_files(get_file_path('../tb/tb_passing.vhd'), 'test_lib')
+    hr.set_result_check_string('passing testcase')
     hr.start()
 
-    # 2nd run
+    # 2nd run, new file - old file no longer part of run
     hr = HDLRegression()
     hr.add_files(get_file_path('../tb/tb_passing_2.vhd'), 'test_lib_2')
     hr.set_result_check_string('passing testcase')
@@ -105,9 +104,11 @@ def test_old_test_not_in_test_folder_2nd_run():
     test_dirs = get_folders('./hdlregression/test/*')
     found = any('tb_passing' in dir for dir in test_dirs)
 
-    assert found is False, "checking test folder without old test %s" % (test_dirs)
+    assert found is False, "checking test folder without old test %s" % (
+        test_dirs)
 
-def test_old_test_run_backup():
+
+def test_old_test_run_in_test_backup():
     clear_output()
     hr = HDLRegression()
     test_files = get_file_path('../tb/tb_passing.vhd')
@@ -124,10 +125,11 @@ def test_old_test_run_backup():
     backup_dirs = get_folders("hdlregression/test_*/*")
     found = any('tb_passing' in dir for dir in backup_dirs)
 
-    assert found is True, "checking old test run in backup folder %s" % (backup_dirs)
+    assert found is True, "checking old test run in backup folder %s" % (
+        backup_dirs)
 
 
-def test_new_test_run_not_in_backup():
+def test_new_test_run_not_in_test_backup():
     clear_output()
     hr = HDLRegression()
     test_files = get_file_path('../tb/tb_passing.vhd')
@@ -143,7 +145,8 @@ def test_new_test_run_not_in_backup():
     backup_dirs = get_folders("hdlregression/test_*/*")
     found = any('tb_simple_passing' in dir for dir in backup_dirs)
 
-    assert found is False, "checking new test run not in backup folder %s" % (backup_dirs)
+    assert found is False, "checking new test run not in backup folder %s" % (
+        backup_dirs)
 
 
 def test_keep_code_coverage_preserves_test_results():
@@ -165,40 +168,5 @@ def test_keep_code_coverage_preserves_test_results():
     test_dirs = get_folders('./hdlregression/test/*')
     found = any('tb_passing' in dir for dir in test_dirs)
 
-    assert found is True, "checking keep_code_coverage for test folder with old test %s" % (test_dirs)
-
-
-
-
-
-
-
-#def test_test_backup():
-#    clear_output()
-#    hr = HDLRegression()
-#    test_files = get_file_path('../tb/tb_passing.vhd')
-#    hr.add_files(test_files, 'test_lib')
-#    hr.set_result_check_string('passing testcase')
-#
-#    # 1st run
-#    hr.start()
-#
-#    # 2nd run
-#    hr.add_files(get_file_path('../tb/tb_passing_2.vhd'), 'test_lib')
-#    hr.start()
-#
-#    test_output_path = get_file_path('./hdlregression/test')
-#    dirs = glob.glob(test_output_path)
-#
-#    check_1_ok = any('tb_passing' in dir for dir in dirs)
-#    check_2_ok = any('tb_simple_passing' in dir for dir in dirs)
-#
-#    test_backup_path = get_file_path('./hdlregression/test_*')
-#    backup_dirs = glob.glob(test_backup_path)
-#
-#    check_3_ok = any('tb_passing' in dir for dir in backup_dirs)
-#    check_4_ok = any('tb_simple_passing' in dir for dir in backup_dirs)
-#
-#    assert check_1_ok and check_2_ok, "checking backup test folder %s" % (backup_dirs)
-#
-#    assert (check_3_ok is True) and (check_4_ok is False), "checking backup folder %s" % (backup_dirs)
+    assert found is True, "checking keep_code_coverage for test folder with old test %s" % (
+        test_dirs)

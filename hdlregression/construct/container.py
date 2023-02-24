@@ -25,13 +25,15 @@ class ContainerIndexError(HDLContainerError):
     def __str__(self):
         return 'Error when accessing container index: %d.' % (self.index)
 
+
 class ContainerNameError(HDLContainerError):
     def __init__(self, name):
         self.name = name
 
     def __str__(self):
         return 'Error when accessing container name: %s.' % (self.name)
-    
+
+
 class ContainerIndexTypeError(HDLContainerError):
     def __init__(self, type_name):
         self.type_name = type_name
@@ -79,9 +81,11 @@ class Container:
 
     def remove(self, element_name) -> None:
         if isinstance(element_name, str):
-            temp_list = [element for element in self.storage if element.get_name().lower() != element_name.lower()]
+            temp_list = [element for element in self.storage
+                         if element.get_name().lower() != element_name.lower()]
         else:
-            temp_list = [element for element in self.storage if element.get_name().lower() != element_name.get_name().lower()]
+            temp_list = [element for element in self.storage
+                         if element.get_name().lower() != element_name.get_name().lower()]
         self.storage = temp_list
 
     def num_elements(self) -> int:

@@ -84,6 +84,7 @@ def test_file_type():
     hr = HDLRegression()
     filename = get_file_path("../tb/tb_testcase.vhd")
     hr.add_files(filename, 'filetype_lib')
+    hr.start()
 
     test_lib = hr._get_library_object('filetype_lib')
 
@@ -101,6 +102,7 @@ def test_remove():
     hr.add_files(filename, 'remove_file_lib')
 
     hr.remove_file("tb_passing_2.vhd", "remove_file_lib")
+    hr.start()
 
     test_lib = hr._get_library_object('remove_file_lib')
     lib_files = test_lib.get_hdlfile_list()
@@ -136,6 +138,7 @@ def test_netlist_detection_with_vhd_file():
     hr = HDLRegression()
     filename = get_file_path("../tb/tb_testcase.vhd")
     hr.add_files(filename, 'filetype_lib')
+    hr.start()
 
     test_lib = hr._get_library_object('filetype_lib')
 
@@ -151,6 +154,7 @@ def test_netlist_detection_with_sdf_file():
     hr = HDLRegression()
     filename = get_file_path("../tb/netlist.sdf")
     hr.add_files(filename, 'filetype_lib')
+    hr.start()
 
     test_lib = hr._get_library_object('filetype_lib')
 
@@ -176,6 +180,8 @@ def test_add_system_verilog_file_filename_accepted():
 
     test_files = get_file_path('../tb/dummy_sv_file.sv')
     hr.add_files(test_files, 'test_lib', parse_file=False)
+    hr.start()
+
     library = hr._get_library_object('test_lib')
     file_list = library.get_hdlfile_list()
     assert file_list[0].get_filename() == 'dummy_sv_file.sv', "check filename"
@@ -191,7 +197,8 @@ def test_add_system_verilog_file_filetype():
 
     test_files = get_file_path('../tb/dummy_sv_file.sv')
     hr.add_files(test_files, 'test_lib', parse_file=False)
+    hr.start()
+
     library = hr._get_library_object('test_lib')
     file_list = library.get_hdlfile_list()
     assert isinstance(file_list[0], SVFile) == True, "check filetype object"
-

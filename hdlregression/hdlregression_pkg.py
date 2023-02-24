@@ -107,7 +107,8 @@ def list_testcases(runner) -> str:
     for test in run_tests:
         generics = test.get_gc_str().replace('-g', '') if test.get_gc_str() else ''
 
-        tc_string += 'TC:%d - %s\n' % (test.get_test_id_number(), test.get_testcase_name())
+        tc_string += 'TC:%d - %s\n' % (test.get_test_id_number(),
+                                       test.get_testcase_name())
         if generics:
             tc_string += '    Generics: %s\n' % (generics)
 
@@ -244,7 +245,7 @@ def validate_cached_version(project,
     # Compare current version with cached version
     if (cached_version != installed_version) and (cached_version != '0.0.0'):
         project.logger.warning('WARNING! HDLRegression v%s not compatible with cached v%s. '
-                               'Executing database rebuild.' % 
+                               'Executing database rebuild.' %
                                (installed_version, cached_version))
         return False
     return True
@@ -300,7 +301,7 @@ def empty_project_folder(project):
     # Clean output, i.e. delete all
     if os.path.isdir(project.settings.get_output_path()):
         shutil.rmtree(project.settings.get_output_path())
-        project.logger.info('Project output path %s cleaned.' % 
+        project.logger.info('Project output path %s cleaned.' %
                             (project.settings.get_output_path()))
         try:
             os.mkdir(project.settings.get_output_path())
@@ -308,7 +309,7 @@ def empty_project_folder(project):
             project.logger.error(
                 'Unable to create output folder, %s.' % (error))
     else:
-        project.logger.info('No output folder to delete: %s.' % 
+        project.logger.info('No output folder to delete: %s.' %
                             (project.settings.get_output_path()))
 
 
@@ -392,6 +393,7 @@ def request_libraries_prepare(project) -> None:
 
     # Thread method
     def library_prepare(library) -> None:
+        library.update_file_list()
         library.check_library_files_for_changes()
         library.prepare_for_run()
 

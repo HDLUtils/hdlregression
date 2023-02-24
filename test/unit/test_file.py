@@ -74,6 +74,8 @@ def test_add_files_wildcase():
 
     test_files = get_file_path('../tb/my_tb_arch_*.vhd')
     hr.add_files(test_files, 'test_lib')
+    hr.start()
+
     library = hr._get_library_object('test_lib')
     file_list = library.get_hdlfile_list()
     assert len(file_list) == 3, "Check number of files added"
@@ -93,6 +95,7 @@ def test_add_files_name():
     for test_file in test_files:
         test_file = get_file_path(test_file)
         hr.add_files(test_file, 'test_lib')
+    hr.start()
 
     library = hr._get_library_object('test_lib')
     file_list = library.get_hdlfile_list()
@@ -114,6 +117,7 @@ def test_readback_file_list_one_library():
     for test_file in test_files:
         test_file = get_file_path(test_file)
         hr.add_files(test_file, 'test_lib')
+    hr.start()
 
     file_list = hr.get_file_list()
 
@@ -150,6 +154,7 @@ def test_readback_file_list_multiple_libraries():
     test_files_3 = ['../tb/tb_failing.vhd']
     test_file = get_file_path(test_files_3[0])
     hr.add_files(test_file, 'test_lib_3')
+    hr.start()
 
     file_list = hr.get_file_list()
 
