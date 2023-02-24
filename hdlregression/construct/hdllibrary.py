@@ -301,7 +301,6 @@ class HDLLibrary(Library):
                     self.set_need_compile(True)
                     for dep_hdlfile in hdlfile.get_hdlfile_dep_on_this():
                         dep_hdlfile.set_need_compile(True)
-
                 else:
                     self.logger.warning(
                         'File was not parsed: %s' % (hdlfile.get_filename_with_path()))

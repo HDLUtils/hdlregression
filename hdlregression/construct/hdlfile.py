@@ -34,8 +34,8 @@ class HDLFile:
         self.compile_time = 0
         self.hdlfile_this_dep_on_list = []
         self.hdlfile_dep_on_this_list = []
-        
-        # Netlist file is not parsed        
+
+        # Netlist file is not parsed
         self.parse_file = parse_file
 
         # Setup defaults
@@ -67,6 +67,7 @@ class HDLFile:
 
     def get_need_compile(self) -> bool:
         need_compile = (self.get_file_change_date() > self.compile_time)
+        need_compile = need_compile or self.get_library().get_need_compile()
         return need_compile
 
     def set_need_compile(self, need_compile: bool):
@@ -78,7 +79,8 @@ class HDLFile:
 
     def get_file_change_date(self) -> str:
         try:
-            self.file_change_date = os.path.getmtime(self.get_filename_with_path())
+            self.file_change_date = os.path.getmtime(
+                self.get_filename_with_path())
         except:
             self.file_change_date = 0
         finally:
@@ -100,7 +102,7 @@ class HDLFile:
 
     def get_filename(self) -> str:
         return self.filename
-      
+
     def get_filename_with_path(self) -> str:
         return self.filename_with_path
 
@@ -213,7 +215,7 @@ class HDLFile:
 
     def _get_com_options(self, simulator) -> str:
         return ""
-    
+
 
 class VHDLFile(HDLFile):
 
@@ -227,7 +229,7 @@ class VHDLFile(HDLFile):
         Create a scanner object for the file and scan the content, i.e
         check of TB pragma, find generics and testcases, create module
         objects+++.
-        
+
         :rtype: bool
         :return: True if file has been parsed, else False
         '''
@@ -238,13 +240,13 @@ class VHDLFile(HDLFile):
             return True
 
         file_content_list = self._get_file_content_as_list()
-    
+
         # Create an Inspector() object for tokenizing and parsing
         self.scanner = VHDLScanner(project=self.project,
                                    library=self.get_library(),
                                    filename=self.get_filename_with_path(),
                                    hdlfile=self)
-    
+
         if self.scanner is None:
             return False
         else:
@@ -262,7 +264,8 @@ class VHDLFile(HDLFile):
               com_options(str): simulator options for file.
         '''
         hdl_version = self.get_hdl_version()
-        default_com_options = self.project.settings.get_com_options(hdl_lang='vhdl')
+        default_com_options = self.project.settings.get_com_options(
+            hdl_lang='vhdl')
 
         # User defined hdl_version set
         if simulator.upper() == "GHDL":
@@ -352,7 +355,7 @@ class VerilogFile(HDLFile):
         # Check if file should be parsed
         if self.parse_file is False:
             return True
-        
+
         file_content_list = self._get_file_content_as_list()
         self.scanner = VerilogScanner(project=self.project,
                                       library=self.get_library(),
@@ -376,11 +379,12 @@ class VerilogFile(HDLFile):
               com_options(str): simulator options for file.
         '''
         hdl_version = self.get_hdl_version()
-        default_com_options = self.project.settings.get_com_options(hdl_lang='verilog')
+        default_com_options = self.project.settings.get_com_options(
+            hdl_lang='verilog')
         if self.com_options is not None:
-          return self.com_options
+            return self.com_options
         else:
-          return default_com_options
+            return default_com_options
 
     def check_file_type(self, filetype) -> bool:
         if filetype.lower() == 'verilog':
@@ -402,19 +406,20 @@ class VerilogFile(HDLFile):
                 if module.get_is_tb():
                     return True
         return False
-      
+
 
 class SVFile(HDLFile):
 
     def __init__(self, filename_with_path, project, library, hdl_version, com_options, parse_file, code_coverage):
         super().__init__(filename_with_path, project,
                          library, hdl_version, com_options, parse_file, code_coverage)
-    
+
     def check_file_type(self, filetype) -> bool:
         if filetype.lower() == 'systemverilog':
             return True
         return False
-      
+
+
 class UnknownFile(HDLFile):
 
     def __init__(self, filename_with_path, project, library, hdl_version, com_options, parse_file, code_coverage):

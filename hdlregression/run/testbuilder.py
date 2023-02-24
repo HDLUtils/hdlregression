@@ -218,7 +218,7 @@ class TestBuilder:
                                     test.set_tc(gc[1])
                                 else:
                                     test.set_gc(gc)
-                                    
+
                                 self.test_container.add(test)
 
                     # No scripted generics tests
@@ -275,8 +275,9 @@ class TestBuilder:
         if _is_testcase_an_index_number() is True:
             index = _get_testcase_index_number()
             if index is None:
-              self.logger.error('Testcase is not a valid index (1 to %d).' % (self.test_id_count))
-              return None
+                self.logger.error(
+                    'Testcase is not a valid index (1 to %d).' % (self.test_id_count))
+                return None
             self._get_testcase_from_index(index)
         else:
             self._get_testcase_from_string(testcase_list)
@@ -414,6 +415,7 @@ class TestBuilder:
         Will return test object based on HDL file type.
         '''
         hdlfile = tb.get_hdlfile()
+
         if isinstance(hdlfile, VHDLFile):
             test = VHDLTest(tb=tb, arch=arch, tc=tc, gc=gc,
                             settings=self.project.settings)
@@ -426,9 +428,10 @@ class TestBuilder:
             test = VerilogTest(tb=tb, settings=self.project.settings)
             test.set_hdlfile(hdlfile)
             test.set_need_to_simulate(hdlfile.get_need_compile())
+            self.test_id_count += 1
             test.set_test_id_number(self.test_id_count)
             return test
         else:
-            self.logger.warning('Filetype not detected for %s' % 
+            self.logger.warning('Filetype not detected for %s' %
                                 (type(tb.get_hdlfile())))
             return None
