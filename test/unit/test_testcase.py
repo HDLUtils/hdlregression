@@ -80,6 +80,34 @@ def test_testcase_select():
     assert testcase == 'testbench_test.architecture_test.testcase_test', 'checking add_testcase()'
 
 
+def test_testcase_with_whitespace():
+    clear_output()
+    hr = HDLRegression()
+
+    hr.add_testcase('testbench_test.architecture_test.testcase_test ')
+
+    testcase = hr.settings.get_testcase()
+
+    # Testcase is stored as list [testbench, architecture, test]
+    testcase = '.'.join(testcase)
+
+    assert testcase == 'testbench_test.architecture_test.testcase_test', 'checking add_testcase()'
+
+
+def test_testcase_with_tabulator():
+    clear_output()
+    hr = HDLRegression()
+
+    hr.add_testcase('testbench_test.architecture_test.testcase_test ')
+
+    testcase = hr.settings.get_testcase()
+
+    # Testcase is stored as list [testbench, architecture, test]
+    testcase = '.'.join(testcase)
+
+    assert testcase == 'testbench_test.architecture_test.testcase_test', 'checking add_testcase()'
+
+
 def test_one_testcase_selected():
     clear_output()
     hr = HDLRegression()

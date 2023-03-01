@@ -329,6 +329,9 @@ class HDLRegressionSettings:
             testcase(str) : entity.architecture.sequencer_testcase
         """
         if testcase:
+            # Remove trailing whitespace
+            testcase = testcase.strip()
+
             # Convert to list
             if isinstance(testcase, list):
                 testcase = testcase[0].split('.')

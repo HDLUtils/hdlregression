@@ -78,6 +78,7 @@ class NVCRunner(SimRunner):
         if elab_run:
             return_list += ["-e"]
             return_list += ["--no-save"]
+            return_list += ["--jit"]
             if module_call:
                 return_list += [module_call]
             if generic_call:
