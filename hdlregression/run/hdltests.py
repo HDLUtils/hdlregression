@@ -13,7 +13,6 @@
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH UVVM OR THE USE OR OTHER DEALINGS IN HDLRegression.
 #
 
-
 import os
 import zlib
 
@@ -66,10 +65,10 @@ class HdlRegressionTest:
         A section of the test output is saved so that the
         test error can be printed from a failing testcase.
         """
-        error_lines = ''.join(output_lines[len(output_lines)-30:])
-        self.test_error_summary = '\n%s\n%s\n%s\n' % (('===='*40),
+        error_lines = ''.join(output_lines[len(output_lines) - 30:])
+        self.test_error_summary = '\n%s\n%s\n%s\n' % (('====' * 40),
                                                       ''.join(error_lines),
-                                                      ('===='*40))
+                                                      ('====' * 40))
 
     def get_test_error_summary(self) -> str:
         return self.test_error_summary
@@ -96,7 +95,7 @@ class HdlRegressionTest:
         self.set_terminal_test_string(test_string)
 
         # remove leading "Running: " and new line from test_string
-        test_string = test_string[test_string.find(':')+1:].strip()
+        test_string = test_string[test_string.find(':') + 1:].strip()
         # remove auxiliary "\nGENERICS" from test_string
         if '\n' in test_string:
             test_string = test_string[:test_string.index('\n')]
@@ -116,7 +115,7 @@ class HdlRegressionTest:
     def get_hdlfile(self):
         return self.hdlfile
 
-    def set_need_to_simulate(self, need_to_simulate: bool = False):
+    def set_need_to_simulate(self, need_to_simulate: bool=False):
         self.need_to_simulate = need_to_simulate
 
     def get_need_to_simulate(self) -> bool:
@@ -158,8 +157,8 @@ class HdlRegressionTest:
 
     def get_is_verilog(self) -> bool:
         return False
-
-    def get_gc_str(self) -> str:
+    
+    def get_gc_str(self, filter_testcase_id=False) -> str:
         return ''
 
     def get_name(self) -> str:
@@ -280,37 +279,35 @@ class VHDLTest(HdlRegressionTest):
 
     def get_gc(self) -> list:
         return self.gc
-
-    def get_gc_str(self) -> str:
+    
+    def get_gc_str(self, filter_testcase_id=False) -> str:
         ID_TESTCASE = self.settings.get_testcase_identifier_name().upper()
 
         tb = self.get_tb()
 
         # Get list of generics that were discovered in this TB
         tb_disc_gc_list = [gc.upper() for gc in tb.get_generic()]
-
+        
         # Init the generic call with testcase if applicable
         tc = self.get_tc()
-        gc_str = '-g'+ID_TESTCASE+'='+tc if tc else ""
+        gc_str = '-g' + ID_TESTCASE + '=' + tc if (tc and (filter_testcase_id is False)) else ""
 
         generic_list = self.get_gc()
-
-        if generic_list is None:
-            return gc_str
-
-        generic_name = ""
-        for idx, gc_item in enumerate(generic_list):
-            if idx % 2 == 0:
-                generic_name = gc_item.upper()
-            else:
-                generic_value = str(gc_item)
-
-                # Filter out any non-valid generics
-                if generic_name in tb_disc_gc_list:
-                    if not gc_str:
-                        gc_str = '-g' + generic_name + '=' + generic_value
-                    else:
-                        gc_str += ' -g' + generic_name + '=' + generic_value
+        
+        if generic_list:
+            generic_name = ""
+            for idx, gc_item in enumerate(generic_list):
+                if idx % 2 == 0:
+                    generic_name = gc_item.upper()
+                else:
+                    generic_value = str(gc_item)
+    
+                    # Filter out any non-valid generics
+                    if generic_name in tb_disc_gc_list:
+                        if not gc_str:
+                            gc_str = '-g' + generic_name + '=' + generic_value
+                        else:
+                            gc_str += ' -g' + generic_name + '=' + generic_value
 
         return gc_str
 
@@ -357,7 +354,7 @@ class VerilogTest(HdlRegressionTest):
     def get_gc(self) -> list:
         return self.gc
 
-    def get_gc_str(self) -> str:
+    def get_gc_str(self, filter_testcase_id=False) -> str:
         ID_TESTCASE = self.settings.get_testcase_identifier_name().upper()
 
         tb = self.get_tb()
@@ -369,25 +366,23 @@ class VerilogTest(HdlRegressionTest):
         # Init the generic call with testcase if applicable
         tc = self.get_tc()
 
-        gc_str = '-g'+ID_TESTCASE+'='+tc if tc else ""
+        gc_str = '-g' + ID_TESTCASE + '=' + tc if (tc and (filter_testcase_id is False)) else ""
 
         generic_list = self.get_gc()
 
-        if generic_list is None:
-            return gc_str
-
-        generic_name = ""
-        for idx, gc_item in enumerate(generic_list):
-            if idx % 2 == 0:
-                generic_name = gc_item.upper()
-            else:
-                generic_value = str(gc_item)
-
-                # Filter out any non-valid generics
-                if generic_name in tb_disc_parameter_list:
-                    if not gc_str:
-                        gc_str = '-g' + generic_name + '=' + generic_value
-                    else:
-                        gc_str += ' -g' + generic_name + '=' + generic_value
-
+        if generic_list is not None:
+            generic_name = ""
+            for idx, gc_item in enumerate(generic_list):
+                if idx % 2 == 0:
+                    generic_name = gc_item.upper()
+                else:
+                    generic_value = str(gc_item)
+    
+                    # Filter out any non-valid generics
+                    if generic_name in tb_disc_parameter_list:
+                        if not gc_str:
+                            gc_str = '-g' + generic_name + '=' + generic_value
+                        else:
+                            gc_str += ' -g' + generic_name + '=' + generic_value
+    
         return gc_str

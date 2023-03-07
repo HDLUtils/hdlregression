@@ -42,7 +42,7 @@ class CommandExecuteError(HDLRunnerError):
         self.logger = Logger(name=__name__)
 
     def __str__(self):
-        return self.logger.str_error(f"Error executing: {self.command}.") 
+        return self.logger.str_error(f"Error executing: {self.command}.")
 
 
 class CommandRunner:
@@ -89,14 +89,16 @@ class CommandRunner:
 
         return_code = None
         popen = None
-        
+
         ignored_simulator_exit_codes = self.project.settings.get_ignored_simulator_exit_codes()
 
         try:
             popen = self._get_process(command, path)
             q_transcript = Queue()
-            t_stdout = Thread(target=self._enqueue_output, args=(popen.stdout, q_transcript, output_file, False))
-            t_stderr = Thread(target=self._enqueue_output, args=(popen.stderr, q_transcript, output_file, True))
+            t_stdout = Thread(target=self._enqueue_output, args=(
+                popen.stdout, q_transcript, output_file, False))
+            t_stderr = Thread(target=self._enqueue_output, args=(
+                popen.stderr, q_transcript, output_file, True))
             t_stdout.daemon = True  # thread dies with the program
             t_stderr.daemon = True  # thread dies with the program
             t_stdout.start()
@@ -129,7 +131,7 @@ class CommandRunner:
             return_code = popen.returncode
         if return_code != 0:
             if return_code not in ignored_simulator_exit_codes:
-              yield f"Error: Program ended with exit code {return_code}", False
+                yield f"Error: Program ended with exit code {format(return_code)}", False
         return
 
     def _convert_to_list(self, command) -> list:

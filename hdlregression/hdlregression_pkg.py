@@ -105,7 +105,7 @@ def list_testcases(runner) -> str:
     run_tests = runner.testbuilder.test_container.get()
 
     for test in run_tests:
-        generics = test.get_gc_str().replace('-g', '') if test.get_gc_str() else ''
+        generics = test.get_gc_str(filter_testcase_id=True).replace('-g', '') if test.get_gc_str() else ''
 
         tc_string += 'TC:%d - %s\n' % (test.get_test_id_number(),
                                        test.get_testcase_name())

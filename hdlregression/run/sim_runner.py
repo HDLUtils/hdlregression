@@ -676,7 +676,7 @@ class SimRunner:
         test.set_terminal_test_details_str(test_details_str)
         test.set_result_success(
             test_ok, no_minor_alerts=test_ok_no_minor_alerts)
-
+        
     @staticmethod
     def _create_terminal_test_info_output_string(test, descriptive_test_name) -> str:
         '''
@@ -684,7 +684,8 @@ class SimRunner:
         '''
         test_string = 'Running: '
         # Build string base for test run result reporting
-        generics = test.get_gc_str()
+        generics = test.get_gc_str(filter_testcase_id=True)
+        
         if generics:
             generics = generics.replace('-g', '')
         test_string += descriptive_test_name.replace('(', '.').replace(')', '')
