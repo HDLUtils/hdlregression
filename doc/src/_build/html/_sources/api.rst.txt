@@ -218,11 +218,34 @@ Changes the default library name used when `add_files()`_ is used without the ``
   The default library name is *"my_work_lib"*.
 
 
+
+
 start()
 =======================================================================================================================
 
 | This method will initiate compilation, simulation, reporting etc. 
-| No adding of files or other simulation configurations in the regression script is allowed after this method call.
+| After calling this method, adding files or making changes to simulation configurations in the regression script
+| is not permitted. Ensure that all necessary files and configurations are set before invoking the method to avoid
+| issues during the simulation process.
+
+
+**Return code**
+
+The return code from the start() method is either 0 or 1, based on whether the success criteria listed below are met:
+
++------------------------------------------------------------------+-------------+
+| Criteria                                                         | Return code |
++==================================================================+=============+
+| No compilation error and testcase(s) has been run without errors | 0           |
++------------------------------------------------------------------+-------------+
+| No compilation error and no testcase run                         | 1           |
++------------------------------------------------------------------+-------------+
+| No compilation error and testcase run with one or more errors    | 1           |
++------------------------------------------------------------------+-------------+
+| Compilation error (no testcases will be run)                     | 1           |
++------------------------------------------------------------------+-------------+
+
+**Arguments**
 
 The default operation is to run in :ref:`regression mode <What is regression testing>` without :doc:`GUI <gui>` enabled, 
 yet this can be changed using the available arguments or by using the :doc:`command line interfaces <cli>`.
@@ -254,7 +277,6 @@ yet this can be changed using the available arguments or by using the :doc:`comm
 +------------------------------+-----------------------+---------------+---------------+
 
 
-
 **Example:**
 
 .. code-block:: python
@@ -262,6 +284,7 @@ yet this can be changed using the available arguments or by using the :doc:`comm
   hr.start(gui_mode=True, threading=True)
 
   hr.start(netlist_timing='-sdfmin')
+
 
 
 .. note::

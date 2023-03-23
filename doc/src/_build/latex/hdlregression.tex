@@ -61,9 +61,8 @@
 
 
 \title{hdlregression}
-\date{Feb 23, 2023}
-\release{0.34.2
-}
+\date{Mar 22, 2023}
+\release{0.35.3}
 \author{UVVM}
 \newcommand{\sphinxlogo}{\vbox{}}
 \renewcommand{\releasename}{Release}
@@ -839,8 +838,64 @@ The default library name is \sphinxstyleemphasis{“my\_work\_lib”}.
 \label{\detokenize{api:start}}
 \begin{DUlineblock}{0em}
 \item[] This method will initiate compilation, simulation, reporting etc.
-\item[] No adding of files or other simulation configurations in the regression script is allowed after this method call.
+\item[] After calling this method, adding files or making changes to simulation configurations in the regression script
+\item[] is not permitted. Ensure that all necessary files and configurations are set before invoking the method to avoid
+\item[] issues during the simulation process.
 \end{DUlineblock}
+
+\sphinxAtStartPar
+\sphinxstylestrong{Return code}
+
+\sphinxAtStartPar
+The return code from the start() method is either 0 or 1, based on whether the success criteria listed below are met:
+
+
+\begin{savenotes}\sphinxattablestart
+\centering
+\begin{tabulary}{\linewidth}[t]{|T|T|}
+\hline
+\sphinxstyletheadfamily 
+\sphinxAtStartPar
+Criteria
+&\sphinxstyletheadfamily 
+\sphinxAtStartPar
+Return code
+\\
+\hline
+\sphinxAtStartPar
+No compilation error and testcase(s) has been run without errors
+&
+\sphinxAtStartPar
+0
+\\
+\hline
+\sphinxAtStartPar
+No compilation error and no testcase run
+&
+\sphinxAtStartPar
+1
+\\
+\hline
+\sphinxAtStartPar
+No compilation error and testcase run with one or more errors
+&
+\sphinxAtStartPar
+1
+\\
+\hline
+\sphinxAtStartPar
+Compilation error (no testcases will be run)
+&
+\sphinxAtStartPar
+1
+\\
+\hline
+\end{tabulary}
+\par
+\sphinxattableend\end{savenotes}
+
+\sphinxAtStartPar
+\sphinxstylestrong{Arguments}
 
 \sphinxAtStartPar
 The default operation is to run in {\hyperref[\detokenize{intro:what-is-regression-testing}]{\sphinxcrossref{\DUrole{std,std-ref}{regression mode}}}} without {\hyperref[\detokenize{gui::doc}]{\sphinxcrossref{\DUrole{doc}{GUI}}}} enabled,

@@ -84,6 +84,7 @@ class HDLRegressionSettings:
 
     def set_return_code(self, return_code: int):
         self.return_code = return_code
+        self.set_success_run(False)
 
     def get_return_code(self) -> int:
         return self.return_code

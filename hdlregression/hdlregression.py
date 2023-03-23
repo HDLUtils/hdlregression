@@ -555,7 +555,6 @@ class HDLRegression:
 
             if not compile_success:
                 self.settings.set_return_code(1)
-                self.settings.set_success_run(False)
                 self.logger.info('Compilation failed - aborting!')
             else:
                 self.settings.set_success_run(True)
@@ -601,7 +600,6 @@ class HDLRegression:
             # Update return_code if compilation has failed
             if compile_success is False:
                 self.settings.set_return_code(1)
-                self.settings.set_success_run(False)
 
             # Start simulations if compile was OK
             else:
@@ -611,7 +609,6 @@ class HDLRegression:
 
                 if not sim_success or (self.get_num_fail_tests() > 0):
                     self.settings.set_return_code(1)
-                    self.settings.set_success_run(False)
                 else:
 
                     # Single testcase run is not a valid regression
@@ -638,6 +635,8 @@ class HDLRegression:
         if self.get_num_tests_run() > 0:
             print_run_success(project=self)
             self._generate_run_report_files()
+        else:
+            self.settings.set_return_code(1)
 
         # Merge coverage files and generate reports.
         if self.hdlcodecoverage.merge_code_coverage() is False:
@@ -818,6 +817,9 @@ class HDLRegression:
         :rtype: bool
         :return: True when command is valid
         '''
+        
+        _compile_uvvm(project=self, path=path_to_uvvm, verbose=verbose)
+        
         if self.settings.get_simulator_name() in ["MODELSIM", "ALDEC"]:
             lib_compile_path = os.path.join(sim_path, 'hdlregression/library')
             uvvm_script_path = os.path.join(path_to_uvvm, 'script')
@@ -972,7 +974,6 @@ class HDLRegression:
         if not success:
             # return_code = 1
             self.settings.set_return_code(1)
-            self.settings.set_success_run(False)
             print("hdlregression:failed")
         else:
             self.settings.set_success_run(True)
@@ -988,7 +989,6 @@ class HDLRegression:
 
         # Exit with return code
         return self.settings.get_return_code()
-        # return return_code
 
     def _get_install_version(self) -> str:
         '''

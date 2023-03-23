@@ -1101,11 +1101,11 @@ INPUT /usr/local/texlive/2021/texmf-dist/tex/latex/txfonts/ts1txtt.fd
 INPUT /usr/local/texlive/2021/texmf-dist/tex/latex/txfonts/ts1txtt.fd
 INPUT /usr/local/texlive/2021/texmf-dist/fonts/tfm/public/txfonts/tcxtt.tfm
 INPUT /usr/local/texlive/2021/texmf-dist/fonts/tfm/public/txfonts/tcxsl.tfm
+INPUT /usr/local/texlive/2021/texmf-dist/fonts/tfm/public/tex-gyre/ec-qtmr.tfm
 INPUT /usr/local/texlive/2021/texmf-dist/fonts/vf/public/txfonts/tcxsl.vf
 INPUT /usr/local/texlive/2021/texmf-dist/fonts/tfm/public/txfonts/rtxptmro.tfm
 INPUT /usr/local/texlive/2021/texmf-dist/fonts/tfm/public/txfonts/rtcxsl.tfm
 INPUT /usr/local/texlive/2021/texmf-dist/fonts/tfm/public/txfonts/rtxptmr.tfm
-INPUT /usr/local/texlive/2021/texmf-dist/fonts/tfm/public/tex-gyre/ec-qtmr.tfm
 INPUT ./full_regression.png
 INPUT ./full_regression.png
 INPUT full_regression.png

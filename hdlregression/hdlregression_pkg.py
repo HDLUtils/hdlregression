@@ -479,3 +479,11 @@ def print_invalid_path_warning(project, path):
     project.logger.warning('Path or file not found: %s\n'
                            ' -> In Python strings, the backslash "\\" is a special character, also called the "escape" character.\n'
                            '    Use forwardslash "/", double backslash "\\\\" or raw text string r"path".' % (path))
+
+
+def _compile_uvvm(project, path, verbose):
+    '''
+    Locate uvvm/script/component_list.txt
+    Inside each verification component: locate <comp>/script/compile_order.txt and run add_files()
+    '''
+    pass

@@ -170,6 +170,7 @@ class SimRunner:
                     self.logger.info(' - FAIL - ', end='\n', color='red')
                     success = False
                     library.set_need_compile(True)
+                    self.project.settings.set_return_code(1)
                 else:
                     self.logger.info(' - OK - ', end='\n', color='green')
                     library.set_need_compile(False)
@@ -210,6 +211,7 @@ class SimRunner:
                     if self.project.settings.get_stop_on_failure():
                         self.logger.warning(
                             'Simulations stopped because of failing testcase.')
+                    self.project.settings.set_return_code(1)
                 test_queue.task_done()
 
         # default
