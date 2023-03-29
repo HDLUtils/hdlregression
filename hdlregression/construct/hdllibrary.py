@@ -50,8 +50,7 @@ class Library:
         filefinder = HDLFinder(filename=filename, project=self.project)
         # Raise a warning if no files were found
         if len(filefinder.get_file_list()) == 0:
-            self.logger.warning('File not found: %s' %
-                                (os.path.abspath(filename)))
+            self.logger.warning('Not found: %s' % (filename))
         return filefinder.get_file_list()
 
     def update_file_list(self) -> None:
@@ -206,12 +205,12 @@ class HDLLibrary(Library):
                                                         parse_file=parse_file,
                                                         netlist_instance=netlist_instance,
                                                         code_coverage=code_coverage)
-                self.logger.debug('%s add_file(%s) - new file' %
+                self.logger.debug('%s add_file(%s) - new file' % 
                                   (self.get_name(), file_item))
 
             # Existing file
             else:
-                self.logger.debug('%s add_file(%s) - existing file' %
+                self.logger.debug('%s add_file(%s) - existing file' % 
                                   (self.get_name(), file_item))
             self.temp_hdlfile_container.add(hdlfile_obj)
 
@@ -248,6 +247,7 @@ class HDLLibrary(Library):
 
         Update library recompilation if necessary.
         '''
+
         def check_list(new_list, old_list) -> tuple:
             new_names = [new_file.get_filename()
                          for new_file in new_list.get()]
@@ -275,7 +275,7 @@ class HDLLibrary(Library):
             # Remove removed files from container
             for removed_file in removed_files:
                 self.hdlfile_container.remove(removed_file)
-                self.logger.debug('Removed: %s' %
+                self.logger.debug('Removed: %s' % 
                                   (removed_file.get_filename()))
 
             # Updated library recompile when file number has changed.
@@ -499,7 +499,7 @@ class HDLLibrary(Library):
                 # has no dependencies.
                 lowest_value_index = i
 
-                self.logger.debug("Check dep on %s" %
+                self.logger.debug("Check dep on %s" % 
                                   (file_list[lowest_value_index].get_name()))
                 # This loop iterates over the unsorted items
                 for j in range(i + 1, num_files):
@@ -509,7 +509,7 @@ class HDLLibrary(Library):
                     if check_file in with_file.get_hdlfile_this_dep_on():
                         if with_file in check_file.get_hdlfile_this_dep_on():
                             if not check_file.get_filename_with_path() == with_file.get_filename_with_path():
-                                self.logger.warning("%s : recursing dependency %s <-> %s." %
+                                self.logger.warning("%s : recursing dependency %s <-> %s." % 
                                                     (self.get_name(), check_file.get_name(), with_file.get_name()))
                                 continue
                         else:
@@ -561,7 +561,7 @@ class HDLLibrary(Library):
         Printer method for presenting the library w/modules
         in dependency order and w/compile status.
         '''
-        txt = ("\n%s Library %s modules inter-connect %s\n" %
+        txt = ("\n%s Library %s modules inter-connect %s\n" % 
                ("="*20, self.get_name(), "="*20))
         for idx, module in enumerate(self.module_list):
             if (module.get_is_entity() or module.get_is_package() or
@@ -578,14 +578,14 @@ class HDLLibrary(Library):
                 for item in module.get_depend_of_this():
                     dep_on_me += item.get_name() + "(" + item.get_type() + ")" + ", "
 
-                txt += ("|-(%d) %s (%s):\n|      ---->:%s\n|      <----:%s\n" %
+                txt += ("|-(%d) %s (%s):\n|      ---->:%s\n|      <----:%s\n" % 
                         (idx + 1, module.get_name(), module.get_type(), my_dep, dep_on_me))
 
-        txt += ("\n%s Library %s files compile order %s\n" %
+        txt += ("\n%s Library %s files compile order %s\n" % 
                 ("="*20, self.get_name(), "="*20))
         for idx, hdlfile in enumerate(self.lib_hdlfile_compile_order_list):
             tb_str = "(TB)" if hdlfile.get_is_tb() else ""
-            txt += ("(%d) %s %s\n" %
+            txt += ("(%d) %s %s\n" % 
                     (idx + 1, hdlfile.get_filename_with_path(), tb_str))
 
         return txt

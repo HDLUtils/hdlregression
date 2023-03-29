@@ -245,7 +245,7 @@ def validate_cached_version(project,
     # Compare current version with cached version
     if (cached_version != installed_version) and (cached_version != '0.0.0'):
         project.logger.warning('WARNING! HDLRegression v%s not compatible with cached v%s. '
-                               'Executing database rebuild.' %
+                               'Executing database rebuild.' % 
                                (installed_version, cached_version))
         return False
     return True
@@ -301,7 +301,7 @@ def empty_project_folder(project):
     # Clean output, i.e. delete all
     if os.path.isdir(project.settings.get_output_path()):
         shutil.rmtree(project.settings.get_output_path())
-        project.logger.info('Project output path %s cleaned.' %
+        project.logger.info('Project output path %s cleaned.' % 
                             (project.settings.get_output_path()))
         try:
             os.mkdir(project.settings.get_output_path())
@@ -309,7 +309,7 @@ def empty_project_folder(project):
             project.logger.error(
                 'Unable to create output folder, %s.' % (error))
     else:
-        project.logger.info('No output folder to delete: %s.' %
+        project.logger.info('No output folder to delete: %s.' % 
                             (project.settings.get_output_path()))
 
 
@@ -481,9 +481,40 @@ def print_invalid_path_warning(project, path):
                            '    Use forwardslash "/", double backslash "\\\\" or raw text string r"path".' % (path))
 
 
-def _compile_uvvm(project, path, verbose):
+def compile_uvvm_all(project, path) -> bool:
     '''
     Locate uvvm/script/component_list.txt
     Inside each verification component: locate <comp>/script/compile_order.txt and run add_files()
     '''
-    pass
+    uvvm_path = path
+    if os.path.isdir(uvvm_path) is False:
+        project.logger.error(f'Path to UVVM is incorrect: {uvvm_path}')
+        return False
+    uvvm_component_script = os.path.join(uvvm_path, 'script', 'component_list.txt')
+    if os.path.isfile(uvvm_component_script) is False:
+        project.logger.error(f'UVVM component_list.txt not found: {uvvm_component_script}')
+        return False
+    
+    with open(uvvm_component_script, 'r') as component_file:
+        component_list = component_file.readlines()
+        
+    uvvm_components = [component.strip() for component in component_list]
+    
+    for component in uvvm_components:
+        script_path = os.path.join(uvvm_path, component, 'script')
+        compile_order_file = os.path.join(script_path, 'compile_order.txt')
+        if os.path.isfile(compile_order_file) is False:
+            project.logger.warning(f'UVVM compile_order.txt not found for: {component.strip()}')
+        else:
+            with open(compile_order_file, 'r') as f:
+                lines = f.readlines()
+            
+            # filter out library line at the beginning
+            src_file_list = [line.strip() for line in lines if not '#' in line and line.isspace() is False]
+       
+            # Convert to absolute paths and add to add_file()
+            for line in src_file_list:
+                file_path = os.path.join(script_path, line)
+                project.add_files(os_adjust_path(file_path), library_name=component)
+                    
+    return True

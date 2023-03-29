@@ -803,44 +803,19 @@ class HDLRegression:
             lib.add_lib_dep(set_lib_dep)
 
     def compile_uvvm(self,
-                     path_to_uvvm: str,
-                     verbose=True) -> bool:
+                     path_to_uvvm: str) -> bool:
         '''
         Compiles the entire UVVM verification library to
         HDLRegression compile libraries.
 
         :param path_to_uvvm: the path to where UVVM is located on HD.
         :type path_to_uvvm: str
-        :param verbose: verbosity setting
-        :type verbose: boolean
 
         :rtype: bool
         :return: True when command is valid
         '''
         
-        _compile_uvvm(project=self, path=path_to_uvvm, verbose=verbose)
-        
-        if self.settings.get_simulator_name() in ["MODELSIM", "ALDEC"]:
-            lib_compile_path = os.path.join(sim_path, 'hdlregression/library')
-            uvvm_script_path = os.path.join(path_to_uvvm, 'script')
-            uvvm_script_file = os.path.join(uvvm_script_path, 'compile_all.do')
-
-            lib_compile_path = os_adjust_path(lib_compile_path)
-            uvvm_script_path = os_adjust_path(uvvm_script_path)
-            uvvm_script_file = os_adjust_path(uvvm_script_file)
-
-            cmd_to_run = ['vsim', '-c', '-do', 'do %s %s %s; exit -f' % (uvvm_script_file,
-                                                                         uvvm_script_path,
-                                                                         lib_compile_path)]
-
-            if validate_path(project=self, path=path_to_uvvm) is False:
-                return False
-
-            self.run_command(cmd_to_run, verbose=verbose)
-            return True
-        else:
-            self.logger.warning('Unsupported simulator')
-            return False
+        return compile_uvvm_all(project=self, path=path_to_uvvm)
 
     def get_args(self):
         '''

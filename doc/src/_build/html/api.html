@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Application Programming Interface (API) &mdash; hdlregression 0.35.3 documentation</title>
+  <title>Application Programming Interface (API) &mdash; hdlregression 0.36.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -820,7 +820,7 @@ The test group is given a name that is used for addressing the test collection.<
 <section id="compile-uvvm">
 <h3>compile_uvvm()<a class="headerlink" href="#compile-uvvm" title="Permalink to this headline"></a></h3>
 <p>Compiles UVVM to HDLRegression library folder, making UVVM available to all tests run by HDLRegression.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">compile_uvvm</span><span class="p">(</span><span class="o">&lt;</span><span class="n">path_to_uvvm</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">verbose</span><span class="o">&gt;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">compile_uvvm</span><span class="p">(</span><span class="o">&lt;</span><span class="n">path_to_uvvm</span><span class="o">&gt;</span><span class="p">)</span>
 </pre></div>
 </div>
 <table class="docutils align-default">
@@ -840,10 +840,6 @@ The test group is given a name that is used for addressing the test collection.<
 <td><p>“../ip/UVVM”</p></td>
 <td><p><strong>mandatory</strong></p></td>
 </tr>
-<tr class="row-odd"><td><p>verbose</p></td>
-<td><p>True / False</p></td>
-<td><p>optional</p></td>
-</tr>
 </tbody>
 </table>
 <p><strong>Example:</strong></p>
@@ -853,10 +849,6 @@ The test group is given a name that is used for addressing the test collection.<
 <div class="admonition important">
 <p class="admonition-title">Important</p>
 <ul class="simple">
-<li><p>The <code class="docutils literal notranslate"><span class="pre">compile_uvvm()</span></code> method will be changed to perform an internal ´add_files()´ of the complete UVVM.</p></li>
-<li><p>Feel free to contribute.</p></li>
-<li><p>This feature is restricted to Modelsim simulator.</p></li>
-<li><p>Output from Modelsim is directed to stdout by default.</p></li>
 <li><p>The UVVM path has to absolute or relative to the regression script location.</p></li>
 </ul>
 </div>

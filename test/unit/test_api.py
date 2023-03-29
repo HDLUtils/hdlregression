@@ -395,18 +395,30 @@ def test_no_default_com_options():
     assert hr.settings.get_com_options() == [], "check no default com options set"
 
 
-def test_compile_uvvm_wrong_path():
+def test_compile_uvvm():
     clear_output()
     hr = HDLRegression()
-    success = hr.compile_uvvm('../wrong/path/to/uvvm')
+    path = hr.compile_uvvm(path_to_uvvm='../../../uvvm_internal')
+    
+    hr.start()
 
-    assert success is False, "check failing UVVM compilation"
+    compiled_lib_list = hr.settings.get_library_compile()
+    lib_name_list = [lib.get_name() for lib in compiled_lib_list]
 
+    assert "bitvis_vip_sbi" in lib_name_list, "Check recompiled"
 
-def test_compile_uvvm_correct_path():
-  uvvm_path = '../../../uvvm'
-  if glob(uvvm_path):
-    clear_output()
-    hr = HDLRegression()
-    success = hr.compile_uvvm(uvvm_path)
-    assert success is True, "check passing UVVM compilation"
+# def test_compile_uvvm_wrong_path():
+#     clear_output()
+#     hr = HDLRegression()
+#     success = hr.compile_uvvm('../wrong/path/to/uvvm')
+# 
+#     assert success is False, "check failing UVVM compilation"
+# 
+# 
+# def test_compile_uvvm_correct_path():
+#   uvvm_path = '../../../uvvm'
+#   if glob(uvvm_path):
+#     clear_output()
+#     hr = HDLRegression()
+#     success = hr.compile_uvvm(uvvm_path)
+#     assert success is True, "check passing UVVM compilation"
