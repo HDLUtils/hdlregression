@@ -817,6 +817,18 @@ class HDLRegression:
         
         return compile_uvvm_all(project=self, path=path_to_uvvm)
 
+    def compile_osvvm(self,
+                      path_to_osvvm: str) -> bool:
+        '''
+        Compiles the entire OSVVM verification library.
+
+        :param path_to_osvvm: the path to where OSVVM is located on HD.
+        :type path_to_osvvm: str
+
+        :rtype: bool
+        :return: True when command is valid
+        '''
+        return compile_osvvm_all(project=self, path=path_to_osvvm)
     def get_args(self):
         '''
         Returns the parsed arguments from HDLRegression
