@@ -582,3 +582,40 @@ def compile_osvvm_all(project, path) -> bool:
         project.add_files(os_adjust_path(file), library_name="osvvm")
 
     return True
+
+def compile_osvvm_all(project, path) -> bool:
+    '''
+    Add files from osvvm.pro script in the order specified there.
+    '''
+    osvvm_path = path
+    if os.path.isdir(osvvm_path) is False:
+        project.logger.error(f'Path to OSVVM is incorrect: {osvvm_path}')
+        return False
+
+    compile_order_file = os.path.join(osvvm_path, 'osvvm.pro')
+    with open(compile_order_file, 'r') as f:
+        lines = f.readlines()
+
+    files = []
+    pattern = r'^\s*analyze\s+([\w.-]+\.\w+)'
+    for line in lines:
+        match = re.search(pattern, line)
+        if match:
+            files.append(os.path.join(path, match.group(1)))
+
+    # in osvvm.pro this is compiled if ToolVendor is Aldec
+    # In osvvm.pro these files are compiled if not ToolSupportGenricPackages, what ever that means.
+    ignore_file_list = ["Aldec", "_c.vhd", "MessagePkg", "generated"]
+    for file in files:
+        ignore = False
+        for ignore_str in ignore_file_list:
+            if ignore_str in file:
+                # print(f"Ignoring file {file}")
+                ignore = True
+                continue
+        if ignore:
+            continue
+        # print(f"Adding file {file}")
+        project.add_files(os_adjust_path(file), library_name="osvvm")
+
+    return True
