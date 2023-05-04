@@ -18,9 +18,8 @@ import zlib
 
 
 class HdlRegressionTest:
-
     def __init__(self, tb=None, settings=None):
-        self.result = 'NA'
+        self.result = "NA"
         self.path = None
         self.tb = None
         self.result_success = False
@@ -38,14 +37,16 @@ class HdlRegressionTest:
         self.test_output = []
         self.need_to_simulate = False
 
+        self.has_been_run = False
+
         self.set_tb(tb)
 
         self.netlist_timing = None
 
     def clear_output(self) -> None:
-        '''
+        """
         Clears stored sim output from test run.
-        '''
+        """
         self.test_output = []
 
     def add_output(self, output_lines) -> None:
@@ -55,9 +56,9 @@ class HdlRegressionTest:
         self.test_output.append(output_lines)
 
     def get_output(self) -> str:
-        '''
+        """
         Returns sim output from test run.
-        '''
+        """
         return "\n".join(self.test_output)
 
     def set_test_error_summary(self, output_lines) -> None:
@@ -65,10 +66,12 @@ class HdlRegressionTest:
         A section of the test output is saved so that the
         test error can be printed from a failing testcase.
         """
-        error_lines = ''.join(output_lines[len(output_lines) - 30:])
-        self.test_error_summary = '\n%s\n%s\n%s\n' % (('====' * 40),
-                                                      ''.join(error_lines),
-                                                      ('====' * 40))
+        error_lines = "".join(output_lines[len(output_lines) - 30 :])
+        self.test_error_summary = "\n%s\n%s\n%s\n" % (
+            ("====" * 40),
+            "".join(error_lines),
+            ("====" * 40),
+        )
 
     def get_test_error_summary(self) -> str:
         return self.test_error_summary
@@ -86,27 +89,27 @@ class HdlRegressionTest:
         return self.terminal_test_string
 
     def set_test_id_string(self, test_string):
-        '''
+        """
         Testcase name as represented in terminal,
         used for test register, i.e. statistic methods.
         Set by SimRunner() when run in terminal mode.
-        '''
+        """
         # Save original test string before editing.
         self.set_terminal_test_string(test_string)
 
         # remove leading "Running: " and new line from test_string
-        test_string = test_string[test_string.find(':') + 1:].strip()
+        test_string = test_string[test_string.find(":") + 1 :].strip()
         # remove auxiliary "\nGENERICS" from test_string
-        if '\n' in test_string:
-            test_string = test_string[:test_string.index('\n')]
+        if "\n" in test_string:
+            test_string = test_string[: test_string.index("\n")]
         # save
         self.test_string = test_string
 
     def get_test_id_string(self) -> str:
-        '''
+        """
         Testcase name as represented in terminal,
         used for test register, i.e. statistic methods.
-        '''
+        """
         return self.test_string
 
     def set_hdlfile(self, hdlfile):
@@ -120,6 +123,12 @@ class HdlRegressionTest:
 
     def get_need_to_simulate(self) -> bool:
         return self.need_to_simulate
+
+    def set_has_been_run(self, is_run=True):
+        self.has_been_run = is_run
+
+    def get_has_been_run(self) -> bool:
+        return self.has_been_run
 
     def set_index(self, index):
         self.test_index = index
@@ -157,15 +166,15 @@ class HdlRegressionTest:
 
     def get_is_verilog(self) -> bool:
         return False
-    
+
     def get_gc_str(self, filter_testcase_id=False) -> str:
-        return ''
+        return ""
 
     def get_name(self) -> str:
         if self.tb:
             return self.tb.get_name()
         else:
-            return 'UNKNOWN'
+            return "UNKNOWN"
 
     def get_arch(self):
         pass
@@ -182,16 +191,21 @@ class HdlRegressionTest:
     def get_folder_to_name_mapping(self) -> str:
         test_map_name = self.test_mapping_name
         if self.get_gc_str():
-            test_map_name += ':' + self.get_gc_str().replace('-g', '')
+            test_map_name += ":" + self.get_gc_str().replace("-g", "")
 
         test_id_str = str(self.get_test_id_number())
-        map_string = test_id_str + ', ' + self.get_test_output_folder() + ', ' + \
-            test_map_name + '\n'
+        map_string = (
+            test_id_str
+            + ", "
+            + self.get_test_output_folder()
+            + ", "
+            + test_map_name
+            + "\n"
+        )
         return map_string
 
     def get_test_path(self) -> str:
-        path = os.path.join(self.settings.get_test_path(),
-                            self.get_tb().get_name())
+        path = os.path.join(self.settings.get_test_path(), self.get_tb().get_name())
         if self.get_is_vhdl():
             # Generate unique name for the test run
             test_base_path = path
@@ -207,9 +221,9 @@ class HdlRegressionTest:
         return os.path.join(self.settings.get_test_path(), self.get_tb().get_name())
 
     def get_test_output_folder(self) -> str:
-        '''
+        """
         Create a test folder for this test run and return folder name.
-        '''
+        """
         if self.get_is_vhdl():
             # Generate unique name for the test run
             test_base_path = self.get_test_base_path()
@@ -243,7 +257,6 @@ class HdlRegressionTest:
 
 
 class VHDLTest(HdlRegressionTest):
-
     def __init__(self, tb=None, arch=None, tc=None, gc=[], settings=None):
         super().__init__(tb=tb, settings=settings)
         self.arch = None
@@ -279,7 +292,7 @@ class VHDLTest(HdlRegressionTest):
 
     def get_gc(self) -> list:
         return self.gc
-    
+
     def get_gc_str(self, filter_testcase_id=False) -> str:
         ID_TESTCASE = self.settings.get_testcase_identifier_name().upper()
 
@@ -290,7 +303,11 @@ class VHDLTest(HdlRegressionTest):
         
         # Init the generic call with testcase if applicable
         tc = self.get_tc()
-        gc_str = '-g' + ID_TESTCASE + '=' + tc if (tc and (filter_testcase_id is False)) else ""
+        gc_str = (
+            "-g" + ID_TESTCASE + "=" + tc
+            if (tc and (filter_testcase_id is False))
+            else ""
+        )
 
         generic_list = self.get_gc()
         
@@ -309,19 +326,33 @@ class VHDLTest(HdlRegressionTest):
                         else:
                             gc_str += ' -g' + generic_name + '=' + generic_value
 
+        if generic_list:
+            generic_name = ""
+            for idx, gc_item in enumerate(generic_list):
+                if idx % 2 == 0:
+                    generic_name = gc_item.upper()
+                else:
+                    generic_value = str(gc_item)
+
+                    # Filter out any non-valid generics
+                    if generic_name in tb_disc_gc_list:
+                        if not gc_str:
+                            gc_str = "-g" + generic_name + "=" + generic_value
+                        else:
+                            gc_str += " -g" + generic_name + "=" + generic_value
+
         return gc_str
 
     def get_testcase_name(self) -> str:
         testcase_name = self.get_name()
-        testcase_name += '.' + self.get_arch().get_name()
+        testcase_name += "." + self.get_arch().get_name()
 
         if self.get_tc() is not None:
-            testcase_name += '.' + self.get_tc()
+            testcase_name += "." + self.get_tc()
         return testcase_name
 
 
 class VerilogTest(HdlRegressionTest):
-
     def __init__(self, tb=None, tc=None, gc=[], settings=None):
         super().__init__(tb=tb, settings=settings)
         self.tc = None
@@ -360,13 +391,16 @@ class VerilogTest(HdlRegressionTest):
         tb = self.get_tb()
 
         # Get list of all parameters that were discovered in this TB
-        tb_disc_parameter_list = [
-            parameter for parameter in tb.get_parameter()]
+        tb_disc_parameter_list = [parameter for parameter in tb.get_parameter()]
 
         # Init the generic call with testcase if applicable
         tc = self.get_tc()
 
-        gc_str = '-g' + ID_TESTCASE + '=' + tc if (tc and (filter_testcase_id is False)) else ""
+        gc_str = (
+            "-g" + ID_TESTCASE + "=" + tc
+            if (tc and (filter_testcase_id is False))
+            else ""
+        )
 
         generic_list = self.get_gc()
 
@@ -377,12 +411,12 @@ class VerilogTest(HdlRegressionTest):
                     generic_name = gc_item.upper()
                 else:
                     generic_value = str(gc_item)
-    
+
                     # Filter out any non-valid generics
                     if generic_name in tb_disc_parameter_list:
                         if not gc_str:
-                            gc_str = '-g' + generic_name + '=' + generic_value
+                            gc_str = "-g" + generic_name + "=" + generic_value
                         else:
-                            gc_str += ' -g' + generic_name + '=' + generic_value
-    
+                            gc_str += " -g" + generic_name + "=" + generic_value
+
         return gc_str

@@ -545,10 +545,7 @@ Compiles OSVVM to HDLRegression library folder, making OSVVM available to all te
 
 .. important::
 
-  The ``compile_osvvm()`` method has not been implemented yet.
-  It is planned that this method will perform an internal ´add_files()´ of the complete OSVVM.
-  Feel free to contribute.
-
+  * The OSVVM path has to absolute or relative to the regression script location.
 
 
 configure_library()
@@ -943,12 +940,13 @@ Returns a list of all passed, failed and not run tests.
 
   passed_tests = result_list[0]
   failed_tests = result_list[1]
+  not_run_tests = result_list[2]
 
 
 
 .. code-block:: python
 
-  (passed_tests, failed_tests) = hr.get_results()
+  (passed_tests, failed_tests, not_run_tests) = hr.get_results()
 
 
 

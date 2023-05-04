@@ -19,168 +19,180 @@ from hdlregression import HDLRegression
 
 
 if len(sys.argv) >= 2:
-    '''
+    """
     Remove pytest from argument list
-    '''
+    """
     sys.argv.pop(1)
 
 
 def get_file_path(path) -> str:
-    '''
+    """
     Adjust file paths to match running directory.
-    '''
+    """
     TEST_DIR = os.path.dirname(os.path.abspath(__file__))
     return os.path.join(TEST_DIR, path)
 
 
 def clear_output():
-    if os.path.isdir('./hdlregression'):
-        shutil.rmtree('./hdlregression')
+    if os.path.isdir("./hdlregression"):
+        shutil.rmtree("./hdlregression")
 
 
 def setup_function():
-    if os.path.isdir('./hdlregression'):
-        print('WARNING! hdlregression folder already exist!')
+    if os.path.isdir("./hdlregression"):
+        print("WARNING! hdlregression folder already exist!")
 
 
 def tear_down_function():
-    if os.path.isdir('./hdlregression'):
-        shutil.rmtree('./hdlregression')
+    if os.path.isdir("./hdlregression"):
+        shutil.rmtree("./hdlregression")
 
 
 def test_testcase():
     clear_output()
     hr = HDLRegression()
 
-    filename = '../tb/tb_testcase.vhd'
+    filename = "../tb/tb_testcase.vhd"
     filename = get_file_path(filename)
-    hr.add_files(filename, 'testcase_lib')
-    hr.set_result_check_string('testcase_arch: testcase')
+    hr.add_files(filename, "testcase_lib")
+    hr.set_result_check_string("testcase_arch: testcase")
 
     return_code = hr.start()
 
-    (pass_list, fail_list) = hr.get_results()
+    (pass_list, fail_list, not_run_list) = hr.get_results()
 
     assert return_code == 0, "check number of failing tests"
     assert len(fail_list) == 0, "check number of failing tests"
     assert len(pass_list) == 3, "check number of passing tests"
+    assert len(not_run_list) == 0, "check number of not run tests"
 
 
 def test_testcase_select():
     clear_output()
     hr = HDLRegression()
 
-    hr.add_testcase('testbench_test.architecture_test.testcase_test')
+    hr.add_testcase("testbench_test.architecture_test.testcase_test")
 
     testcase = hr.settings.get_testcase()
 
     # Testcase is stored as list [testbench, architecture, test]
-    testcase = '.'.join(testcase)
+    testcase = ".".join(testcase)
 
-    assert testcase == 'testbench_test.architecture_test.testcase_test', 'checking add_testcase()'
+    assert (
+        testcase == "testbench_test.architecture_test.testcase_test"
+    ), "checking add_testcase()"
 
 
 def test_testcase_with_whitespace():
     clear_output()
     hr = HDLRegression()
 
-    hr.add_testcase('testbench_test.architecture_test.testcase_test ')
+    hr.add_testcase("testbench_test.architecture_test.testcase_test ")
 
     testcase = hr.settings.get_testcase()
 
     # Testcase is stored as list [testbench, architecture, test]
-    testcase = '.'.join(testcase)
+    testcase = ".".join(testcase)
 
-    assert testcase == 'testbench_test.architecture_test.testcase_test', 'checking add_testcase()'
+    assert (
+        testcase == "testbench_test.architecture_test.testcase_test"
+    ), "checking add_testcase()"
 
 
 def test_testcase_with_tabulator():
     clear_output()
     hr = HDLRegression()
 
-    hr.add_testcase('testbench_test.architecture_test.testcase_test ')
+    hr.add_testcase("testbench_test.architecture_test.testcase_test ")
 
     testcase = hr.settings.get_testcase()
 
     # Testcase is stored as list [testbench, architecture, test]
-    testcase = '.'.join(testcase)
+    testcase = ".".join(testcase)
 
-    assert testcase == 'testbench_test.architecture_test.testcase_test', 'checking add_testcase()'
+    assert (
+        testcase == "testbench_test.architecture_test.testcase_test"
+    ), "checking add_testcase()"
 
 
 def test_one_testcase_selected():
     clear_output()
     hr = HDLRegression()
 
-    filename = '../tb/tb_testcase.vhd'
+    filename = "../tb/tb_testcase.vhd"
     filename = get_file_path(filename)
-    hr.add_files(filename, 'testcase_lib')
-    hr.set_result_check_string('testcase_arch: testcase')
+    hr.add_files(filename, "testcase_lib")
+    hr.set_result_check_string("testcase_arch: testcase")
 
-    hr.add_testcase('tb_testcase.testcase_arch.testcase_1')
+    hr.add_testcase("tb_testcase.testcase_arch.testcase_1")
 
     return_code = hr.start()
 
-    (pass_list, fail_list) = hr.get_results()
+    (pass_list, fail_list, not_run_list) = hr.get_results()
 
     assert return_code == 0, "check number of failing tests"
     assert len(fail_list) == 0, "check number of failing tests"
     assert len(pass_list) == 1, "check number of passing tests"
+    assert len(not_run_list) == 0, "check number of not run tests"
 
 
 def test_two_testcases_selected():
     clear_output()
     hr = HDLRegression()
 
-    filename = '../tb/tb_testcase.vhd'
+    filename = "../tb/tb_testcase.vhd"
     filename = get_file_path(filename)
-    hr.add_files(filename, 'testcase_lib')
-    hr.set_result_check_string('testcase_arch: testcase')
+    hr.add_files(filename, "testcase_lib")
+    hr.set_result_check_string("testcase_arch: testcase")
 
     # Testcase 2 expected to be run
-    hr.add_testcase('tb_testcase.testcase_arch.testcase_1')
-    hr.add_testcase('tb_testcase.testcase_arch.testcase_2')
+    hr.add_testcase("tb_testcase.testcase_arch.testcase_1")
+    hr.add_testcase("tb_testcase.testcase_arch.testcase_2")
 
     return_code = hr.start()
 
-    (pass_list, fail_list) = hr.get_results()
+    (pass_list, fail_list, not_run_list) = hr.get_results()
 
     assert return_code == 0, "check number of failing tests"
     assert len(fail_list) == 0, "check number of failing tests"
     assert len(pass_list) == 2, "check number of passing tests"
+    assert len(not_run_list) == 0, "check number of not run tests"
 
 
 def test_list_of_testcases():
     clear_output()
     hr = HDLRegression()
 
-    filename = '../tb/tb_testcase.vhd'
+    filename = "../tb/tb_testcase.vhd"
     filename = get_file_path(filename)
-    hr.add_files(filename, 'testcase_lib')
-    hr.set_result_check_string('testcase_arch: testcase')
+    hr.add_files(filename, "testcase_lib")
+    hr.set_result_check_string("testcase_arch: testcase")
 
     # Testcase 2 expected to be run
-    testcase_list = ['tb_testcase.testcase_arch.testcase_1',
-                     'tb_testcase.testcase_arch.testcase_2']
+    testcase_list = [
+        "tb_testcase.testcase_arch.testcase_1",
+        "tb_testcase.testcase_arch.testcase_2",
+    ]
     hr.add_testcase(testcase_list)
 
     return_code = hr.start()
 
-    (pass_list, fail_list) = hr.get_results()
+    (pass_list, fail_list, not_run_list) = hr.get_results()
 
     assert return_code == 0, "check number of failing tests"
     assert len(fail_list) == 0, "check number of failing tests"
     assert len(pass_list) == 2, "check number of passing tests"
+    assert len(not_run_list) == 0, "check number of not run tests"
 
 
 def test_unsupported_type():
     clear_output()
     hr = HDLRegression()
 
-    filename = '../tb/tb_testcase.vhd'
+    filename = "../tb/tb_testcase.vhd"
     filename = get_file_path(filename)
-    hr.add_files(filename, 'testcase_lib')
-    hr.set_result_check_string('testcase_arch: testcase')
+    hr.add_files(filename, "testcase_lib")
+    hr.set_result_check_string("testcase_arch: testcase")
 
     # Add invalid testcase type
     hr.add_testcase(True)
@@ -193,10 +205,10 @@ def test_correct_number_of_testcases():
 
     hr = HDLRegression()
 
-    filename = '../tb/tb_passing.vhd'
+    filename = "../tb/tb_passing.vhd"
     filename = get_file_path(filename)
-    hr.add_files(filename, 'test_lib')
-    hr.set_result_check_string('passing testcase')
+    hr.add_files(filename, "test_lib")
+    hr.set_result_check_string("passing testcase")
     hr.start()
 
     tests = hr.runner.testbuilder.get_list_of_tests_to_run()
@@ -206,14 +218,15 @@ def test_correct_number_of_testcases():
 
 def test_list_testcases():
     from hdlregression.hdlregression_pkg import list_testcases
+
     clear_output()
 
     hr = HDLRegression()
 
-    filename = '../tb/tb_passing.vhd'
+    filename = "../tb/tb_passing.vhd"
     filename = get_file_path(filename)
-    hr.add_files(filename, 'test_lib')
-    hr.set_result_check_string('passing testcase')
+    hr.add_files(filename, "test_lib")
+    hr.set_result_check_string("passing testcase")
     hr.start()
 
     tc_list = list_testcases(hr.runner)
@@ -225,92 +238,98 @@ def test_wildcard_asterix_testcases():
     clear_output()
     hr = HDLRegression()
 
-    filename = '../tb/tb_testcase.vhd'
+    filename = "../tb/tb_testcase.vhd"
     filename = get_file_path(filename)
-    hr.add_files(filename, 'testcase_lib')
-    hr.set_result_check_string('testcase_arch: testcase')
+    hr.add_files(filename, "testcase_lib")
+    hr.set_result_check_string("testcase_arch: testcase")
 
     # Testcase 3 expected to be run
-    hr.add_testcase('tb_testcase.testcase_arch.testcase_*')
+    hr.add_testcase("tb_testcase.testcase_arch.testcase_*")
 
     return_code = hr.start()
 
-    (pass_list, fail_list) = hr.get_results()
+    (pass_list, fail_list, not_run_list) = hr.get_results()
 
     assert return_code == 0, "check number of failing tests"
     assert len(fail_list) == 0, "check number of failing tests"
     assert len(pass_list) == 3, "check number of passing tests"
+    assert len(not_run_list) == 0, "check number of not run tests"
 
-    exp_test = 'testcase_lib.tb_testcase.testcase_arch.testcase_'
+    exp_test = "testcase_lib.tb_testcase.testcase_arch.testcase_"
     for idx in range(1, 3):
         testcase = exp_test + str(idx)
-        assert testcase in ''.join(pass_list)
+        assert testcase in "".join(pass_list)
 
 
 def test_wildcard_question_mark_testcases():
     clear_output()
     hr = HDLRegression()
 
-    filename = '../tb/tb_testcase.vhd'
+    filename = "../tb/tb_testcase.vhd"
     filename = get_file_path(filename)
-    hr.add_files(filename, 'testcase_lib')
-    hr.set_result_check_string('testcase_arch: testcase')
+    hr.add_files(filename, "testcase_lib")
+    hr.set_result_check_string("testcase_arch: testcase")
 
     # Testcase 1 expected to be run
-    hr.add_testcase('tb_testcase.testcase_arch.test????_2')
+    hr.add_testcase("tb_testcase.testcase_arch.test????_2")
 
     return_code = hr.start()
 
-    (pass_list, fail_list) = hr.get_results()
+    (pass_list, fail_list, not_run_list) = hr.get_results()
 
     assert return_code == 0, "check number of failing tests"
     assert len(fail_list) == 0, "check number of failing tests"
     assert len(pass_list) == 1, "check number of passing tests"
-    assert pass_list[0] == 'testcase_lib.tb_testcase.testcase_arch.testcase_2 (test_id: 3)'
+    assert len(not_run_list) == 0, "check number of not run tests"
+    assert (
+        pass_list[0] == "testcase_lib.tb_testcase.testcase_arch.testcase_2 (test_id: 3)"
+    )
 
 
 def test_wildcard_not_found_testcases():
     clear_output()
     hr = HDLRegression()
 
-    filename = '../tb/tb_testcase.vhd'
+    filename = "../tb/tb_testcase.vhd"
     filename = get_file_path(filename)
-    hr.add_files(filename, 'testcase_lib')
-    hr.set_result_check_string('testcase_arch: testcase')
+    hr.add_files(filename, "testcase_lib")
+    hr.set_result_check_string("testcase_arch: testcase")
 
     # Testcase 1 expected to be run
-    hr.add_testcase('tb_testcase.testcase_arch.testcase_*_')
+    hr.add_testcase("tb_testcase.testcase_arch.testcase_*_")
 
     return_code = hr.start()
 
-    (pass_list, fail_list) = hr.get_results()
+    (pass_list, fail_list, not_run_list) = hr.get_results()
 
     assert return_code == 1, "check return code for not found testcase"
     assert len(fail_list) == 0, "check number of failing tests"
     assert len(pass_list) == 0, "check number of passing tests"
+    assert len(not_run_list) == 0, "check number of not run tests"
 
 
 def test_wildcard_asterix_architecture_and_testcase():
     clear_output()
     hr = HDLRegression()
 
-    filename = '../tb/tb_testcase.vhd'
+    filename = "../tb/tb_testcase.vhd"
     filename = get_file_path(filename)
-    hr.add_files(filename, 'testcase_lib')
-    hr.set_result_check_string('testcase_arch: testcase')
+    hr.add_files(filename, "testcase_lib")
+    hr.set_result_check_string("testcase_arch: testcase")
 
     # Testcase 3 expected to be run
-    hr.add_testcase('tb_testcase.testcase_*.testcase_*')
+    hr.add_testcase("tb_testcase.testcase_*.testcase_*")
 
     return_code = hr.start()
 
-    (pass_list, fail_list) = hr.get_results()
+    (pass_list, fail_list, not_run_list) = hr.get_results()
 
     assert return_code == 0, "check number of failing tests"
     assert len(fail_list) == 0, "check number of failing tests"
     assert len(pass_list) == 3, "check number of passing tests"
+    assert len(not_run_list) == 0, "check number of not run tests"
 
-    exp_test = 'testcase_lib.tb_testcase.testcase_arch.testcase_'
+    exp_test = "testcase_lib.tb_testcase.testcase_arch.testcase_"
     for idx in range(1, 3):
         testcase = exp_test + str(idx)
-        assert testcase in ''.join(pass_list)
+        assert testcase in "".join(pass_list)

@@ -44,12 +44,15 @@ class TXTReporter(HDLReporter):
                 lf.write('Time of sim   : %s ms.\n' % (self._time_of_sim()))
 
                 # Write test results
-                pass_tests, fail_tests = self.project.get_results()
+                pass_tests, fail_tests, not_run_tests = self.project.get_results()
                 lf.write('\n\nPassing tests (%d):\n' % (len(pass_tests)))
                 for test in pass_tests:
                     lf.write(test + '\n')
                 lf.write('\nFailing tests (%d):\n' % (len(fail_tests)))
                 for test in fail_tests:
+                    lf.write(test + '\n')
+                lf.write('\nNot run tests (%d):\n' % (len(not_run_tests)))
+                for test in not_run_tests:
                     lf.write(test + '\n')
 
                 # Write testcases
@@ -61,18 +64,22 @@ class TXTReporter(HDLReporter):
                         for tb_module in hdlfile.get_tb_modules():
                             # All architectures connected with this TB
                             for arch_module in tb_module.get_architecture():
-                                lf.write('Testcase: %s.%s\n' % (tb_module.get_name(), arch_module.get_name()))
+                                lf.write('Testcase: %s.%s\n' % (
+                                    tb_module.get_name(), arch_module.get_name()))
                                 # All testcases connected with this architecture
                                 for testcase in arch_module.get_testcase():
-                                    lf.write('Testcase: %s.%s.%s\n' % (tb_module.get_name(), arch_module.get_name(), testcase))
+                                    lf.write('Testcase: %s.%s.%s\n' % (
+                                        tb_module.get_name(), arch_module.get_name(), testcase))
 
                 # Write testgroups
                 lf.write('\n\n')
                 for testgroup_container in self.project.testgroup_collection_container.get():
-                    lf.write('Testgroup: ' + testgroup_container.get_name() + '\n')
+                    lf.write('Testgroup: ' +
+                             testgroup_container.get_name() + '\n')
                     testgroup_items_list = testgroup_container.get()
                     for idx, testgroup_items_list in enumerate(testgroup_container.get()):
-                        entity, architecture, testcase, generics = tuple(testgroup_items_list)
+                        entity, architecture, testcase, generics = tuple(
+                            testgroup_items_list)
                         tg_str = '%d: %s' % (idx + 1, entity)
                         if architecture:
                             tg_str += '.%s' % (architecture)
@@ -89,7 +96,8 @@ class TXTReporter(HDLReporter):
                         lf.write('Library ' + library.get_name() + ':\n')
                         for idx, module_instance in enumerate(library.get_compile_order_list()):
                             tb = "(TB)" if module_instance.get_is_tb() else ""
-                            lf.write('  File %d: %s %s\n' % (idx + 1, module_instance.get_filename(), tb))
+                            lf.write('  File %d: %s %s\n' % (
+                                idx + 1, module_instance.get_filename(), tb))
 
                 # Write library information
                 if self.get_report_library():
@@ -97,4 +105,5 @@ class TXTReporter(HDLReporter):
                     for library in self.project.library_container.get():
                         lf.write('  %s:\n' % (library.get_name()))
                         for module in library.get_list_of_library_modules():
-                            lf.write('    %s: %s\n' % (module.get_type(), module.get_name()))
+                            lf.write('    %s: %s\n' %
+                                     (module.get_type(), module.get_name()))

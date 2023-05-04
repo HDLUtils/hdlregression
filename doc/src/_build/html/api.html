@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Application Programming Interface (API) &mdash; hdlregression 0.36.0 documentation</title>
+  <title>Application Programming Interface (API) &mdash; hdlregression 0.39.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -884,9 +884,9 @@ The test group is given a name that is used for addressing the test collection.<
 </div>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">compile_osvvm()</span></code> method has not been implemented yet.
-It is planned that this method will perform an internal ´add_files()´ of the complete OSVVM.
-Feel free to contribute.</p>
+<ul class="simple">
+<li><p>The OSVVM path has to absolute or relative to the regression script location.</p></li>
+</ul>
 </div>
 </section>
 <section id="configure-library">
@@ -1400,9 +1400,10 @@ and if-matched strings.</p></li>
 
 <span class="n">passed_tests</span> <span class="o">=</span> <span class="n">result_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">failed_tests</span> <span class="o">=</span> <span class="n">result_list</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">not_run_tests</span> <span class="o">=</span> <span class="n">result_list</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">passed_tests</span><span class="p">,</span> <span class="n">failed_tests</span><span class="p">)</span> <span class="o">=</span> <span class="n">hr</span><span class="o">.</span><span class="n">get_results</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">passed_tests</span><span class="p">,</span> <span class="n">failed_tests</span><span class="p">,</span> <span class="n">not_run_tests</span><span class="p">)</span> <span class="o">=</span> <span class="n">hr</span><span class="o">.</span><span class="n">get_results</span><span class="p">()</span>
 </pre></div>
 </div>
 </section>

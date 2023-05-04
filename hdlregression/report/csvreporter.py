@@ -43,7 +43,8 @@ class CSVReporter(HDLReporter):
                 lf.writerow(['Test run settings:'])
                 lf.writerow(['CI run', '%s' % (self._is_ci_run())])
                 lf.writerow(['Testcase run', '%s' % (self._is_testcase_run())])
-                lf.writerow(['Testgroup run', '%s' % (self._is_testgroup_run())])
+                lf.writerow(['Testgroup run', '%s' %
+                            (self._is_testgroup_run())])
                 lf.writerow(['GUI mode', '%s' % (self._is_gui_run())])
                 lf.writerow(['Time of run', '%s' % (self._time_of_run())])
                 lf.writerow(['Time of sim', '%s ms.' % (self._time_of_sim())])
@@ -51,7 +52,7 @@ class CSVReporter(HDLReporter):
                 lf.writerow([])
                 lf.writerow([])
                 # Write test results
-                pass_tests, fail_tests = self.project.get_results()
+                pass_tests, fail_tests, not_run_tests = self.project.get_results()
                 lf.writerow(['Passing tests (%d):' % (len(pass_tests))])
                 for test in pass_tests:
                     lf.writerow([test])
@@ -60,6 +61,12 @@ class CSVReporter(HDLReporter):
                 lf.writerow([])
                 lf.writerow(['Failing tests (%d):' % (len(fail_tests))])
                 for test in fail_tests:
+                    lf.writerow([test])
+
+                lf.writerow([])
+                lf.writerow([])
+                lf.writerow(['Not run tests (%d):' % (len(not_run_tests))])
+                for test in not_run_tests:
                     lf.writerow([test])
 
                 # Write testcases
@@ -71,19 +78,23 @@ class CSVReporter(HDLReporter):
                         for tb_module in hdlfile.get_tb_modules():
                             # All architectures connected with this TB
                             for arch_module in tb_module.get_architecture():
-                                lf.writerow(['Testcase:', '%s.%s' % (tb_module.get_name(), arch_module.get_name())])
+                                lf.writerow(['Testcase:', '%s.%s' % (
+                                    tb_module.get_name(), arch_module.get_name())])
                                 # All testcases connected with this architecture
                                 for testcase in arch_module.get_testcase():
-                                    lf.writerow(['Testcase:', '%s.%s.%s' % (tb_module.get_name(), arch_module.get_name(), testcase)])
+                                    lf.writerow(['Testcase:', '%s.%s.%s' % (
+                                        tb_module.get_name(), arch_module.get_name(), testcase)])
 
                 # Write testgroups
                 lf.writerow([])
                 for testgroup_container in self.project.testgroup_collection_container.get():
                     lf.writerow([])
-                    lf.writerow(['Testgroup: ' + testgroup_container.get_name()])
+                    lf.writerow(
+                        ['Testgroup: ' + testgroup_container.get_name()])
                     testgroup_items_list = testgroup_container.get()
                     for idx, testgroup_items_list in enumerate(testgroup_container.get()):
-                        entity, architecture, testcase, generics = tuple(testgroup_items_list)
+                        entity, architecture, testcase, generics = tuple(
+                            testgroup_items_list)
                         tg_str = '%d %s' % (idx + 1, entity)
                         if architecture:
                             tg_str += '.%s' % (architecture)
@@ -103,7 +114,8 @@ class CSVReporter(HDLReporter):
                         lf.writerow(['Library', library.get_name()])
                         for idx, module_instance in enumerate(library.get_compile_order_list()):
                             tb = "(TB)" if module_instance.get_is_tb() else ""
-                            lf.writerow(['File %d' % (idx + 1), module_instance.get_filename(), tb])
+                            lf.writerow(
+                                ['File %d' % (idx + 1), module_instance.get_filename(), tb])
 
                 # Write library information
                 if self.get_report_library():

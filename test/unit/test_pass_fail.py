@@ -19,115 +19,130 @@ from hdlregression import HDLRegression
 
 
 if len(sys.argv) >= 2:
-    '''
+    """
     Remove pytest from argument list
-    '''
+    """
     sys.argv.pop(1)
 
 
 def get_file_path(path) -> str:
-    '''
+    """
     Adjust file paths to match running directory.
-    '''
+    """
     TEST_DIR = os.path.dirname(os.path.abspath(__file__))
     return os.path.join(TEST_DIR, path)
 
 
 def clear_output():
-    if os.path.isdir('./hdlregression'):
-        shutil.rmtree('./hdlregression')
+    if os.path.isdir("./hdlregression"):
+        shutil.rmtree("./hdlregression")
 
 
 def setup_function():
-    if os.path.isdir('./hdlregression'):
-        print('WARNING! hdlregression folder already exist!')
+    if os.path.isdir("./hdlregression"):
+        print("WARNING! hdlregression folder already exist!")
 
 
 def tear_down_function():
-    if os.path.isdir('./hdlregression'):
-        shutil.rmtree('./hdlregression')
+    if os.path.isdir("./hdlregression"):
+        shutil.rmtree("./hdlregression")
 
 
 def test_pass():
     clear_output()
     hr = HDLRegression()
 
-    filename = '../tb/tb_passing.vhd'
+    filename = "../tb/tb_passing.vhd"
     filename = get_file_path(filename)
-    hr.add_files(filename, 'passing_lib')
-    hr.set_result_check_string('passing testcase')
+    hr.add_files(filename, "passing_lib")
+    hr.set_result_check_string("passing testcase")
 
     result = hr.start()
 
-    (pass_list, fail_list) = hr.get_results()
+    (pass_list, fail_list, not_run_list) = hr.get_results()
 
     assert result == 0, "check number of failing tests"
     assert len(fail_list) == 0, "check number of failing tests"
     assert len(pass_list) == 1, "check number of passing tests"
+    assert len(not_run_list) == 0, "check number of not run tests"
 
 
 def test_fail():
     clear_output()
     hr = HDLRegression()
 
-    filename = '../tb/tb_failing.vhd'
+    filename = "../tb/tb_failing.vhd"
     filename = get_file_path(filename)
-    hr.add_files(filename, 'failing_lib')
-    hr.set_result_check_string('passing testcase')
+    hr.add_files(filename, "failing_lib")
+    hr.set_result_check_string("passing testcase")
     result = hr.start()
 
-    (pass_list, fail_list) = hr.get_results()
+    (pass_list, fail_list, not_run_list) = hr.get_results()
 
     assert result == 1, "check number of failing tests"
     assert len(fail_list) == 1, "check number of failing tests"
     assert len(pass_list) == 0, "check number of passing tests"
-    assert 'failing_lib.tb_failing.test' in '\t'.join(fail_list), "checking failing test"
+    assert len(not_run_list) == 0, "check number of not run tests"
+
+    assert "failing_lib.tb_failing.test" in "\t".join(
+        fail_list
+    ), "checking failing test"
 
 
 def test_multiple_pass_one_fail():
     clear_output()
     hr = HDLRegression()
 
-    filename = '../tb/tb_failing.vhd'
+    filename = "../tb/tb_failing.vhd"
     filename = get_file_path(filename)
-    hr.add_files(filename, 'regression_lib')
+    hr.add_files(filename, "regression_lib")
 
-    filename = '../tb/tb_testcase.vhd'
+    filename = "../tb/tb_testcase.vhd"
     filename = get_file_path(filename)
-    hr.add_files(filename, 'regression_lib')
+    hr.add_files(filename, "regression_lib")
 
-    hr.set_result_check_string('testcase_arch: testcase')
+    hr.set_result_check_string("testcase_arch: testcase")
 
     result = hr.start()
 
-    (pass_list, fail_list) = hr.get_results()
+    (pass_list, fail_list, not_run_list) = hr.get_results()
 
     assert result == 1, "check number of failing tests"
     assert len(fail_list) == 1, "check number of failing tests"
     assert len(pass_list) == 3, "check number of passing tests"
-    assert 'regression_lib.tb_failing.test' in '\t'.join(fail_list), "checking failing test in regression"
+    assert len(not_run_list) == 0, "check number of not run tests"
+
+    assert "regression_lib.tb_failing.test" in "\t".join(
+        fail_list
+    ), "checking failing test in regression"
 
 
 def test_multiple_pass_mupltiple_fail():
     clear_output()
     hr = HDLRegression()
 
-    filename = '../tb/tb_failing*.vhd'
+    filename = "../tb/tb_failing*.vhd"
     filename = get_file_path(filename)
-    hr.add_files(filename, 'regression_lib')
+    hr.add_files(filename, "regression_lib")
 
-    filename = '../tb/tb_testcase.vhd'
+    filename = "../tb/tb_testcase.vhd"
     filename = get_file_path(filename)
-    hr.add_files(filename, 'regression_lib')
+    hr.add_files(filename, "regression_lib")
 
-    hr.set_result_check_string('testcase_arch: testcase')
+    hr.set_result_check_string("testcase_arch: testcase")
 
     result = hr.start()
 
-    (pass_list, fail_list) = hr.get_results()
+    (pass_list, fail_list, not_run_list) = hr.get_results()
 
     assert result == 1, "check number of failing tests"
     assert len(fail_list) == 2, "check number of failing tests"
     assert len(pass_list) == 3, "check number of passing tests"
-    assert 'regression_lib.tb_failing.test' in '\t'.join(fail_list), "checking failing test in regression"
-    assert 'regression_lib.tb_failing_2.test' in '\t'.join(fail_list), "checking failing test in regression"
+    assert len(not_run_list) == 0, "check number of not run tests"
+
+    assert "regression_lib.tb_failing.test" in "\t".join(
+        fail_list
+    ), "checking failing test in regression"
+    assert "regression_lib.tb_failing_2.test" in "\t".join(
+        fail_list
+    ), "checking failing test in regression"

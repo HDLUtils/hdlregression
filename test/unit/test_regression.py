@@ -20,46 +20,46 @@ from hdlregression import HDLRegression
 
 
 if len(sys.argv) >= 2:
-    '''
+    """
     Remove pytest from argument list
-    '''
+    """
     sys.argv.pop(1)
 
 
 def get_file_path(path) -> str:
-    '''
+    """
     Adjust file paths to match running directory.
-    '''
+    """
     TEST_DIR = os.path.dirname(os.path.abspath(__file__))
     return os.path.join(TEST_DIR, path)
 
 
 def clear_output():
-    if os.path.isdir('./hdlregression'):
-        shutil.rmtree('./hdlregression')
+    if os.path.isdir("./hdlregression"):
+        shutil.rmtree("./hdlregression")
 
 
 def setup_function():
-    if os.path.isdir('./hdlregression'):
-        print('WARNING! hdlregression folder already exist!')
+    if os.path.isdir("./hdlregression"):
+        print("WARNING! hdlregression folder already exist!")
 
 
 def tear_down_function():
-    if os.path.isdir('./hdlregression'):
-        shutil.rmtree('./hdlregression')
+    if os.path.isdir("./hdlregression"):
+        shutil.rmtree("./hdlregression")
 
 
 def test_full_regression():
-    '''
+    """
     Check that all tests are run the first time.
-    '''
+    """
     clear_output()
     hr = HDLRegression()
 
-    filename = '../tb/tb_testcase.vhd'
+    filename = "../tb/tb_testcase.vhd"
     filename = get_file_path(filename)
-    hr.add_files(filename, 'testcase_lib')
-    hr.set_result_check_string('testcase_arch: testcase')
+    hr.add_files(filename, "testcase_lib")
+    hr.set_result_check_string("testcase_arch: testcase")
 
     result = hr.start(full_regression=True)
     assert result == 0, "Checking return code 0 - OK"
@@ -69,17 +69,17 @@ def test_full_regression():
 
 
 def test_full_regression_run_two_no_file_changes():
-    '''
+    """
     Check that all tests are run the first time,
     and no tests are run the second time (no file changes)
-    '''
+    """
     clear_output()
     hr = HDLRegression()
 
-    filename = '../tb/tb_testcase.vhd'
+    filename = "../tb/tb_testcase.vhd"
     filename = get_file_path(filename)
-    hr.add_files(filename, 'testcase_lib')
-    hr.set_result_check_string('testcase_arch: testcase')
+    hr.add_files(filename, "testcase_lib")
+    hr.set_result_check_string("testcase_arch: testcase")
 
     # Run 1
     result = hr.start(full_regression=True)
@@ -89,23 +89,23 @@ def test_full_regression_run_two_no_file_changes():
 
     # Run 2
     result = hr.start(full_regression=True)
-    assert result == 0, "Checking return code 0 - OK"
+    assert result == 1, "Checking return code 1 - OK"
     num_test_runs = hr.get_num_tests_run()
     assert num_test_runs == 0, "check 0 tests are run"
 
 
 def test_full_regression_run_three_with_file_changes():
-    '''
+    """
     Check that all tests are run the first time,
     and no tests are run the second time (no file changes)
-    '''
+    """
     clear_output()
     hr = HDLRegression()
 
-    filename = '../tb/tb_testcase.vhd'
+    filename = "../tb/tb_testcase.vhd"
     filename = get_file_path(filename)
-    hr.add_files(filename, 'testcase_lib')
-    hr.set_result_check_string('testcase_arch: testcase')
+    hr.add_files(filename, "testcase_lib")
+    hr.set_result_check_string("testcase_arch: testcase")
 
     # Run 1
     result = hr.start(full_regression=True)
@@ -114,8 +114,7 @@ def test_full_regression_run_three_with_file_changes():
     assert num_test_runs == 3, "check 3 tests are run"
 
     # Run 2
-    result = hr.start(full_regression=True)
-    assert result == 0, "Checking return code 0 - OK"
+    hr.start(full_regression=True)
     num_test_runs = hr.get_num_tests_run()
     assert num_test_runs == 0, "check 0 tests are run"
 
@@ -123,7 +122,6 @@ def test_full_regression_run_three_with_file_changes():
     Path(filename).touch()
 
     # Run 3
-    result = hr.start(full_regression=True)
-    assert result == 0, "Checking return code 0 - OK"
+    hr.start(full_regression=True)
     num_test_runs = hr.get_num_tests_run()
     assert num_test_runs == 3, "check 3 tests are run"

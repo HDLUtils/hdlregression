@@ -31,10 +31,9 @@ class InvalidPathError(SettingsError):
 
 
 class HDLRegressionSettings:
-
     def __init__(self):
-        self.hdlregression_version = '0.0.0'
-        self.simulator_settings = SimulatorSettings('MODELSIM')
+        self.hdlregression_version = "0.0.0"
+        self.simulator_settings = SimulatorSettings("MODELSIM")
         self.compile_time = 0
         self.os_platform = platform.system().lower()
         self.verbosity = False
@@ -96,27 +95,27 @@ class HDLRegressionSettings:
         return self.hdlregression_version
 
     def set_src_path(self, path):
-        '''
+        """
         HDLRegression install path
-        '''
+        """
         self.src_path = path
 
     def get_src_path(self) -> str:
         return self.src_path
 
     def set_sim_path(self, path):
-        '''
+        """
         Path calling regression script
-        '''
+        """
         self.sim_path = path
 
     def get_sim_path(self):
         return self.sim_path
 
     def set_script_path(self, path):
-        '''
+        """
         Regression script path
-        '''
+        """
         self.script_path = path
 
     def get_script_path(self) -> str:
@@ -133,7 +132,7 @@ class HDLRegressionSettings:
         return self.library_compile_list
 
     def check_library_in_compile_list(self, library) -> bool:
-        return (library in self.library_compile_list)
+        return library in self.library_compile_list
 
     def set_compile_time(self, compile_time):
         if compile_time > self.compile_time:
@@ -213,10 +212,10 @@ class HDLRegressionSettings:
         return self.output_path
 
     def get_library_path(self) -> str:
-        return os.path.join(self.get_output_path(), 'library')
+        return os.path.join(self.get_output_path(), "library")
 
     def get_test_path(self) -> str:
-        return os.path.join(self.get_output_path(), 'test')
+        return os.path.join(self.get_output_path(), "test")
 
     def set_library_name(self, library_name):
         self.library_name = library_name
@@ -335,9 +334,9 @@ class HDLRegressionSettings:
 
             # Convert to list
             if isinstance(testcase, list):
-                testcase = testcase[0].split('.')
+                testcase = testcase[0].split(".")
             elif isinstance(testcase, str):
-                testcase = testcase.split('.')
+                testcase = testcase.split(".")
             else:
                 raise TypeError(f"testcase type not supported: {testcase}")
 
@@ -374,7 +373,8 @@ class HDLRegressionSettings:
     def set_simulator_name(self, simulator_name, cli_selected=False):
         if self.simulator_settings.get_is_cli_selected() is False:
             self.simulator_settings.set_simulator_name(
-                simulator_name, cli_selected=cli_selected)
+                simulator_name, cli_selected=cli_selected
+            )
 
     def get_simulator_name(self) -> str:
         return self.simulator_settings.get_simulator_name()
@@ -394,9 +394,10 @@ class HDLRegressionSettings:
 
     def set_com_options(self, com_options=None, hdl_lang=None):
         self.simulator_settings.set_com_options(
-            com_options=com_options, hdl_lang=hdl_lang)
+            com_options=com_options, hdl_lang=hdl_lang
+        )
 
-    def get_com_options(self, hdl_lang='vhdl'):
+    def get_com_options(self, hdl_lang="vhdl"):
         return self.simulator_settings.get_com_options(hdl_lang=hdl_lang)
 
     def remove_com_options(self):
@@ -430,7 +431,7 @@ class HDLRegressionSettings:
         return self.gui_compile_changes
 
     def get_is_gui_mode(self) -> bool:
-        return (self.get_gui_compile_all() or self.get_gui_compile_changes())
+        return self.get_gui_compile_all() or self.get_gui_compile_changes()
 
     # ----------------------------------
     # Netlist
@@ -451,41 +452,47 @@ class HDLRegressionSettings:
         return self.keep_code_coverage
 
 
-class TestcaseSettings():
-
+class TestcaseSettings:
     def __init__(self):
         pass
 
 
-class SimulatorSettings():
-
+class SimulatorSettings:
     ID_MODELSIM_SIMULATOR = ["modelsim", "MODELSIM", "mentor", "MENTOR"]
-    ID_RIVIERA_SIMULATOR = ["aldec", "ALDEC", "riviera",
-                            "RIVIERA", "riviera_pro", "RIVIERA_PRO"]
+    ID_RIVIERA_SIMULATOR = [
+        "aldec",
+        "ALDEC",
+        "riviera",
+        "RIVIERA",
+        "riviera_pro",
+        "RIVIERA_PRO",
+    ]
     ID_GHDL_SIMULATOR = ["ghdl", "GHDL"]
     ID_NVC_SIMULATOR = ["nvc", "NVC"]
 
-    DEF_COM_OPTIONS_MODELSIM_VHDL = ['-suppress',
-                                     '1346,1236,1090',
-                                     '-2008']
+    DEF_COM_OPTIONS_MODELSIM_VHDL = ["-suppress", "1346,1236,1090", "-2008"]
 
-    DEF_COM_OPTIONS_ALDEC_VHDL = ['-2008',
-                                  '-nowarn',
-                                  'COMP96_0564',
-                                  '-nowarn',
-                                  'COMP96_0048',
-                                  '-nowarn',
-                                  'DAGGEN_0001',
-                                  '-dbg']
+    DEF_COM_OPTIONS_ALDEC_VHDL = [
+        "-2008",
+        "-nowarn",
+        "COMP96_0564",
+        "-nowarn",
+        "COMP96_0048",
+        "-nowarn",
+        "DAGGEN_0001",
+        "-dbg",
+    ]
 
-    DEF_COM_OPTIONS_GHDL_VHDL = ['--std=08',
-                                 '--ieee=standard',
-                                 '-frelaxed-rules',
-                                 '--warn-no-shared',
-                                 '--warn-no-hide']
-    DEF_COM_OPTIONS_NVC_VHDL = ['--relaxed']
+    DEF_COM_OPTIONS_GHDL_VHDL = [
+        "--std=08",
+        "--ieee=standard",
+        "-frelaxed-rules",
+        "--warn-no-shared",
+        "--warn-no-hide",
+    ]
+    DEF_COM_OPTIONS_NVC_VHDL = ["--relaxed"]
 
-    DEF_COM_OPTIONS_MODELSIM_VERILOG = ['-vlog01compat']
+    DEF_COM_OPTIONS_MODELSIM_VERILOG = ["-vlog01compat"]
     DEF_COM_OPTIONS_ALDEC_VERILOG = []
     DEF_COM_OPTIONS_GHDL_VERILOG = []
     DEF_COM_OPTIONS_NVC_VERILOG = []
@@ -514,10 +521,10 @@ class SimulatorSettings():
         return self.cli_selected
 
     def set_com_options(self, com_options=None, hdl_lang=None):
-        if hdl_lang == 'vhdl':
+        if hdl_lang == "vhdl":
             self.vhdl_com_options_updated = True
             self.com_options_vhdl = com_options
-        elif hdl_lang == 'verilog':
+        elif hdl_lang == "verilog":
             self.verilog_com_options_updated = True
             self.com_options_verilog = com_options
         else:
@@ -526,23 +533,23 @@ class SimulatorSettings():
             self.com_options_vhdl = com_options
             self.com_options_verilog = com_options
 
-    def get_com_options(self, hdl_lang='vhdl'):
-        if hdl_lang == 'vhdl':
+    def get_com_options(self, hdl_lang="vhdl"):
+        if hdl_lang == "vhdl":
             return self._get_vhdl_com_options()
-        elif hdl_lang == 'verilog':
+        elif hdl_lang == "verilog":
             return self._get_verilog_com_options()
 
     def _get_vhdl_com_options(self):
         if self.vhdl_com_options_updated is True:
             return self.com_options_vhdl
         else:
-            if self.get_simulator_name() == 'MODELSIM':
+            if self.get_simulator_name() == "MODELSIM":
                 return self.DEF_COM_OPTIONS_MODELSIM_VHDL
-            elif self.get_simulator_name() == 'ALDEC':
+            elif self.get_simulator_name() == "ALDEC":
                 return self.DEF_COM_OPTIONS_ALDEC_VHDL
-            elif self.get_simulator_name() == 'GHDL':
+            elif self.get_simulator_name() == "GHDL":
                 return self.DEF_COM_OPTIONS_GHDL_VHDL
-            elif self.get_simulator_name() == 'NVC':
+            elif self.get_simulator_name() == "NVC":
                 return self.DEF_COM_OPTIONS_NVC_VHDL
             else:
                 return self.DEF_COM_OPTIONS_MODELSIM_VHDL
@@ -551,13 +558,13 @@ class SimulatorSettings():
         if self.verilog_com_options_updated is True:
             return self.com_options_verilog
         else:
-            if self.get_simulator_name() == 'MODELSIM':
+            if self.get_simulator_name() == "MODELSIM":
                 return self.DEF_COM_OPTIONS_MODELSIM_VERILOG
-            elif self.get_simulator_name() == 'ALDEC':
+            elif self.get_simulator_name() == "ALDEC":
                 return self.DEF_COM_OPTIONS_ALDEC_VERILOG
-            elif self.get_simulator_name() == 'GHDL':
+            elif self.get_simulator_name() == "GHDL":
                 return self.DEF_COM_OPTIONS_GHDL_VERILOG
-            elif self.get_simulator_name() == 'NVC':
+            elif self.get_simulator_name() == "NVC":
                 return self.DEF_COM_OPTIONS_NVC_VERILOG
             else:
                 return self.DEF_COM_OPTIONS_MODELSIM_VERILOG
@@ -581,14 +588,14 @@ class SimulatorSettings():
         else:
             if options:
                 raise TypeError(
-                    "sim_options parameter needs to be given as a list or a string")
+                    "sim_options parameter needs to be given as a list or a string"
+                )
 
     def add_sim_options(self, options, warning=True):
         for item in self.sim_options:
             if options in item:
                 if warning is True:
-                    raise ItemExistError(
-                        "sim_options %s already set." % (options))
+                    raise ItemExistError("sim_options %s already set." % (options))
                 return
         self.sim_options.append(options)
 
@@ -597,8 +604,7 @@ class SimulatorSettings():
 
     def set_simulator_path(self, path):
         if path is None or os.path.isdir(path) is False:
-            raise InvalidPathError(
-                'Simulator exec %s not valid.' % (path))
+            raise InvalidPathError("Simulator exec %s not valid." % (path))
         else:
             self.simulator_path = path
 
@@ -607,8 +613,7 @@ class SimulatorSettings():
 
     def get_simulator_exec(self, sim_exec) -> str:
         if self.simulator_path is not None:
-            sim_exec = os.path.join(
-                self.simulator_path, sim_exec)
+            sim_exec = os.path.join(self.simulator_path, sim_exec)
             return sim_exec
         else:
             return sim_exec
@@ -621,12 +626,12 @@ class SimulatorSettings():
 
     def _validate_simulator_name(self, simulator_name):
         if simulator_name in self.ID_MODELSIM_SIMULATOR:
-            return 'MODELSIM'
+            return "MODELSIM"
         elif simulator_name in self.ID_RIVIERA_SIMULATOR:
-            return 'ALDEC'
+            return "ALDEC"
         elif simulator_name in self.ID_GHDL_SIMULATOR:
-            return 'GHDL'
+            return "GHDL"
         elif simulator_name in self.ID_NVC_SIMULATOR:
-            return 'NVC'
+            return "NVC"
         else:
             ValueError(f"Simulator {simulator_name} unsupported.")

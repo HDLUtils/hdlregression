@@ -15,6 +15,7 @@
 
 import platform
 import os
+import re
 import shutil
 from glob import glob
 from multiprocessing.pool import ThreadPool
@@ -105,7 +106,8 @@ def list_testcases(runner) -> str:
     run_tests = runner.testbuilder.test_container.get()
 
     for test in run_tests:
-        generics = test.get_gc_str(filter_testcase_id=True).replace('-g', '') if test.get_gc_str() else ''
+        generics = test.get_gc_str(filter_testcase_id=True).replace(
+            '-g', '') if test.get_gc_str() else ''
 
         tc_string += 'TC:%d - %s\n' % (test.get_test_id_number(),
                                        test.get_testcase_name())
@@ -120,6 +122,17 @@ def list_testcases(runner) -> str:
 #
 # ========================================================
 
+def get_window_width() -> int:
+    try:
+        # Fallback for Windows platforms
+        if os.name == 'nt':
+            return os.get_terminal_size().columns
+        else:
+            # Fallback for UNIX platforms
+            return shutil.get_terminal_size().columns
+    except:
+        # Return a default value if unable to determine the terminal width
+        return 80
 
 def os_adjust_path(path) -> str:
     if platform.system().lower() == "windows":
@@ -265,16 +278,24 @@ def print_info_msg_when_no_test_has_run(project, runner):
 
 def display_info_text(version) -> None:
     ''' Presents HDLRegression version number and QR info. '''
+    width = get_window_width()
     print('''
 %s
   HDLRegression version %s
   See /doc/hdlregression.pdf for documentation.
 %s
 
-''' % ('=' * 70, version, '=' * 70))
+''' % ('=' * width, version, '=' * width))
 
 
 def print_run_success(project):
+    width = get_window_width()
+    print('%s' % ('-' * width))
+    
+    elapsed_time = project.settings.get_sim_time()
+    sim_sec, sim_min, sim_hrs = convert_from_millisec(elapsed_time)
+    project.logger.info("Simulation run time: %dh:%dm:%ds." % (sim_hrs, sim_min, sim_sec))
+
     if project.settings.get_return_code() == 0:
         project.logger.info('SIMULATION SUCCESS: %d passing test(s).'
                             % (project.get_num_pass_tests()), color='green')
@@ -490,31 +511,74 @@ def compile_uvvm_all(project, path) -> bool:
     if os.path.isdir(uvvm_path) is False:
         project.logger.error(f'Path to UVVM is incorrect: {uvvm_path}')
         return False
-    uvvm_component_script = os.path.join(uvvm_path, 'script', 'component_list.txt')
+    uvvm_component_script = os.path.join(
+        uvvm_path, 'script', 'component_list.txt')
     if os.path.isfile(uvvm_component_script) is False:
-        project.logger.error(f'UVVM component_list.txt not found: {uvvm_component_script}')
+        project.logger.error(
+            f'UVVM component_list.txt not found: {uvvm_component_script}')
         return False
-    
+
     with open(uvvm_component_script, 'r') as component_file:
         component_list = component_file.readlines()
-        
+
     uvvm_components = [component.strip() for component in component_list]
-    
+
     for component in uvvm_components:
         script_path = os.path.join(uvvm_path, component, 'script')
         compile_order_file = os.path.join(script_path, 'compile_order.txt')
         if os.path.isfile(compile_order_file) is False:
-            project.logger.warning(f'UVVM compile_order.txt not found for: {component.strip()}')
+            project.logger.warning(
+                f'UVVM compile_order.txt not found for: {component.strip()}')
         else:
             with open(compile_order_file, 'r') as f:
                 lines = f.readlines()
-            
+
             # filter out library line at the beginning
-            src_file_list = [line.strip() for line in lines if not '#' in line and line.isspace() is False]
-       
+            src_file_list = [
+                line.strip() for line in lines if not '#' in line and line.isspace() is False]
+
             # Convert to absolute paths and add to add_file()
             for line in src_file_list:
                 file_path = os.path.join(script_path, line)
-                project.add_files(os_adjust_path(file_path), library_name=component)
-                    
+                project.add_files(os_adjust_path(file_path),
+                                  library_name=component)
+
+    return True
+
+
+def compile_osvvm_all(project, path) -> bool:
+    '''
+    Add files from osvvm.pro script in the order specified there.
+    '''
+    osvvm_path = path
+    if os.path.isdir(osvvm_path) is False:
+        project.logger.error(f'Path to OSVVM is incorrect: {osvvm_path}')
+        return False
+
+    compile_order_file = os.path.join(osvvm_path, 'osvvm.pro')
+    with open(compile_order_file, 'r') as f:
+        lines = f.readlines()
+
+    files = []
+    pattern = r'^\s*analyze\s+([\w.-]+\.\w+)'
+    for line in lines:
+        match = re.search(pattern, line)
+        if match:
+            files.append(os.path.join(path, match.group(1)))
+
+    # In osvvm.pro this is compiled if ToolVendor is Aldec
+    # In osvvm.pro these files are compiled if not ToolSupportGenricPackages.
+    ignore_file_list = ["Aldec", "_c.vhd", "MessagePkg", "generated"]
+    for file in files:
+        ignore = False
+        for ignore_str in ignore_file_list:
+            if ignore_str in file:
+                project.logger.debug(f"Ignoring file {file}")
+                ignore = True
+                continue
+        if ignore:
+            continue
+        project.logger.debug(f"Adding file {file}")
+        project.add_files(os_adjust_path(file), library_name="osvvm")
+
     return True

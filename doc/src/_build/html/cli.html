@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Command Line Interface (CLI) &mdash; hdlregression 0.36.0 documentation</title>
+  <title>Command Line Interface (CLI) &mdash; hdlregression 0.39.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -238,6 +238,23 @@ are listed as <code class="docutils literal notranslate"><span class="pre">&lt;t
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="_images/testcase_running.png" id="running-in-terminal"><img alt="_images/testcase_running.png" class="align-center" id="running-in-terminal" src="_images/testcase_running.png" style="width: 750px;" /></a>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Testcases are identified by:</p>
+<ol class="arabic simple">
+<li><p>&lt;entity_name&gt;</p></li>
+<li><p>&lt;entity_name&gt;.&lt;architecture_name&gt;</p></li>
+<li><p>&lt;entity_name&gt;.&lt;architecture_name&gt;.&lt;sequencer_testcase&gt;</p></li>
+</ol>
+<div class="line-block">
+<div class="line">When selecting testcases to run, you can utilize wildcards to simplify the process. However, it’s important to
+note that the test case identifier must follow a specific naming convention.</div>
+<div class="line">For example, if you want to run all sequencer testcases that contain the word “write,” you would need to specify
+the identifier as &lt;entity_name&gt;.&lt;architecture_name&gt;.write.</div>
+<div class="line">Note that you can also use wildcards for &lt;entity_name&gt; and/or &lt;architecture_name&gt; to further
+refine your filter.</div>
+</div>
+</div>
 </section>
 <section id="test-groups">
 <h3>Test groups<a class="headerlink" href="#test-groups" title="Permalink to this headline"></a></h3>

@@ -19,64 +19,67 @@ from hdlregression.construct.hdlfile import HDLFile
 from hdlregression import HDLRegression
 
 if len(sys.argv) >= 2:
-    '''
+    """
     Remove pytest from argument list
-    '''
+    """
     sys.argv.pop(1)
 
 
 def get_file_path(path) -> str:
-    '''
+    """
     Adjust file paths to match running directory.
-    '''
+    """
     TEST_DIR = os.path.dirname(os.path.abspath(__file__))
     return os.path.join(TEST_DIR, path)
 
 
 def clear_output():
-    if os.path.isdir('./hdlregression'):
-        shutil.rmtree('./hdlregression')
+    if os.path.isdir("./hdlregression"):
+        shutil.rmtree("./hdlregression")
 
 
 def tear_down_function():
-    if os.path.isdir('./hdlregression'):
-        shutil.rmtree('./hdlregression')
+    if os.path.isdir("./hdlregression"):
+        shutil.rmtree("./hdlregression")
 
 
 def test_test_run_ok():
+    clear_output()
     hr = HDLRegression()
     filename = get_file_path("../design/dut_adder.vhd")
-    hr.add_files(filename, 'adder_lib')
+    hr.add_files(filename, "adder_lib")
 
     filename = get_file_path("../tb/dut_adder_tb.vhd")
-    hr.add_files(filename, 'adder_lib')
+    hr.add_files(filename, "adder_lib")
 
-    hr.set_result_check_string('passing testcase')
+    hr.set_result_check_string("passing testcase")
     rc = hr.start()
-    
+
     assert rc == 0, "check return code: test run OK"
 
 
 def test_no_test_run():
+    clear_output()
     hr = HDLRegression()
     filename = get_file_path("../design/dut_adder.vhd")
-    hr.add_files(filename, 'adder_lib')
+    hr.add_files(filename, "adder_lib")
 
-    hr.set_result_check_string('passing testcase')
+    hr.set_result_check_string("passing testcase")
     rc = hr.start()
-    
+
     assert rc == 1, "check return code: no tests run"
 
-    
+
 def test_compile_error():
+    clear_output()
     hr = HDLRegression()
     filename = get_file_path("../design/dut_adder_compile_error.vhd")
-    hr.add_files(filename, 'adder_lib')
+    hr.add_files(filename, "adder_lib")
 
     filename = get_file_path("../tb/dut_adder_tb.vhd")
-    hr.add_files(filename, 'adder_lib')
+    hr.add_files(filename, "adder_lib")
 
-    hr.set_result_check_string('passing testcase')
+    hr.set_result_check_string("passing testcase")
     rc = hr.start()
-    
+
     assert rc == 1, "check return code: compile error"

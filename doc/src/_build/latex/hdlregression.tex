@@ -61,8 +61,8 @@
 
 
 \title{hdlregression}
-\date{Mar 29, 2023}
-\release{0.36.0}
+\date{May 04, 2023}
+\release{0.39.0}
 \author{UVVM}
 \newcommand{\sphinxlogo}{\vbox{}}
 \renewcommand{\releasename}{Release}
@@ -1679,11 +1679,12 @@ path\_to\_osvvm
 \PYG{n}{hr}\PYG{o}{.}\PYG{n}{compile\PYGZus{}osvvm}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{c:/development/tools/OSVVM}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
 \end{sphinxVerbatim}
 
-\begin{sphinxadmonition}{important}{Important:}
+\begin{sphinxadmonition}{important}{Important:}\begin{itemize}
+\item {} 
 \sphinxAtStartPar
-The \sphinxcode{\sphinxupquote{compile\_osvvm()}} method has not been implemented yet.
-It is planned that this method will perform an internal ´add\_files()´ of the complete OSVVM.
-Feel free to contribute.
+The OSVVM path has to absolute or relative to the regression script location.
+
+\end{itemize}
 \end{sphinxadmonition}
 
 
@@ -2510,10 +2511,11 @@ Returns a list of all passed, failed and not run tests.
 
 \PYG{n}{passed\PYGZus{}tests} \PYG{o}{=} \PYG{n}{result\PYGZus{}list}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}
 \PYG{n}{failed\PYGZus{}tests} \PYG{o}{=} \PYG{n}{result\PYGZus{}list}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]}
+\PYG{n}{not\PYGZus{}run\PYGZus{}tests} \PYG{o}{=} \PYG{n}{result\PYGZus{}list}\PYG{p}{[}\PYG{l+m+mi}{2}\PYG{p}{]}
 \end{sphinxVerbatim}
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{p}{(}\PYG{n}{passed\PYGZus{}tests}\PYG{p}{,} \PYG{n}{failed\PYGZus{}tests}\PYG{p}{)} \PYG{o}{=} \PYG{n}{hr}\PYG{o}{.}\PYG{n}{get\PYGZus{}results}\PYG{p}{(}\PYG{p}{)}
+\PYG{p}{(}\PYG{n}{passed\PYGZus{}tests}\PYG{p}{,} \PYG{n}{failed\PYGZus{}tests}\PYG{p}{,} \PYG{n}{not\PYGZus{}run\PYGZus{}tests}\PYG{p}{)} \PYG{o}{=} \PYG{n}{hr}\PYG{o}{.}\PYG{n}{get\PYGZus{}results}\PYG{p}{(}\PYG{p}{)}
 \end{sphinxVerbatim}
 
 
@@ -2866,6 +2868,35 @@ A testcase can also be selected using the testcase number from the \sphinxcode{\
 \end{sphinxVerbatim}
 
 \noindent{\hspace*{\fill}\sphinxincludegraphics[width=750\sphinxpxdimen]{{testcase_running}.png}\hspace*{\fill}}
+
+\begin{sphinxadmonition}{tip}{Tip:}
+\sphinxAtStartPar
+Testcases are identified by:
+\begin{enumerate}
+\sphinxsetlistlabels{\arabic}{enumi}{enumii}{}{.}%
+\item {} 
+\sphinxAtStartPar
+\textless{}entity\_name\textgreater{}
+
+\item {} 
+\sphinxAtStartPar
+\textless{}entity\_name\textgreater{}.\textless{}architecture\_name\textgreater{}
+
+\item {} 
+\sphinxAtStartPar
+\textless{}entity\_name\textgreater{}.\textless{}architecture\_name\textgreater{}.\textless{}sequencer\_testcase\textgreater{}
+
+\end{enumerate}
+
+\begin{DUlineblock}{0em}
+\item[] When selecting testcases to run, you can utilize wildcards to simplify the process. However, it’s important to
+note that the test case identifier must follow a specific naming convention.
+\item[] For example, if you want to run all sequencer testcases that contain the word “write,” you would need to specify
+the identifier as \textless{}entity\_name\textgreater{}.\textless{}architecture\_name\textgreater{}.write.
+\item[] Note that you can also use wildcards for \textless{}entity\_name\textgreater{} and/or \textless{}architecture\_name\textgreater{} to further
+refine your filter.
+\end{DUlineblock}
+\end{sphinxadmonition}
 
 
 \subsection{Test groups}

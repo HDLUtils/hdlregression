@@ -48,9 +48,10 @@ class JSONReporter(HDLReporter):
                 self._time_of_sim())
 
             # Write test results
-            pass_tests, fail_tests = self.project.get_results()
+            pass_tests, fail_tests, not_run_tests = self.project.get_results()
             pass_test_str = ''
             fail_test_str = ''
+            not_run_test_str = ''
             for idx, test in enumerate(pass_tests):
                 if idx + 1 == len(pass_tests):
                     if len(fail_tests) == 0:
@@ -65,6 +66,12 @@ class JSONReporter(HDLReporter):
                 else:
                     fail_test_str += '"%s" : "FAIL",\n' % (test)
 
+            for idx, test in enumerate(not_run_tests):
+                if idx + 1 == len(not_run_tests):
+                    not_run_test_str += '"%s" : "NOT_RUN"\n' % (test)
+                else:
+                    not_run_test_str += '"%s" : "NOT_RUN",\n' % (test)
+
             data += '''
     "Test results" :
         {
@@ -72,6 +79,10 @@ class JSONReporter(HDLReporter):
             if fail_test_str:
                 data += '''
             %s''' % (fail_test_str)
+            if not_run_test_str:
+                data += '''
+            %s''' % (not_run_test_str)
+
             data += '''
         }
 '''
@@ -112,7 +123,8 @@ class JSONReporter(HDLReporter):
             "Items" : [''' % (testgroup_container.get_name())
                 testgroup_items_list = testgroup_container.get()
                 for idx, testgroup_items_list in enumerate(testgroup_container.get()):
-                    entity, architecture, testcase, generics = tuple(testgroup_items_list)
+                    entity, architecture, testcase, generics = tuple(
+                        testgroup_items_list)
                     tg_str = '%s' % (entity)
                     if architecture:
                         tg_str += '.%s' % (architecture)

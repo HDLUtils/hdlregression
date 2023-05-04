@@ -109,6 +109,22 @@ A testcase can also be selected using the testcase number from the ``-ltc`` or `
   :align:   center
 
 
+
+.. tip::
+  Testcases are identified by:
+
+  #. <entity_name>
+  #. <entity_name>.<architecture_name>
+  #. <entity_name>.<architecture_name>.<sequencer_testcase>
+
+  | When selecting testcases to run, you can utilize wildcards to simplify the process. However, it's important to
+    note that the test case identifier must follow a specific naming convention.
+  | For example, if you want to run all sequencer testcases that contain the word "write," you would need to specify
+    the identifier as <entity_name>.<architecture_name>.write.
+  | Note that you can also use wildcards for <entity_name> and/or <architecture_name> to further
+    refine your filter.
+
+
 Test groups
 =======================================================================================================================
 

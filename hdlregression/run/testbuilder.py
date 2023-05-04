@@ -22,38 +22,40 @@ from .hdltests import VHDLTest, VerilogTest
 
 
 class TestBuilder:
-    '''
+    """
     Builds list of tests that will be run.
     Test list entries are:
     (testbench (object), testcase (string))
-    '''
+    """
 
     def __init__(self, project):
         self.logger = Logger(name=__name__, project=project)
         self.project = project
         self.testbench_container = Container(name=__name__)
-        self.test_container = Container(name='test_container')
-        self.base_tests_container = Container(name='base_tests_container')
+        self.test_container = Container(name="test_container")
+        self.base_tests_container = Container(name="base_tests_container")
         self.run_tests = []
         self.test_id_count = 0
 
     def build_tb_module_list(self) -> None:
-        '''
+        """
         Builds a list of all TB modules.
-        '''
+        """
         library_list = self.project._get_library_container().get()
         for library in library_list:
             for hdlfile in library.get_hdlfile_list():
-                self.logger.debug("checking for TB in %s in library %s" % (hdlfile.get_name(),
-                                                                           library.get_name()))
+                self.logger.debug(
+                    "checking for TB in %s in library %s"
+                    % (hdlfile.get_name(), library.get_name())
+                )
                 for module in hdlfile.get_tb_modules():
                     self.testbench_container.add(module)
 
     def build_list_of_tests_to_run(self):
-        '''
+        """
         Builds a list of all testbenches and testcases
         that are selected to be run.
-        '''
+        """
         # Build all possible tests as starting point
         self._build_base_tests()
 
@@ -93,10 +95,10 @@ class TestBuilder:
             self._build_modified()
 
     def get_list_of_tests_to_run(self) -> list:
-        '''
+        """
         Returns list of all testbenches and testcases
         that are selected to be run.
-        '''
+        """
         return self.test_container.get()
 
     def get_num_tests_run(self) -> int:
@@ -119,9 +121,9 @@ class TestBuilder:
         return str1.upper() == str2.upper()
 
     def _build_base_tests(self) -> None:
-        '''
+        """
         Build a list of all tests.
-        '''
+        """
         # Remove any existing test(s)
         self.test_container.empty_list()
         self.base_tests_container.empty_list()
@@ -131,7 +133,6 @@ class TestBuilder:
         self.test_id_count = 0
         # Iterate all TBs
         for tb in self.testbench_container.get():
-
             # Locate generic container for this TB, i.e.
             # generics set by test script designer.
             gc_list_all = []
@@ -142,7 +143,7 @@ class TestBuilder:
             # ------------------------------------
             # Verilog TB
             # ------------------------------------
-            if tb.get_hdlfile().check_file_type('verilog'):
+            if tb.get_hdlfile().check_file_type("verilog"):
                 tc_gc_set = False
                 for gc in gc_list_all:
                     for gc_item in gc:
@@ -175,18 +176,22 @@ class TestBuilder:
             else:
                 # Generics for non-specified architecture, i.e. all architectures
                 gc_list_no_arch = [
-                    gc for (gc_arch, gc) in gc_list_all if gc_arch is None]
+                    gc for (gc_arch, gc) in gc_list_all if gc_arch is None
+                ]
 
                 # Match with architecture
                 for arch in tb.get_architecture():
-
                     # Script generics set for this architecture
-                    gc_list_this_arch = [gc for (
-                        gc_arch, gc) in gc_list_all if gc_arch is not None if self._str_match(gc_arch, arch.get_name())]
+                    gc_list_this_arch = [
+                        gc
+                        for (gc_arch, gc) in gc_list_all
+                        if gc_arch is not None
+                        if self._str_match(gc_arch, arch.get_name())
+                    ]
 
                     # Combined generics list with generics set without
                     # architecture and generics set for this architecture
-                    gc_list_combined = (gc_list_this_arch + gc_list_no_arch)
+                    gc_list_combined = gc_list_this_arch + gc_list_no_arch
 
                     tc_gc_set = False
                     for gc in gc_list_combined:
@@ -197,7 +202,6 @@ class TestBuilder:
 
                     # Scripted generics tests
                     if gc_list_combined:
-
                         # Create tests with all sequencer built-in testcases?
                         if tc_gc_set is False and arch.get_has_testcase():
                             for tc in arch.get_testcase():
@@ -238,24 +242,23 @@ class TestBuilder:
                                 test.set_tc(tc)
                                 self.test_container.add(test)
 
-        self.base_tests_container.add_element_from_list(
-            self.test_container.get())
+        self.base_tests_container.add_element_from_list(self.test_container.get())
 
     @staticmethod
     def _unix_match(search_string, pattern) -> bool:
-        '''
+        """
         Match search_string with pattern using Unix wild cards.
-        '''
+        """
         return fnmatch.fnmatch(search_string, pattern)
 
     def _get_user_testcase_list(self) -> list:
         return self.project.settings.get_testcase_list()
 
     def _build_testcase(self) -> None:
-        '''
+        """
         Build a list of tests that match
         user selected testcase.
-        '''
+        """
 
         def _is_testcase_an_index_number():
             return all(tc[0].isdigit() for tc in testcase_list)
@@ -276,7 +279,8 @@ class TestBuilder:
             index = _get_testcase_index_number()
             if index is None:
                 self.logger.error(
-                    'Testcase is not a valid index (1 to %d).' % (self.test_id_count))
+                    "Testcase is not a valid index (1 to %d)." % (self.test_id_count)
+                )
                 return None
             self._get_testcase_from_index(index)
         else:
@@ -285,21 +289,20 @@ class TestBuilder:
         # Verify if any testcases were found
         if self.test_container.num_elements() == 0:
             for testcase in testcase_list:
-                self.logger.warning('No testcase match for: %s' % (testcase))
+                self.logger.warning("No testcase match for: %s" % (testcase))
 
     def _get_testcase_from_index(self, index):
-        ''' User selected testcase by number. '''
+        """User selected testcase by number."""
         # Check testcase index
         test = self.test_container.get_index(index)
         self.test_container.empty_list()
         self.test_container.add(test)
 
     def _get_testcase_from_string(self, testcase_list):
-        ''' User selected testcase ny entity.arch.tc '''
+        """User selected testcase ny entity.arch.tc"""
         filtered_tests = []
 
         for test in self.test_container.get():
-
             for tc in testcase_list:
                 # User selection content
                 user_testbench = tc[0]
@@ -312,16 +315,23 @@ class TestBuilder:
                 container_testcase = test.get_tc()
 
                 # Locate correct testbench
-                if self._unix_match(search_string=container_testbench, pattern=user_testbench):
+                if self._unix_match(
+                    search_string=container_testbench, pattern=user_testbench
+                ):
                     # Locate correct architecture
                     if user_architecture:
-                        if self._unix_match(search_string=container_architecture, pattern=user_architecture):
-
+                        if self._unix_match(
+                            search_string=container_architecture,
+                            pattern=user_architecture,
+                        ):
                             # Selected sequencer/built-in testcase?
                             if container_testcase:
                                 # User selected testcase?
                                 if user_testcase:
-                                    if self._unix_match(search_string=container_testcase, pattern=user_testcase):
+                                    if self._unix_match(
+                                        search_string=container_testcase,
+                                        pattern=user_testcase,
+                                    ):
                                         filtered_tests.append(test)
                                 else:
                                     filtered_tests.append(test)
@@ -333,7 +343,10 @@ class TestBuilder:
                         # Selected sequencer/built-in testcase?
                         if container_testcase:
                             if user_testcase:
-                                if self._unix_match(search_string=container_testcase, pattern=user_testcase):
+                                if self._unix_match(
+                                    search_string=container_testcase,
+                                    pattern=user_testcase,
+                                ):
                                     filtered_tests.append(test)
                             # All sequencer/built-in testcases
                             else:
@@ -346,18 +359,19 @@ class TestBuilder:
             self.test_container.add(test)
 
     def _build_testgroup(self) -> None:
-        '''
+        """
         Build a list of tests that are
         part of testgroup.
-        '''
+        """
         filtered_tests = []
 
         # Get which testgroup to run.
         testgroup_to_run = self.project.settings.get_testgroup()
 
         # Get testgroup info
-        testgroup = self.project._get_testgroup_container(testgroup_name=testgroup_to_run,
-                                                          create_if_not_found=False)
+        testgroup = self.project._get_testgroup_container(
+            testgroup_name=testgroup_to_run, create_if_not_found=False
+        )
 
         if testgroup:
             # Locate all tests in test group
@@ -367,18 +381,20 @@ class TestBuilder:
 
                 # Check for match with test container (base tests)
                 for test in self.test_container.get():
-
                     # Match entity
                     if self._unix_match(search_string=test.get_name(), pattern=entity):
-
                         # Match architecture
                         if architecture:
-                            if self._unix_match(search_string=test.get_arch().get_name(), pattern=architecture):
-
+                            if self._unix_match(
+                                search_string=test.get_arch().get_name(),
+                                pattern=architecture,
+                            ):
                                 # User selected sequencer testcase?
                                 if testcase:
                                     # Match sequencer testcase
-                                    if self._unix_match(search_string=test.get_tc(), pattern=testcase):
+                                    if self._unix_match(
+                                        search_string=test.get_tc(), pattern=testcase
+                                    ):
                                         filtered_tests.append(test)
                                 else:
                                     filtered_tests.append(test)
@@ -390,17 +406,15 @@ class TestBuilder:
             self.test_container.add(test)
 
         if self.test_container.num_elements() == 0:
-            self.logger.warning(
-                'No test found for test group: %s' % (testgroup_to_run))
+            self.logger.warning("No test found for test group: %s" % (testgroup_to_run))
 
     def _build_modified(self) -> None:
-        '''
+        """
         Build a list of tests that have to
         be re-run due to changes.
-        '''
+        """
         filtered_tests = []
         for test in self.test_container.get():
-
             if test.get_need_to_simulate() is True:
                 filtered_tests.append(test)
             elif not self.project.settings.get_success_run():
@@ -411,14 +425,15 @@ class TestBuilder:
             self.test_container.add(test)
 
     def _get_test_object(self, tb=None, arch=None, tc=None, gc=None):
-        '''
+        """
         Will return test object based on HDL file type.
-        '''
+        """
         hdlfile = tb.get_hdlfile()
 
         if isinstance(hdlfile, VHDLFile):
-            test = VHDLTest(tb=tb, arch=arch, tc=tc, gc=gc,
-                            settings=self.project.settings)
+            test = VHDLTest(
+                tb=tb, arch=arch, tc=tc, gc=gc, settings=self.project.settings
+            )
             test.set_hdlfile(hdlfile)
             test.set_need_to_simulate(hdlfile.get_need_compile())
             self.test_id_count += 1
@@ -432,6 +447,7 @@ class TestBuilder:
             test.set_test_id_number(self.test_id_count)
             return test
         else:
-            self.logger.warning('Filetype not detected for %s' %
-                                (type(tb.get_hdlfile())))
+            self.logger.warning(
+                "Filetype not detected for %s" % (type(tb.get_hdlfile()))
+            )
             return None
