@@ -50,6 +50,7 @@ def arg_parser_reader(arg_parser=None):
         arg_parser.add_argument('-sof', '--stopOnFailure', action='store_true', help='stop simulations on testcase fail')
         arg_parser.add_argument('-s', '--simulator', action='store', type=str, nargs=1, help='select simulator Modelsim/GHDL')
         arg_parser.add_argument('-t', '--threading', action='store', type=int, nargs='?', const=1, help='run tasks in parallel')
+        arg_parser.add_argument('-ns', '--no_sim', action='store_true', help='no simulation, only compilation')
 
         arg_parser.add_argument('-ll', '--loggLevel', action='store', type=str, help=argparse.SUPPRESS)
         arg_parser.add_argument('-ld', '--listDependency', action='store_true', help=argparse.SUPPRESS)
@@ -94,6 +95,9 @@ def arg_parser_update_settings(settings, args) -> 'HDLRegressionSettings':
 
     if args.stopOnFailure:
         settings.set_stop_on_failure(True)
+        
+    if args.no_sim:
+        settings.set_no_sim(True)
 
     settings.set_gui_compile_changes(args.compileChanges)
     settings.set_gui_compile_all(args.compileAll)

@@ -45,6 +45,8 @@ class HDLRegressionSettings:
         self.sim_time = None
         self.threading = False
         self.num_threads = 0
+        self.no_sim = False
+        self.no_compile = False
 
         self.netlist_timing = None
 
@@ -174,8 +176,6 @@ class HDLRegressionSettings:
     # ----------------------------------
     # Running
     # ----------------------------------
-    def set_run_all(self, full_regression):
-        self.full_regression = full_regression
 
     def get_run_all(self) -> bool:
         return self.full_regression
@@ -414,6 +414,21 @@ class HDLRegressionSettings:
 
     def add_sim_options(self, options, warning=True):
         self.simulator_settings.add_sim_options(options, warning)
+
+    def set_no_sim(self, no_sim=False):
+        self.no_sim = no_sim
+
+    def get_no_sim(self) -> bool:
+        return self.no_sim
+
+    def set_no_compile(self, no_compile=False):
+        self.no_compile = no_compile
+
+    def get_no_compile(self) -> bool:
+        return self.no_compile
+
+    def set_run_all(self, full_regression):
+        self.full_regression = full_regression
 
     # ----------------------------------
     # Gui

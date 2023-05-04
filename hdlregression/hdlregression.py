@@ -624,21 +624,25 @@ class HDLRegression:
 
             # Start simulations if compile was OK
             else:
-                self.logger.info("\nStarting simulations...")
-                # Run simulation
-                sim_success = self.runner.simulate() if self.runner else False
-
-                if not sim_success or (self.get_num_fail_tests() > 0):
-                    self.settings.set_return_code(1)
+              
+                if self.settings.get_no_sim() is True:
+                    self.logger.info("\nSkipping simulations")
                 else:
-                    # Single testcase run is not a valid regression
-                    if self.settings.get_testcase() is None:
-                        self.settings.set_success_run(True)
-                        self.settings.set_time_of_run()
-
-                    print_info_msg_when_no_test_has_run(
-                        project=self, runner=self.runner
-                    )
+                    self.logger.info("\nStarting simulations...")
+                    # Run simulation
+                    sim_success = self.runner.simulate() if self.runner else False
+    
+                    if not sim_success or (self.get_num_fail_tests() > 0):
+                        self.settings.set_return_code(1)
+                    else:
+                        # Single testcase run is not a valid regression
+                        if self.settings.get_testcase() is None:
+                            self.settings.set_success_run(True)
+                            self.settings.set_time_of_run()
+    
+                        print_info_msg_when_no_test_has_run(
+                            project=self, runner=self.runner
+                        )
 
                 # Do not save running a selected testcase
                 self.settings.empty_testcase_list()
@@ -659,7 +663,8 @@ class HDLRegression:
             print_run_success(project=self)
             self._generate_run_report_files()
         else:
-            self.settings.set_return_code(1)
+            if self.settings.get_no_sim() is False:
+                self.settings.set_return_code(1)
 
         # Merge coverage files and generate reports.
         if self.hdlcodecoverage.merge_code_coverage() is False:
