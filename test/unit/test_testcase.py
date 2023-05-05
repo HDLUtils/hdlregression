@@ -282,7 +282,7 @@ def test_wildcard_question_mark_testcases():
     assert len(pass_list) == 1, "check number of passing tests"
     assert len(not_run_list) == 0, "check number of not run tests"
     assert (
-        pass_list[0] == "testcase_lib.tb_testcase.testcase_arch.testcase_2 (test_id: 3)"
+        pass_list[0] == "testcase_lib.tb_testcase.testcase_arch.testcase_2 (test_id: 2)"
     )
 
 

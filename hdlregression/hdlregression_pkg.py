@@ -62,59 +62,59 @@ def list_compile_order(container) -> str:
 
 
 def list_testgroup(container) -> str:
-    '''
+    """
     List all testgroups with belonging testbenches/testcases.
 
     Returns:
     tg_str(str): a string with all testgroups.
-    '''
-    tg_str = ""
+    """
+    tg_lines = []
 
     for testgroup_container in container.get():
-        tg_str += f"|---- {testgroup_container.get_name()}\n"
+        tg_lines.append("|---- {}".format(testgroup_container.get_name()))
 
         testgroup_items_list = testgroup_container.get()
-        for testgroup_items_list in testgroup_container.get():
-            entity, architecture, testcase, generics = tuple(
-                testgroup_items_list)
+        for testgroup_items in testgroup_items_list:
+            entity, architecture, testcase, generics = tuple(testgroup_items)
 
-            tg_str += "|   |--  %s" % (entity)
+            line = "|   |--  {}".format(entity)
             if architecture:
-                tg_str += ".%s" % (architecture)
+                line += ".{}".format(architecture)
             if testcase:
-                tg_str += ".%s" % (testcase)
+                line += ".{}".format(testcase)
             if generics:
-                tg_str += ", generics=%s" % (generics)
-            tg_str += '\n'
+                line += ", generics={}".format(generics)
+            tg_lines.append(line)
 
-    if not tg_str:
+    if not tg_lines:
         return 'No test group found.'
-    return tg_str
+    return '\n'.join(tg_lines)
 
 
 def list_testcases(runner) -> str:
-    '''
+    """
     List all testcases discovered inside testbenches.
 
     Returns:
     tc_string: a string of all discovered testcases in project.
-    '''
-    tc_string = ""
+    """
+    tc_lines = []
 
     runner.testbuilder.build_tb_module_list()
     runner.testbuilder._build_base_tests()
-    run_tests = runner.testbuilder.test_container.get()
+    run_tests = runner.testbuilder.get_list_of_tests_to_run()
+    
 
     for test in run_tests:
-        generics = test.get_gc_str(filter_testcase_id=True).replace(
-            '-g', '') if test.get_gc_str() else ''
+        generics = test.get_gc_str(filter_testcase_id=True).replace('-g', '') if test.get_gc_str() else ''
+        tc_line = "TC:{0} - {1}".format(test.get_test_id_number(), test.get_testcase_name())
+        tc_lines.append(tc_line)
 
-        tc_string += 'TC:%d - %s\n' % (test.get_test_id_number(),
-                                       test.get_testcase_name())
         if generics:
-            tc_string += '    Generics: %s\n' % (generics)
+            tc_lines.append("    Generics: {0}".format(generics))
 
-    return tc_string
+    return '\n'.join(tc_lines)
+
 
 # ========================================================
 #
