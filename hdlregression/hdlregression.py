@@ -929,7 +929,7 @@ class HDLRegression:
                     self.logger.info(
                         "Setting up precompiled library: %s" % (lib.get_name())
                     )
-                    lib_string = "%s = %s\n" % (
+                    lib_string += "%s = %s\n" % (
                         lib.get_name(),
                         os.path.realpath(lib.get_compile_path()),
                     )
