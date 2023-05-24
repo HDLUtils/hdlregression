@@ -783,13 +783,11 @@ class SimRunner:
         test.set_result_success(test_ok, no_minor_alerts=test_ok_no_minor_alerts)
         test.set_has_been_run(True)
 
-    @staticmethod
     def _create_terminal_test_info_output_string(test, descriptive_test_name) -> str:
         """
         Create a testcase name based on entity, architecture, test, and generics.
         """
 
-        @staticmethod
         def get_generics_string(test) -> str:
             generics = test.get_gc_str(filter_testcase_id=True)
             if generics:
