@@ -196,10 +196,11 @@ class ModelsimRunner(SimRunner):
                                    obj.get_filename_with_path().replace('\\', '/'))
         return call
 
-    def _get_simulator_call(self, test, generic_call, module_call) -> str:
+    def _get_simulator_do_cmd(self, test, generic_call, module_call) -> str:
         '''
-        Returns a Modelsim simulate call with paths adjusted for OS to
-        be written in the run.do file.
+        Returns a Modelsim simulate command (vsim) with parameters for use in run.do.
+        This command does NOT include the path to vsim, since vsim is a command
+        recognized by Modelsim while executing do files.
 
         Called from: _write_run_do_file()
         '''
@@ -222,10 +223,9 @@ class ModelsimRunner(SimRunner):
         sim_options = ' '.join(self.project.settings.get_sim_options())
 
         netlist_call = self._get_netlist_call()
-        
-        vsim_exec = self._get_simulator_executable('vsim')
 
-        return ' '.join([vsim_exec,
+        # Command should not include path
+        return ' '.join(['vsim',
                          generic_call,
                          module_call,
                          sim_options,
@@ -242,7 +242,7 @@ class ModelsimRunner(SimRunner):
         '''
         Creates the run.do file that is called for starting the simulations.
         '''
-        sim_call = self._get_simulator_call(test, generic_call, module_call)
+        sim_call = self._get_simulator_do_cmd(test, generic_call, module_call)
         run_file = os.path.join(test.get_test_path(), 'run.do')
         try:
             with open(run_file, 'w') as file:
