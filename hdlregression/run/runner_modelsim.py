@@ -20,7 +20,7 @@ import os
 from .sim_runner import SimRunner, OutputFileError
 from ..report.logger import Logger
 from ..hdlregression_pkg import os_adjust_path
-
+from ..scan.hdl_regex_pkg import RE_MODELSIM_WARNING, RE_MODELSIM_ERROR
 
 class ModelsimRunner(SimRunner):
 
@@ -149,8 +149,8 @@ class ModelsimRunner(SimRunner):
             if hdlfile.get_need_compile() or force_compile:
                 self.logger.debug('Recompiling file: %s' % (hdlfile.get_name()))
 
-                if not self._run_cmd(command=self._get_compile_call(hdlfile),
-                                     path=libraries_path):
+                success = self._run_cmd(command=self._get_compile_call(hdlfile), path=libraries_path) 
+                if success is False:
                     compile_ok = False
                 else:
                     hdlfile.update_compile_time()
@@ -165,6 +165,11 @@ class ModelsimRunner(SimRunner):
     # Simulations
     #
     # =========================================================================
+    def _get_simulator_error_regex(self):
+        return RE_MODELSIM_ERROR
+      
+    def _get_simulator_warning_regex(self):
+        return RE_MODELSIM_WARNING
 
     def _get_modelsim_ini_path(self) -> str:
         '''
@@ -260,8 +265,5 @@ class ModelsimRunner(SimRunner):
         success = self._run_cmd(command=command, path=test.get_test_path(), test=test)
         return success
 
-    def _get_error_detection_str(self) -> str:
-      return r'^[\r\n\s]?\*\*\sError[\s+]?[:]?'
-    
     def _get_ignored_error_detection_str(self) -> str:
       return r'^\/\/  (Reconnected|Lost connection) to license server'

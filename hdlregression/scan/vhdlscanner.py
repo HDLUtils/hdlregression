@@ -16,6 +16,8 @@
 import re
 from multiprocessing.pool import ThreadPool
 from _multiprocessing import flags
+from concurrent.futures import ThreadPoolExecutor as ThreadPool
+
 
 from .hdlscanner import HDLScanner
 from ..construct.hdl_modules_pkg import EntityModule, ContextModule, ConfigurationModule, ArchitectureModule, PackageModule, PackageBodyModule
@@ -153,6 +155,7 @@ class VHDLScanner(HDLScanner):
             for item in devided_list:
                 parsers += item
         # Execute using 1 or more threads
+
         with ThreadPool(num_threads) as thread_pool:
             thread_pool.map(run_parser, parsers)
 

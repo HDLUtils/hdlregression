@@ -17,6 +17,32 @@
 import re
 
 # --------------------------------------------------------------
+#  Simulator regular expressions
+# --------------------------------------------------------------
+
+# ID_SIMULATOR_WARNING = r'(?:\*\* Warning:|WARNING:|warn:)\s?(.*)'
+# RE_SIMULATOR_WARNING = re.compile(ID_SIMULATOR_WARNING, flags=re.IGNORECASE)
+# 
+# ID_SIMULATOR_ERROR = r'(?:\*\* (?:Error|Fatal): \(File: (.*), Line: (\d+)\)|ERROR:|error:|FATAL:|fatal:)\s?(.*)'
+# RE_SIMULATOR_ERROR = re.compile(ID_SIMULATOR_ERROR, flags=re.IGNORECASE)
+
+ID_MODELSIM_ERROR = r'[\r\n\s]?\*\*\s(error|fatal)[\s+]?[:]?'
+RE_MODELSIM_ERROR = re.compile(ID_MODELSIM_ERROR, flags=re.IGNORECASE)
+
+ID_MODELSIM_WARNING = r'[\r\n\s]?\*\*\Warning[\s+]?[:]?'
+RE_MODELSIM_WARNING = re.compile(ID_MODELSIM_WARNING, flags=re.IGNORECASE)
+
+ID_NVC_ERROR = r'(error: (.*):(\d+):(\d+):\s(.*))'
+RE_NVC_ERROR = re.compile(ID_NVC_ERROR, flags=re.IGNORECASE)
+ID_NVC_WARNING = r'(warning: (.*):(\d+):(\d+):\s(.*))'
+RE_NVC_WARNING = re.compile(ID_NVC_WARNING, flags=re.IGNORECASE)
+
+ID_GHDL_ERROR = r'(error: (.*):(\d+):(\d+):\s(.*))'
+RE_GHDL_ERROR = re.compile(ID_GHDL_ERROR, flags=re.IGNORECASE)
+ID_GHDL_WARNING = r'(warning: (.*):(\d+):(\d+):\s(.*))'
+RE_GHDL_WARNING = re.compile(ID_GHDL_WARNING, flags=re.IGNORECASE)
+
+# --------------------------------------------------------------
 #  VHDL regular expressions
 # --------------------------------------------------------------
 

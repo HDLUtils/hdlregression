@@ -36,6 +36,7 @@ class HDLRunnerError(Exception):
 
 
 class OutputFileError(HDLRunnerError):
+
     def __init__(self, filename):
         self.filename = filename
 
@@ -44,6 +45,7 @@ class OutputFileError(HDLRunnerError):
 
 
 class TestOutputPathError(HDLRunnerError):
+
     def __init__(self, path):
         self.path = path
 
@@ -134,7 +136,7 @@ class SimRunner:
         Called from HDLRegression() object to:
         1. Check that library folder exist and create and compile library if not.
         2. Check if library require compile and compile library if required.
-
+    
         Returns:
           success(bool): True when no library compilation error.
         """
@@ -161,16 +163,13 @@ class SimRunner:
         self.project.settings.reset_library_compile()
 
         # Check all libraries in project
-        # for library in lib_container.get():
         for library in regular_lib:
             lib_path_missing = self._check_if_library_path_is_missing(library)
             compile_required = self._check_for_recompile(library, lib_path_missing)
             force_compile = self._check_for_force_compile(library, lib_path_missing)
 
             if compile_required or force_compile:
-                self.logger.info(
-                    "Compiling library: %s" % (library.get_name()), end=" "
-                )
+                self.logger.info("Compiling library: {}".format(library.get_name()), end=" ")
                 compiled_library = self._compile_library(
                     library=library, force_compile=force_compile
                 )
@@ -191,82 +190,77 @@ class SimRunner:
             compile_time = time.time()
             self.project.settings.set_compile_time(compile_time)
 
-        return (success, self.project._get_library_container())
+        return success, self.project._get_library_container()
 
     def simulate(self) -> bool:
         """
-        Collects test objects to run and executes
-        test simulations.
+        Collects test objects to run and executes test simulations.
         """
 
         def run_test(test_queue) -> bool:
+            """
+            Executes tests from the queue in a separate thread.
+            """
             while not test_queue.empty():
                 test = test_queue.get()
-
                 self._create_test_folder(test.get_test_path())
                 self._run_terminal_test(test)
-
                 # Display test information and results
                 print(test.get_terminal_test_details_str())
-
+    
                 # Print test output in verbose mode
-                if self.project.settings.get_verbose() is True:
+                if self.project.settings.get_verbose():
                     print(test.get_output())
-
+    
                 # Present errors
-                if test.get_result_success() is False:
+                if not test.get_result_success():
                     print(test.get_test_error_summary())
                     if self.project.settings.get_stop_on_failure():
-                        self.logger.warning(
-                            "Simulations stopped because of failing testcase."
-                        )
+                        self.logger.warning("Simulations stopped because of failing testcase.")
                     self.project.settings.set_return_code(1)
+    
                 test_queue.task_done()
-
-        # default
-        success = True
-
+    
         # Get tests to run
         self.test_list = self.testbuilder.get_list_of_tests_to_run()
-
+    
         # Backup previous test run results if new tests are run
         if self.test_list:
             self._backup_test_run()
-
+    
         # Start timer
         start_time = round(time.time() * 1000)
-
+    
         num_threads = self._get_number_of_threads()
-        if num_threads == 0:
-            return success
+        if num_threads > 0: 
+            self.logger.info(
+                "Running {} out of {} test(s) using {} thread(s).".format(self.get_num_tests_run(),
+                                                                          self.get_num_tests(),
+                                                                          num_threads))
 
-        self.logger.info(
-            "Running %d out of %d test(s) using %d thread(s)."
-            % (self.get_num_tests_run(), self.get_num_tests(), num_threads)
-        )
+            # create test queue for threads to operate with
+            test_queue = Queue()
+            for test in self.test_list:
+                test_queue.put(test)
 
-        # create test queue for threads to operate with
-        test_queue = Queue()
-        for test in self.test_list:
-            test_queue.put(test)
+            # run threads
+            for _ in range(num_threads):
+                thread = Thread(target=run_test, args=(test_queue,))
+                thread.daemon = True
+                thread.start()
 
-        # run threads
-        for _ in range(num_threads):
-            thread = Thread(target=run_test, args=(test_queue,))
-            thread.daemon = True
-            thread.start()
+            # wait for test queue to finish
+            test_queue.join()
 
-        # wait for test queue to finish
-        test_queue.join()
+            # Calculate and update timing
+            finish_time = round(time.time() * 1000)
+            elapsed_time = finish_time - start_time
+            self.project.settings.set_sim_time(elapsed_time)
 
-        # Calculate and update timing
-        finish_time = round(time.time() * 1000)
-        elapsed_time = finish_time - start_time
-        self.project.settings.set_sim_time(elapsed_time)
-
-        # Write mapping file for run tests.
-        self._write_test_mapping(self.test_list)
-        return success
+            # Write mapping file for run tests.
+            self._write_test_mapping(self.test_list)
+    
+        return True
 
     # ===================================================================================================
     #
@@ -365,7 +359,7 @@ class SimRunner:
 
         # Internal method for dividing test list
         def devide_list_for_threads(lst, sz):
-            return [lst[i : i + sz] for i in range(0, len(lst), sz)]
+            return [lst[i: i + sz] for i in range(0, len(lst), sz)]
 
         if num_threads > 1:
             devided_list = devide_list_for_threads(test_list, num_threads)
@@ -419,51 +413,46 @@ class SimRunner:
         Check if there has been a previous test run and move
         those test results to a backup folder.
         """
+    
+        def backup_test_results(backup_folder):
+            try:
+                if keep_code_coverage:
+                    self.logger.info("Backing up previous test run to: {}.".format(backup_folder))
+                    copytree(self.project.settings.get_test_path(), backup_folder)
+                else:
+                    self.logger.info("Moving previous test run to: {}.".format(backup_folder))
+                    os.rename(self.project.settings.get_test_path(), backup_folder)
+            except OSError as error:
+                self.logger.warning("Unable to backup tests: {}".format(error))
+    
         keep_code_coverage = self.project.settings.get_keep_code_coverage()
-
-        if self.project.settings.get_time_of_run() and os.path.exists(
-            self.project.settings.get_test_path()
-        ):
-            backup_folder = (
-                self.project.settings.get_test_path()
-                + "_"
-                + self.project.settings.get_time_of_run()
-            )
+    
+        if self.project.settings.get_time_of_run() and os.path.exists(self.project.settings.get_test_path()):
+            backup_folder = "{}_{}".format(self.project.settings.get_test_path(), self.project.settings.get_time_of_run())
+    
             if not os.path.exists(backup_folder):
-                try:
-                    if keep_code_coverage is True:
-                        self.logger.info(
-                            "Backup previous test run to: %s." % (backup_folder)
-                        )
-                        copytree(self.project.settings.get_test_path(), backup_folder)
-                    else:
-                        self.logger.info(
-                            "Moving previous test run to: %s." % (backup_folder)
-                        )
-                        os.rename(self.project.settings.get_test_path(), backup_folder)
-                except OSError as error:
-                    self.logger.warning("Unable to backup tests: %s" % (error))
+                backup_test_results(backup_folder)
             else:
-                self.logger.warning("Backup folder %s already exist." % (backup_folder))
+                self.logger.warning("Backup folder {} already exists.".format(backup_folder))
 
     def _write_test_mapping(self, tests) -> None:
         """
         Create a test and folder mapping file to locate
         test run with hashed test run folders.
         """
-        # Create mapping of test run with folder
+    
+        def write_test_mapping_to_file(test_mapping_file):
+            try:
+                with open(test_mapping_file, "a+") as mapping_file:
+                    for test in tests:
+                        mapping_file.write(test.get_folder_to_name_mapping())
+            except Exception as error:
+                self.logger.warning("Unable to write test mapping file {}. Error: {}".format(test_mapping_file, error))
+    
         self.logger.debug("Writing test mapping CSV file.")
-        test_mapping_file = os.path.join(
-            self.project.settings.get_test_path(), "test_mapping.csv"
-        )
-        try:
-            with open(test_mapping_file, "a+") as mapping_file:
-                for test in tests:
-                    mapping_file.write(test.get_folder_to_name_mapping())
-        except:
-            self.logger.warning(
-                "Unable to write test mapping file %s." % (test_mapping_file)
-            )
+        test_mapping_file = os.path.join(self.project.settings.get_test_path(), "test_mapping.csv")
+        
+        write_test_mapping_to_file(test_mapping_file)
 
     # ---------------------------------------------------------
     # Compilation and simulating
@@ -476,11 +465,17 @@ class SimRunner:
         """
         executor = self.project.settings.get_simulator_exec(sim_exec)
         if executor is None:
-            self.logger.warning("Invalid executor call: %s" % (sim_exec))
+            self.logger.warning("Invalid executor call: {}".format(sim_exec))
             return sim_exec
         else:
             sim_exec = os_adjust_path(executor)
             return sim_exec
+
+    def _get_simulator_error_regex(self):
+        pass
+      
+    def _get_simulator_warning_regex(self):
+        pass
 
     # ---------------------------------------------------------
     # Command
@@ -490,19 +485,41 @@ class SimRunner:
         """
         Saves simulator call commands to file.
         """
-        if not (self.cmd_file_cleaned):
+    
+        def create_cmd_file():
+            try:
+                with open(self.command_file, "w"):
+                    pass
+            except IOError as e:
+                self.logger.error("Error creating command file: {}".format(e))
+                return False
+            return True
+    
+        def append_cmd_to_file(cmd_str):
+            try:
+                with open(self.command_file, "a") as file:
+                    file.write("{}\n".format(cmd_str))
+            except IOError as e:
+                self.logger.error("Error appending to command file: {}".format(e))
+    
+        if not self.cmd_file_cleaned:
             self.cmd_file_cleaned = True
             output_dir = self.project.settings.get_output_path()
+    
             if not os.path.isdir(output_dir):
-                os.mkdir(output_dir)
-            # Create file
-            with open(self.command_file, "w"):
-                pass
-
+                try:
+                    os.mkdir(output_dir)
+                except OSError as e:
+                    self.logger.error("Error creating output directory: {}".format(e))
+                    return
+    
+            if not create_cmd_file():
+                return
+    
         if isinstance(cmd, list):
             cmd = " ".join(map(str, cmd))
-        with open(self.command_file, "a") as file:
-            file.write(cmd + "\n")
+    
+        append_cmd_to_file(cmd)
 
     def _get_error_detection_str(self) -> str:
         return ""
@@ -513,56 +530,67 @@ class SimRunner:
     def _run_cmd(self, command, path="./", output_file=None, test=None) -> bool:
         """
         Runs selected command(s), checks for simulator warning/error.
-
+    
         Param:
             command(lst): command string as list.
             path(str): path to run command
             output_file(str): name of file to put output
-
-
+    
         Returns:
             bool: True if command was successful, else False
         """
+        
+        def check_has_line_warning(line) -> bool:
+            return bool(re.search(self._get_simulator_warning_regex(), line))
+
+        def check_has_line_error(line) -> bool:
+            return bool(re.search(self._get_simulator_error_regex(), line))
+
+        def show_errors_and_warnings() -> (tuple):
+            # compilation
+            if test is None:
+                return (True, True)
+            # simulation
+            else:
+                return (True, True)
+                #return (False, False)
+
         # Write command to file
         self._save_cmd(command)
 
         cmd_runner = CommandRunner(project=self.project)
 
-        # Set simulator error detection
-        error_detection_str = self._get_error_detection_str()
-        ignored_errors_detection_str = self._get_ignored_error_detection_str()
-
-        re_error_detection_str = re.compile(
-            error_detection_str, flags=re.IGNORECASE | re.MULTILINE
-        )
-        if ignored_errors_detection_str is not None:
-            re_ignored_errors_detection_str = re.compile(
-                ignored_errors_detection_str, flags=re.IGNORECASE | re.MULTILINE
-            )
-
         if test is not None:
             test.clear_output()
 
-        error_detected = False
+        success = True
 
-        for line, success in cmd_runner.run(
-            command=command, path=path, env=self.env_var, output_file=output_file
-        ):
+        (show_sim_errors, show_sim_warnings) = show_errors_and_warnings()
+
+        for line, success in cmd_runner.run(command=command,
+                                            path=path,
+                                            env=self.env_var,
+                                            output_file=output_file):
             line = line.strip()
 
             # Sim output direction
-            self._direct_sim_output(test, line)
+            self._output_handler(test, line)
 
-            # Error detection
-            if re.search(re_error_detection_str, line) or not success:
-                if not error_detected:
-                    error_detected = True
-                    self.logger.error("")  # Add newline
-                self.logger.error(line)
+            if check_has_line_error(line) is True or not success:
+                if show_sim_errors is True:
+                    self.logger.error(line)
+                if test is not None:
+                    test.inc_num_sim_errors()
 
-        return error_detected is False
+            if check_has_line_warning(line) is True:
+                if show_sim_warnings is True:
+                    self.logger.warning(line)
+                if test is not None:
+                    test.inc_num_sim_warnings()
 
-    def _direct_sim_output(self, test, line):
+        return success
+
+    def _output_handler(self, test, line):
         """
         Directs simulation output to the terminal or the
         test object.
@@ -579,71 +607,56 @@ class SimRunner:
     # ---------------------------------------------------------
 
     @abstractmethod
-    def _simulate(self, test, generic_call, module_call) -> bool:
+    def _write_run_do_file(self, test, generic_call, module_call):
+        pass
+
+    @abstractmethod
+    def _simulate(self, test, generic_call, module_call) -> tuple:
         pass
 
     def _run_terminal_test(self, test) -> None:
         """
         Run test in terminal mode
         """
+
+        def get_module_call():
+            if self._is_simulator("ghdl"):
+                return architecture_name
+            elif self._is_simulator("nvc"):
+                return "{}-{}".format(test.get_name(), architecture_name)
+            else:
+                if test.get_is_vhdl():
+                    return "{}.{}({})".format(lib_name, test.get_name(), architecture_name)
+                else:
+                    return "{}.{}".format(lib_name, test.get_name())
+
+        def get_descriptive_test_name():
+            if self._is_simulator("ghdl") or self._is_simulator("nvc"):
+                name = "{}.{}".format(lib_name, test.get_name())
+                return "{}({})".format(name, architecture_name) if test.get_is_vhdl() else name
+            else:
+                return module_call
+
+        def run_simulation():
+            sim_start_time = round(time.time() * 1000)
+            terminal_output_string = self._create_terminal_test_info_output_string(test, descriptive_test_name)
+            test.set_test_id_string(terminal_output_string)
+
+            self._write_run_do_file(test=test, generic_call=gen_call, module_call=module_call)
+
+            self._simulate(test=test, generic_call=gen_call, module_call=module_call)
+            self._check_test_result(test=test, sim_start_time=sim_start_time)
+
+            test.set_folder_to_name_mapping(descriptive_test_name)
+
         gen_call = test.get_gc_str()
-
-        architecture_name = (
-            "" if test.get_is_vhdl() is False else test.get_arch().get_name()
-        )
-        # if test.get_is_vhdl():
-        #    architecture = test.get_arch()
-        #    architecture_name = architecture.get_name()
-
+        architecture_name = "" if not test.get_is_vhdl() else test.get_arch().get_name()
         lib_name = test.get_library().get_name()
 
-        # Create module call: <library_name>.<testbench_name>(<arhitecture_name>)
-        if self._is_simulator("ghdl"):
-            module_call = architecture_name
-        elif self._is_simulator("nvc"):
-            module_call = test.get_name() + "-" + architecture_name
-        else:
-            module_call = lib_name + "." + test.get_name()
-            if test.get_is_vhdl():
-                module_call += "(" + architecture_name + ")"
+        module_call = get_module_call()
+        descriptive_test_name = get_descriptive_test_name()
 
-        if self._is_simulator("ghdl") or self._is_simulator("nvc"):
-            descriptive_test_name = lib_name + "." + test.get_name()
-            if test.get_is_vhdl():
-                descriptive_test_name += "(" + architecture_name + ")"
-        else:
-            descriptive_test_name = module_call
-
-        sim_start_time = round(time.time() * 1000)
-
-        terminal_output_string = self._create_terminal_test_info_output_string(
-            test, descriptive_test_name
-        )
-        test.set_test_id_string(terminal_output_string)
-
-        # Modelsim runner create a run.do file to run simulation.
-        self._write_run_do_file(
-            test=test, generic_call=gen_call, module_call=module_call
-        )
-
-        # Call Simulate in sub-class
-        sim_success = self._simulate(
-            test=test, generic_call=gen_call, module_call=module_call
-        )
-
-        # Check simulation output
-        self._check_test_result(
-            test=test, sim_start_time=sim_start_time, sim_success=sim_success
-        )
-
-        # Update test register
-        test.set_folder_to_name_mapping(descriptive_test_name)
-
-    def _write_run_do_file(self, test, generic_call, module_call):
-        """
-        Overload in sub-class, not valid for GHDLRunner.
-        """
-        pass
+        run_simulation()
 
     @staticmethod
     def _create_test_folder(path) -> None:
@@ -656,82 +669,114 @@ class SimRunner:
             raise TestOutputPathError(path)
 
     def _read_transcript_file(self, test_run_path) -> list:
-        transcript_file = os.path.join(test_run_path, "transcript")
+        """
+        Read the content of the transcript file in the given test_run_path.
+        
+        :param test_run_path: The path to the directory containing the transcript file.
+        :return: A list of lines in the transcript file, or None if the file is not found.
+        """
+        transcript_file_path = os.path.join(test_run_path, "transcript")
+
         try:
-            # Read file content
-            with open(transcript_file, "r") as file:
+            with open(transcript_file_path, "r") as file:
                 lines = file.readlines()
         except FileNotFoundError:
-            self.logger.error("File not found: %s" % (transcript_file))
+            self.logger.error("File not found: {0}".format(transcript_file_path))
             lines = None
+
         return lines
 
-    def _check_test_result(self, test, sim_start_time, sim_success) -> None:
+    def _is_uvvm_summary_start(self, line):
+        return re.search(self.RE_UVVM_SUMMARY, line)
+
+    def _is_uvvm_simulation_pass(self, line):
+        return re.search(self.RE_UVVM_RESULT_ALL_PASS, line)
+
+    def _has_minor_alerts(self, line):
+        return re.search(self.RE_UVVM_RESULT_PASS_WITH_MINOR, line)
+
+    def _is_user_selected_result_match(self, line):
+        return re.search(self.RE_USER, line)
+
+    def _check_file_content(self, lines):
+        """
+        Check transcript lines for PASS criteria.
+        """
+        summary_found = False
+        test_ok = False
+        test_ok_no_minor_alerts = True
+    
+        use_user_selected_result = bool(self.project.settings.get_result_check_str())
+    
+        if lines is not None:
+            for line in lines:
+                if not use_user_selected_result:
+                    if not summary_found and self._is_uvvm_summary_start(line):
+                        summary_found = True
+                    elif summary_found:
+                        if self._is_uvvm_simulation_pass(line):
+                            test_ok = True
+                            if self._has_minor_alerts(line):
+                                test_ok_no_minor_alerts = False
+                            break
+                elif self._is_user_selected_result_match(line):
+                    test_ok = True
+                    break
+        return test_ok, test_ok_no_minor_alerts
+
+    def _check_test_result(self, test, sim_start_time) -> None:
         """
         Check test run transcript file for passing/failing test.
         Add passing/failing test to test lists and present to transcript.
         """
-        if not self.project.settings.get_result_check_str():
-            self.logger.debug("Checking for UVVM summary report")
-        else:
-            self.logger.debug(
-                "Checking for %s." % (self.project.settings.get_result_check_str())
+
+        def log_checking():
+            result_check_str = self.project.settings.get_result_check_str()
+            if result_check_str:
+                self.logger.debug("Checking for {}.".format(result_check_str))
+            else:
+                self.logger.debug("Checking for UVVM summary report")
+    
+        def format_test_result(test_ok, test_ok_no_minor_alerts):
+            if test_ok:
+                test_str_result = self.logger.green() + "PASS"
+                if not test_ok_no_minor_alerts:
+                    test_str_result += self.logger.yellow() + " (with minor alerts)"
+            else:
+                test_str_result = self.logger.red() + "FAIL" 
+            return test_str_result + self.logger.reset_color()
+          
+        def format_number_of_sim_errors_and_warnings(test):
+              sim_errors = test.get_num_sim_errors()
+              sim_warnings = test.get_num_sim_warnings()
+              if sim_errors > 0 or sim_warnings > 0:
+                  return "\nTest run: sim_errors={}, sim_warnings={}".format(sim_errors, sim_warnings)
+              else:
+                  return ""
+
+        def format_test_details_string(test_str_result, sim_num_errors_and_warnings_str):
+            sim_end_time = round(time.time() * 1000)
+            elapsed_time = sim_end_time - sim_start_time
+            sim_sec, sim_min, sim_hrs = convert_from_millisec(elapsed_time)
+            return "{}{} ({}h:{}m:{}s){}.\n".format(
+                test.get_terminal_test_string(),
+                test_str_result,
+                sim_hrs,
+                sim_min,
+                sim_sec,
+                sim_num_errors_and_warnings_str
             )
 
+        log_checking()
         lines = self._read_transcript_file(test.get_test_path())
 
-        # Check file content
-        summary_found = False
-        test_ok = False
-        test_ok_no_minor_alerts = True
-        if lines is not None:
-            for line in lines:
-                # Use default: UVVM summary
-                if not self.project.settings.get_result_check_str():
-                    # Locate UVVM summary start
-                    if re.search(self.RE_UVVM_SUMMARY, line) and not summary_found:
-                        summary_found = True
-                    # Locate UVVM simulation PASS line - after finding UVVM summary start
-                    if re.search(self.RE_UVVM_RESULT_ALL_PASS, line) and summary_found:
-                        test_ok = True
-                        # Check if minor alerts have been triggered
-                        if re.search(self.RE_UVVM_RESULT_PASS_WITH_MINOR, line):
-                            test_ok_no_minor_alerts = False
-                        break
+        (test_ok, test_ok_no_minor_alerts) = self._check_file_content(lines)
 
-                # Use user selected result checking string
-                else:
-                    if re.search(self.RE_USER, line):
-                        test_ok = True
-                        break
+        test_str_result = format_test_result(test_ok, test_ok_no_minor_alerts)
+        sim_num_errors_and_warnings_str = format_number_of_sim_errors_and_warnings(test)
+        test_details_str = format_test_details_string(test_str_result, sim_num_errors_and_warnings_str)
 
-        # Fail if the simulation was not determined as successfull, regardless if we found other info in the transcript
-        test_ok = test_ok and sim_success
-
-        # Calculate timing
-        sim_end_time = round(time.time() * 1000)
-        elapsed_time = sim_end_time - sim_start_time
-        sim_sec, sim_min, sim_hrs = convert_from_millisec(elapsed_time)
-
-        # Set test result
-        if test_ok is True:
-            test_str_result = self.logger.green() + "PASS"
-            if test_ok_no_minor_alerts is False:
-                test_str_result += self.logger.yellow() + " (with minor alerts)"
-        else:
-            test_str_result = self.logger.red() + "FAIL"
-        test_str_result += self.logger.reset_color()
-
-        test_details_str = "%s%s (%dh:%dm:%ds).\n" % (
-            test.get_terminal_test_string(),
-            test_str_result,
-            sim_hrs,
-            sim_min,
-            sim_sec,
-        )
-
-        # Save 30 final lines if there was an error in the simulations
-        if (test_ok is False) and (lines is not None):
+        if not test_ok and lines is not None:
             test.set_test_error_summary(lines)
 
         test.set_terminal_test_details_str(test_details_str)
@@ -741,25 +786,42 @@ class SimRunner:
     @staticmethod
     def _create_terminal_test_info_output_string(test, descriptive_test_name) -> str:
         """
-        Create a testcase name based on entity, architecture, test and generics.
+        Create a testcase name based on entity, architecture, test, and generics.
         """
-        test_string = "Running: "
-        # Build string base for test run result reporting
-        generics = test.get_gc_str(filter_testcase_id=True)
 
-        if generics:
-            generics = generics.replace("-g", "")
-        test_string += descriptive_test_name.replace("(", ".").replace(")", "")
+        @staticmethod
+        def get_generics_string(test) -> str:
+            generics = test.get_gc_str(filter_testcase_id=True)
+            if generics:
+                return generics.replace("-g", "")
+            return ""
 
-        testcase = test.get_tc()
-        if testcase:
-            test_string += "." + testcase
+        def build_test_string_base():
+            return descriptive_test_name.replace("(", ".").replace(")", "")
 
-        test_string += " (test_id: %d)" % test.get_test_id_number()
+        def build_testcase_string():
+            testcase = test.get_tc()
+            return ".{}".format(testcase) if testcase else ""
 
-        if generics:
-            test_string += "\nGenerics: " + generics
-        if test.get_netlist_timing():
-            test_string += "\nTiming: " + test.get_netlist_timing()
-        test_string += "\nResult: "
-        return test_string
+        def build_test_id_string():
+            return " (test_id: {})".format(test.get_test_id_number())
+
+        def build_generics_section():
+            generics = get_generics_string(test)
+            return "\nGenerics: {}".format(generics) if generics else ""
+
+        def build_timing_section():
+            timing = test.get_netlist_timing()
+            return "\nTiming: {}".format(timing) if timing else ""
+
+        test_string_base = build_test_string_base()
+        testcase_string = build_testcase_string()
+        test_id_string = build_test_id_string()
+        generics_section = build_generics_section()
+        timing_section = build_timing_section()
+
+        return "Running: {}{}{}{}{}\nResult: ".format(test_string_base,
+                                                      testcase_string,
+                                                      test_id_string,
+                                                      generics_section,
+                                                      timing_section)

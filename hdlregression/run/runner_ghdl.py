@@ -17,6 +17,7 @@ import os
 
 from .sim_runner import SimRunner
 from ..report.logger import Logger
+from ..scan.hdl_regex_pkg import RE_GHDL_WARNING, RE_GHDL_ERROR
 
 
 class GHDLRunner(SimRunner):
@@ -52,6 +53,12 @@ class GHDLRunner(SimRunner):
             return '87'
         else:
             return '08'
+          
+    def _get_simulator_error_regex(self):
+        return RE_GHDL_ERROR
+      
+    def _get_simulator_warning_regex(self):
+        return RE_GHDL_WARNING
 
     def _get_simulator_call(self, hdlfile=None, module=None, elab_run=False, generic_call=None, module_call=None) -> list:
         '''
@@ -152,8 +159,5 @@ class GHDLRunner(SimRunner):
                                 test=test)
         return success
 
-    def _get_error_detection_str(self) -> str:
-      return r'[\r\n\s]?ghdl:'
-    
     def _get_ignored_error_detection_str(self) -> str:
       return ''

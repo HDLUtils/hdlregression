@@ -17,6 +17,7 @@ import os
 
 from .sim_runner import SimRunner
 from ..report.logger import Logger
+from ..scan.hdl_regex_pkg import RE_NVC_WARNING, RE_NVC_ERROR
 
 
 class NVCRunner(SimRunner):
@@ -42,6 +43,13 @@ class NVCRunner(SimRunner):
             return '87'
         else:
             return '08'
+
+
+    def _get_simulator_error_regex(self):
+        return RE_NVC_ERROR
+      
+    def _get_simulator_warning_regex(self):
+        return RE_NVC_WARNING
 
     def _get_simulator_call(self, hdlfile=None, module=None, elab_run=False, generic_call=None, module_call=None) -> list:
         '''
@@ -138,9 +146,6 @@ class NVCRunner(SimRunner):
                                 output_file=transcript_file,
                                 test=test)
         return success
-
-    def _get_error_detection_str(self) -> str:
-        return r'^[\r\n\s]?.*: (error|fatal): '
 
     def _get_ignored_error_detection_str(self) -> str:
         return ''

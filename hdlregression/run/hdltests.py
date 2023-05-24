@@ -32,6 +32,9 @@ class HdlRegressionTest:
         self.terminal_test_details_str = None
         self.test_error_summary = None
         self.terminal_test_string = None
+        
+        self.num_sim_errors = 0
+        self.num_sim_warnings = 0
 
         self.hdlfile = None
         self.test_output = []
@@ -254,6 +257,24 @@ class HdlRegressionTest:
 
     def get_netlist_timing(self) -> str:
         return self.netlist_timing
+      
+    def set_num_sim_warnings(self, num):
+        self.num_sim_warnings = num
+
+    def inc_num_sim_warnings(self):
+        self.num_sim_warnings += 1
+
+    def get_num_sim_warnings(self) -> int:
+        return self.num_sim_warnings
+
+    def set_num_sim_errors(self, num):
+        self.num_sim_errors = num
+
+    def inc_num_sim_errors(self):
+        self.num_sim_errors += 1
+
+    def get_num_sim_errors(self) -> int:
+        return self.num_sim_errors
 
 
 class VHDLTest(HdlRegressionTest):
