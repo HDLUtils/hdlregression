@@ -284,7 +284,7 @@ class TestBuilder:
         # Select based on user input as number og testcase name
         if _is_testcase_an_index_number() is True:
             index = _get_testcase_index_number()
-            if index not in range(1, self.test_id_count):
+            if index not in range(1, self.test_id_count + 1):
                 self.logger.error(
                     "Testcase index out of range (1 to %d)." % (self.test_id_count)
                 )
