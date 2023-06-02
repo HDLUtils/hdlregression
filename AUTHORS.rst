@@ -1,6 +1,6 @@
 HDLRegression authors
 =====================
 
-:Authorts:
+:Authors:
   - EmLogic
   - Inventas

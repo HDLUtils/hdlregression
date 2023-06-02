@@ -198,7 +198,7 @@ Changes the default library name used when `add_files()`_ is used without the ``
 
 .. code-block:: python
 
-  set_deafult_library(<library_name>)
+  set_default_library(<library_name>)
 
 +-----------------+-----------+---------------+
 | Argument        | Type      | Required      | 
