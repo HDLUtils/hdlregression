@@ -125,5 +125,5 @@ class CSVReporter(HDLReporter):
                     for library in self.project.library_container.get():
                         lf.writerow([])
                         lf.writerow(['Library %s:' % (library.get_name())])
-                        for module in library.get_list_of_library_modules():
+                        for module in library._get_list_of_lib_modules():
                             lf.writerow([module.get_type(), module.get_name()])

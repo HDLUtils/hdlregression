@@ -63,6 +63,9 @@ class HdlRegressionTest:
         Returns sim output from test run.
         """
         return "\n".join(self.test_output)
+      
+    def get_output_no_format(self) -> list:
+        return self.test_output
 
     def set_test_error_summary(self, output_lines) -> None:
         """

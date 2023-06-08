@@ -170,7 +170,7 @@ class JSONReporter(HDLReporter):
                     {
                         "Name" : "%s",
                         "Items" : [''' % (library.get_name())
-                        for module in library.get_list_of_library_modules():
+                        for module in library._get_list_of_lib_modules():
                             data += '''
                                 {
                                     "type" : "%s",

@@ -597,10 +597,11 @@ class SimRunner:
         """
         if line:
             single_sim_thread = self._get_number_of_threads() < 2
+            if test:
+                test.add_output(line)
+
             if self.project.settings.get_verbose() and single_sim_thread:
                 print(line)
-            elif test is not None:
-                test.add_output(line)
 
     # ---------------------------------------------------------
     # Testbench and simulations
@@ -667,24 +668,6 @@ class SimRunner:
             os.makedirs(path, exist_ok=True)
         except:
             raise TestOutputPathError(path)
-
-    def _read_transcript_file(self, test_run_path) -> list:
-        """
-        Read the content of the transcript file in the given test_run_path.
-        
-        :param test_run_path: The path to the directory containing the transcript file.
-        :return: A list of lines in the transcript file, or None if the file is not found.
-        """
-        transcript_file_path = os.path.join(test_run_path, "transcript")
-
-        try:
-            with open(transcript_file_path, "r") as file:
-                lines = file.readlines()
-        except FileNotFoundError:
-            self.logger.error("File not found: {0}".format(transcript_file_path))
-            lines = None
-
-        return lines
 
     def _is_uvvm_summary_start(self, line):
         return re.search(self.RE_UVVM_SUMMARY, line)
@@ -768,7 +751,7 @@ class SimRunner:
             )
 
         log_checking()
-        lines = self._read_transcript_file(test.get_test_path())
+        lines = test.get_output_no_format()
 
         (test_ok, test_ok_no_minor_alerts) = self._check_file_content(lines)
 

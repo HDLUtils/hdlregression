@@ -34,7 +34,7 @@ from .run.cmd_runner import CommandRunner
 from .run.runner_modelsim import ModelsimRunner
 from .run.runner_nvc import NVCRunner
 from .run.runner_ghdl import GHDLRunner
-from .run.runner_aldec import AldecRunner
+from .run.runner_aldec import RivieraRunner
 from .construct.hdllibrary import HDLLibrary, PrecompiledLibrary
 from .configurator import SettingsConfigurator
 import sys
@@ -1072,7 +1072,7 @@ class HDLRegression:
         if simulator == "MODELSIM":
             runner_obj = ModelsimRunner(project=self)
         elif simulator == "ALDEC":
-            runner_obj = AldecRunner(project=self)
+            runner_obj = RivieraRunner(project=self)
         elif simulator == "GHDL":
             runner_obj = GHDLRunner(project=self)
         elif simulator == "NVC":
