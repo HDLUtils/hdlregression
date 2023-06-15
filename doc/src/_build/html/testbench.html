@@ -1,7 +1,15 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Testbench &mdash; hdlregression 0.40.9
+ documentation</title>
+  
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Testbench &mdash; hdlregression 0.41.0
@@ -12,25 +20,44 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-    <script src="_static/js/theme.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Template files" href="templates.html" />
     <link rel="prev" title="Graphical User Interface (GUI)" href="gui.html" /> 
 </head>
 
-<body class="wy-body-for-nav"> 
+<body class="wy-body-for-nav">
+
+   
   <div class="wy-grid-for-nav">
+    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #F5F5F5" >
+          
+
+          
             <a href="index.html">
+          
+
+          
+            
             <img src="_static/hdlregression_scaled.png" class="logo" alt="Logo"/>
+          
           </a>
+
+          
+
+          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -38,8 +65,19 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="intro.html#usage">Usage</a></li>
@@ -58,37 +96,78 @@
 <li class="toctree-l1"><a class="reference internal" href="tips.html">Tips</a></li>
 </ul>
 
+            
+          
         </div>
+        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #F5F5F5" >
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">hdlregression</a>
+        
       </nav>
 
+
       <div class="wy-nav-content">
+        
         <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
+    
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
       <li>Testbench</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
+        
+          
             <a href="_sources/testbench.rst.txt" rel="nofollow"> View page source</a>
+          
+        
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-             
-  <section id="testbench">
-<h1>Testbench<a class="headerlink" href="#testbench" title="Permalink to this headline"></a></h1>
+            
+  <div class="section" id="testbench">
+<h1>Testbench<a class="headerlink" href="#testbench" title="Permalink to this headline">¶</a></h1>
 <p>For HDLRegression to extract the correct information from the testbench files, there are some
 code requirements that have to be fulfilled. This information is used by HDLRegression to
 detect</p>
-<section id="prerequisites">
-<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline"></a></h2>
+<div class="section" id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
 <p>This are the requirements of a HDLRegression supporting testbench:</p>
 <blockquote>
 <div><ul>
@@ -109,13 +188,13 @@ implementation.</p>
 </li>
 </ul>
 <p><strong>VHDL</strong> testbench</p>
-<div class="highlight-vhdl notranslate"><div class="highlight"><pre><span></span><span class="c1">--HDLRegression:TB</span><span class="w"></span>
-<span class="k">entity</span><span class="w"> </span><span class="nc">my_dut_tb</span><span class="w"> </span><span class="k">is</span><span class="w"></span>
+<div class="highlight-vhdl notranslate"><div class="highlight"><pre><span></span><span class="c1">--HDLRegression:TB</span>
+<span class="k">entity</span> <span class="nc">my_dut_tb</span> <span class="k">is</span>
 </pre></div>
 </div>
 <p><strong>Verilog</strong> testbench</p>
 <div class="highlight-verilog notranslate"><div class="highlight"><pre><span></span><span class="c1">//HDLRegression:TB</span>
-<span class="k">module</span><span class="w"> </span><span class="n">my_dut_tb</span><span class="p">;</span><span class="w"></span>
+<span class="k">module</span> <span class="n">my_dut_tb</span><span class="p">;</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -124,161 +203,277 @@ implementation.</p>
 (Verilog), and these should only be used in the top level testbench entity.</p>
 <p># The testcase names will be included in simulation reports.</p>
 </div>
-<div class="highlight-vhdl notranslate"><div class="highlight"><pre><span></span><span class="n">GC_TESTCASE</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w">  </span><span class="c1">-- VHDL</span><span class="w"></span>
-<span class="n">parameter</span><span class="w"> </span><span class="n">TESTCASE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w">     </span><span class="o">//</span><span class="w"> </span><span class="n">Verilog</span><span class="w"></span>
+<div class="highlight-vhdl notranslate"><div class="highlight"><pre><span></span><span class="n">GC_TESTCASE</span> <span class="o">:</span> <span class="kt">string</span> <span class="o">:=</span> <span class="s">&quot;&quot;</span>  <span class="c1">-- VHDL</span>
+<span class="n">parameter</span> <span class="n">TESTCASE</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>     <span class="o">//</span> <span class="n">Verilog</span>
 </pre></div>
 </div>
 </div></blockquote>
 <p>Note that the <code class="docutils literal notranslate"><span class="pre">GC_TESTCASE</span></code> generic or <code class="docutils literal notranslate"><span class="pre">TESTCASE</span></code> parameter name can be changed using
 the <a class="reference internal" href="api.html#set-testcase-identifier-name"><span class="std std-ref">set_testcase_identifier_name()</span></a> method.</p>
-</section>
-<section id="example-testbench">
-<h2>Example Testbench<a class="headerlink" href="#example-testbench" title="Permalink to this headline"></a></h2>
+</div>
+<div class="section" id="example-testbench">
+<h2>Example Testbench<a class="headerlink" href="#example-testbench" title="Permalink to this headline">¶</a></h2>
 <p>For HDLRegression to discover a VHDL file to be used as a testbench the only requirement is that
 the <code class="docutils literal notranslate"><span class="pre">--hdlregression:tb</span></code> (VHDL) or <code class="docutils literal notranslate"><span class="pre">//hdlregression:tb</span></code> (Verilog) pragma is present:</p>
 <div class="literal-block-wrapper docutils container" id="id1">
-<div class="code-block-caption"><span class="caption-text">VHDL testbench example</span><a class="headerlink" href="#id1" title="Permalink to this code"></a></div>
-<div class="highlight-vhdl notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">library</span><span class="w"> </span><span class="nn">IEEE</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 2</span><span class="k">use</span><span class="w"> </span><span class="nn">IEEE.std_logic_1164.</span><span class="k">all</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 3</span><span class="k">use</span><span class="w"> </span><span class="nn">IEEE.numeric_std.</span><span class="k">all</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 4</span>
-<span class="linenos"> 5</span><span class="k">library</span><span class="w"> </span><span class="nn">uvvm_util</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 6</span><span class="n">context</span><span class="w"> </span><span class="n">uvvm_util</span><span class="p">.</span><span class="n">uvvm_util_context</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 7</span>
-<span class="linenos"> 8</span><span class="c1">-- Include when using VVC:</span><span class="w"></span>
-<span class="linenos"> 9</span><span class="c1">-- library uvvm_vvc_framework;</span><span class="w"></span>
-<span class="linenos">10</span><span class="c1">-- use uvvm_vvc_framework.ti_vvc_framework_support_pkg.all;</span><span class="w"></span>
-<span class="linenos">11</span>
-<span class="linenos">12</span><span class="c1">--hdlregression:tb</span><span class="w"></span>
-<span class="linenos">13</span><span class="k">entity</span><span class="w"> </span><span class="nc">tb_example</span><span class="w"> </span><span class="k">is</span><span class="w"></span>
-<span class="linenos">14</span><span class="w">  </span><span class="k">generic</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
-<span class="linenos">15</span><span class="w">    </span><span class="n">GC_TESTCASE</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="s">&quot;UVVM&quot;</span><span class="w"></span>
-<span class="linenos">16</span><span class="w">    </span><span class="p">);</span><span class="w"></span>
-<span class="linenos">17</span><span class="k">end</span><span class="w"> </span><span class="k">entity</span><span class="w"> </span><span class="nc">tb_example</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">18</span>
-<span class="linenos">19</span><span class="k">architecture</span><span class="w"> </span><span class="nc">func</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="nc">tb_example</span><span class="w"> </span><span class="k">is</span><span class="w"></span>
-<span class="linenos">20</span>
-<span class="linenos">21</span><span class="w">  </span><span class="k">constant</span><span class="w"> </span><span class="n">C_SCOPE</span><span class="w">      </span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="w">  </span><span class="o">:=</span><span class="w"> </span><span class="n">C_TB_SCOPE_DEFAULT</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">22</span><span class="w">  </span><span class="k">constant</span><span class="w"> </span><span class="n">C_CLK_PERIOD</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">time</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="n">ns</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">23</span>
-<span class="linenos">24</span><span class="k">begin</span><span class="w"></span>
-<span class="linenos">25</span>
-<span class="linenos">26</span><span class="w">  </span><span class="c1">-----------------------------------------------------------------------------</span><span class="w"></span>
-<span class="linenos">27</span><span class="w">  </span><span class="c1">-- Instantiate test harness</span><span class="w"></span>
-<span class="linenos">28</span><span class="w">  </span><span class="c1">-----------------------------------------------------------------------------</span><span class="w"></span>
-<span class="linenos">29</span><span class="w">  </span><span class="c1">-- i_test_harness : entity work.test_harness;</span><span class="w"></span>
-<span class="linenos">30</span>
-<span class="linenos">31</span>
-<span class="linenos">32</span><span class="w">  </span><span class="c1">------------------------------------------------</span><span class="w"></span>
-<span class="linenos">33</span><span class="w">  </span><span class="c1">-- PROCESS: p_main</span><span class="w"></span>
-<span class="linenos">34</span><span class="w">  </span><span class="c1">------------------------------------------------</span><span class="w"></span>
-<span class="linenos">35</span><span class="w">  </span><span class="nc">p_main</span><span class="o">:</span><span class="w"> </span><span class="k">process</span><span class="w"></span>
-<span class="linenos">36</span>
-<span class="linenos">37</span><span class="w">  </span><span class="k">begin</span><span class="w"></span>
-<span class="linenos">38</span><span class="w">    </span><span class="c1">-----------------------------------------------------------------------------</span><span class="w"></span>
-<span class="linenos">39</span><span class="w">    </span><span class="c1">-- Wait for UVVM to finish initialization</span><span class="w"></span>
-<span class="linenos">40</span><span class="w">    </span><span class="c1">-----------------------------------------------------------------------------</span><span class="w"></span>
-<span class="linenos">41</span><span class="w">    </span><span class="c1">-- await_uvvm_initialization(VOID);</span><span class="w"></span>
-<span class="linenos">42</span>
-<span class="linenos">43</span><span class="w">    </span><span class="c1">-----------------------------------------------------------------------------</span><span class="w"></span>
-<span class="linenos">44</span><span class="w">    </span><span class="c1">-- Set UVVM verbosity level</span><span class="w"></span>
-<span class="linenos">45</span><span class="w">    </span><span class="c1">-----------------------------------------------------------------------------</span><span class="w"></span>
-<span class="linenos">46</span><span class="w">    </span><span class="c1">-- enable_log_msg(ALL_MESSAGES);</span><span class="w"></span>
-<span class="linenos">47</span><span class="w">    </span><span class="n">disable_log_msg</span><span class="p">(</span><span class="n">ALL_MESSAGES</span><span class="p">);</span><span class="w"></span>
-<span class="linenos">48</span><span class="w">    </span><span class="n">enable_log_msg</span><span class="p">(</span><span class="n">ID_SEQUENCER</span><span class="p">);</span><span class="w"></span>
-<span class="linenos">49</span><span class="w">    </span><span class="n">enable_log_msg</span><span class="p">(</span><span class="n">ID_LOG_HDR</span><span class="p">);</span><span class="w"></span>
-<span class="linenos">50</span>
-<span class="linenos">51</span><span class="w">    </span><span class="c1">-----------------------------------------------------------------------------</span><span class="w"></span>
-<span class="linenos">52</span><span class="w">    </span><span class="c1">-- Test sequence</span><span class="w"></span>
-<span class="linenos">53</span><span class="w">    </span><span class="c1">-----------------------------------------------------------------------------</span><span class="w"></span>
-<span class="linenos">54</span><span class="w">    </span><span class="n">log</span><span class="p">(</span><span class="n">ID_SEQUENCER</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Running testcase: &quot;</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">GC_TESTCASE</span><span class="p">,</span><span class="w"> </span><span class="n">C_SCOPE</span><span class="p">);</span><span class="w"></span>
-<span class="linenos">55</span>
-<span class="linenos">56</span><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">GC_TESTCASE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;check_reset_defaults&quot;</span><span class="w"> </span><span class="k">then</span><span class="w"></span>
-<span class="linenos">57</span>
-<span class="linenos">58</span><span class="w">      </span><span class="c1">-- reset checks</span><span class="w"></span>
-<span class="linenos">59</span>
-<span class="linenos">60</span><span class="w">    </span><span class="k">elsif</span><span class="w"> </span><span class="n">GC_TESTCASE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;test_dut_write&quot;</span><span class="w"> </span><span class="k">then</span><span class="w"></span>
-<span class="linenos">61</span>
-<span class="linenos">62</span><span class="w">      </span><span class="c1">-- write checks</span><span class="w"></span>
-<span class="linenos">63</span>
-<span class="linenos">64</span><span class="w">    </span><span class="k">elsif</span><span class="w"> </span><span class="n">GC_TESTCASE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;test_dut_read&quot;</span><span class="w"> </span><span class="k">then</span><span class="w"></span>
-<span class="linenos">65</span>
-<span class="linenos">66</span><span class="w">      </span><span class="c1">-- read checks</span><span class="w"></span>
-<span class="linenos">67</span>
-<span class="linenos">68</span><span class="w">    </span><span class="k">end</span><span class="w"> </span><span class="k">if</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">69</span>
-<span class="linenos">70</span><span class="w">    </span><span class="c1">-----------------------------------------------------------------------------</span><span class="w"></span>
-<span class="linenos">71</span><span class="w">    </span><span class="c1">-- Ending the simulation</span><span class="w"></span>
-<span class="linenos">72</span><span class="w">    </span><span class="c1">-----------------------------------------------------------------------------</span><span class="w"></span>
-<span class="linenos">73</span><span class="w">    </span><span class="k">wait</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="mi">1000</span><span class="w"> </span><span class="n">ns</span><span class="p">;</span><span class="w">             </span><span class="c1">-- to allow some time for completion</span><span class="w"></span>
-<span class="linenos">74</span><span class="w">    </span><span class="n">report_alert_counters</span><span class="p">(</span><span class="n">FINAL</span><span class="p">);</span><span class="w"> </span><span class="c1">-- Report final counters and print conclusion for simulation (Success/Fail)</span><span class="w"></span>
-<span class="linenos">75</span><span class="w">    </span><span class="n">log</span><span class="p">(</span><span class="n">ID_LOG_HDR</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;SIMULATION COMPLETED&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">C_SCOPE</span><span class="p">);</span><span class="w"></span>
-<span class="linenos">76</span>
-<span class="linenos">77</span><span class="w">    </span><span class="c1">-- Finish the simulation</span><span class="w"></span>
-<span class="linenos">78</span><span class="w">    </span><span class="nn">std.env</span><span class="p">.</span><span class="n">stop</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">79</span><span class="w">    </span><span class="k">wait</span><span class="p">;</span><span class="w">  </span><span class="c1">-- to stop completely</span><span class="w"></span>
-<span class="linenos">80</span><span class="w">  </span><span class="k">end</span><span class="w"> </span><span class="k">process</span><span class="w"> </span><span class="nc">p_main</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">81</span>
-<span class="linenos">82</span><span class="k">end</span><span class="w"> </span><span class="nc">func</span><span class="p">;</span><span class="w"></span>
+<div class="code-block-caption"><span class="caption-text">VHDL testbench example</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="highlight-vhdl notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">library</span> <span class="nn">IEEE</span><span class="p">;</span>
+<span class="k">use</span> <span class="nn">IEEE.std_logic_1164.</span><span class="k">all</span><span class="p">;</span>
+<span class="k">use</span> <span class="nn">IEEE.numeric_std.</span><span class="k">all</span><span class="p">;</span>
+
+<span class="k">library</span> <span class="nn">uvvm_util</span><span class="p">;</span>
+<span class="n">context</span> <span class="n">uvvm_util</span><span class="p">.</span><span class="n">uvvm_util_context</span><span class="p">;</span>
+
+<span class="c1">-- Include when using VVC:</span>
+<span class="c1">-- library uvvm_vvc_framework;</span>
+<span class="c1">-- use uvvm_vvc_framework.ti_vvc_framework_support_pkg.all;</span>
+
+<span class="c1">--hdlregression:tb</span>
+<span class="k">entity</span> <span class="nc">tb_example</span> <span class="k">is</span>
+  <span class="k">generic</span> <span class="p">(</span>
+    <span class="n">GC_TESTCASE</span> <span class="o">:</span> <span class="kt">string</span> <span class="o">:=</span> <span class="s">&quot;UVVM&quot;</span>
+    <span class="p">);</span>
+<span class="k">end</span> <span class="k">entity</span> <span class="nc">tb_example</span><span class="p">;</span>
+
+<span class="k">architecture</span> <span class="nc">func</span> <span class="k">of</span> <span class="nc">tb_example</span> <span class="k">is</span>
+
+  <span class="k">constant</span> <span class="n">C_SCOPE</span>      <span class="o">:</span> <span class="kt">string</span>  <span class="o">:=</span> <span class="n">C_TB_SCOPE_DEFAULT</span><span class="p">;</span>
+  <span class="k">constant</span> <span class="n">C_CLK_PERIOD</span> <span class="o">:</span> <span class="kt">time</span> <span class="o">:=</span> <span class="mi">10</span> <span class="n">ns</span><span class="p">;</span>
+
+<span class="k">begin</span>
+
+  <span class="c1">-----------------------------------------------------------------------------</span>
+  <span class="c1">-- Instantiate test harness</span>
+  <span class="c1">-----------------------------------------------------------------------------</span>
+  <span class="c1">-- i_test_harness : entity work.test_harness;</span>
+
+
+  <span class="c1">------------------------------------------------</span>
+  <span class="c1">-- PROCESS: p_main</span>
+  <span class="c1">------------------------------------------------</span>
+  <span class="nc">p_main</span><span class="o">:</span> <span class="k">process</span>
+
+  <span class="k">begin</span>
+    <span class="c1">-----------------------------------------------------------------------------</span>
+    <span class="c1">-- Wait for UVVM to finish initialization</span>
+    <span class="c1">-----------------------------------------------------------------------------</span>
+    <span class="c1">-- await_uvvm_initialization(VOID);</span>
+
+    <span class="c1">-----------------------------------------------------------------------------</span>
+    <span class="c1">-- Set UVVM verbosity level</span>
+    <span class="c1">-----------------------------------------------------------------------------</span>
+    <span class="c1">-- enable_log_msg(ALL_MESSAGES);</span>
+    <span class="n">disable_log_msg</span><span class="p">(</span><span class="n">ALL_MESSAGES</span><span class="p">);</span>
+    <span class="n">enable_log_msg</span><span class="p">(</span><span class="n">ID_SEQUENCER</span><span class="p">);</span>
+    <span class="n">enable_log_msg</span><span class="p">(</span><span class="n">ID_LOG_HDR</span><span class="p">);</span>
+
+    <span class="c1">-----------------------------------------------------------------------------</span>
+    <span class="c1">-- Test sequence</span>
+    <span class="c1">-----------------------------------------------------------------------------</span>
+    <span class="n">log</span><span class="p">(</span><span class="n">ID_SEQUENCER</span><span class="p">,</span> <span class="s">&quot;Running testcase: &quot;</span> <span class="o">&amp;</span> <span class="n">GC_TESTCASE</span><span class="p">,</span> <span class="n">C_SCOPE</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="n">GC_TESTCASE</span> <span class="o">=</span> <span class="s">&quot;check_reset_defaults&quot;</span> <span class="k">then</span>
+
+      <span class="c1">-- reset checks</span>
+
+    <span class="k">elsif</span> <span class="n">GC_TESTCASE</span> <span class="o">=</span> <span class="s">&quot;test_dut_write&quot;</span> <span class="k">then</span>
+
+      <span class="c1">-- write checks</span>
+
+    <span class="k">elsif</span> <span class="n">GC_TESTCASE</span> <span class="o">=</span> <span class="s">&quot;test_dut_read&quot;</span> <span class="k">then</span>
+
+      <span class="c1">-- read checks</span>
+
+    <span class="k">end</span> <span class="k">if</span><span class="p">;</span>
+
+    <span class="c1">-----------------------------------------------------------------------------</span>
+    <span class="c1">-- Ending the simulation</span>
+    <span class="c1">-----------------------------------------------------------------------------</span>
+    <span class="k">wait</span> <span class="k">for</span> <span class="mi">1000</span> <span class="n">ns</span><span class="p">;</span>             <span class="c1">-- to allow some time for completion</span>
+    <span class="n">report_alert_counters</span><span class="p">(</span><span class="n">FINAL</span><span class="p">);</span> <span class="c1">-- Report final counters and print conclusion for simulation (Success/Fail)</span>
+    <span class="n">log</span><span class="p">(</span><span class="n">ID_LOG_HDR</span><span class="p">,</span> <span class="s">&quot;SIMULATION COMPLETED&quot;</span><span class="p">,</span> <span class="n">C_SCOPE</span><span class="p">);</span>
+
+    <span class="c1">-- Finish the simulation</span>
+    <span class="nn">std.env</span><span class="p">.</span><span class="n">stop</span><span class="p">;</span>
+    <span class="k">wait</span><span class="p">;</span>  <span class="c1">-- to stop completely</span>
+  <span class="k">end</span> <span class="k">process</span> <span class="nc">p_main</span><span class="p">;</span>
+
+<span class="k">end</span> <span class="nc">func</span><span class="p">;</span>
 </pre></div>
-</div>
+</td></tr></table></div>
 </div>
 <div class="literal-block-wrapper docutils container" id="id2">
-<div class="code-block-caption"><span class="caption-text">Verilog testbench example</span><a class="headerlink" href="#id2" title="Permalink to this code"></a></div>
-<div class="highlight-verilog notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">//hdlregression:tb</span>
-<span class="linenos"> 2</span><span class="k">module</span><span class="w"> </span><span class="n">tb_verilog</span><span class="w"> </span><span class="p">#(</span><span class="w"></span>
-<span class="linenos"> 3</span><span class="w">        </span><span class="k">parameter</span><span class="w"> </span><span class="n">TESTCASE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;DEFAULT&quot;</span><span class="w"></span>
-<span class="linenos"> 4</span><span class="w">    </span><span class="p">);</span><span class="w"></span>
-<span class="linenos"> 5</span>
-<span class="linenos"> 6</span><span class="w">    </span><span class="k">initial</span><span class="w"></span>
-<span class="linenos"> 7</span><span class="w">    </span><span class="k">begin</span><span class="w"></span>
-<span class="linenos"> 8</span><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">TESTCASE</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;reset_test&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="linenos"> 9</span><span class="w">            </span><span class="c1">// reset checks</span>
-<span class="linenos">10</span>
-<span class="linenos">11</span><span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">TESTCASE</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;write_test&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="linenos">12</span><span class="w">            </span><span class="c1">// write tests</span>
-<span class="linenos">13</span>
-<span class="linenos">14</span><span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">TESTCASE</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;read_test&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="linenos">15</span><span class="w">            </span><span class="c1">// read tests</span>
-<span class="linenos">16</span>
-<span class="linenos">17</span><span class="w">    </span><span class="k">end</span><span class="w"></span>
-<span class="linenos">18</span>
-<span class="linenos">19</span><span class="k">endmodule</span><span class="w"></span>
+<div class="code-block-caption"><span class="caption-text">Verilog testbench example</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="highlight-verilog notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c1">//hdlregression:tb</span>
+<span class="k">module</span> <span class="n">tb_verilog</span> <span class="p">#(</span>
+        <span class="k">parameter</span> <span class="n">TESTCASE</span> <span class="o">=</span> <span class="s">&quot;DEFAULT&quot;</span>
+    <span class="p">);</span>
+
+    <span class="k">initial</span>
+    <span class="k">begin</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">TESTCASE</span> <span class="o">==</span> <span class="s">&quot;reset_test&quot;</span><span class="p">)</span>
+            <span class="c1">// reset checks</span>
+
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">TESTCASE</span> <span class="o">==</span> <span class="s">&quot;write_test&quot;</span><span class="p">)</span>
+            <span class="c1">// write tests</span>
+
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">TESTCASE</span> <span class="o">==</span> <span class="s">&quot;read_test&quot;</span><span class="p">)</span>
+            <span class="c1">// read tests</span>
+
+    <span class="k">end</span>
+
+<span class="k">endmodule</span>
 </pre></div>
+</td></tr></table></div>
 </div>
 </div>
-</section>
-</section>
+</div>
 
 
            </div>
+           
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="gui.html" class="btn btn-neutral float-left" title="Graphical User Interface (GUI)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
         <a href="templates.html" class="btn btn-neutral float-right" title="Template files" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="gui.html" class="btn btn-neutral float-left" title="Graphical User Interface (GUI)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, UVVM.</p>
-  </div>
+    <p>
+        &#169; Copyright 2021, UVVM.
 
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
         </div>
       </div>
+
     </section>
+
   </div>
-  <script>
+  
+
+  <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>  
+  </script>
+
+  
+  
+    
+    
 
   <style>
          .wy-nav-content { max-width: none; }
