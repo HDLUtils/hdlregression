@@ -104,6 +104,6 @@ class TXTReporter(HDLReporter):
                     lf.write('\nLibrary information:\n')
                     for library in self.project.library_container.get():
                         lf.write('  %s:\n' % (library.get_name()))
-                        for module in library.get_list_of_library_modules():
+                        for module in library._get_list_of_lib_modules():
                             lf.write('    %s: %s\n' %
                                      (module.get_type(), module.get_name()))

@@ -47,6 +47,7 @@ class HDLRegressionSettings:
         self.num_threads = 0
         self.no_sim = False
         self.no_compile = False
+        self.show_err_warn_output = False
 
         self.netlist_timing = None
 
@@ -67,6 +68,8 @@ class HDLRegressionSettings:
         self.testgroup = None
         self.logger_level = "info"
         self.testcase_identifier_name = "gc_testcase"
+        
+        self.testcase_timeout= None
 
         self.list_testcase = False
         self.list_compile_order = False
@@ -285,6 +288,12 @@ class HDLRegressionSettings:
 
     def get_list_dependencies(self) -> bool:
         return self.list_dependencies
+    
+    def set_show_err_warn_output(self, enable):
+        self.show_err_warn_output = enable
+        
+    def get_show_err_warn_output(self) -> bool:
+        return self.show_err_warn_output
 
     # ----------------------------------
     # Test group
@@ -366,6 +375,12 @@ class HDLRegressionSettings:
 
     def get_testcase_list(self) -> list:
         return self.testcase_list
+
+    def set_testcase_timeout(self, timeout_value):
+        self.testcase_timeout = timeout_value
+
+    def get_testcase_timeout(self):
+        return self.testcase_timeout
 
     # ----------------------------------
     # Simulator
@@ -470,6 +485,12 @@ class HDLRegressionSettings:
 class TestcaseSettings:
     def __init__(self):
         pass
+
+    def set_testcase_timeout(self, timeout_value):
+        self.testcase_timeout = timeout_value
+        
+    def get_testcase_timeout(self):
+        return self.testcase_timeout
 
 
 class SimulatorSettings:

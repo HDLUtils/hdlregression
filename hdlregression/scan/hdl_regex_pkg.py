@@ -26,6 +26,12 @@ import re
 # ID_SIMULATOR_ERROR = r'(?:\*\* (?:Error|Fatal): \(File: (.*), Line: (\d+)\)|ERROR:|error:|FATAL:|fatal:)\s?(.*)'
 # RE_SIMULATOR_ERROR = re.compile(ID_SIMULATOR_ERROR, flags=re.IGNORECASE)
 
+ID_RIVIERA_ERROR = r'# \*\* Error: .*'
+RE_RIVIERA_ERROR = re.compile(ID_RIVIERA_ERROR, flags=re.IGNORECASE)
+
+ID_RIVIERA_WARNING = r'# \*\* Warning: .*'
+RE_RIVIERA_WARNING = re.compile(ID_RIVIERA_WARNING, flags=re.IGNORECASE)
+
 ID_MODELSIM_ERROR = r'[\r\n\s]?\*\*\s*(error|fatal)[\s+]?[:]?'
 RE_MODELSIM_ERROR = re.compile(ID_MODELSIM_ERROR, flags=re.IGNORECASE)
 

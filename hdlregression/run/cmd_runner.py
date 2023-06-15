@@ -82,7 +82,8 @@ class CommandRunner:
                                 cwd=path,
                                 close_fds=self.ON_POSIX)  # Close filehandles when done (Only Linux)
 
-    def run(self, command, path='./', env=None, output_file=None) -> tuple:
+
+    def run(self, command, path='./', env=None, output_file=None, timeout=None) -> tuple:
         command = self._convert_to_list(command)
 
         self._create_path_if_missing(path)
@@ -99,6 +100,7 @@ class CommandRunner:
                 popen.stdout, q_transcript, output_file, False))
             t_stderr = Thread(target=self._enqueue_output, args=(
                 popen.stderr, q_transcript, output_file, True))
+              
             t_stdout.daemon = True  # thread dies with the program
             t_stderr.daemon = True  # thread dies with the program
             t_stdout.start()
@@ -124,6 +126,8 @@ class CommandRunner:
             self.logger.error('Command error: %s.' % (e))
         except OSError as e:
             self.logger.error('Command error: %s.' % (e))
+        except subprocess.TimeoutExpired:
+            self.logger.error('Test timeout')
         except:
             tb = sys.exc_info()[2]
             raise CommandExecuteError(command).with_traceback(tb)

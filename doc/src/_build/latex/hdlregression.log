@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2022.1.21)  24 MAY 2023 14:07
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2022.1.21)  15 JUN 2023 10:40
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -634,7 +634,7 @@ Package: sphinxmessages 2019/01/04 v2.0 Localized LaTeX macros (Sphinx team)
 
 
 Writing index file hdlregression.idx
-LaTeX Font Info:    Trying to load font information for T1+qtm on input line 70
+LaTeX Font Info:    Trying to load font information for T1+qtm on input line 71
 .
 (/usr/local/texlive/2021/texmf-dist/tex/latex/tex-gyre/t1qtm.fd
 File: t1qtm.fd 2009/09/25 v1.2 font definition file for T1/qtm
@@ -647,24 +647,24 @@ File: l3backend-pdftex.def 2021-03-18 L3 backend support: PDF output (pdfTeX)
 (./hdlregression.aux)
 \openout1 = `hdlregression.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 70.
-LaTeX Font Info:    ... okay on input line 70.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 70.
-LaTeX Font Info:    ... okay on input line 70.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 70.
-LaTeX Font Info:    ... okay on input line 70.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 70.
-LaTeX Font Info:    ... okay on input line 70.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 70.
-LaTeX Font Info:    ... okay on input line 70.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 70.
-LaTeX Font Info:    ... okay on input line 70.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 70.
-LaTeX Font Info:    ... okay on input line 70.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 70.
-LaTeX Font Info:    ... okay on input line 70.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 70.
-LaTeX Font Info:    ... okay on input line 70.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
 
 (/usr/local/texlive/2021/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
@@ -724,7 +724,7 @@ e
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-Package hyperref Info: Link coloring ON on input line 70.
+Package hyperref Info: Link coloring ON on input line 71.
 (/usr/local/texlive/2021/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2021-04-02 v2.47 Cross-referencing by name of section
 
@@ -737,27 +737,27 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
 \c@section@level=\count315
 )
-LaTeX Info: Redefining \ref on input line 70.
-LaTeX Info: Redefining \pageref on input line 70.
-LaTeX Info: Redefining \nameref on input line 70.
+LaTeX Info: Redefining \ref on input line 71.
+LaTeX Info: Redefining \pageref on input line 71.
+LaTeX Info: Redefining \nameref on input line 71.
  (./hdlregression.out) (./hdlregression.out)
 \@outlinefile=\write5
 \openout5 = `hdlregression.out'.
 
-Package hyperref Info: Option `pageanchor' set `false' on input line 73.
-LaTeX Font Info:    Trying to load font information for T1+qhv on input line 73
+Package hyperref Info: Option `pageanchor' set `false' on input line 74.
+LaTeX Font Info:    Trying to load font information for T1+qhv on input line 74
 .
 
 (/usr/local/texlive/2021/texmf-dist/tex/latex/tex-gyre/t1qhv.fd
 File: t1qhv.fd 2009/09/25 v1.2 font definition file for T1/qhv
 )<<ot1.cmap>><<oml.cmap>><<oms.cmap>><<omx.cmap>>
-LaTeX Font Info:    Trying to load font information for U+msa on input line 73.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 74.
 
 
 (/usr/local/texlive/2021/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 73.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 74.
 
 
 (/usr/local/texlive/2021/texmf-dist/tex/latex/amsfonts/umsb.fd
@@ -779,7 +779,7 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ]
 Chapter 1.
 LaTeX Font Info:    Trying to load font information for TS1+qtm on input line 9
-4.
+5.
 (/usr/local/texlive/2021/texmf-dist/tex/latex/tex-gyre/ts1qtm.fd
 File: ts1qtm.fd 2009/09/25 v1.2 font definition file for TS1/qtm
 ) [1
@@ -787,14 +787,14 @@ File: ts1qtm.fd 2009/09/25 v1.2 font definition file for TS1/qtm
 ] [2]
 <test_group.png, id=399, 362.10281pt x 422.32782pt>
 LaTeX Font Info:    Trying to load font information for T1+txtt on input line 2
-46.
+47.
 
 (/usr/local/texlive/2021/texmf-dist/tex/latex/txfonts/t1txtt.fd
 File: t1txtt.fd 2000/12/15 v3.1
 )
 File: test_group.png Graphic file (type png)
 <use test_group.png>
-Package pdftex.def Info: test_group.png  used on input line 246.
+Package pdftex.def Info: test_group.png  used on input line 247.
 (pdftex.def)             Requested size: 301.12305pt x 351.20863pt.
  [3 <./test_group.png>] [4
 
@@ -805,72 +805,72 @@ Chapter 2.
 ]
 Chapter 3.
 LaTeX Font Info:    Font shape `T1/txtt/b/n' in size <10> not available
-(Font)              Font shape `T1/txtt/bx/n' tried instead on input line 342.
+(Font)              Font shape `T1/txtt/bx/n' tried instead on input line 343.
 [7] [8]
 Chapter 4.
 LaTeX Font Info:    Font shape `T1/txtt/m/it' in size <10> not available
-(Font)              Font shape `T1/txtt/m/sl' tried instead on input line 399.
+(Font)              Font shape `T1/txtt/m/sl' tried instead on input line 400.
 [9
 
 ]
 LaTeX Font Info:    Trying to load font information for TS1+txtt on input line 
-514.
+515.
  (/usr/local/texlive/2021/texmf-dist/tex/latex/txfonts/ts1txtt.fd
 File: ts1txtt.fd 2000/12/15 v3.1
 ) [10]
 [11] [12] [13] [14]
-Underfull \hbox (badness 10000) in paragraph at lines 1324--1326
+Underfull \hbox (badness 10000) in paragraph at lines 1325--1327
 []\T1/qtm/m/n/10 And where the three test-case name el-e-ments are sep-a-rated 
 by a dot (\T1/txtt/m/n/10 .\T1/qtm/m/n/10 ): \T1/txtt/m/n/10 <testbench_name>.
  []
 
 LaTeX Font Info:    Font shape `TS1/txtt/m/it' in size <10> not available
-(Font)              Font shape `TS1/txtt/m/sl' tried instead on input line 1418
+(Font)              Font shape `TS1/txtt/m/sl' tried instead on input line 1419
 .
 [15] [16] [17] [18] [19] [20]
 Package hyperref Info: bookmark level for unknown literalblock defaults to 0 on
- input line 2267.
+ input line 2268.
  [21]
-Underfull \hbox (badness 10000) in paragraph at lines 2379--2379
+Underfull \hbox (badness 10000) in paragraph at lines 2380--2380
 []\T1/qtm/m/n/10 ^^PMOD-EL-SIM^^Q, ^^PGHDL^^Q,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2379--2379
+Underfull \hbox (badness 10000) in paragraph at lines 2380--2380
 []\T1/qtm/m/n/10 ^^PMOD-EL-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2379--2379
+Underfull \hbox (badness 10000) in paragraph at lines 2380--2380
 []\T1/qtm/b/n/10 manda-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2379--2379
+Underfull \hbox (badness 10000) in paragraph at lines 2380--2380
 []\T1/qtm/m/n/10 sim-u-la-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2379--2379
+Underfull \hbox (badness 10000) in paragraph at lines 2380--2380
 []\T1/qtm/m/it/10 sim-u-la-tor_executable_path
  []
 
 [22] [23] [24]
 Chapter 5.
 
-Underfull \hbox (badness 10000) in paragraph at lines 2781--2781
+Underfull \hbox (badness 10000) in paragraph at lines 2789--2789
 []\T1/qtm/m/n/10 -tc TB_ENTITY [TB_ARCH
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2781--2781
+Underfull \hbox (badness 10000) in paragraph at lines 2789--2789
 []\T1/qtm/m/n/10 ^^Utest-Case TB_ENTITY [TB_ARCH
  []
 
 <full_regression.png, id=555, 642.90187pt x 922.19531pt>
 File: full_regression.png Graphic file (type png)
 <use full_regression.png>
-Package pdftex.def Info: full_regression.png  used on input line 2799.
+Package pdftex.def Info: full_regression.png  used on input line 2807.
 (pdftex.def)             Requested size: 453.44208pt x 650.42923pt.
 [25
 
@@ -878,47 +878,47 @@ Package pdftex.def Info: full_regression.png  used on input line 2799.
 <testcase_listing.png, id=565, 558.58687pt x 419.31656pt>
 File: testcase_listing.png Graphic file (type png)
 <use testcase_listing.png>
-Package pdftex.def Info: testcase_listing.png  used on input line 2813.
+Package pdftex.def Info: testcase_listing.png  used on input line 2821.
 (pdftex.def)             Requested size: 469.77231pt x 352.64578pt.
  [27 <./testcase_listing.png>]
 <testcase_running.png, id=572, 524.71031pt x 319.94531pt>
 File: testcase_running.png Graphic file (type png)
 <use testcase_running.png>
-Package pdftex.def Info: testcase_running.png  used on input line 2880.
+Package pdftex.def Info: testcase_running.png  used on input line 2888.
 (pdftex.def)             Requested size: 469.76892pt x 286.44934pt.
  [28 <./testcase_running.png>]
 <testgroup_listing.png, id=581, 484.81125pt x 305.64188pt>
 File: testgroup_listing.png Graphic file (type png)
 <use testgroup_listing.png>
-Package pdftex.def Info: testgroup_listing.png  used on input line 2988.
+Package pdftex.def Info: testgroup_listing.png  used on input line 2996.
 (pdftex.def)             Requested size: 469.77809pt x 296.19708pt.
  [29]
 <testgroup_running.png, id=587, 642.14906pt x 572.1375pt>
 File: testgroup_running.png Graphic file (type png)
 <use testgroup_running.png>
-Package pdftex.def Info: testgroup_running.png  used on input line 3014.
+Package pdftex.def Info: testgroup_running.png  used on input line 3022.
 (pdftex.def)             Requested size: 469.76436pt x 418.55609pt.
  [30 <./testgroup_listing.png>] [31 <./testgroup_running.png>]
 File: testgroup_running.png Graphic file (type png)
 <use testgroup_running.png>
-Package pdftex.def Info: testgroup_running.png  used on input line 3054.
+Package pdftex.def Info: testgroup_running.png  used on input line 3062.
 (pdftex.def)             Requested size: 469.76436pt x 418.55609pt.
 <testgroup_threading_1.png, id=598, 643.6547pt x 572.89032pt>
 File: testgroup_threading_1.png Graphic file (type png)
 <use testgroup_threading_1.png>
-Package pdftex.def Info: testgroup_threading_1.png  used on input line 3066.
+Package pdftex.def Info: testgroup_threading_1.png  used on input line 3074.
 (pdftex.def)             Requested size: 469.76581pt x 418.12778pt.
  [32]
 <testgroup_threading_10.png, id=603, 639.89063pt x 574.39594pt>
 File: testgroup_threading_10.png Graphic file (type png)
 <use testgroup_threading_10.png>
-Package pdftex.def Info: testgroup_threading_10.png  used on input line 3078.
+Package pdftex.def Info: testgroup_threading_10.png  used on input line 3086.
 (pdftex.def)             Requested size: 469.7623pt x 421.6895pt.
  [33 <./testgroup_threading_1.png>] [34 <./testgroup_threading_10.png>]
 <regression_run_1.png, id=615, 640.64343pt x 921.4425pt>
 File: regression_run_1.png Graphic file (type png)
 <use regression_run_1.png>
-Package pdftex.def Info: regression_run_1.png  used on input line 3090.
+Package pdftex.def Info: regression_run_1.png  used on input line 3098.
 (pdftex.def)             Requested size: 452.21088pt x 650.41849pt.
 
 [35]
@@ -929,26 +929,26 @@ Overfull \vbox (27.6568pt too high) has occurred while \output is active []
 <regression_run_2.png, id=627, 491.58656pt x 255.20343pt>
 File: regression_run_2.png Graphic file (type png)
 <use regression_run_2.png>
-Package pdftex.def Info: regression_run_2.png  used on input line 3099.
+Package pdftex.def Info: regression_run_2.png  used on input line 3107.
 (pdftex.def)             Requested size: 469.77245pt x 243.89438pt.
 <failing_testcase.png, id=628, 807.015pt x 909.3975pt>
 File: failing_testcase.png Graphic file (type png)
 <use failing_testcase.png>
-Package pdftex.def Info: failing_testcase.png  used on input line 3107.
+Package pdftex.def Info: failing_testcase.png  used on input line 3115.
 (pdftex.def)             Requested size: 469.75606pt x 529.36586pt.
  [37 <./regression_run_2.png>] [38 <./failing_testcase.png>]
 Chapter 6.
 <gui_menu.png, id=639, 248.42813pt x 234.8775pt>
 File: gui_menu.png Graphic file (type png)
 <use gui_menu.png>
-Package pdftex.def Info: gui_menu.png  used on input line 3128.
+Package pdftex.def Info: gui_menu.png  used on input line 3136.
 (pdftex.def)             Requested size: 414.04419pt x 391.4914pt.
 [39
 
 ] [40 <./gui_menu.png>]
 Chapter 7.
 
-Underfull \hbox (badness 10000) in paragraph at lines 3220--3223
+Underfull \hbox (badness 10000) in paragraph at lines 3228--3231
 []\T1/qtm/m/n/10 Note that the \T1/txtt/m/n/10 GC_TESTCASE \T1/qtm/m/n/10 gener
 ic or \T1/txtt/m/n/10 TESTCASE \T1/qtm/m/n/10 pa-ram-e-ter name can be changed 
 us-ing the
@@ -957,11 +957,11 @@ us-ing the
 [41
 
 ] [42]
-Underfull \vbox (badness 10000) detected at line 3338
+Underfull \vbox (badness 10000) detected at line 3346
  []
 
 
-Overfull \vbox (0.87389pt too high) detected at line 3338
+Overfull \vbox (0.87389pt too high) detected at line 3346
  []
 
 [43] [44]
@@ -969,7 +969,7 @@ Chapter 8.
 [45
 
 ] [46]
-Underfull \vbox (badness 1394) detected at line 3498
+Underfull \vbox (badness 1394) detected at line 3506
  []
 
 [47] [48] [49] [50
@@ -979,26 +979,26 @@ Chapter 9.
 <jenkins_ci.png, id=695, 947.54pt x 403.5075pt>
 File: jenkins_ci.png Graphic file (type png)
 <use jenkins_ci.png>
-Package pdftex.def Info: jenkins_ci.png  used on input line 3598.
+Package pdftex.def Info: jenkins_ci.png  used on input line 3606.
 (pdftex.def)             Requested size: 469.74944pt x 200.05391pt.
 [51 <./jenkins_ci.png>] [52
 
 ]
 Chapter 10.
 [53]
-Underfull \vbox (badness 10000) detected at line 3816
+Underfull \vbox (badness 10000) detected at line 3824
  []
 
 
-Underfull \vbox (badness 10000) detected at line 3816
+Underfull \vbox (badness 10000) detected at line 3824
  []
 
 [54]
-Underfull \vbox (badness 10000) detected at line 3816
+Underfull \vbox (badness 10000) detected at line 3824
  []
 
 
-Underfull \vbox (badness 10000) detected at line 3816
+Underfull \vbox (badness 10000) detected at line 3824
  []
 
 [55] [56] [57] [58
@@ -1006,18 +1006,18 @@ Underfull \vbox (badness 10000) detected at line 3816
 ]
 Chapter 11.
 [59]
-Underfull \vbox (badness 10000) detected at line 3956
+Underfull \vbox (badness 10000) detected at line 3964
  []
 
 
-Underfull \vbox (badness 10000) detected at line 3956
+Underfull \vbox (badness 10000) detected at line 3964
  []
 
 [60]
 <hdlregression_scaled.png, id=742, 314.67563pt x 174.6525pt>
 File: hdlregression_scaled.png Graphic file (type png)
 <use hdlregression_scaled.png>
-Package pdftex.def Info: hdlregression_scaled.png  used on input line 3958.
+Package pdftex.def Info: hdlregression_scaled.png  used on input line 3966.
 (pdftex.def)             Requested size: 414.04419pt x 229.81712pt.
  (./hdlregression.ind) [61 <./hdlregression_scaled.png>]
 (./hdlregression.aux)
@@ -1027,7 +1027,7 @@ Package rerunfilecheck Info: File `hdlregression.out' has not changed.
 Here is how much of TeX's memory you used:
  13962 strings out of 478994
  204001 string characters out of 5858184
- 705289 words of memory out of 5000000
+ 705290 words of memory out of 5000000
  30882 multiletter control sequences out of 15000+600000
  463698 words of font info for 75 fonts, out of 8000000 for 9000
  1142 hyphenation exceptions out of 8191
@@ -1047,7 +1047,7 @@ t.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/txfonts/t1xtt.pfb>
 </usr/local/texlive/2021/texmf-dist/fonts/type1/public/txfonts/t1xtt.pfb></usr/
 local/texlive/2021/texmf-dist/fonts/type1/public/txfonts/tcxtt.pfb></usr/local/
 texlive/2021/texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
-Output written on hdlregression.pdf (65 pages, 3969720 bytes).
+Output written on hdlregression.pdf (65 pages, 3969852 bytes).
 PDF statistics:
  836 PDF objects out of 1000 (max. 8388607)
  715 compressed objects within 8 object streams

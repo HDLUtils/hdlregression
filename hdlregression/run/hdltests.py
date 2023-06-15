@@ -63,21 +63,19 @@ class HdlRegressionTest:
         Returns sim output from test run.
         """
         return "\n".join(self.test_output)
-
-    def set_test_error_summary(self, output_lines) -> None:
-        """
-        A section of the test output is saved so that the
-        test error can be printed from a failing testcase.
-        """
-        error_lines = "".join(output_lines[len(output_lines) - 30 :])
-        self.test_error_summary = "\n%s\n%s\n%s\n" % (
-            ("====" * 40),
-            "".join(error_lines),
-            ("====" * 40),
-        )
+      
+    def get_output_no_format(self) -> list:
+        return self.test_output
 
     def get_test_error_summary(self) -> str:
-        return self.test_error_summary
+        output_lines = self.test_output
+        error_lines = "\n".join(output_lines[len(output_lines) - 30 :])
+        test_error_summary = "\n%s\n%s\n%s\n" % (
+            ("====" * 40),
+            error_lines,
+            ("====" * 40),
+        )        
+        return test_error_summary
 
     def set_terminal_test_details_str(self, test_details) -> None:
         self.terminal_test_details_str = test_details
@@ -275,7 +273,7 @@ class HdlRegressionTest:
 
     def get_num_sim_errors(self) -> int:
         return self.num_sim_errors
-
+    
 
 class VHDLTest(HdlRegressionTest):
     def __init__(self, tb=None, arch=None, tc=None, gc=[], settings=None):

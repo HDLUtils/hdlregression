@@ -547,13 +547,15 @@ class SimRunner:
             return bool(re.search(self._get_simulator_error_regex(), line))
 
         def show_errors_and_warnings() -> (tuple):
+            # override
+            if self.project.settings.get_show_err_warn_output() is True:
+                return (True, True)
             # compilation
-            if test is None:
+            elif test is None:
                 return (True, True)
             # simulation
             else:
-                return (True, True)
-                #return (False, False)
+                return (False, False)
 
         # Write command to file
         self._save_cmd(command)
@@ -570,7 +572,8 @@ class SimRunner:
         for line, success in cmd_runner.run(command=command,
                                             path=path,
                                             env=self.env_var,
-                                            output_file=output_file):
+                                            output_file=output_file,
+                                            timeout=self.project.settings.get_testcase_timeout()):
             line = line.strip()
 
             # Sim output direction
@@ -597,10 +600,11 @@ class SimRunner:
         """
         if line:
             single_sim_thread = self._get_number_of_threads() < 2
+            if test:
+                test.add_output(line)
+
             if self.project.settings.get_verbose() and single_sim_thread:
                 print(line)
-            elif test is not None:
-                test.add_output(line)
 
     # ---------------------------------------------------------
     # Testbench and simulations
@@ -668,24 +672,6 @@ class SimRunner:
         except:
             raise TestOutputPathError(path)
 
-    def _read_transcript_file(self, test_run_path) -> list:
-        """
-        Read the content of the transcript file in the given test_run_path.
-        
-        :param test_run_path: The path to the directory containing the transcript file.
-        :return: A list of lines in the transcript file, or None if the file is not found.
-        """
-        transcript_file_path = os.path.join(test_run_path, "transcript")
-
-        try:
-            with open(transcript_file_path, "r") as file:
-                lines = file.readlines()
-        except FileNotFoundError:
-            self.logger.error("File not found: {0}".format(transcript_file_path))
-            lines = None
-
-        return lines
-
     def _is_uvvm_summary_start(self, line):
         return re.search(self.RE_UVVM_SUMMARY, line)
 
@@ -747,12 +733,12 @@ class SimRunner:
             return test_str_result + self.logger.reset_color()
           
         def format_number_of_sim_errors_and_warnings(test):
-              sim_errors = test.get_num_sim_errors()
-              sim_warnings = test.get_num_sim_warnings()
-              if sim_errors > 0 or sim_warnings > 0:
-                  return "\nTest run: sim_errors={}, sim_warnings={}".format(sim_errors, sim_warnings)
-              else:
-                  return ""
+            sim_errors = test.get_num_sim_errors()
+            sim_warnings = test.get_num_sim_warnings()
+            if sim_errors > 0 or sim_warnings > 0:
+                return "\nTest run: sim_errors={}, sim_warnings={}".format(sim_errors, sim_warnings)
+            else:
+                return ""
 
         def format_test_details_string(test_str_result, sim_num_errors_and_warnings_str):
             sim_end_time = round(time.time() * 1000)
@@ -766,22 +752,18 @@ class SimRunner:
                 sim_sec,
                 sim_num_errors_and_warnings_str
             )
+        
+        def update_test_status_and_info(test):
+            (test_ok, test_ok_no_minor_alerts) = self._check_file_content(test.get_output_no_format())
+            test_str_result = format_test_result(test_ok, test_ok_no_minor_alerts)
+            sim_num_errors_and_warnings_str = format_number_of_sim_errors_and_warnings(test)
+            test_details_str = format_test_details_string(test_str_result, sim_num_errors_and_warnings_str)
+            test.set_terminal_test_details_str(test_details_str)
+            test.set_result_success(test_ok, no_minor_alerts=test_ok_no_minor_alerts)
+            test.set_has_been_run(True)
 
         log_checking()
-        lines = self._read_transcript_file(test.get_test_path())
-
-        (test_ok, test_ok_no_minor_alerts) = self._check_file_content(lines)
-
-        test_str_result = format_test_result(test_ok, test_ok_no_minor_alerts)
-        sim_num_errors_and_warnings_str = format_number_of_sim_errors_and_warnings(test)
-        test_details_str = format_test_details_string(test_str_result, sim_num_errors_and_warnings_str)
-
-        if not test_ok and lines is not None:
-            test.set_test_error_summary(lines)
-
-        test.set_terminal_test_details_str(test_details_str)
-        test.set_result_success(test_ok, no_minor_alerts=test_ok_no_minor_alerts)
-        test.set_has_been_run(True)
+        update_test_status_and_info(test)
 
     def _create_terminal_test_info_output_string(self, test, descriptive_test_name) -> str:
         """

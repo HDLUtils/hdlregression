@@ -61,8 +61,9 @@
 
 
 \title{hdlregression}
-\date{May 24, 2023}
-\release{0.40.3}
+\date{Jun 15, 2023}
+\release{0.41.0
+}
 \author{UVVM}
 \newcommand{\sphinxlogo}{\vbox{}}
 \renewcommand{\releasename}{Release}
@@ -788,7 +789,7 @@ match all character not in seq
 Changes the default library name used when {\hyperref[\detokenize{api:add-files}]{\sphinxcrossref{add\_files()}}} is used without the \sphinxcode{\sphinxupquote{library\_name}} argument.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{n}{set\PYGZus{}deafult\PYGZus{}library}\PYG{p}{(}\PYG{o}{\PYGZlt{}}\PYG{n}{library\PYGZus{}name}\PYG{o}{\PYGZgt{}}\PYG{p}{)}
+\PYG{n}{set\PYGZus{}default\PYGZus{}library}\PYG{p}{(}\PYG{o}{\PYGZlt{}}\PYG{n}{library\PYGZus{}name}\PYG{o}{\PYGZgt{}}\PYG{p}{)}
 \end{sphinxVerbatim}
 
 
@@ -2776,6 +2777,13 @@ Run tasks in parallel
 &
 \sphinxAtStartPar
 No simulation, compile only
+\\
+\hline&
+\sphinxAtStartPar
+\textendash{}showWarnError
+&
+\sphinxAtStartPar
+Show sim error and warning messages.
 \\
 \hline
 \end{tabulary}

@@ -56,6 +56,10 @@ def arg_parser_reader(arg_parser=None):
         arg_parser.add_argument('-ld', '--listDependency', action='store_true', help=argparse.SUPPRESS)
         arg_parser.add_argument('-ca', '--compileAll', action='store_true', help=argparse.SUPPRESS)
         arg_parser.add_argument('-cc', '--compileChanges', action='store_true', help=argparse.SUPPRESS)
+        
+        arg_parser.add_argument('--showWarnError', action='store_true', help='Show error and warning messages during simulations.')
+        
+        arg_parser.add_argument('--tc_timeout', action='store', type=str, nargs=1, help='testcase run timeout in seconds')
 
         args = arg_parser.parse_args(sys.argv[1:])
 
@@ -98,9 +102,14 @@ def arg_parser_update_settings(settings, args) -> 'HDLRegressionSettings':
         
     if args.no_sim:
         settings.set_no_sim(True)
+        
+    if args.tc_timeout:
+        settings.set_testcase_timeout(args.tc_timeout)
 
     settings.set_gui_compile_changes(args.compileChanges)
     settings.set_gui_compile_all(args.compileAll)
+    
+    settings.set_show_err_warn_output(args.showWarnError)
 
     # ----------------------------------------------
     # Arguments with parameters
