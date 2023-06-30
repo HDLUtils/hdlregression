@@ -57,25 +57,25 @@
 \contentsline {subsection}{\numberline {5.2.2}Pre\sphinxhyphen {}processing in parallel, simulations sequentially}{33}{subsection.5.2.2}%
 \contentsline {subsection}{\numberline {5.2.3}Pre\sphinxhyphen {}processing and simulations in parallel using 10 threads}{34}{subsection.5.2.3}%
 \contentsline {section}{\numberline {5.3}Simulation results}{35}{section.5.3}%
-\contentsline {subsection}{\numberline {5.3.1}Regression initial run}{37}{subsection.5.3.1}%
-\contentsline {subsection}{\numberline {5.3.2}Regression run without changes}{38}{subsection.5.3.2}%
-\contentsline {subsection}{\numberline {5.3.3}Failing testcase run}{38}{subsection.5.3.3}%
-\contentsline {chapter}{\numberline {6}Graphical User Interface (GUI)}{41}{chapter.6}%
-\contentsline {section}{\numberline {6.1}Modelsim}{41}{section.6.1}%
-\contentsline {section}{\numberline {6.2}GHDL}{42}{section.6.2}%
-\contentsline {chapter}{\numberline {7}Testbench}{43}{chapter.7}%
-\contentsline {section}{\numberline {7.1}Prerequisites}{43}{section.7.1}%
-\contentsline {section}{\numberline {7.2}Example Testbench}{44}{section.7.2}%
-\contentsline {chapter}{\numberline {8}Template files}{47}{chapter.8}%
-\contentsline {section}{\numberline {8.1}Basic usage}{47}{section.8.1}%
-\contentsline {subsection}{\numberline {8.1.1}Basic example}{47}{subsection.8.1.1}%
-\contentsline {section}{\numberline {8.2}Advanced usage}{48}{section.8.2}%
-\contentsline {subsection}{\numberline {8.2.1}Advanced example}{49}{subsection.8.2.1}%
-\contentsline {subsection}{\numberline {8.2.2}RTL and Netlist script example}{50}{subsection.8.2.2}%
-\contentsline {chapter}{\numberline {9}Test Automation Server}{53}{chapter.9}%
-\contentsline {chapter}{\numberline {10}Generated output}{55}{chapter.10}%
-\contentsline {section}{\numberline {10.1}Test folder}{55}{section.10.1}%
-\contentsline {subsection}{\numberline {10.1.1}Test mapping}{58}{subsection.10.1.1}%
-\contentsline {chapter}{\numberline {11}Tips}{61}{chapter.11}%
-\contentsline {section}{\numberline {11.1}Back annotated netlist simulations}{61}{section.11.1}%
-\contentsline {subsection}{\numberline {11.1.1}Regression script}{61}{subsection.11.1.1}%
+\contentsline {subsection}{\numberline {5.3.1}Regression initial run}{36}{subsection.5.3.1}%
+\contentsline {subsection}{\numberline {5.3.2}Regression run without changes}{37}{subsection.5.3.2}%
+\contentsline {subsection}{\numberline {5.3.3}Failing testcase run}{37}{subsection.5.3.3}%
+\contentsline {chapter}{\numberline {6}Graphical User Interface (GUI)}{39}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Modelsim}{39}{section.6.1}%
+\contentsline {section}{\numberline {6.2}GHDL}{40}{section.6.2}%
+\contentsline {chapter}{\numberline {7}Testbench}{41}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Prerequisites}{41}{section.7.1}%
+\contentsline {section}{\numberline {7.2}Example Testbench}{42}{section.7.2}%
+\contentsline {chapter}{\numberline {8}Template files}{45}{chapter.8}%
+\contentsline {section}{\numberline {8.1}Basic usage}{45}{section.8.1}%
+\contentsline {subsection}{\numberline {8.1.1}Basic example}{45}{subsection.8.1.1}%
+\contentsline {section}{\numberline {8.2}Advanced usage}{46}{section.8.2}%
+\contentsline {subsection}{\numberline {8.2.1}Advanced example}{47}{subsection.8.2.1}%
+\contentsline {subsection}{\numberline {8.2.2}RTL and Netlist script example}{48}{subsection.8.2.2}%
+\contentsline {chapter}{\numberline {9}Test Automation Server}{51}{chapter.9}%
+\contentsline {chapter}{\numberline {10}Generated output}{53}{chapter.10}%
+\contentsline {section}{\numberline {10.1}Test folder}{53}{section.10.1}%
+\contentsline {subsection}{\numberline {10.1.1}Test mapping}{57}{subsection.10.1.1}%
+\contentsline {chapter}{\numberline {11}Tips}{59}{chapter.11}%
+\contentsline {section}{\numberline {11.1}Back annotated netlist simulations}{59}{section.11.1}%
+\contentsline {subsection}{\numberline {11.1.1}Regression script}{59}{subsection.11.1.1}%

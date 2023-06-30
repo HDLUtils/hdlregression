@@ -1,18 +1,10 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <title>Generated output &mdash; hdlregression 0.40.9
- documentation</title>
-  
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Generated output &mdash; hdlregression 0.41.0
+  <title>Generated output &mdash; hdlregression 0.42.0
  documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
@@ -20,44 +12,25 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-
-    
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Tips" href="tips.html" />
     <link rel="prev" title="Test Automation Server" href="ci.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #F5F5F5" >
-          
-
-          
             <a href="index.html">
-          
-
-          
-            
             <img src="_static/hdlregression_scaled.png" class="logo" alt="Logo"/>
-          
           </a>
-
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -65,19 +38,8 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="intro.html#usage">Usage</a></li>
@@ -98,73 +60,32 @@
 <li class="toctree-l1"><a class="reference internal" href="tips.html">Tips</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #F5F5F5" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">hdlregression</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-        
       <li>Generated output</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
-          
             <a href="_sources/output.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="generated-output">
-<h1>Generated output<a class="headerlink" href="#generated-output" title="Permalink to this headline">¶</a></h1>
+             
+  <section id="generated-output">
+<h1>Generated output<a class="headerlink" href="#generated-output" title="Permalink to this headline"></a></h1>
 <p>When a HDLRegression regression script is run a folder <cite>hdlregression</cite> will be created in the same folder as the script was called
 from, e.g. <cite>sim</cite>. The folder will hold important project information in <cite>.dat</cite> files, a list of all run commands inside
 a <cite>commands.do</cite> file, library compilations inside a <cite>library</cite> folder, and test run outputs and report information inside
@@ -184,341 +105,182 @@ suffix to ensure that no important test run results are overwritten.</p>
 <p>The library folder will include one or more folders for the compiled libraries.
 The test folder will include one or more testcase folders and - if selected - a coverage folder.</p>
 </div>
-<div class="section" id="test-folder">
-<h2>Test folder<a class="headerlink" href="#test-folder" title="Permalink to this headline">¶</a></h2>
+<section id="test-folder">
+<h2>Test folder<a class="headerlink" href="#test-folder" title="Permalink to this headline"></a></h2>
 <p>Inside thet <cite>/test</cite> folder there can be several sub-folders and files. Each testbench entity will have a folder of its own
 which again has sub-folders for used architecture and generics. These <cite>test run</cite> folders have unique names that are
 hash generated, thus identifying a specific test run can be done by inspecting the test mapping file, <cite>test_mapping.csv</cite>.</p>
 <div class="literal-block-wrapper docutils container" id="id1">
-<div class="code-block-caption"><span class="caption-text">HDLRegression output folder example</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
-<div class="highlight-console notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">  1</span>
-<span class="normal">  2</span>
-<span class="normal">  3</span>
-<span class="normal">  4</span>
-<span class="normal">  5</span>
-<span class="normal">  6</span>
-<span class="normal">  7</span>
-<span class="normal">  8</span>
-<span class="normal">  9</span>
-<span class="normal"> 10</span>
-<span class="normal"> 11</span>
-<span class="normal"> 12</span>
-<span class="normal"> 13</span>
-<span class="normal"> 14</span>
-<span class="normal"> 15</span>
-<span class="normal"> 16</span>
-<span class="normal"> 17</span>
-<span class="normal"> 18</span>
-<span class="normal"> 19</span>
-<span class="normal"> 20</span>
-<span class="normal"> 21</span>
-<span class="normal"> 22</span>
-<span class="normal"> 23</span>
-<span class="normal"> 24</span>
-<span class="normal"> 25</span>
-<span class="normal"> 26</span>
-<span class="normal"> 27</span>
-<span class="normal"> 28</span>
-<span class="normal"> 29</span>
-<span class="normal"> 30</span>
-<span class="normal"> 31</span>
-<span class="normal"> 32</span>
-<span class="normal"> 33</span>
-<span class="normal"> 34</span>
-<span class="normal"> 35</span>
-<span class="normal"> 36</span>
-<span class="normal"> 37</span>
-<span class="normal"> 38</span>
-<span class="normal"> 39</span>
-<span class="normal"> 40</span>
-<span class="normal"> 41</span>
-<span class="normal"> 42</span>
-<span class="normal"> 43</span>
-<span class="normal"> 44</span>
-<span class="normal"> 45</span>
-<span class="normal"> 46</span>
-<span class="normal"> 47</span>
-<span class="normal"> 48</span>
-<span class="normal"> 49</span>
-<span class="normal"> 50</span>
-<span class="normal"> 51</span>
-<span class="normal"> 52</span>
-<span class="normal"> 53</span>
-<span class="normal"> 54</span>
-<span class="normal"> 55</span>
-<span class="normal"> 56</span>
-<span class="normal"> 57</span>
-<span class="normal"> 58</span>
-<span class="normal"> 59</span>
-<span class="normal"> 60</span>
-<span class="normal"> 61</span>
-<span class="normal"> 62</span>
-<span class="normal"> 63</span>
-<span class="normal"> 64</span>
-<span class="normal"> 65</span>
-<span class="normal"> 66</span>
-<span class="normal"> 67</span>
-<span class="normal"> 68</span>
-<span class="normal"> 69</span>
-<span class="normal"> 70</span>
-<span class="normal"> 71</span>
-<span class="normal"> 72</span>
-<span class="normal"> 73</span>
-<span class="normal"> 74</span>
-<span class="normal"> 75</span>
-<span class="normal"> 76</span>
-<span class="normal"> 77</span>
-<span class="normal"> 78</span>
-<span class="normal"> 79</span>
-<span class="normal"> 80</span>
-<span class="normal"> 81</span>
-<span class="normal"> 82</span>
-<span class="normal"> 83</span>
-<span class="normal"> 84</span>
-<span class="normal"> 85</span>
-<span class="normal"> 86</span>
-<span class="normal"> 87</span>
-<span class="normal"> 88</span>
-<span class="normal"> 89</span>
-<span class="normal"> 90</span>
-<span class="normal"> 91</span>
-<span class="normal"> 92</span>
-<span class="normal"> 93</span>
-<span class="normal"> 94</span>
-<span class="normal"> 95</span>
-<span class="normal"> 96</span>
-<span class="normal"> 97</span>
-<span class="normal"> 98</span>
-<span class="normal"> 99</span>
-<span class="normal">100</span>
-<span class="normal">101</span>
-<span class="normal">102</span>
-<span class="normal">103</span>
-<span class="normal">104</span>
-<span class="normal">105</span>
-<span class="normal">106</span>
-<span class="normal">107</span>
-<span class="normal">108</span>
-<span class="normal">109</span>
-<span class="normal">110</span>
-<span class="normal">111</span>
-<span class="normal">112</span>
-<span class="normal">113</span>
-<span class="normal">114</span>
-<span class="normal">115</span>
-<span class="normal">116</span>
-<span class="normal">117</span>
-<span class="normal">118</span>
-<span class="normal">119</span>
-<span class="normal">120</span>
-<span class="normal">121</span>
-<span class="normal">122</span>
-<span class="normal">123</span>
-<span class="normal">124</span>
-<span class="normal">125</span>
-<span class="normal">126</span>
-<span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
-<span class="normal">131</span>
-<span class="normal">132</span>
-<span class="normal">133</span>
-<span class="normal">134</span>
-<span class="normal">135</span>
-<span class="normal">136</span>
-<span class="normal">137</span>
-<span class="normal">138</span>
-<span class="normal">139</span>
-<span class="normal">140</span>
-<span class="normal">141</span>
-<span class="normal">142</span>
-<span class="normal">143</span>
-<span class="normal">144</span>
-<span class="normal">145</span>
-<span class="normal">146</span>
-<span class="normal">147</span>
-<span class="normal">148</span>
-<span class="normal">149</span>
-<span class="normal">150</span>
-<span class="normal">151</span>
-<span class="normal">152</span>
-<span class="normal">153</span>
-<span class="normal">154</span>
-<span class="normal">155</span>
-<span class="normal">156</span>
-<span class="normal">157</span>
-<span class="normal">158</span>
-<span class="normal">159</span>
-<span class="normal">160</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="go">hdlregression</span>
-<span class="go">├── commands.do</span>
-<span class="go">├── generic.dat</span>
-<span class="go">├── library</span>
-<span class="go">│   ├── bitvis_uart</span>
-<span class="go">│   │   ├── _info</span>
-<span class="go">│   │   ├── _lib.qdb</span>
-<span class="go">│   │   ├── _lib1_0.qdb</span>
-<span class="go">│   │   ├── _lib1_0.qpg</span>
-<span class="go">│   │   ├── _lib1_0.qtl</span>
-<span class="go">│   │   └── _vmake</span>
-<span class="go">│   ├── bitvis_vip_clock_generator</span>
-<span class="go">│   │   ├── _info</span>
-<span class="go">│   │   ├── _lib.qdb</span>
-<span class="go">│   │   ├── _lib1_0.qdb</span>
-<span class="go">│   │   ├── _lib1_0.qpg</span>
-<span class="go">│   │   ├── _lib1_0.qtl</span>
-<span class="go">│   │   └── _vmake</span>
-<span class="go">│   ├── bitvis_vip_sbi</span>
-<span class="go">│   │   ├── _info</span>
-<span class="go">│   │   ├── _lib.qdb</span>
-<span class="go">│   │   ├── _lib1_0.qdb</span>
-<span class="go">│   │   ├── _lib1_0.qpg</span>
-<span class="go">│   │   ├── _lib1_0.qtl</span>
-<span class="go">│   │   └── _vmake</span>
-<span class="go">│   ├── bitvis_vip_scoreboard</span>
-<span class="go">│   │   ├── _info</span>
-<span class="go">│   │   ├── _lib.qdb</span>
-<span class="go">│   │   ├── _lib1_0.qdb</span>
-<span class="go">│   │   ├── _lib1_0.qpg</span>
-<span class="go">│   │   ├── _lib1_0.qtl</span>
-<span class="go">│   │   └── _vmake</span>
-<span class="go">│   ├── bitvis_vip_uart</span>
-<span class="go">│   │   ├── _info</span>
-<span class="go">│   │   ├── _lib.qdb</span>
-<span class="go">│   │   ├── _lib1_0.qdb</span>
-<span class="go">│   │   ├── _lib1_0.qpg</span>
-<span class="go">│   │   ├── _lib1_0.qtl</span>
-<span class="go">│   │   └── _vmake</span>
-<span class="go">│   ├── modelsim.ini</span>
-<span class="go">│   ├── uvvm_util</span>
-<span class="go">│   │   ├── _info</span>
-<span class="go">│   │   ├── _lib.qdb</span>
-<span class="go">│   │   ├── _lib1_0.qdb</span>
-<span class="go">│   │   ├── _lib1_0.qpg</span>
-<span class="go">│   │   ├── _lib1_0.qtl</span>
-<span class="go">│   │   └── _vmake</span>
-<span class="go">│   └── uvvm_vvc_framework</span>
-<span class="go">│       ├── _info</span>
-<span class="go">│       ├── _lib.qdb</span>
-<span class="go">│       ├── _lib1_0.qdb</span>
-<span class="go">│       ├── _lib1_0.qpg</span>
-<span class="go">│       ├── _lib1_0.qtl</span>
-<span class="go">│       └── _vmake</span>
-<span class="go">├── library.dat</span>
-<span class="go">├── settings.dat</span>
-<span class="go">├── test</span>
-<span class="go">│   ├── sim_report.json</span>
-<span class="go">│   ├── test_mapping.csv</span>
-<span class="go">│   ├── uart_simple_bfm_tb</span>
-<span class="go">│   │   └── 70910381</span>
-<span class="go">│   │       ├── UVVM_Alert.txt</span>
-<span class="go">│   │       ├── UVVM_Log.txt</span>
-<span class="go">│   │       ├── run.do</span>
-<span class="go">│   │       └── transcript</span>
-<span class="go">│   ├── uart_vvc_demo_tb</span>
-<span class="go">│   │   └── 70910381</span>
-<span class="go">│   │       ├── _Alert.txt</span>
-<span class="go">│   │       ├── _Log.txt</span>
-<span class="go">│   │       ├── run.do</span>
-<span class="go">│   │       └── transcript</span>
-<span class="go">│   └── uart_vvc_tb</span>
-<span class="go">│       ├── 274144510</span>
-<span class="go">│       │   ├── run.do</span>
-<span class="go">│       │   ├── skew_sbi_read_over_uart_receive_with_delay_functionality_Alert.txt</span>
-<span class="go">│       │   ├── skew_sbi_read_over_uart_receive_with_delay_functionality_Log.txt</span>
-<span class="go">│       │   └── transcript</span>
-<span class="go">│       ├── 305729147</span>
-<span class="go">│       │   ├── check_simple_transmit_Alert.txt</span>
-<span class="go">│       │   ├── check_simple_transmit_Log.txt</span>
-<span class="go">│       │   ├── run.do</span>
-<span class="go">│       │   └── transcript</span>
-<span class="go">│       ├── 3122926221</span>
-<span class="go">│       │   ├── run.do</span>
-<span class="go">│       │   ├── skew_sbi_read_over_uart_receive_Alert.txt</span>
-<span class="go">│       │   ├── skew_sbi_read_over_uart_receive_Log.txt</span>
-<span class="go">│       │   └── transcript</span>
-<span class="go">│       ├── 3532724195</span>
-<span class="go">│       │   ├── check_multiple_simultaneous_receive_and_read_Alert.txt</span>
-<span class="go">│       │   ├── check_multiple_simultaneous_receive_and_read_Log.txt</span>
-<span class="go">│       │   ├── run.do</span>
-<span class="go">│       │   └── transcript</span>
-<span class="go">│       ├── 50272463</span>
-<span class="go">│       │   ├── check_single_simultaneous_transmit_and_receive_Alert.txt</span>
-<span class="go">│       │   ├── check_single_simultaneous_transmit_and_receive_Log.txt</span>
-<span class="go">│       │   ├── run.do</span>
-<span class="go">│       │   └── transcript</span>
-<span class="go">│       ├── 54005228</span>
-<span class="go">│       │   ├── check_simple_receive_Alert.txt</span>
-<span class="go">│       │   ├── check_simple_receive_Log.txt</span>
-<span class="go">│       │   ├── run.do</span>
-<span class="go">│       │   └── transcript</span>
-<span class="go">│       └── 796266300</span>
-<span class="go">│           ├── check_register_defaults_Alert.txt</span>
-<span class="go">│           ├── check_register_defaults_Log.txt</span>
-<span class="go">│           ├── run.do</span>
-<span class="go">│           └── transcript</span>
-<span class="go">├── test_2022-01-27_15.32.55.452648</span>
-<span class="go">│   ├── sim_report.json</span>
-<span class="go">│   ├── test_mapping.csv</span>
-<span class="go">│   ├── uart_simple_bfm_tb</span>
-<span class="go">│   │   └── 70910381</span>
-<span class="go">│   │       ├── UVVM_Alert.txt</span>
-<span class="go">│   │       ├── UVVM_Log.txt</span>
-<span class="go">│   │       ├── run.do</span>
-<span class="go">│   │       └── transcript</span>
-<span class="go">│   ├── uart_vvc_demo_tb</span>
-<span class="go">│   │   └── 70910381</span>
-<span class="go">│   │       ├── _Alert.txt</span>
-<span class="go">│   │       ├── _Log.txt</span>
-<span class="go">│   │       ├── run.do</span>
-<span class="go">│   │       └── transcript</span>
-<span class="go">│   └── uart_vvc_tb</span>
-<span class="go">│       ├── 274144510</span>
-<span class="go">│       │   ├── run.do</span>
-<span class="go">│       │   ├── skew_sbi_read_over_uart_receive_with_delay_functionality_Alert.txt</span>
-<span class="go">│       │   ├── skew_sbi_read_over_uart_receive_with_delay_functionality_Log.txt</span>
-<span class="go">│       │   └── transcript</span>
-<span class="go">│       ├── 305729147</span>
-<span class="go">│       │   ├── check_simple_transmit_Alert.txt</span>
-<span class="go">│       │   ├── check_simple_transmit_Log.txt</span>
-<span class="go">│       │   ├── run.do</span>
-<span class="go">│       │   └── transcript</span>
-<span class="go">│       ├── 3122926221</span>
-<span class="go">│       │   ├── run.do</span>
-<span class="go">│       │   ├── skew_sbi_read_over_uart_receive_Alert.txt</span>
-<span class="go">│       │   ├── skew_sbi_read_over_uart_receive_Log.txt</span>
-<span class="go">│       │   └── transcript</span>
-<span class="go">│       ├── 3532724195</span>
-<span class="go">│       │   ├── check_multiple_simultaneous_receive_and_read_Alert.txt</span>
-<span class="go">│       │   ├── check_multiple_simultaneous_receive_and_read_Log.txt</span>
-<span class="go">│       │   ├── run.do</span>
-<span class="go">│       │   └── transcript</span>
-<span class="go">│       ├── 50272463</span>
-<span class="go">│       │   ├── check_single_simultaneous_transmit_and_receive_Alert.txt</span>
-<span class="go">│       │   ├── check_single_simultaneous_transmit_and_receive_Log.txt</span>
-<span class="go">│       │   ├── run.do</span>
-<span class="go">│       │   └── transcript</span>
-<span class="go">│       ├── 54005228</span>
-<span class="go">│       │   ├── check_simple_receive_Alert.txt</span>
-<span class="go">│       │   ├── check_simple_receive_Log.txt</span>
-<span class="go">│       │   ├── run.do</span>
-<span class="go">│       │   └── transcript</span>
-<span class="go">│       └── 796266300</span>
-<span class="go">│           ├── check_register_defaults_Alert.txt</span>
-<span class="go">│           ├── check_register_defaults_Log.txt</span>
-<span class="go">│           ├── run.do</span>
-<span class="go">│           └── transcript</span>
-<span class="go">├── testgroup.dat</span>
-<span class="go">└── testgroup_collection.dat</span>
+<div class="code-block-caption"><span class="caption-text">HDLRegression output folder example</span><a class="headerlink" href="#id1" title="Permalink to this code"></a></div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="linenos">  1</span><span class="go">hdlregression</span>
+<span class="linenos">  2</span><span class="go">├── commands.do</span>
+<span class="linenos">  3</span><span class="go">├── generic.dat</span>
+<span class="linenos">  4</span><span class="go">├── library</span>
+<span class="linenos">  5</span><span class="go">│   ├── bitvis_uart</span>
+<span class="linenos">  6</span><span class="go">│   │   ├── _info</span>
+<span class="linenos">  7</span><span class="go">│   │   ├── _lib.qdb</span>
+<span class="linenos">  8</span><span class="go">│   │   ├── _lib1_0.qdb</span>
+<span class="linenos">  9</span><span class="go">│   │   ├── _lib1_0.qpg</span>
+<span class="linenos"> 10</span><span class="go">│   │   ├── _lib1_0.qtl</span>
+<span class="linenos"> 11</span><span class="go">│   │   └── _vmake</span>
+<span class="linenos"> 12</span><span class="go">│   ├── bitvis_vip_clock_generator</span>
+<span class="linenos"> 13</span><span class="go">│   │   ├── _info</span>
+<span class="linenos"> 14</span><span class="go">│   │   ├── _lib.qdb</span>
+<span class="linenos"> 15</span><span class="go">│   │   ├── _lib1_0.qdb</span>
+<span class="linenos"> 16</span><span class="go">│   │   ├── _lib1_0.qpg</span>
+<span class="linenos"> 17</span><span class="go">│   │   ├── _lib1_0.qtl</span>
+<span class="linenos"> 18</span><span class="go">│   │   └── _vmake</span>
+<span class="linenos"> 19</span><span class="go">│   ├── bitvis_vip_sbi</span>
+<span class="linenos"> 20</span><span class="go">│   │   ├── _info</span>
+<span class="linenos"> 21</span><span class="go">│   │   ├── _lib.qdb</span>
+<span class="linenos"> 22</span><span class="go">│   │   ├── _lib1_0.qdb</span>
+<span class="linenos"> 23</span><span class="go">│   │   ├── _lib1_0.qpg</span>
+<span class="linenos"> 24</span><span class="go">│   │   ├── _lib1_0.qtl</span>
+<span class="linenos"> 25</span><span class="go">│   │   └── _vmake</span>
+<span class="linenos"> 26</span><span class="go">│   ├── bitvis_vip_scoreboard</span>
+<span class="linenos"> 27</span><span class="go">│   │   ├── _info</span>
+<span class="linenos"> 28</span><span class="go">│   │   ├── _lib.qdb</span>
+<span class="linenos"> 29</span><span class="go">│   │   ├── _lib1_0.qdb</span>
+<span class="linenos"> 30</span><span class="go">│   │   ├── _lib1_0.qpg</span>
+<span class="linenos"> 31</span><span class="go">│   │   ├── _lib1_0.qtl</span>
+<span class="linenos"> 32</span><span class="go">│   │   └── _vmake</span>
+<span class="linenos"> 33</span><span class="go">│   ├── bitvis_vip_uart</span>
+<span class="linenos"> 34</span><span class="go">│   │   ├── _info</span>
+<span class="linenos"> 35</span><span class="go">│   │   ├── _lib.qdb</span>
+<span class="linenos"> 36</span><span class="go">│   │   ├── _lib1_0.qdb</span>
+<span class="linenos"> 37</span><span class="go">│   │   ├── _lib1_0.qpg</span>
+<span class="linenos"> 38</span><span class="go">│   │   ├── _lib1_0.qtl</span>
+<span class="linenos"> 39</span><span class="go">│   │   └── _vmake</span>
+<span class="linenos"> 40</span><span class="go">│   ├── modelsim.ini</span>
+<span class="linenos"> 41</span><span class="go">│   ├── uvvm_util</span>
+<span class="linenos"> 42</span><span class="go">│   │   ├── _info</span>
+<span class="linenos"> 43</span><span class="go">│   │   ├── _lib.qdb</span>
+<span class="linenos"> 44</span><span class="go">│   │   ├── _lib1_0.qdb</span>
+<span class="linenos"> 45</span><span class="go">│   │   ├── _lib1_0.qpg</span>
+<span class="linenos"> 46</span><span class="go">│   │   ├── _lib1_0.qtl</span>
+<span class="linenos"> 47</span><span class="go">│   │   └── _vmake</span>
+<span class="linenos"> 48</span><span class="go">│   └── uvvm_vvc_framework</span>
+<span class="linenos"> 49</span><span class="go">│       ├── _info</span>
+<span class="linenos"> 50</span><span class="go">│       ├── _lib.qdb</span>
+<span class="linenos"> 51</span><span class="go">│       ├── _lib1_0.qdb</span>
+<span class="linenos"> 52</span><span class="go">│       ├── _lib1_0.qpg</span>
+<span class="linenos"> 53</span><span class="go">│       ├── _lib1_0.qtl</span>
+<span class="linenos"> 54</span><span class="go">│       └── _vmake</span>
+<span class="linenos"> 55</span><span class="go">├── library.dat</span>
+<span class="linenos"> 56</span><span class="go">├── settings.dat</span>
+<span class="linenos"> 57</span><span class="go">├── test</span>
+<span class="linenos"> 58</span><span class="go">│   ├── sim_report.json</span>
+<span class="linenos"> 59</span><span class="go">│   ├── test_mapping.csv</span>
+<span class="linenos"> 60</span><span class="go">│   ├── uart_simple_bfm_tb</span>
+<span class="linenos"> 61</span><span class="go">│   │   └── 70910381</span>
+<span class="linenos"> 62</span><span class="go">│   │       ├── UVVM_Alert.txt</span>
+<span class="linenos"> 63</span><span class="go">│   │       ├── UVVM_Log.txt</span>
+<span class="linenos"> 64</span><span class="go">│   │       ├── run.do</span>
+<span class="linenos"> 65</span><span class="go">│   │       └── transcript</span>
+<span class="linenos"> 66</span><span class="go">│   ├── uart_vvc_demo_tb</span>
+<span class="linenos"> 67</span><span class="go">│   │   └── 70910381</span>
+<span class="linenos"> 68</span><span class="go">│   │       ├── _Alert.txt</span>
+<span class="linenos"> 69</span><span class="go">│   │       ├── _Log.txt</span>
+<span class="linenos"> 70</span><span class="go">│   │       ├── run.do</span>
+<span class="linenos"> 71</span><span class="go">│   │       └── transcript</span>
+<span class="linenos"> 72</span><span class="go">│   └── uart_vvc_tb</span>
+<span class="linenos"> 73</span><span class="go">│       ├── 274144510</span>
+<span class="linenos"> 74</span><span class="go">│       │   ├── run.do</span>
+<span class="linenos"> 75</span><span class="go">│       │   ├── skew_sbi_read_over_uart_receive_with_delay_functionality_Alert.txt</span>
+<span class="linenos"> 76</span><span class="go">│       │   ├── skew_sbi_read_over_uart_receive_with_delay_functionality_Log.txt</span>
+<span class="linenos"> 77</span><span class="go">│       │   └── transcript</span>
+<span class="linenos"> 78</span><span class="go">│       ├── 305729147</span>
+<span class="linenos"> 79</span><span class="go">│       │   ├── check_simple_transmit_Alert.txt</span>
+<span class="linenos"> 80</span><span class="go">│       │   ├── check_simple_transmit_Log.txt</span>
+<span class="linenos"> 81</span><span class="go">│       │   ├── run.do</span>
+<span class="linenos"> 82</span><span class="go">│       │   └── transcript</span>
+<span class="linenos"> 83</span><span class="go">│       ├── 3122926221</span>
+<span class="linenos"> 84</span><span class="go">│       │   ├── run.do</span>
+<span class="linenos"> 85</span><span class="go">│       │   ├── skew_sbi_read_over_uart_receive_Alert.txt</span>
+<span class="linenos"> 86</span><span class="go">│       │   ├── skew_sbi_read_over_uart_receive_Log.txt</span>
+<span class="linenos"> 87</span><span class="go">│       │   └── transcript</span>
+<span class="linenos"> 88</span><span class="go">│       ├── 3532724195</span>
+<span class="linenos"> 89</span><span class="go">│       │   ├── check_multiple_simultaneous_receive_and_read_Alert.txt</span>
+<span class="linenos"> 90</span><span class="go">│       │   ├── check_multiple_simultaneous_receive_and_read_Log.txt</span>
+<span class="linenos"> 91</span><span class="go">│       │   ├── run.do</span>
+<span class="linenos"> 92</span><span class="go">│       │   └── transcript</span>
+<span class="linenos"> 93</span><span class="go">│       ├── 50272463</span>
+<span class="linenos"> 94</span><span class="go">│       │   ├── check_single_simultaneous_transmit_and_receive_Alert.txt</span>
+<span class="linenos"> 95</span><span class="go">│       │   ├── check_single_simultaneous_transmit_and_receive_Log.txt</span>
+<span class="linenos"> 96</span><span class="go">│       │   ├── run.do</span>
+<span class="linenos"> 97</span><span class="go">│       │   └── transcript</span>
+<span class="linenos"> 98</span><span class="go">│       ├── 54005228</span>
+<span class="linenos"> 99</span><span class="go">│       │   ├── check_simple_receive_Alert.txt</span>
+<span class="linenos">100</span><span class="go">│       │   ├── check_simple_receive_Log.txt</span>
+<span class="linenos">101</span><span class="go">│       │   ├── run.do</span>
+<span class="linenos">102</span><span class="go">│       │   └── transcript</span>
+<span class="linenos">103</span><span class="go">│       └── 796266300</span>
+<span class="linenos">104</span><span class="go">│           ├── check_register_defaults_Alert.txt</span>
+<span class="linenos">105</span><span class="go">│           ├── check_register_defaults_Log.txt</span>
+<span class="linenos">106</span><span class="go">│           ├── run.do</span>
+<span class="linenos">107</span><span class="go">│           └── transcript</span>
+<span class="linenos">108</span><span class="go">├── test_2022-01-27_15.32.55.452648</span>
+<span class="linenos">109</span><span class="go">│   ├── sim_report.json</span>
+<span class="linenos">110</span><span class="go">│   ├── test_mapping.csv</span>
+<span class="linenos">111</span><span class="go">│   ├── uart_simple_bfm_tb</span>
+<span class="linenos">112</span><span class="go">│   │   └── 70910381</span>
+<span class="linenos">113</span><span class="go">│   │       ├── UVVM_Alert.txt</span>
+<span class="linenos">114</span><span class="go">│   │       ├── UVVM_Log.txt</span>
+<span class="linenos">115</span><span class="go">│   │       ├── run.do</span>
+<span class="linenos">116</span><span class="go">│   │       └── transcript</span>
+<span class="linenos">117</span><span class="go">│   ├── uart_vvc_demo_tb</span>
+<span class="linenos">118</span><span class="go">│   │   └── 70910381</span>
+<span class="linenos">119</span><span class="go">│   │       ├── _Alert.txt</span>
+<span class="linenos">120</span><span class="go">│   │       ├── _Log.txt</span>
+<span class="linenos">121</span><span class="go">│   │       ├── run.do</span>
+<span class="linenos">122</span><span class="go">│   │       └── transcript</span>
+<span class="linenos">123</span><span class="go">│   └── uart_vvc_tb</span>
+<span class="linenos">124</span><span class="go">│       ├── 274144510</span>
+<span class="linenos">125</span><span class="go">│       │   ├── run.do</span>
+<span class="linenos">126</span><span class="go">│       │   ├── skew_sbi_read_over_uart_receive_with_delay_functionality_Alert.txt</span>
+<span class="linenos">127</span><span class="go">│       │   ├── skew_sbi_read_over_uart_receive_with_delay_functionality_Log.txt</span>
+<span class="linenos">128</span><span class="go">│       │   └── transcript</span>
+<span class="linenos">129</span><span class="go">│       ├── 305729147</span>
+<span class="linenos">130</span><span class="go">│       │   ├── check_simple_transmit_Alert.txt</span>
+<span class="linenos">131</span><span class="go">│       │   ├── check_simple_transmit_Log.txt</span>
+<span class="linenos">132</span><span class="go">│       │   ├── run.do</span>
+<span class="linenos">133</span><span class="go">│       │   └── transcript</span>
+<span class="linenos">134</span><span class="go">│       ├── 3122926221</span>
+<span class="linenos">135</span><span class="go">│       │   ├── run.do</span>
+<span class="linenos">136</span><span class="go">│       │   ├── skew_sbi_read_over_uart_receive_Alert.txt</span>
+<span class="linenos">137</span><span class="go">│       │   ├── skew_sbi_read_over_uart_receive_Log.txt</span>
+<span class="linenos">138</span><span class="go">│       │   └── transcript</span>
+<span class="linenos">139</span><span class="go">│       ├── 3532724195</span>
+<span class="linenos">140</span><span class="go">│       │   ├── check_multiple_simultaneous_receive_and_read_Alert.txt</span>
+<span class="linenos">141</span><span class="go">│       │   ├── check_multiple_simultaneous_receive_and_read_Log.txt</span>
+<span class="linenos">142</span><span class="go">│       │   ├── run.do</span>
+<span class="linenos">143</span><span class="go">│       │   └── transcript</span>
+<span class="linenos">144</span><span class="go">│       ├── 50272463</span>
+<span class="linenos">145</span><span class="go">│       │   ├── check_single_simultaneous_transmit_and_receive_Alert.txt</span>
+<span class="linenos">146</span><span class="go">│       │   ├── check_single_simultaneous_transmit_and_receive_Log.txt</span>
+<span class="linenos">147</span><span class="go">│       │   ├── run.do</span>
+<span class="linenos">148</span><span class="go">│       │   └── transcript</span>
+<span class="linenos">149</span><span class="go">│       ├── 54005228</span>
+<span class="linenos">150</span><span class="go">│       │   ├── check_simple_receive_Alert.txt</span>
+<span class="linenos">151</span><span class="go">│       │   ├── check_simple_receive_Log.txt</span>
+<span class="linenos">152</span><span class="go">│       │   ├── run.do</span>
+<span class="linenos">153</span><span class="go">│       │   └── transcript</span>
+<span class="linenos">154</span><span class="go">│       └── 796266300</span>
+<span class="linenos">155</span><span class="go">│           ├── check_register_defaults_Alert.txt</span>
+<span class="linenos">156</span><span class="go">│           ├── check_register_defaults_Log.txt</span>
+<span class="linenos">157</span><span class="go">│           ├── run.do</span>
+<span class="linenos">158</span><span class="go">│           └── transcript</span>
+<span class="linenos">159</span><span class="go">├── testgroup.dat</span>
+<span class="linenos">160</span><span class="go">└── testgroup_collection.dat</span>
 </pre></div>
-</td></tr></table></div>
 </div>
-<div class="section" id="test-mapping">
-<h3>Test mapping<a class="headerlink" href="#test-mapping" title="Permalink to this headline">¶</a></h3>
+</div>
+<section id="test-mapping">
+<h3>Test mapping<a class="headerlink" href="#test-mapping" title="Permalink to this headline"></a></h3>
 <p>A test mapping file <cite>test_mapping.csv</cite> is located in every <cite>test</cite> folder to help identify test runs with test
 output folders. An example of the layout of a test mapping file is shown below:</p>
 <div class="literal-block-wrapper docutils container" id="id2">
-<div class="code-block-caption"><span class="caption-text">test_mapping.csv example</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text">test_mapping.csv example</span><a class="headerlink" href="#id2" title="Permalink to this code"></a></div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./hdlregression/test/uart_simple_bfm_tb/70910381, bitvis_uart.uart_simple_bfm_tb(func)</span>
 <span class="go">./hdlregression/test/uart_vvc_tb/1419120764, bitvis_uart.uart_vvc_tb(func): gc_testcase=check_register_defaults</span>
 <span class="go">./hdlregression/test/uart_vvc_tb/886640571, bitvis_uart.uart_vvc_tb(func): gc_testcase=check_simple_transmit</span>
@@ -531,56 +293,39 @@ output folders. An example of the layout of a test mapping file is shown below:<
 </pre></div>
 </div>
 </div>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="tips.html" class="btn btn-neutral float-right" title="Tips" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="ci.html" class="btn btn-neutral float-left" title="Test Automation Server" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tips.html" class="btn btn-neutral float-right" title="Tips" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2021, UVVM.
-
-    </p>
+    <p>&#169; Copyright 2021, UVVM.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-    
+  </script>  
 
   <style>
          .wy-nav-content { max-width: none; }

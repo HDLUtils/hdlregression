@@ -44,18 +44,27 @@ def list_compile_order(container) -> str:
     Returns:
     comp_order_str(str): a string with compile order for project.
     '''
-    comp_order_str = f"\n{'='*20} Compile Order For Project {'='*20}\n"
+    def compile_string(library):
+        if library.get_need_compile():
+            return "(recompile)"
+        elif any(lib for lib in library.get_lib_obj_dep() if lib.get_need_compile()):
+            return "(recompile)"
+        else:
+            return ""
+  
+    comp_order_str = "\nProject compile order:\n\n"
 
     for idx, library in enumerate(container.get()):
-        compile = "(recompile)" if library.get_need_compile() else ""
-        if any(lib for lib in library.get_lib_obj_dep() if lib.get_need_compile()):
-            compile = "(recompile)"
-        comp_order_str += f"|--[{idx+1}]-- {library.get_name()} {compile}\n"
+        compile_str = compile_string(library)
+
+        if idx > 0:
+          comp_order_str += "|\n"
+        comp_order_str += "|--[{}]-- {} {}\n".format((idx+1), library.get_name(), compile_str)
 
         for hdlfile in library.get_compile_order_list():
             tb = "(TB)" if hdlfile.get_is_tb() else ""
             rc = "(rc)" if hdlfile.get_need_compile() else ""
-            comp_order_str += f"|      |--  {hdlfile.get_name()} {tb} {rc}\n"
+            comp_order_str += "|      |--- {} {} {}\n".format(hdlfile.get_filename_with_path(), tb, rc)
 
     comp_order_str += "\n"
     return comp_order_str
