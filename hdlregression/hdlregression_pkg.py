@@ -266,9 +266,7 @@ def validate_cached_version(project,
     cached_version = project.settings.get_hdlregression_version()
     # Compare current version with cached version
     if (cached_version != installed_version) and (cached_version != '0.0.0'):
-        project.logger.warning('WARNING! HDLRegression v%s not compatible with cached v%s. '
-                               'Executing database rebuild.' % 
-                               (installed_version, cached_version))
+        print('WARNING! HDLRegression v{} not compatible with cached v{}.\nExecuting database rebuild.'.format(installed_version, cached_version))
         return False
     return True
 
@@ -288,13 +286,14 @@ def print_info_msg_when_no_test_has_run(project, runner):
 def display_info_text(version) -> None:
     ''' Presents HDLRegression version number and QR info. '''
     width = get_window_width()
+    divisor_line = ('=' * width)
     print('''
-%s
-  HDLRegression version %s
+{}
+  HDLRegression version {}
   See /doc/hdlregression.pdf for documentation.
-%s
+{}
 
-''' % ('=' * width, version, '=' * width))
+'''.format(divisor_line, version, divisor_line))
 
 
 def print_run_success(project):
