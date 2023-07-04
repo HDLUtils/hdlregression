@@ -48,6 +48,7 @@ class HDLRegressionSettings:
         self.no_sim = False
         self.no_compile = False
         self.show_err_warn_output = False
+        self.use_log_color = True
 
         self.netlist_timing = None
 
@@ -161,6 +162,11 @@ class HDLRegressionSettings:
     def get_gui_mode(self) -> bool:
         return self.gui_mode
 
+    def set_use_log_color(self, use_log_color):
+        self.use_log_color = use_log_color
+
+    def get_use_log_color(self) -> bool:
+        return self.use_log_color
     # ----------------------------------
     # Threading
     # ----------------------------------

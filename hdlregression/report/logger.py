@@ -16,24 +16,31 @@
 
 class bcolors:
     HEADER = '\033[35m'
-    OKBLUE = '\033[34m'
-    OKGREEN = '\033[32m'
+    BLUE = '\033[34m'
+    WHITE = '\033[37m'
+    GREEN = '\033[32m'
+    RED = '\033[31m'
     WARNING = '\033[33m'
     FAIL = '\033[31m'
     ENDC = '\033[0m'
 
 
 class Logger():
-    '''
-
-    '''
-
     def __init__(self, name, project=None):
         self.name = name
         self.level = 'info'
-        self.color = 'white'
         self.levels = {'debug': 1, 'info': 2, 'warning': 3, 'error': 4}
         self.project = project
+
+        self.COLORS = {
+            'info' : '\033[37m',    # white
+            'warning' : '\033[33m', # yellow
+            'error' : '\033[31m',   # red
+            'debug' : '\033[34m',   # blue
+            'green' : '\033[32m',   # green
+            'red'   : '\033[31m',   # red
+            'endc'  : '\033[0m'     # end color
+        }
 
     def is_gui_mode(self) -> bool:
         if self.project:
@@ -41,37 +48,8 @@ class Logger():
         else:
             return None
 
-    def info(self, msg, color='white', end='\n'):
-        if self.is_gui_mode():
-            print(msg, end=end)
-        elif color.lower() == 'green':
-            print(bcolors.OKGREEN + msg + bcolors.ENDC, end=end)
-        elif color.lower() == 'blue':
-            print(bcolors.OKBLUE + msg + bcolors.ENDC, end=end)
-        elif color.lower() == 'header':
-            print(bcolors.HEADER + msg + bcolors.ENDC, end=end)
-        else:
-            print(msg, end=end)
-
-    def warning(self, msg, end='\n'):
-        if self.is_gui_mode():
-            print(msg, end=end)
-        else:
-            print(bcolors.WARNING + msg + bcolors.ENDC, end=end)
-
-    def error(self, msg, end='\n'):
-        if self.is_gui_mode():
-            print(msg, end=end)
-        else:
-            print(bcolors.FAIL + msg + bcolors.ENDC, end=end)
-
-    def debug(self, msg, end='\n'):
-        current_level = self.levels.get(self.level)
-        if current_level <= self.levels.get('debug'):
-            if self.is_gui_mode():
-                print(msg, end=end)
-            else:
-                print(bcolors.HEADER + '[' + self.name + ':debug] ' + msg + bcolors.ENDC, end=end)
+    def use_color(self) -> bool:
+        return self.project.settings.get_use_log_color()
 
     def set_level(self, level):
         self.level = level.lower()
@@ -79,46 +57,41 @@ class Logger():
     def set_name(self, name):
         self.name = name
 
-    def green(self):
-        return bcolors.OKGREEN
-
-    def red(self):
-        return bcolors.FAIL
-
-    def yellow(self):
-        return bcolors.WARNING
-
-    def reset_color(self):
-        return bcolors.ENDC
-
-    def str_info(self, msg, color='white', end='\n') -> str:
-        if self.is_gui_mode():
-            return str(msg, end=end)
-        elif color.lower() == 'green':
-            return str(bcolors.OKGREEN + msg + bcolors.ENDC, end=end)
-        elif color.lower() == 'blue':
-            return str(bcolors.OKBLUE + msg + bcolors.ENDC, end=end)
-        elif color.lower() == 'header':
-            return str(bcolors.HEADER + msg + bcolors.ENDC, end=end)
+    def colorize(self, msg, color):
+        color_code = self.COLORS.get(color, '')
+        if color_code:
+            return color_code + msg + self.COLORS['endc']
         else:
-            return str(msg, end=end)
+            return msg
 
-    def str_warning(self, msg, end='\n') -> str:
-        if self.is_gui_mode():
-            return str(msg, end=end)
-        else:
-            return str(bcolors.WARNING + msg + bcolors.ENDC, end=end)
+    def log(self, level, msg, end='\n', color=None):
+        color = color or level
+        if not self.is_gui_mode() and self.use_color():
+            msg = self.colorize(msg, color)
+        print(msg, end=end)
 
-    def str_error(self, msg, end='\n') -> str:
-        if self.is_gui_mode():
-            return str(msg, end=end)
-        else:
-            return str(bcolors.FAIL + msg + bcolors.ENDC, end=end)
+    def info(self, msg, end='\n', color=None):
+        self.log('info', msg, end, color)
 
-    def str_debug(self, msg, end='\n') -> str:
+    def warning(self, msg, end='\n', color=None):
+        self.log('warning', msg, end, color)
+
+    def error(self, msg, end='\n', color=None):
+        self.log('error', msg, end, color)
+
+    def debug(self, msg, end='\n', color=None):
         current_level = self.levels.get(self.level)
         if current_level <= self.levels.get('debug'):
-            if self.is_gui_mode():
-                return str(msg, end=end)
-            else:
-                return str(bcolors.HEADER + '[' + self.name + ':debug] ' + msg + bcolors.ENDC, end=end)
+            self.log('debug', msg, end, color)
+
+    def red(self):
+        return self.COLORS['error'] if self.use_color() is True else ''
+
+    def green(self):
+        return self.COLORS['green'] if self.use_color() is True else ''
+
+    def yellow(self):
+        return self.COLORS['warning'] if self.use_color() is True else ''
+
+    def reset_color(self):
+        return self.COLORS['endc'] if self.use_color() is True else ''

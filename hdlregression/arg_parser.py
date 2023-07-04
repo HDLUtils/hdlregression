@@ -58,6 +58,7 @@ def arg_parser_reader(arg_parser=None):
         arg_parser.add_argument('-cc', '--compileChanges', action='store_true', help=argparse.SUPPRESS)
         
         arg_parser.add_argument('--showWarnError', action='store_true', help='Show error and warning messages during simulations.')
+        arg_parser.add_argument('--noColor', action='store_true', help='Disable terminal output colors.')
         
         arg_parser.add_argument('--tc_timeout', action='store', type=str, nargs=1, help='testcase run timeout in seconds')
 
@@ -105,6 +106,9 @@ def arg_parser_update_settings(settings, args) -> 'HDLRegressionSettings':
         
     if args.tc_timeout:
         settings.set_testcase_timeout(args.tc_timeout)
+        
+    if args.noColor:
+        settings.set_use_log_color(False)
 
     settings.set_gui_compile_changes(args.compileChanges)
     settings.set_gui_compile_all(args.compileAll)
