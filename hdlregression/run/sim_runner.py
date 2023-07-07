@@ -202,24 +202,27 @@ class SimRunner:
             Executes tests from the queue in a separate thread.
             """
             while not test_queue.empty():
-                test = test_queue.get()
-                self._create_test_folder(test.get_test_path())
-                self._run_terminal_test(test)
-                # Display test information and results
-                print(test.get_terminal_test_details_str())
-    
-                # Print test output in verbose mode
-                if self.project.settings.get_verbose():
-                    print(test.get_output())
-    
-                # Present errors
-                if not test.get_result_success():
-                    print(test.get_test_error_summary())
-                    if self.project.settings.get_stop_on_failure():
-                        self.logger.warning("Simulations stopped because of failing testcase.")
-                    self.project.settings.set_return_code(1)
-    
-                test_queue.task_done()
+                try:
+                    test = test_queue.get()
+                    self._create_test_folder(test.get_test_path())
+                    self._run_terminal_test(test)
+                    # Display test information and results
+                    print(test.get_terminal_test_details_str())
+                    
+                    # Print test output in verbose mode
+                    if self.project.settings.get_verbose():
+                        print(test.get_output())
+                    
+                    # Present errors
+                    if not test.get_result_success():
+                        print(test.get_test_error_summary())
+                        if self.project.settings.get_stop_on_failure():
+                            self.logger.warning("Simulations stopped because of failing testcase.")
+                        self.project.settings.set_return_code(1)
+                except Exception as e:
+                    self.logger.error('An error occurred during test run: {}'.format(e))
+                finally:    
+                    test_queue.task_done()
     
         # Get tests to run
         self.test_list = self.testbuilder.get_list_of_tests_to_run()
@@ -572,8 +575,7 @@ class SimRunner:
         for line, success in cmd_runner.run(command=command,
                                             path=path,
                                             env=self.env_var,
-                                            output_file=output_file,
-                                            timeout=self.project.settings.get_testcase_timeout()):
+                                            output_file=output_file):
             line = line.strip()
 
             # Sim output direction

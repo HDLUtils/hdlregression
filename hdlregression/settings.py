@@ -69,8 +69,6 @@ class HDLRegressionSettings:
         self.testgroup = None
         self.logger_level = "info"
         self.testcase_identifier_name = "gc_testcase"
-        
-        self.testcase_timeout= None
 
         self.list_testcase = False
         self.list_compile_order = False
@@ -382,12 +380,6 @@ class HDLRegressionSettings:
     def get_testcase_list(self) -> list:
         return self.testcase_list
 
-    def set_testcase_timeout(self, timeout_value):
-        self.testcase_timeout = timeout_value
-
-    def get_testcase_timeout(self):
-        return self.testcase_timeout
-
     # ----------------------------------
     # Simulator
     # ----------------------------------
@@ -491,12 +483,6 @@ class HDLRegressionSettings:
 class TestcaseSettings:
     def __init__(self):
         pass
-
-    def set_testcase_timeout(self, timeout_value):
-        self.testcase_timeout = timeout_value
-        
-    def get_testcase_timeout(self):
-        return self.testcase_timeout
 
 
 class SimulatorSettings:

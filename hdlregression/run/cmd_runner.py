@@ -18,6 +18,7 @@ import os
 import sys
 from threading import Thread
 from queue import Queue, Empty
+from pathlib import Path
 
 from ..report.logger import Logger
 
@@ -83,7 +84,7 @@ class CommandRunner:
                                 close_fds=self.ON_POSIX)  # Close filehandles when done (Only Linux)
 
 
-    def run(self, command, path='./', env=None, output_file=None, timeout=None) -> tuple:
+    def run(self, command, path='./', env=None, output_file=None) -> tuple:
         command = self._convert_to_list(command)
 
         self._create_path_if_missing(path)
@@ -96,25 +97,33 @@ class CommandRunner:
         try:
             popen = self._get_process(command, path)
             q_transcript = Queue()
-            t_stdout = Thread(target=self._enqueue_output, args=(
-                popen.stdout, q_transcript, output_file, False))
-            t_stderr = Thread(target=self._enqueue_output, args=(
-                popen.stderr, q_transcript, output_file, True))
-              
+
+            t_stdout = Thread(target=self._enqueue_output, args=(popen.stdout, q_transcript, output_file, False))
+            t_stderr = Thread(target=self._enqueue_output, args=(popen.stderr, q_transcript, output_file, True))
+
             t_stdout.daemon = True  # thread dies with the program
             t_stderr.daemon = True  # thread dies with the program
             t_stdout.start()
             t_stderr.start()
+
             while True:
                 try:
                     transcript_line = q_transcript.get_nowait()
+                    self.logger.debug(transcript_line)
                     yield transcript_line
                 except Empty:
                     transcript_line = None
 
                 if return_code is not None:
                     # Program exited and there is no more data in queues
-                    break
+                    # At this point, queue is empty, check if the subprocess is still running
+                    if popen.poll() is not None:
+                        # If poll() returned a value, the subprocess has ended. 
+                        # Also check if queue is still empty, which means there's no remaining output
+                        if q_transcript.empty():
+                            # Both subprocess ended and queue is empty. Break the loop
+                            break
+
                 if transcript_line is None:
                     return_code = popen.poll()
                     if return_code is not None:
@@ -122,37 +131,33 @@ class CommandRunner:
                         t_stdout.join()
                         t_stderr.join()
 
-        except FileNotFoundError as e:
-            self.logger.error('Command error: %s.' % (e))
-        except OSError as e:
-            self.logger.error('Command error: %s.' % (e))
-        except subprocess.TimeoutExpired:
-            self.logger.error('Test timeout')
+        except (FileNotFoundError, OSError) as e:
+            self.logger.error('Command error: {}.'.format(e))
         except:
             tb = sys.exc_info()[2]
             raise CommandExecuteError(command).with_traceback(tb)
+
         if return_code is None and popen is not None:
             return_code = popen.returncode
         if return_code != 0:
             if return_code not in ignored_simulator_exit_codes:
-                yield f"Error: Program ended with exit code {format(return_code)}", False
+                yield "Error: Program ended with exit code {}".format(return_code), False
         return
+
 
     def _convert_to_list(self, command) -> list:
         # Convert command to list
-        if isinstance(command, tuple):
-            command = ' '.join(command)
-        elif isinstance(command, str):
-            command = [command]
+        if isinstance(command, (tuple, str)):
+            command = command if isinstance(command, str) else ' '.join(command)
+            return [command]
         return command
 
     def _create_path_if_missing(self, path) -> None:
         try:
-            if not(os.path.exists(path)):
-                os.mkdir(path)
-                self.logger.debug("Creating path: %s" % (path))
+            Path(path).mkdir(parents=True, exist_ok=True)
+            self.logger.debug(f"Creating path: {path}")
         except Exception as e:
-            TestOutputPathError(path)
+            raise TestOutputPathError(f"Failed to create path: {path}. Error: {str(e)}")
 
     def _get_env(self, env):
         if not env:

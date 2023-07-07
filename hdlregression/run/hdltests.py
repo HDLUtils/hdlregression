@@ -55,8 +55,17 @@ class HdlRegressionTest:
     def add_output(self, output_lines) -> None:
         """
         Save test output so it can be printed to terminal in verbose mode.
+        Input is one single line.
         """
         self.test_output.append(output_lines)
+        
+    def add_output_lines(self, output_lines):
+        """
+        Save test output so it can be printed to terminal in verbose mode.
+        Input is list of lines.
+        """
+        for line in output_lines:
+            self.test_output.append(line)
 
     def get_output(self) -> str:
         """
@@ -119,7 +128,7 @@ class HdlRegressionTest:
     def get_hdlfile(self):
         return self.hdlfile
 
-    def set_need_to_simulate(self, need_to_simulate: bool=False):
+    def set_need_to_simulate(self, need_to_simulate: bool = False):
         self.need_to_simulate = need_to_simulate
 
     def get_need_to_simulate(self) -> bool:
@@ -319,7 +328,7 @@ class VHDLTest(HdlRegressionTest):
 
         # Get list of generics that were discovered in this TB
         tb_disc_gc_list = [gc.upper() for gc in tb.get_generic()]
-        
+
         # Init the generic call with testcase if applicable
         tc = self.get_tc()
         gc_str = (
@@ -329,21 +338,6 @@ class VHDLTest(HdlRegressionTest):
         )
 
         generic_list = self.get_gc()
-        
-        if generic_list:
-            generic_name = ""
-            for idx, gc_item in enumerate(generic_list):
-                if idx % 2 == 0:
-                    generic_name = gc_item.upper()
-                else:
-                    generic_value = str(gc_item)
-    
-                    # Filter out any non-valid generics
-                    if generic_name in tb_disc_gc_list:
-                        if not gc_str:
-                            gc_str = '-g' + generic_name + '=' + generic_value
-                        else:
-                            gc_str += ' -g' + generic_name + '=' + generic_value
 
         if generic_list:
             generic_name = ""
