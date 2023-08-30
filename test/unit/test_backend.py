@@ -83,7 +83,7 @@ def test_new_test_file_added_in_2nd_run():
     found_old = any("tb_passing" in dir for dir in test_dirs)
     found_new = any("tb_new_passing" in dir for dir in test_dirs)
 
-    assert found_old is True, "checking test folder with old test %s" % (test_dirs)
+    assert found_old is False, "checking test folder with old test %s" % (test_dirs)
     assert found_new is True, "checking test folder with new test %s" % (test_dirs)
 
 

@@ -333,3 +333,34 @@ def test_wildcard_asterix_architecture_and_testcase():
     for idx in range(1, 3):
         testcase = exp_test + str(idx)
         assert testcase in "".join(pass_list)
+
+
+def test_passing_testcase_failing_in_second_run():
+    clear_output()
+
+    # First run
+    hr = HDLRegression()
+    filename = "../tb/tb_passing.vhd"
+    filename = get_file_path(filename)
+    hr.add_files(filename, "testcase_lib")
+    hr.set_result_check_string("passing testcase")
+    return_code = hr.start()
+
+    (pass_list, fail_list, not_run_list) = hr.get_results()
+
+    assert return_code == 0, "check number of failing tests"
+    assert len(fail_list) == 0, "check number of failing tests"
+    assert len(pass_list) == 1, "check number of passing tests"
+    assert len(not_run_list) == 0, "check number of not run tests"
+
+    # Second 
+    hr = HDLRegression()
+    hr.set_result_check_string("failing_testcase")
+    return_code = hr.start(regression_mode=True)
+
+    (pass_list, fail_list, not_run_list) = hr.get_results()
+
+    assert return_code == 1, "check number of failing tests"
+    assert len(fail_list) == 1, "check number of failing tests"
+    assert len(pass_list) == 0, "check number of passing tests"
+    assert len(not_run_list) == 0, "check number of not run tests"    

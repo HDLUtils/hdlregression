@@ -27,7 +27,7 @@ from .cmd_runner import CommandRunner
 from ..report.logger import Logger
 from ..hdlregression_pkg import convert_from_millisec
 from ..hdlregression_pkg import os_adjust_path
-from .hdltests import VHDLTest, VerilogTest
+from .hdltests import VHDLTest, VerilogTest, TestStatus
 from ..construct.hdlfile import VHDLFile, VerilogFile
 
 
@@ -116,16 +116,33 @@ class SimRunner:
         if self.testbuilder:
             return self.testbuilder.get_num_tests()
         return 0
+      
+    def get_fail_test_obj_list(self) -> list:
+        if self.test_list is None:
+            self.test_list = self._get_test_list()
+
+        fail_list = [test for test in self.test_list
+            if test.get_status() == TestStatus.FAIL]
+        
+        return fail_list
+
+    def get_test_list(self) -> list:
+        """
+        Returns a list of all test objects.
+        """
+        if self.test_list is None:
+            self.test_list = self._get_test_list()
+        return self.test_list
 
     def _setup_ini(self):
         pass
 
-    def prepare_test_modules_and_objects(self):
+    def prepare_test_modules_and_objects(self, failing_testcase_list):
         """
         Locate testbench modules and build test objects
         """
         self.testbuilder.build_tb_module_list()
-        self.testbuilder.build_list_of_tests_to_run()
+        self.testbuilder.build_list_of_tests_to_run(failing_testcase_list)
 
     @abstractmethod
     def _compile_library(self, library, force_compile=False) -> "HDLLibrary":
@@ -196,6 +213,7 @@ class SimRunner:
         """
         Collects test objects to run and executes test simulations.
         """
+        failing_test = False
 
         def run_test(test_queue) -> bool:
             """
@@ -206,21 +224,25 @@ class SimRunner:
                     test = test_queue.get()
                     self._create_test_folder(test.get_test_path())
                     self._run_terminal_test(test)
+
                     # Display test information and results
                     print(test.get_terminal_test_details_str())
-                    
+
                     # Print test output in verbose mode
                     if self.project.settings.get_verbose():
                         print(test.get_output())
-                    
+
                     # Present errors
-                    if not test.get_result_success():
+                    if test.get_status() == TestStatus.FAIL:
                         print(test.get_test_error_summary())
                         if self.project.settings.get_stop_on_failure():
                             self.logger.warning("Simulations stopped because of failing testcase.")
                         self.project.settings.set_return_code(1)
+                        failing_test = True
+
                 except Exception as e:
                     self.logger.error('An error occurred during test run: {}'.format(e))
+
                 finally:    
                     test_queue.task_done()
     
@@ -235,9 +257,10 @@ class SimRunner:
         start_time = round(time.time() * 1000)
     
         num_threads = self._get_number_of_threads()
+
         if num_threads > 0: 
             self.logger.info(
-                "Running {} out of {} test(s) using {} thread(s).".format(self.get_num_tests_run(),
+                "Running {} out of {} test(s) using {} thread(s).".format(len(self.test_list),
                                                                           self.get_num_tests(),
                                                                           num_threads))
 
@@ -262,7 +285,12 @@ class SimRunner:
 
             # Write mapping file for run tests.
             self._write_test_mapping(self.test_list)
-    
+
+        if failing_test is True:
+            self.project.settings.set_sim_success(False)
+        else:
+            self.project.settings.set_sim_success(True)
+
         return True
 
     # ===================================================================================================
@@ -278,8 +306,9 @@ class SimRunner:
         pass_list = [
             test.get_test_id_string()
             for test in self.test_list
-            if test.get_result_success() is True
+            if test.get_status() == TestStatus.PASS
         ]
+
         return pass_list
 
     def _get_fail_test_list(self) -> list:
@@ -289,8 +318,9 @@ class SimRunner:
         fail_list = [
             test.get_test_id_string()
             for test in self.test_list
-            if test.get_result_success() is False
+            if test.get_status() == TestStatus.FAIL
         ]
+        
         return fail_list
 
     def _get_pass_with_minor_alert_list(self) -> list:
@@ -300,8 +330,10 @@ class SimRunner:
         pass_with_minor_alerts_list = [
             test.get_test_id_string()
             for test in self.test_list
-            if test.get_no_minor_alerts() is False
+            if test.get_status() == TestStatus.PASS_WITH_MINOR
         ]
+        
+        
         return pass_with_minor_alerts_list
 
     def _get_not_run_test_list(self) -> list:
@@ -311,8 +343,9 @@ class SimRunner:
         test_list = [
             test.get_test_id_string()
             for test in self.test_list
-            if test.get_has_been_run() is False
+            if test.get_status() == TestStatus.NOT_RUN
         ]
+        
         return test_list
 
     def _get_test_list(self) -> list:
@@ -382,12 +415,14 @@ class SimRunner:
         """
         # Default number of threads
         num_threads = 1
+        num_tests_to_run = len(self.test_list)
         # Adjust to one thread per parser if threading is enabled
         if self.project.settings.get_num_threads() > 0:
             num_threads = self.project.settings.get_num_threads()
             # Adjust that we do not use more threads than required
-            if self.get_num_tests_run() < num_threads:
-                num_threads = self.get_num_tests_run()
+            #if self.get_num_tests_run() < num_threads:
+            if num_tests_to_run < num_threads:
+                num_threads = num_tests_to_run
         return num_threads
 
     def _compile_regex(self):
@@ -652,7 +687,6 @@ class SimRunner:
 
             self._simulate(test=test, generic_call=gen_call, module_call=module_call)
             self._check_test_result(test=test, sim_start_time=sim_start_time)
-
             test.set_folder_to_name_mapping(descriptive_test_name)
 
         gen_call = test.get_gc_str()
@@ -761,8 +795,15 @@ class SimRunner:
             sim_num_errors_and_warnings_str = format_number_of_sim_errors_and_warnings(test)
             test_details_str = format_test_details_string(test_str_result, sim_num_errors_and_warnings_str)
             test.set_terminal_test_details_str(test_details_str)
-            test.set_result_success(test_ok, no_minor_alerts=test_ok_no_minor_alerts)
-            test.set_has_been_run(True)
+
+            if test_ok is False:
+                test.set_status(TestStatus.FAIL)
+            elif test_ok:
+                test.set_status(TestStatus.PASS)
+            elif test_ok_no_minor_alerts:
+                test.set_status(TestStatus.PASS_WITH_MINOR)
+            else:
+                test.set_status(TestStatus.NOT_RUN)
 
         log_checking()
         update_test_status_and_info(test)
@@ -786,7 +827,7 @@ class SimRunner:
             return ".{}".format(testcase) if testcase else ""
 
         def build_test_id_string():
-            return " (test_id: {})".format(test.get_test_id_number())
+            return " (test_id: {})".format(test.get_id_number())
 
         def build_generics_section():
             generics = get_generics_string(test)

@@ -14,6 +14,8 @@
 #
 
 
+import os
+
 class bcolors:
     HEADER = '\033[35m'
     BLUE = '\033[34m'
@@ -23,7 +25,6 @@ class bcolors:
     WARNING = '\033[33m'
     FAIL = '\033[31m'
     ENDC = '\033[0m'
-
 
 class Logger():
     def __init__(self, name, project=None):
@@ -42,6 +43,12 @@ class Logger():
             'endc'  : '\033[0m'     # end color
         }
 
+    def terminal_supports_colors(self):
+        term = os.getenv('TERM')
+        if term is None or term == 'dumb':
+            return False
+        return True
+
     def is_gui_mode(self) -> bool:
         if self.project:
             return self.project.settings.get_is_gui_mode()
@@ -49,7 +56,7 @@ class Logger():
             return None
 
     def use_color(self) -> bool:
-        return self.project.settings.get_use_log_color()
+        return self.terminal_supports_colors() and self.project.settings.get_use_log_color()
 
     def set_level(self, level):
         self.level = level.lower()
@@ -69,6 +76,7 @@ class Logger():
         if not self.is_gui_mode() and self.use_color():
             msg = self.colorize(msg, color)
         print(msg, end=end)
+
 
     def info(self, msg, end='\n', color=None):
         self.log('info', msg, end, color)

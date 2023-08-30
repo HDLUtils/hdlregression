@@ -224,3 +224,24 @@ def test_empty_library():
     hr.start()
     dirs = os.listdir("./hdlregression/library")
     assert "empty_lib" not in dirs, "checking empty library not in compiled libraries"
+
+
+#def test_recursing_library_dependency_detection():
+#    '''
+#    Check that libraries that depend on each other are detected and reported.
+#    '''
+#    clear_output()
+#    hr = HDLRegression()
+#
+#    hr.set_result_check_string('testcase done')
+#
+#    filename = get_file_path('../tb/rec_a.vhd')
+#    hr.add_files(filename, "req_lib")
+#    filename = get_file_path('../tb/rec_b.vhd')
+#    hr.add_files(filename, "req_lib")
+#    filename = get_file_path('../tb/rec_c.vhd')
+#    hr.add_files(filename, "req_lib")
+#
+#    res = hr.start()
+#
+#    assert res == 1, "check recursive dependency detection and report"

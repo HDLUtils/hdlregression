@@ -40,8 +40,6 @@ from .configurator import SettingsConfigurator
 import sys
 import os
 import pickle
-import inspect
-import argparse
 from signal import signal, SIGINT
 
 # Enable terminal colors on windows OS∫
@@ -568,7 +566,7 @@ class HDLRegression:
             modelsim_ini_file = self.runner._setup_ini()
             self._add_precompiled_libraries_to_modelsim_ini(modelsim_ini_file)
 
-            self.runner.prepare_test_modules_and_objects()
+            self.runner.prepare_test_modules_and_objects(self.failing_tc_list)
             (compile_success, self.library_container) = self.runner.compile_libraries()
 
             if not compile_success:
@@ -584,6 +582,7 @@ class HDLRegression:
                     generic_cont=self.generic_container,
                     tg_cont=self.testgroup_container,
                     tg_col_cont=self.testgroup_collection_container,
+                    failing_tc_list=self.runner._get_fail_test_list(),
                     settings=self.settings,
                     reset=False,
                 )
@@ -599,6 +598,7 @@ class HDLRegression:
                     generic_cont=self.generic_container,
                     tg_cont=self.testgroup_container,
                     tg_col_cont=self.testgroup_collection_container,
+                    failing_tc_list=self.runner._get_fail_test_list(),
                     settings=self.settings,
                     reset=True,
                 )
@@ -613,7 +613,7 @@ class HDLRegression:
             modelsim_ini_file = self.runner._setup_ini()
             self._add_precompiled_libraries_to_modelsim_ini(modelsim_ini_file)
 
-            self.runner.prepare_test_modules_and_objects()
+            self.runner.prepare_test_modules_and_objects(self.failing_tc_list)
 
             # Compile libraries and files
             (compile_success, self.library_container) = self.runner.compile_libraries()
@@ -631,13 +631,13 @@ class HDLRegression:
                     self.logger.info("\nStarting simulations...")
                     # Run simulation
                     sim_success = self.runner.simulate() if self.runner else False
-    
+
                     if not sim_success or (self.get_num_fail_tests() > 0):
                         self.settings.set_return_code(1)
                     else:
                         # Single testcase run is not a valid regression
                         if self.settings.get_testcase() is None:
-                            self.settings.set_success_run(True)
+                            self.settings.set_run_success(True)
                             self.settings.set_time_of_run()
     
                         print_info_msg_when_no_test_has_run(
@@ -656,6 +656,7 @@ class HDLRegression:
                     generic_cont=self.generic_container,
                     tg_cont=self.testgroup_container,
                     tg_col_cont=self.testgroup_collection_container,
+                    failing_tc_list=self.runner._get_fail_test_list(),
                     settings=self.settings,
                 )
 
@@ -968,9 +969,8 @@ class HDLRegression:
 
     def _setup_simulation_runner(self):
         # Get runner object based on configuration settings
-        self.runner = self._get_runner_object(
-            simulator=self.settings.get_simulator_name()
-        )
+        simulator = self.settings.get_simulator_name()
+        self.runner = self._get_runner_object(simulator=simulator)
 
     def _start_gui(self) -> int:
         """
@@ -1017,7 +1017,7 @@ class HDLRegression:
             self.settings.set_return_code(1)
             print("hdlregression:failed")
         else:
-            self.settings.set_success_run(True)
+            self.settings.set_run_success(True)
             self.settings.set_time_of_run()
             print("hdlregression:success")
 
@@ -1027,6 +1027,7 @@ class HDLRegression:
             generic_cont=self.generic_container,
             tg_cont=self.testgroup_container,
             tg_col_cont=self.testgroup_collection_container,
+            failing_tc_list=self.runner._get_fail_test_list(),
             settings=self.settings,
         )
 
@@ -1088,6 +1089,7 @@ class HDLRegression:
             self.generic_container,
             self.testgroup_container,
             self.testgroup_collection_container,
+            self.failing_tc_list,
             self.settings,
         ) = self._load_project_from_disk()
 
@@ -1203,6 +1205,7 @@ class HDLRegression:
         generic_cont: "Container",
         tg_cont: "Container",
         tg_col_cont: "Container",
+        failing_tc_list : list,
         settings: "HDLRegressionSettings",
         reset: bool = True,
     ):
@@ -1217,6 +1220,8 @@ class HDLRegression:
         :type tg_cont: Container
         :param tg_col_cont: Container obj with all testgroup containers information.
         :type tg_col_cont: Container
+        :param List of failing testcases in current run
+        :type failing_tc_list : list
         :parsm settings: All run settings.
         :type settings: HDLRegressionSettings
         :param reset: Enables resetting of all HDLRegressionSettings obj settings.
@@ -1241,6 +1246,7 @@ class HDLRegression:
         _dump(tg_cont, "testgroup.dat")
         _dump(tg_col_cont, "testgroup_collection.dat")
         _dump(settings, "settings.dat")
+        _dump(self.runner.get_fail_test_obj_list(), "testcase.dat")
 
     def _load_project_from_disk(self) -> tuple:
         """
@@ -1254,6 +1260,8 @@ class HDLRegression:
         :return tg_cont: Structure with all test group information.
         :rtype: Container
         :return tg_col_cont: Structure with all test groups.
+        :rtype: list
+        :return failing_tc_list: List of failing testcases in previous run
         :rtype: HDLRegressionSettings
         :return settings: Obj with all run settings.
         """
@@ -1279,9 +1287,11 @@ class HDLRegression:
 
         generic_cont = _load(Container("generic"), "generic.dat")
         tg_cont = _load(Container("testgroup"), "testgroup.dat")
-        tg_col_cont = _load(
-            Container("testgroup_collection"), "testgroup_collection.dat"
-        )
+        tg_col_cont = _load(Container("testgroup_collection"), "testgroup_collection.dat")
+        tc_cont = _load(Container("testcase_container"), "testcase.dat")
+        
+        failing_tc_list = []
+        failing_tc_list = _load(failing_tc_list, "testcase.dat")
 
         # Do not load configured generics, testcases or testcase groups when
         # called from runner script, only from GUI
@@ -1292,7 +1302,7 @@ class HDLRegression:
 
         # default settings for success run and return code:
         settings.set_return_code(0)
-        settings.set_success_run(True)
+        settings.set_run_success(True)
 
         if os.path.isfile(settings_file):
             if (
@@ -1309,7 +1319,7 @@ class HDLRegression:
                 )
                 sys.exit(1)
 
-        return (lib_cont, generic_cont, tg_cont, tg_col_cont, settings)
+        return (lib_cont, generic_cont, tg_cont, tg_col_cont, failing_tc_list, settings)
 
 
 # pylint: disable=unused-argument

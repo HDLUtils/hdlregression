@@ -15,17 +15,24 @@
 
 import os
 import zlib
+from pickle import FALSE
+
+from ..hdlregression_pkg import get_window_width
+
+class TestStatus:
+    PASS = "PASS"
+    PASS_WITH_MINOR = "PASS_WITH_MINOR"
+    FAIL = "FAIL"
+    NOT_RUN = "NOT_RUN"
 
 
 class HdlRegressionTest:
+  
+  
     def __init__(self, tb=None, settings=None):
-        self.result = "NA"
         self.path = None
         self.tb = None
-        self.result_success = False
-        self.no_minor_alerts = False
         self.test_mapping_name = None
-        self.test_index = 0
         self.test_string = None
         self.settings = settings
         self.id_number = 0
@@ -35,12 +42,11 @@ class HdlRegressionTest:
         
         self.num_sim_errors = 0
         self.num_sim_warnings = 0
+        
+        self.test_status = TestStatus.NOT_RUN
 
         self.hdlfile = None
         self.test_output = []
-        self.need_to_simulate = False
-
-        self.has_been_run = False
 
         self.set_tb(tb)
 
@@ -77,13 +83,10 @@ class HdlRegressionTest:
         return self.test_output
 
     def get_test_error_summary(self) -> str:
+        sep = ("="*get_window_width())
         output_lines = self.test_output
         error_lines = "\n".join(output_lines[len(output_lines) - 30 :])
-        test_error_summary = "\n%s\n%s\n%s\n" % (
-            ("====" * 40),
-            error_lines,
-            ("====" * 40),
-        )        
+        test_error_summary = "\n\n{}\n\n{}\n\n{}\n\n".format(sep, error_lines, sep)
         return test_error_summary
 
     def set_terminal_test_details_str(self, test_details) -> None:
@@ -128,39 +131,14 @@ class HdlRegressionTest:
     def get_hdlfile(self):
         return self.hdlfile
 
-    def set_need_to_simulate(self, need_to_simulate: bool = False):
-        self.need_to_simulate = need_to_simulate
+    # ----------- test status ---------------
+    def set_status(self, status:TestStatus):
+        self.test_status = status.upper()
 
-    def get_need_to_simulate(self) -> bool:
-        return self.need_to_simulate
+    def get_status(self) -> TestStatus:
+        return self.test_status
 
-    def set_has_been_run(self, is_run=True):
-        self.has_been_run = is_run
-
-    def get_has_been_run(self) -> bool:
-        return self.has_been_run
-
-    def set_index(self, index):
-        self.test_index = index
-
-    def get_index(self) -> int:
-        return self.test_index
-
-    def set_result(self, result) -> None:
-        self.result = result
-
-    def get_result(self) -> str:
-        return self.result
-
-    def set_result_success(self, success, no_minor_alerts=True):
-        self.result_success = success
-        self.no_minor_alerts = no_minor_alerts
-
-    def get_result_success(self) -> bool:
-        return self.result_success
-
-    def get_no_minor_alerts(self) -> bool:
-        return self.no_minor_alerts
+    # -------- test connections ---------------
 
     def set_tb(self, tb) -> None:
         self.tb = tb
@@ -203,7 +181,7 @@ class HdlRegressionTest:
         if self.get_gc_str():
             test_map_name += ":" + self.get_gc_str().replace("-g", "")
 
-        test_id_str = str(self.get_test_id_number())
+        test_id_str = str(self.get_id_number())
         map_string = (
             test_id_str
             + ", "
@@ -229,8 +207,8 @@ class HdlRegressionTest:
 
     def get_test_base_path(self) -> str:
         return os.path.join(self.settings.get_test_path(), self.get_tb().get_name())
-
-    def get_test_output_folder(self) -> str:
+      
+    def create_test_output_folder_name(self):
         """
         Create a test folder for this test run and return folder name.
         """
@@ -241,16 +219,18 @@ class HdlRegressionTest:
             tb_arch_name = self.get_arch().get_name()
 
             test_folder = zlib.adler32((tb_arch_name + gc_str).encode())
-            path = os.path.join(test_base_path, str(test_folder))
+            self.test_output_folder_name = os.path.join(test_base_path, str(test_folder))
         else:
-            path = self.get_test_base_path()
+            self.test_output_folder_name = self.get_test_base_path()
+      
 
-        return path
+    def get_test_output_folder(self) -> str:
+        return self.test_output_folder_name
 
-    def set_test_id_number(self, number):
+    def set_id_number(self, number):
         self.id_number = number
 
-    def get_test_id_number(self) -> int:
+    def get_id_number(self) -> int:
         return self.id_number
 
     def get_testcase_name(self) -> str:

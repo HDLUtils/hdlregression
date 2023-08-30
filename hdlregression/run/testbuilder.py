@@ -18,7 +18,7 @@ import fnmatch
 from ..construct.container import Container
 from ..report.logger import Logger
 from ..construct.hdlfile import VHDLFile, VerilogFile
-from .hdltests import VHDLTest, VerilogTest
+from .hdltests import VHDLTest, VerilogTest, TestStatus
 
 
 class TestBuilder:
@@ -34,7 +34,6 @@ class TestBuilder:
         self.testbench_container = Container(name=__name__)
         self.tests_to_run_container = Container(name="tests_to_run_container")
         self.base_tests_container = Container(name="base_tests_container")
-        self.run_tests = []
         self.test_id_count = 0
 
     def build_tb_module_list(self) -> None:
@@ -51,13 +50,24 @@ class TestBuilder:
                 for module in hdlfile.get_tb_modules():
                     self.testbench_container.add(module)
 
-    def build_list_of_tests_to_run(self):
+    def build_list_of_tests_to_run(self, failing_testcase_list):
         """
         Builds a list of all testbenches and testcases
         that are selected to be run.
         """
         # Build all possible tests as starting point
         self._build_base_tests()
+        
+        # Create test output folder names
+        for test in self.base_tests_container.get():
+            test.create_test_output_folder_name()
+            
+        # Update status from previous failing test runs
+        for old_test in failing_testcase_list:
+            if old_test.get_status() == TestStatus.FAIL:
+                for new_test in self.base_tests_container.get():
+                    if new_test.get_test_output_folder() == old_test.get_test_output_folder():
+                        new_test.set_status(TestStatus.FAIL)
 
         # Run all
         if self.project.settings.get_run_all():
@@ -121,9 +131,11 @@ class TestBuilder:
         """
         Build a list of all tests.
         """
+
         # Remove any existing test(s)
         self.tests_to_run_container.empty_list()
         self.base_tests_container.empty_list()
+        
 
         sequencer_testcase_string = self.project.settings.get_testcase_identifier_name()
 
@@ -419,11 +431,12 @@ class TestBuilder:
         be re-run due to changes.
         """
         filtered_tests = []
-        # for test in self.tests_to_run_container.get():
         for test in self.base_tests_container.get():
-            if test.get_need_to_simulate() is True:
+            if test.get_hdlfile().get_need_compile() is True:
                 filtered_tests.append(test)
-            elif not self.project.settings.get_success_run():
+            elif test.get_status() == TestStatus.FAIL:
+                filtered_tests.append(test)
+            elif not self.project.settings.get_run_success():
                 filtered_tests.append(test)
 
         self._copy_filtered_tests_to_tests_to_run_container(filtered_tests)
@@ -439,16 +452,14 @@ class TestBuilder:
                 tb=tb, arch=arch, tc=tc, gc=gc, settings=self.project.settings
             )
             test.set_hdlfile(hdlfile)
-            test.set_need_to_simulate(hdlfile.get_need_compile())
             self.test_id_count += 1
-            test.set_test_id_number(self.test_id_count)
+            test.set_id_number(self.test_id_count)
             return test
         elif isinstance(hdlfile, VerilogFile):
             test = VerilogTest(tb=tb, settings=self.project.settings)
             test.set_hdlfile(hdlfile)
-            test.set_need_to_simulate(hdlfile.get_need_compile())
             self.test_id_count += 1
-            test.set_test_id_number(self.test_id_count)
+            test.set_id_number(self.test_id_count)
             return test
         else:
             self.logger.warning(

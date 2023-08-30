@@ -499,8 +499,7 @@ class HDLLibrary(Library):
                 # has no dependencies.
                 lowest_value_index = i
 
-                self.logger.debug("Check dep on %s" % 
-                                  (file_list[lowest_value_index].get_name()))
+                self.logger.debug("Check dep on {}".format(file_list[lowest_value_index].get_name()))
                 # This loop iterates over the unsorted items
                 for j in range(i + 1, num_files):
                     check_file = file_list[j]
@@ -509,8 +508,7 @@ class HDLLibrary(Library):
                     if check_file in with_file.get_hdlfile_this_dep_on():
                         if with_file in check_file.get_hdlfile_this_dep_on():
                             if not check_file.get_filename_with_path() == with_file.get_filename_with_path():
-                                self.logger.warning("%s : recursing dependency %s <-> %s." % 
-                                                    (self.get_name(), check_file.get_name(), with_file.get_name()))
+                                self.logger.warning("{} : recursing dependency {} <-> {}.".format(self.get_name(), check_file.get_name(), with_file.get_name()))
                                 continue
                         else:
                             lowest_value_index = j

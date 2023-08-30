@@ -17,6 +17,7 @@ import platform
 import os
 import re
 import shutil
+import subprocess
 from glob import glob
 from multiprocessing.pool import ThreadPool
 
@@ -116,7 +117,7 @@ def list_testcases(runner) -> str:
 
     for test in run_tests:
         generics = test.get_gc_str(filter_testcase_id=True).replace('-g', '') if test.get_gc_str() else ''
-        tc_line = "TC:{0} - {1}".format(test.get_test_id_number(), test.get_testcase_name())
+        tc_line = "TC:{0} - {1}".format(test.get_id_number(), test.get_testcase_name())
         tc_lines.append(tc_line)
 
         if generics:
@@ -150,6 +151,8 @@ def os_adjust_path(path) -> str:
         return path.replace('\\', '\\\\')
 
 
+SIMULATORS = ["GHDL", "MODELSIM", "NVC"]
+
 def simulator_detector() -> list:
     '''
     Method will be used for getting a modelsim.ini file
@@ -166,7 +169,6 @@ def simulator_detector() -> list:
         detected_simulators.append('ALDEC')
 
     return detected_simulators
-
 
 def adjust_generic_value_paths(generic_list, settings, logger) -> list:
     '''

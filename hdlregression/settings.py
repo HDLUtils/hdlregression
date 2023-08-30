@@ -41,7 +41,8 @@ class HDLRegressionSettings:
         self.full_regression = False
         self.stop_on_failure = False
         self.time_of_run = None
-        self.success_run = None
+        self.run_success = None
+        self.sim_success = False
         self.sim_time = None
         self.threading = False
         self.num_threads = 0
@@ -87,7 +88,6 @@ class HDLRegressionSettings:
 
     def set_return_code(self, return_code: int):
         self.return_code = return_code
-        self.set_success_run(False)
 
     def get_return_code(self) -> int:
         return self.return_code
@@ -184,14 +184,23 @@ class HDLRegressionSettings:
     # Running
     # ----------------------------------
 
+    # -- compilation status
+    def set_run_success(self, success):
+        self.run_success = success
+
+    def get_run_success(self) -> bool:
+        return self.run_success
+    
+    # --- simulation status
+    def set_sim_success(self, success : bool):
+        self.sim_success = success
+
+    def get_sim_success(self) -> bool:
+        self.sim_success = success
+
+    # ------------------------------
     def get_run_all(self) -> bool:
         return self.full_regression
-
-    def set_success_run(self, success):
-        self.success_run = success
-
-    def get_success_run(self) -> bool:
-        return self.success_run
 
     def set_stop_on_failure(self, stop_on_failure):
         self.stop_on_failure = stop_on_failure
