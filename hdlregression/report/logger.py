@@ -43,12 +43,6 @@ class Logger():
             'endc'  : '\033[0m'     # end color
         }
 
-    def terminal_supports_colors(self):
-        term = os.getenv('TERM')
-        if term is None or term == 'dumb':
-            return False
-        return True
-
     def is_gui_mode(self) -> bool:
         if self.project:
             return self.project.settings.get_is_gui_mode()
@@ -56,7 +50,7 @@ class Logger():
             return None
 
     def use_color(self) -> bool:
-        return self.terminal_supports_colors() and self.project.settings.get_use_log_color()
+        return self.project.settings.get_use_log_color()
 
     def set_level(self, level):
         self.level = level.lower()

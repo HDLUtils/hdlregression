@@ -24,7 +24,7 @@ from ..scan.hdl_regex_pkg import RE_MODELSIM_WARNING, RE_MODELSIM_ERROR
 
 class ModelsimRunner(SimRunner):
 
-    simulator_name = "MODELSIM"
+    SIMULATOR_NAME = "MODELSIM"
 
     def __init__(self, project):
         super().__init__(project)
@@ -58,7 +58,7 @@ class ModelsimRunner(SimRunner):
 
     @classmethod
     def _is_simulator(cls, simulator) -> bool:
-        return (simulator.upper() == cls.simulator_name)
+        return (simulator.upper() == cls.SIMULATOR_NAME)
 
     # =========================================================================
     #
@@ -98,7 +98,7 @@ class ModelsimRunner(SimRunner):
             return []
 
         return_list = [sim_exec]
-        return_list += hdlfile._get_com_options(simulator=self.simulator_name)
+        return_list += hdlfile._get_com_options(simulator=self.SIMULATOR_NAME)
 
         # code_coverage compile arguments
         code_coverage_settings = self.project.hdlcodecoverage.get_code_coverage_settings()

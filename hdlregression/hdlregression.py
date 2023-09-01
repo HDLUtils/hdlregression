@@ -506,6 +506,17 @@ class HDLRegression:
         self.hdlcodecoverage.set_exclude_file(exclude_file)
         self.hdlcodecoverage.set_options(merge_options)
 
+    def set_simulator_wave_file_format(self, wave_format):
+        """
+        Set format for NVC or GHDL wave dump file.
+        Options are 'VCD' and 'FST'.
+        
+        :param wave_format: Wave format
+        :type wave_format: str
+        """
+        self.settings.set_wave_file_format(wave_format)
+
+
     def start(self, **kwargs) -> int:
         """
         Run HDLRegression with the loaded settings.
@@ -573,7 +584,6 @@ class HDLRegression:
                 self.settings.set_return_code(1)
                 self.logger.info("Compilation failed - aborting!")
             else:
-                self.settings.set_success_run(True)
 
                 # Need to save project settings for Tcl Runner to know about
                 # libraries and files set in the regression script.

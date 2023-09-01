@@ -31,6 +31,9 @@ class InvalidPathError(SettingsError):
 
 
 class HDLRegressionSettings:
+
+    SIM_WAVE_FILE_FORMAT = ["FST", "VCD"]
+
     def __init__(self):
         self.hdlregression_version = "0.0.0"
         self.simulator_settings = SimulatorSettings("MODELSIM")
@@ -81,6 +84,7 @@ class HDLRegressionSettings:
 
         self.gui_compile_all = False
         self.gui_compile_changes = False
+        self.simulator_wave_file_format = "vcd"  # Default for GHDL and NVC.
 
         self.libraries = []
 
@@ -469,6 +473,15 @@ class HDLRegressionSettings:
 
     def get_is_gui_mode(self) -> bool:
         return self.get_gui_compile_all() or self.get_gui_compile_changes()
+
+    def set_simulator_wave_file_format(self, file_format):
+        if isinstance(file_format, str):
+            if file_format.upper() in self.SIM_WAVE_FILE_FORMAT:
+                self.simulator_wave_file_format = file_format.lower()
+
+    def get_simulator_wave_file_format(self) -> str:
+        return self.simulator_wave_file_format
+
 
     # ----------------------------------
     # Netlist

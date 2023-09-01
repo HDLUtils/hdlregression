@@ -18,10 +18,11 @@ import os
 from .sim_runner import SimRunner
 from ..report.logger import Logger
 from ..scan.hdl_regex_pkg import RE_NVC_WARNING, RE_NVC_ERROR
+import wave
 
 
 class NVCRunner(SimRunner):
-    simulator_name = "NVC"
+    SIMULATOR_NAME = "NVC"
 
     def __init__(self, project):
         super().__init__(project)
@@ -30,7 +31,7 @@ class NVCRunner(SimRunner):
 
     @classmethod
     def _is_simulator(cls, simulator) -> bool:
-        return (simulator.upper() == cls.simulator_name)
+        return (simulator.upper() == cls.SIMULATOR_NAME)
 
     def _convert_hdl_version(self, hdl_version):
         if hdl_version == '2008':
@@ -57,49 +58,53 @@ class NVCRunner(SimRunner):
         Typically a HDLFILE object is used for analyze (-a),
         while a MODULE object with the elab_run parameter are used for
         elaboration (-e) and running simulations (-r).
-
+    
         Returns:
             return_list(list): a list with simulator command to be used
                                with a subprocess call.
         '''
         hdlfile = module.get_hdlfile() if module else hdlfile
-
-        nvc_executable = self._get_simulator_executable('nvc')
+    
+        nvc_executable = self._get_simulator_executable(self.SIMULATOR_NAME)
         return_list = [nvc_executable]
-
-        hdl_version = hdlfile.get_hdl_version()
-        hdl_version = self._convert_hdl_version(hdl_version)
-
+    
+        hdl_version = self._convert_hdl_version(hdlfile.get_hdl_version())
+    
         output_path = os.path.join(self.project.settings.get_sim_path(),
                                    'hdlregression',
                                    'library')
-        library_compile_path = os.path.join(output_path,
-                                            hdlfile.get_library().get_name())
-
-        return_list += ['-L' + output_path]
-        return_list += ['--work=' + hdlfile.get_library().get_name() +
-                        ":" + library_compile_path]
-        return_list += ["--std=" + hdl_version]
-        return_list += ["-M" + "64m"]
-        return_list += ["--messages=compact"]
-        return_list += ["--stderr=error"]
+        library_name = hdlfile.get_library().get_name()
+        library_compile_path = os.path.join(output_path, library_name)
+    
+        return_list += ['-L{}'.format(output_path),
+                        '--work={}:{}'.format(library_name, library_compile_path),
+                        '--std={}'.format(hdl_version),
+                        '-M64m',
+                        '--messages=compact',
+                        '--stderr=error']
+    
         if elab_run:
-            return_list += ["-e"]
-            return_list += ["--no-save"]
-            return_list += ["--jit"]
+            return_list += ['-e', '--no-save', '--jit']
+    
             if module_call:
-                return_list += [module_call]
+                return_list.append(module_call)
             if generic_call:
                 return_list += generic_call.split(' ')
-            return_list += ["-r"]
+            return_list.append('-r')
+    
+            if self.project.settings.get_gui_mode():
+                wave_file_format = self.project.settings.get_simulator_wave_file_format()
+                return_list += ['--format={}'.format(wave_file_format),
+                                '--wave=sim.{}'.format(wave_file_format)]
+    
             return_list += self.project.settings.get_sim_options()
         else:
-            return_list += ["-a"]
-            return_list += [hdlfile.get_filename_with_path()]
-            if hdlfile._get_com_options(simulator=self.simulator_name):
-                return_list += hdlfile._get_com_options(
-                    simulator=self.simulator_name)
-
+            return_list += ['-a', hdlfile.get_filename_with_path()]
+    
+            com_options = hdlfile._get_com_options(simulator=self.SIMULATOR_NAME)
+            if com_options:
+                return_list += com_options
+    
         return return_list
 
     def _compile_library(self, library, force_compile=False) -> 'HDLLibrary':

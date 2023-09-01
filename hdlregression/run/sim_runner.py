@@ -501,6 +501,7 @@ class SimRunner:
         Returns the full path for the simulator executor file, e.g.
         vsim, vlib etc.
         """
+        sim_exec = sim_exec.lower()
         executor = self.project.settings.get_simulator_exec(sim_exec)
         if executor is None:
             self.logger.warning("Invalid executor call: {}".format(sim_exec))

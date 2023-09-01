@@ -21,7 +21,7 @@ from ..scan.hdl_regex_pkg import RE_GHDL_WARNING, RE_GHDL_ERROR
 
 
 class GHDLRunner(SimRunner):
-    simulator_name = "GHDL"
+    SIMULATOR_NAME = "GHDL"
 
     # The analyze command, -a :
     #   - analyzes/compiles one or more files, and creates an object file for each source file.
@@ -40,7 +40,7 @@ class GHDLRunner(SimRunner):
 
     @classmethod
     def _is_simulator(cls, simulator) -> bool:
-        return (simulator.upper() == cls.simulator_name)
+        return (simulator.upper() == cls.SIMULATOR_NAME)
 
     def _convert_hdl_version(self, hdl_version):
         if hdl_version == '2008':
@@ -66,54 +66,51 @@ class GHDLRunner(SimRunner):
         Typically a HDLFILE object is used for analyze (-a),
         while a MODULE object with the elab_run parameter are used for
         elaboration (-e) and running simulations (-r).
-
+    
         Returns:
             return_list(list): a list with simulator command to be used
                                with a subprocess call.
         '''
         hdlfile = module.get_hdlfile() if module else hdlfile
-
-        ghdl_executable = self._get_simulator_executable('ghdl')
+    
+        ghdl_executable = self._get_simulator_executable(self.SIMULATOR_NAME)
         return_list = [ghdl_executable]
-        return_list += ["--elab-run"] if elab_run else ["-a"]
-
-        hdl_version = hdlfile.get_hdl_version()
-        hdl_version = self._convert_hdl_version(hdl_version)
-
+        return_list.append("--elab-run" if elab_run else "-a")
+    
+        hdl_version = self._convert_hdl_version(hdlfile.get_hdl_version())
+    
         output_path = os.path.join(self.project.settings.get_sim_path(),
                                    'hdlregression',
                                    'library')
-        library_compile_path = os.path.join(output_path,
-                                            hdlfile.get_library().get_name())
-        if not os.path.exists(library_compile_path):
-            os.mkdir(library_compile_path)
-        library_compile_path = os.path.join(output_path,
-                                            hdlfile.get_library().get_name(),
-                                            'v' + hdl_version)
-        if not os.path.exists(library_compile_path):
-            os.mkdir(library_compile_path)
-
-        return_list += hdlfile._get_com_options(simulator=self.simulator_name)
-
-        return_list += ['--workdir=' + library_compile_path]
-        return_list += ['--work=' + hdlfile.get_library().get_name()]
-        return_list += ["-P" + output_path + "/"]
-
-        return_list += [module.get_name()] if module else [hdlfile.get_filename_with_path()]
-
+        library_name = hdlfile.get_library().get_name()
+        library_compile_path = os.path.join(output_path, library_name)
+        os.makedirs(library_compile_path, exist_ok=True)
+    
+        library_compile_path = os.path.join(library_compile_path, 'v' + hdl_version)
+        os.makedirs(library_compile_path, exist_ok=True)
+    
+        return_list += hdlfile._get_com_options(simulator=self.SIMULATOR_NAME)
+        return_list += ['--workdir={}'.format(library_compile_path), '--work={}'.format(library_name), '-P{}/'.format(output_path)]
+    
+        if module:
+            return_list.append(module.get_name())
+        else:
+            return_list.append(hdlfile.get_filename_with_path())
+    
         if elab_run:
             if module_call:
-                return_list += [module_call]
+                return_list.append(module_call)
             if generic_call:
                 return_list += generic_call.split(' ')
-
-            if self.project.settings.get_gui_mode() is True:
-              self.project.settings.add_sim_options('--vcd=sim.vcd', warning=False)
-
-            sim_options = self.project.settings.get_sim_options()
-            return_list += sim_options
-
+    
+            if self.project.settings.get_gui_mode():
+                wave_file_format = self.project.settings.get_simulator_wave_file_format()
+                self.project.settings.add_sim_options('--{}=sim.{}'.format(wave_file_format, wave_file_format), warning=False)
+    
+            return_list += self.project.settings.get_sim_options()
+    
         return return_list
+
 
     def _compile_library(self, library, force_compile=False) -> 'HDLLibrary':
         '''

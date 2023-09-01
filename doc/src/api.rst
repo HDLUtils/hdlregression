@@ -915,6 +915,35 @@ but any name can be given.
   :language: vhdl
 
 
+set_simulator_wave_file_format()
+=======================================================================================================================
+
+Sets the wave dump format for GHDL and NVC wave files. Options are FST and VCD.
+
+.. note::
+  * VCD file format is default if no other is selected.
+  * GUI mode has to be enabled using API method or CLI option.
+
+
+.. code-block:: python
+
+  hr.set_simulator_wave_file_format(<wave_format>)
+
+
++-------------------+---------------------------+---------------+
+| Argument          | Type                      | Required      |
++===================+===========================+===============+
+| wave_format       | string                    | **mandatory** |
++-------------------+---------------------------+---------------+
+
+
+**Example:**
+
+.. code-block:: python
+
+  hr.set_simulator_wave_file_format("VCD")
+  hr.start(gui_mode=True)
+
 
 
 ***********************************************************************************************************************	     
