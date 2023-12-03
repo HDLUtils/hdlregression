@@ -157,4 +157,4 @@ class GHDLRunner(SimRunner):
         return success
 
     def _get_ignored_error_detection_str(self) -> str:
-      return ''
+        return ''

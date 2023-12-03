@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Application Programming Interface (API) &mdash; hdlregression 0.46.0
+  <title>Application Programming Interface (API) &mdash; hdlregression 0.47.0
  documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
@@ -511,6 +511,8 @@ yet this can be changed using the available arguments or by using the <a class="
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">gui_mode</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">threading</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="n">hr</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">netlist_timing</span><span class="o">=</span><span class="s1">&#39;-sdfmin&#39;</span><span class="p">)</span>
+
+<span class="n">hr</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">sim_options</span><span class="o">=</span><span class="s2">&quot;-t ps -do </span><span class="se">\&quot;</span><span class="s2">quietly set NumericStdNoWarnings 1</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -981,7 +983,7 @@ should be given to the report name.</p>
 </div>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>Supported file types are <code class="docutils literal notranslate"><span class="pre">.txt</span></code>, <code class="docutils literal notranslate"><span class="pre">.csv</span></code> and <code class="docutils literal notranslate"><span class="pre">.json</span></code> and the file type is extracted from the file name.</p>
+<p>Supported file types are <code class="docutils literal notranslate"><span class="pre">.txt</span></code>, <code class="docutils literal notranslate"><span class="pre">.csv</span></code>, <code class="docutils literal notranslate"><span class="pre">.xml</span></code> and <code class="docutils literal notranslate"><span class="pre">.json</span></code> and the file type is extracted from the file name.</p>
 </div>
 </section>
 <section id="get-args">

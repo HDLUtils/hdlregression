@@ -200,7 +200,7 @@ class HDLRegressionSettings:
         self.sim_success = success
 
     def get_sim_success(self) -> bool:
-        self.sim_success = success
+        return self.sim_success
 
     # ------------------------------
     def get_run_all(self) -> bool:

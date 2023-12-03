@@ -1101,7 +1101,6 @@ INPUT /usr/local/texlive/2021/texmf-dist/tex/latex/txfonts/ts1txtt.fd
 INPUT /usr/local/texlive/2021/texmf-dist/tex/latex/txfonts/ts1txtt.fd
 INPUT /usr/local/texlive/2021/texmf-dist/fonts/tfm/public/txfonts/tcxtt.tfm
 INPUT /usr/local/texlive/2021/texmf-dist/fonts/tfm/public/txfonts/tcxsl.tfm
-INPUT /usr/local/texlive/2021/texmf-dist/fonts/tfm/public/tex-gyre/ec-qtmr.tfm
 INPUT /usr/local/texlive/2021/texmf-dist/fonts/vf/public/txfonts/tcxsl.vf
 INPUT /usr/local/texlive/2021/texmf-dist/fonts/tfm/public/txfonts/rtxptmro.tfm
 INPUT /usr/local/texlive/2021/texmf-dist/fonts/tfm/public/txfonts/rtcxsl.tfm
@@ -1213,6 +1212,7 @@ INPUT ./gui_menu.png
 INPUT ./gui_menu.png
 INPUT gui_menu.png
 INPUT ./gui_menu.png
+INPUT /usr/local/texlive/2021/texmf-dist/fonts/tfm/public/tex-gyre/ec-qtmr.tfm
 INPUT ./jenkins_ci.png
 INPUT ./jenkins_ci.png
 INPUT jenkins_ci.png

@@ -59,7 +59,7 @@ def list_compile_order(container) -> str:
         compile_str = compile_string(library)
 
         if idx > 0:
-          comp_order_str += "|\n"
+            comp_order_str += "|\n"
         comp_order_str += "|--[{}]-- {} {}\n".format((idx+1), library.get_name(), compile_str)
 
         for hdlfile in library.get_compile_order_list():
@@ -205,9 +205,13 @@ def adjust_generic_value_paths(generic_list, settings, logger) -> list:
 
 
 def convert_from_millisec(millis):
-    seconds = (millis / 1000) % 60
-    minutes = (millis / (1000 * 60)) % 60
-    hours = (millis / (1000 * 60 * 60)) % 24
+    total_seconds = millis // 1000
+    
+    hours = total_seconds // 3600
+    total_seconds %= 3600
+    
+    minutes = total_seconds // 60
+    seconds = total_seconds % 60
     return int(seconds), int(minutes), int(hours)
 
 

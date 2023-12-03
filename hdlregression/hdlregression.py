@@ -21,7 +21,7 @@
 #
 
 from .hdlcodecoverage import *
-from .arg_parser import arg_parser_reader, get_parser
+from .arg_parser import arg_parser_reader
 from .hdlregression_pkg import *
 from .report.logger import Logger
 from .settings import HDLRegressionSettings
@@ -29,6 +29,7 @@ from .construct.container import Container
 from .report.jsonreporter import JSONReporter
 from .report.csvreporter import CSVReporter
 from .report.txtreporter import TXTReporter
+from .report.xmlreporter import XMLReporter
 from .run.tcl_runner import TclRunner
 from .run.cmd_runner import CommandRunner
 from .run.runner_modelsim import ModelsimRunner
@@ -127,7 +128,7 @@ class HDLRegression:
         # Set simulator - will be overrided by CLI argument.
         if simulator:
             if not self.settings.get_simulator_is_cli_selected():
-                self.set_simulator(simulator, display_missing_simulator_info=False)
+                self.set_simulator(simulator, display_missing_simulator_path=False)
                 self.hdlcodecoverage.get_code_coverage_obj(simulator)
             else:
                 self.hdlcodecoverage.get_code_coverage_obj(
@@ -345,6 +346,8 @@ class HDLRegression:
             self.reporter = CSVReporter(filename=report_file, project=self)
         elif report_file.lower().endswith(".json"):
             self.reporter = JSONReporter(filename=report_file, project=self)
+        elif report_file.lower().endswith(".xml"):
+            self.reporter = XMLReporter(filename=report_file, project=self)
         else:
             self.logger.warning(
                 "Unsupported report file type: %s. Using: report_file.txt"
@@ -363,7 +366,7 @@ class HDLRegression:
         simulator: str = None,
         path: str = None,
         com_options: str = None,
-        display_missing_simulator_info=True,
+        display_missing_simulator_path=True,
     ):
         """
         Sets the simulator in the project config.
@@ -377,7 +380,7 @@ class HDLRegression:
         """
         self.logger.debug("Setting simulator: %s." % (simulator))
 
-        if not path:
+        if not path and display_missing_simulator_path is True:
             self.logger.info(
                 "Simulator %s expected to be in path environment." % (simulator)
             )
@@ -510,12 +513,11 @@ class HDLRegression:
         """
         Set format for NVC or GHDL wave dump file.
         Options are 'VCD' and 'FST'.
-        
+
         :param wave_format: Wave format
         :type wave_format: str
         """
         self.settings.set_wave_file_format(wave_format)
-
 
     def start(self, **kwargs) -> int:
         """
@@ -584,7 +586,6 @@ class HDLRegression:
                 self.settings.set_return_code(1)
                 self.logger.info("Compilation failed - aborting!")
             else:
-
                 # Need to save project settings for Tcl Runner to know about
                 # libraries and files set in the regression script.
                 self._save_project_to_disk(
@@ -634,7 +635,6 @@ class HDLRegression:
 
             # Start simulations if compile was OK
             else:
-              
                 if self.settings.get_no_sim() is True:
                     self.logger.info("\nSkipping simulations")
                 else:
@@ -649,7 +649,7 @@ class HDLRegression:
                         if self.settings.get_testcase() is None:
                             self.settings.set_run_success(True)
                             self.settings.set_time_of_run()
-    
+
                         print_info_msg_when_no_test_has_run(
                             project=self, runner=self.runner
                         )
@@ -1215,7 +1215,7 @@ class HDLRegression:
         generic_cont: "Container",
         tg_cont: "Container",
         tg_col_cont: "Container",
-        failing_tc_list : list,
+        failing_tc_list: list,
         settings: "HDLRegressionSettings",
         reset: bool = True,
     ):
@@ -1297,9 +1297,11 @@ class HDLRegression:
 
         generic_cont = _load(Container("generic"), "generic.dat")
         tg_cont = _load(Container("testgroup"), "testgroup.dat")
-        tg_col_cont = _load(Container("testgroup_collection"), "testgroup_collection.dat")
+        tg_col_cont = _load(
+            Container("testgroup_collection"), "testgroup_collection.dat"
+        )
         tc_cont = _load(Container("testcase_container"), "testcase.dat")
-        
+
         failing_tc_list = []
         failing_tc_list = _load(failing_tc_list, "testcase.dat")
 

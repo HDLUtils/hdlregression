@@ -213,7 +213,6 @@ class SimRunner:
         """
         Collects test objects to run and executes test simulations.
         """
-        failing_test = False
 
         def run_test(test_queue) -> bool:
             """
@@ -243,9 +242,11 @@ class SimRunner:
                 except Exception as e:
                     self.logger.error('An error occurred during test run: {}'.format(e))
 
-                finally:    
+                finally: 
                     test_queue.task_done()
     
+        failing_test = False
+
         # Get tests to run
         self.test_list = self.testbuilder.get_list_of_tests_to_run()
     
@@ -333,7 +334,6 @@ class SimRunner:
             if test.get_status() == TestStatus.PASS_WITH_MINOR
         ]
         
-        
         return pass_with_minor_alerts_list
 
     def _get_not_run_test_list(self) -> list:
@@ -420,7 +420,7 @@ class SimRunner:
         if self.project.settings.get_num_threads() > 0:
             num_threads = self.project.settings.get_num_threads()
             # Adjust that we do not use more threads than required
-            #if self.get_num_tests_run() < num_threads:
+            # if self.get_num_tests_run() < num_threads:
             if num_tests_to_run < num_threads:
                 num_threads = num_tests_to_run
         return num_threads
