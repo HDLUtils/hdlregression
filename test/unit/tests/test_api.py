@@ -13,10 +13,10 @@
 import pytest
 import sys
 import os
+import platform
+import subprocess
 import shutil
-from glob import glob
 from hdlregression import HDLRegression
-from compileall import compile_path
 
 if len(sys.argv) >= 2:
     """
@@ -47,11 +47,50 @@ def tear_down_function():
     clear_output()
 
 
+def is_simulator_installed(simulator):
+    version = "-version" if simulator == "vsim" else "--version"
+    try:
+        subprocess.run([simulator, version], check=True)
+        return True
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return False
+
+
+def is_folder_present(folder_path):
+    return os.path.isdir(folder_path)
+
+
+@pytest.fixture(scope="session")
+def sim_env():
+    # Detect platform and simulators
+    platform_info = platform.system()
+    modelsim_installed = is_simulator_installed("vsim")
+    ghdl_installed = is_simulator_installed("ghdl")
+    nvc_installed = is_simulator_installed("nvc")
+    simulator = (
+        "MODELSIM"
+        if modelsim_installed
+        else "NVC"
+        if nvc_installed
+        else "GHDL"
+        if ghdl_installed
+        else ""
+    )
+
+    return {
+        "platform": platform_info,
+        "modelsim": modelsim_installed,
+        "ghdl": ghdl_installed,
+        "nvc": nvc_installed,
+        "simulator": simulator,
+    }
+
+
 def test_init_only():
     """
     Check that no tests are created in an empty project
     """
-    clear_output()
+    # clear_output()
     hdlregression = HDLRegression()
 
     hdlregression.start()
@@ -63,40 +102,61 @@ def test_init_only():
     ), "Checking initialization without test run"
 
 
-# def test_compile_uvvm():
-#     '''
-#     Checks that compile libray target is correctly set.
-#     '''
-#     clear_output()
-#     hr = HDLRegression()
-#
-#     act_cmd = hr.compile_uvvm('../../../uvvm')
-#     act_cmd = act_cmd.replace('//', '/')
-#
-#     exp_cmd = 'vsim -c -do do ../../../uvvm/script/compile_all.do ../../../uvvm/script'
-#     assert exp_cmd in act_cmd, 'checking compile_uvvm() command'
-
-
-def test_init_default_simulator():
+def test_init_default_simulator(sim_env):
     """
     Test init without arguments
     """
     clear_output()
     hr = HDLRegression()
+    simulator = sim_env["simulator"]
 
     assert (
-        "MODELSIM" == hr.settings.get_simulator_name()
+        simulator == hr.settings.get_simulator_name()
     ), "checking init default simulator"
 
 
-def test_init_set_simulator():
+@pytest.mark.modelsim
+def test_init_set_simulator_modelsim(sim_env):
     """
     Test init without arguments
     """
-    clear_output()
-    hr = HDLRegression(simulator="GHDL")
+    if not sim_env["modelsim"]:
+        pytest.skip("Modelsim not installed")
+    else:
+        clear_output()
+        hr = HDLRegression(simulator="modelsim")
 
-    assert "GHDL" == hr.settings.get_simulator_name(), "checking init set simulator"
+        assert (
+            "MODELSIM" == hr.settings.get_simulator_name()
+        ), "checking init set simulator"
+
+
+@pytest.mark.ghdl
+def test_init_set_simulator_ghdl(sim_env):
+    """
+    Test init without arguments
+    """
+    if not sim_env["ghdl"]:
+        pytest.skip("GHDL not installed")
+    else:
+        clear_output()
+        hr = HDLRegression(simulator="GHDL")
+
+        assert "GHDL" == hr.settings.get_simulator_name(), "checking init set simulator"
+
+
+@pytest.mark.nvc
+def test_init_set_simulator_nvc(sim_env):
+    """
+    Test init without arguments
+    """
+    if not sim_env["nvc"]:
+        pytest.skip("NVC not installed")
+    else:
+        clear_output()
+        hr = HDLRegression(simulator="NVC")
+
+        assert "NVC" == hr.settings.get_simulator_name(), "checking init set simulator"
 
 
 def test_init_default_init_from_gui():
@@ -145,31 +205,31 @@ def test_start_dry_run_parameter():
     assert return_code == 1, "checking dry_run return code - exp 1 for no testcases run"
 
 
-def test_default_library_with_add_files():
+def test_default_library_with_add_files(sim_env, tb_path):
     clear_output()
     hr = HDLRegression()
-    filename = get_file_path("../tb/tb_simple.vhd")
+    filename = get_file_path(tb_path + "/tb_simple.vhd")
     hr.add_files(filename=filename)
     hr.start(dry_run=True)
     lib = hr._get_library_object(library_name="my_work_lib")
     assert lib.get_name() == "my_work_lib", "checking default library name"
 
 
-def test_set_library_with_add_files():
+def test_set_library_with_add_files(sim_env, tb_path):
     clear_output()
     hr = HDLRegression()
-    filename = get_file_path("../tb/tb_simple.vhd")
+    filename = get_file_path(tb_path + "/tb_simple.vhd")
     hr.add_files(filename=filename, library_name="new_library_name")
     hr.start(dry_run=True)
     lib = hr._get_library_object(library_name="new_library_name")
     assert lib.get_name() == "new_library_name", "checking default library name"
 
 
-def test_add_file_with_default_settings():
+def test_add_file_with_default_settings(sim_env, tb_path):
     clear_output()
     hr = HDLRegression()
 
-    filename = get_file_path("../tb/tb_simple.vhd")
+    filename = get_file_path(tb_path + "/tb_simple.vhd")
     hr.add_files(filename=filename, library_name="new_library_name")
     library = hr._get_library_object(library_name="new_library_name")
     hr._prepare_libraries()
@@ -192,11 +252,11 @@ def test_add_file_with_default_settings():
         ), "check default code coverage setting"
 
 
-def test_add_file_with_new_settings():
+def test_add_file_with_new_settings(sim_env, tb_path):
     clear_output()
-    hr = HDLRegression()
+    hr = HDLRegression(simulator=sim_env["simulator"])
 
-    filename = get_file_path("../tb/tb_simple.vhd")
+    filename = get_file_path(tb_path + "/tb_simple.vhd")
     hr.add_files(
         filename=filename,
         library_name="new_library_name",
@@ -223,11 +283,11 @@ def test_add_file_with_new_settings():
         assert file_obj.get_code_coverage() is True, "check code coverage setting"
 
 
-def test_add_library_dependency():
+def test_add_library_dependency(sim_env, tb_path):
     clear_output()
-    hr = HDLRegression()
+    hr = HDLRegression(simulator=sim_env["simulator"])
 
-    filename = get_file_path("../tb/tb_simple.vhd")
+    filename = get_file_path(tb_path + "/tb_simple.vhd")
     hr.add_files(filename=filename, library_name="lib_1")
     hr.add_files(filename=filename, library_name="dep_lib_1")
     hr.add_files(filename=filename, library_name="dep_lib_2")
@@ -260,11 +320,11 @@ def test_new_default_library():
     ), "check new default library name"
 
 
-def test_add_generics():
+def test_add_generics(sim_env, tb_path):
     clear_output()
-    hr = HDLRegression()
+    hr = HDLRegression(simulator=sim_env["simulator"])
 
-    filename = get_file_path("../tb/tb_simple.vhd")
+    filename = get_file_path(tb_path + "/tb_simple.vhd")
     hr.add_files(filename=filename, library_name="lib_1")
 
     hr.add_generics(entity="simple_tb", architecture="test_arch", generics=["GC_1", 2])
@@ -311,21 +371,82 @@ def test_generate_report_updated():
     assert hr.reporter.get_filename() == "test_report.csv", "check report file name"
 
 
-def test_set_simulator():
-    clear_output()
-    hr = HDLRegression()
+@pytest.mark.modelsim
+def test_set_simulator_modelsim(sim_env):
+    if not sim_env["modelsim"]:
+        pytest.skip("Modelsim not installed")
+    else:
+        clear_output()
+        hr = HDLRegression()
 
-    com_options = ["some_options_1"]
-    simulator_dummy_path = "../../test"
-    hr.set_simulator(
-        simulator="GHDL", path=simulator_dummy_path, com_options=com_options
-    )
+        simulator = sim_env["simulator"]
+        com_options = ["some_options_1"]
+        simulator_dummy_path = "../../test"
+        hr.set_simulator(
+            simulator=simulator, path=simulator_dummy_path, com_options=com_options
+        )
 
-    assert hr.settings.get_simulator_name() == "GHDL", "check simulator selection"
-    assert hr.settings.get_com_options() == com_options, "checking simulator options"
-    assert (
-        hr.settings.get_simulator_path() == simulator_dummy_path
-    ), "checking simulator path"
+        assert (
+            hr.settings.get_simulator_name() == simulator
+        ), "check simulator selection"
+        assert (
+            hr.settings.get_com_options() == com_options
+        ), "checking simulator options"
+        assert (
+            hr.settings.get_simulator_path() == simulator_dummy_path
+        ), "checking simulator path"
+
+
+@pytest.mark.ghdl
+def test_set_simulator_ghdl(sim_env):
+    if not sim_env["ghdl"]:
+        pytest.skip("GHDL not installed")
+    else:
+        clear_output()
+        hr = HDLRegression()
+
+        simulator = sim_env["simulator"]
+        com_options = ["some_options_1"]
+        simulator_dummy_path = "../../test"
+        hr.set_simulator(
+            simulator=simulator, path=simulator_dummy_path, com_options=com_options
+        )
+
+        assert (
+            hr.settings.get_simulator_name() == simulator
+        ), "check simulator selection"
+        assert (
+            hr.settings.get_com_options() == com_options
+        ), "checking simulator options"
+        assert (
+            hr.settings.get_simulator_path() == simulator_dummy_path
+        ), "checking simulator path"
+
+
+@pytest.mark.nvc
+def test_set_simulator_nvc(sim_env):
+    if not sim_env["nvc"]:
+        pytest.skip("NVC not installed")
+    else:
+        clear_output()
+        hr = HDLRegression()
+
+        simulator = sim_env["simulator"]
+        com_options = ["some_options_1"]
+        simulator_dummy_path = "../../test"
+        hr.set_simulator(
+            simulator=simulator, path=simulator_dummy_path, com_options=com_options
+        )
+
+        assert (
+            hr.settings.get_simulator_name() == simulator
+        ), "check simulator selection"
+        assert (
+            hr.settings.get_com_options() == com_options
+        ), "checking simulator options"
+        assert (
+            hr.settings.get_simulator_path() == simulator_dummy_path
+        ), "checking simulator path"
 
 
 def test_set_result_check_string():
@@ -339,10 +460,10 @@ def test_set_result_check_string():
     ), "check setting of new test string"
 
 
-def test_add_testcase():
+def test_add_testcase(sim_env, tb_path):
     clear_output()
     hr = HDLRegression()
-    filename = get_file_path("../tb/tb_simple.vhd")
+    filename = get_file_path(tb_path + "/tb_simple.vhd")
     hr.add_files(filename=filename)
     hr.add_testcase("simple_tb.simple_arch.test_1")
     assert hr.settings.get_testcase() == [
@@ -352,10 +473,10 @@ def test_add_testcase():
     ], "check testcase selection"
 
 
-def test_add_to_testgroup():
+def test_add_to_testgroup(sim_env, tb_path):
     clear_output()
     hr = HDLRegression()
-    filename = get_file_path("../tb/tb_simple.vhd")
+    filename = get_file_path(tb_path + "/tb_simple.vhd")
     hr.add_files(filename=filename)
     hr.add_testcase("simple_tb.simple_arch.test_1")
 
@@ -406,34 +527,38 @@ def test_set_code_coverage_default():
     assert hr.hdlcodecoverage.get_options() == None, "check default merge options"
 
 
-def test_set_code_coverage_updated():
+@pytest.mark.modelsim
+def test_set_code_coverage_updated_modelsim(sim_env, tb_path):
+    if not sim_env["modelsim"]:
+        pytest.skip("Modelsim not installed")
+    else:
+        clear_output()
+        hr = HDLRegression(simulator="MODELSIM")
+        filename = get_file_path(tb_path + "/tb_simple.vhd")
+        hr.add_files(filename=filename, library_name="lib_1", code_coverage=True)
+        hr.set_code_coverage(
+            code_coverage_settings="btc",
+            code_coverage_file="test_cov.ucdb",
+            exclude_file="exclude.tcl",
+            merge_options="some_option",
+        )
+
+        assert (
+            hr.hdlcodecoverage.get_code_coverage_settings() == "btc"
+        ), "check code coverage settings"
+        assert (
+            "test_cov.ucdb" in hr.hdlcodecoverage.get_code_coverage_file()
+        ), "check code coverage file without complete path"
+        assert (
+            "exclude.tcl" in hr.hdlcodecoverage.get_exclude_file()
+        ), "check code coverage exclude file without complete path"
+        assert hr.hdlcodecoverage.get_options() == "some_option", "check merge options"
+
+
+def test_no_default_com_options(sim_env, tb_path):
     clear_output()
     hr = HDLRegression()
-    filename = get_file_path("../tb/tb_simple.vhd")
-    hr.add_files(filename=filename, library_name="lib_1", code_coverage=True)
-    hr.set_code_coverage(
-        code_coverage_settings="btc",
-        code_coverage_file="test_cov.ucdb",
-        exclude_file="exclude.tcl",
-        merge_options="some_option",
-    )
-
-    assert (
-        hr.hdlcodecoverage.get_code_coverage_settings() == "btc"
-    ), "check code coverage settings"
-    assert (
-        "test_cov.ucdb" in hr.hdlcodecoverage.get_code_coverage_file()
-    ), "check code coverage file without complete path"
-    assert (
-        "exclude.tcl" in hr.hdlcodecoverage.get_exclude_file()
-    ), "check code coverage exclude file without complete path"
-    assert hr.hdlcodecoverage.get_options() == "some_option", "check merge options"
-
-
-def test_no_default_com_options():
-    clear_output()
-    hr = HDLRegression()
-    filename = get_file_path("../tb/tb_passing.vhd")
+    filename = get_file_path(tb_path + "/tb_passing.vhd")
     hr.add_files(filename=filename, library_name="lib_1")
     hr.set_result_check_string("passing testcase")
     hr.start(no_default_com_options=True)
@@ -441,14 +566,14 @@ def test_no_default_com_options():
     assert hr.settings.get_com_options() == [], "check no default com options set"
 
 
-def test_get_results_with_failing_design_compile():
+def test_get_results_with_failing_design_compile(sim_env, tb_path):
     clear_output()
-    hr = HDLRegression()
+    hr = HDLRegression(simulator=sim_env["simulator"])
     # TB 1
-    filename = get_file_path("../tb/failing_compile.vhd")
+    filename = get_file_path(tb_path + "/failing_compile.vhd")
     hr.add_files(filename=filename, library_name="lib_1")
     # TB 2
-    filename = get_file_path("../tb/tb_passing.vhd")
+    filename = get_file_path(tb_path + "/tb_passing.vhd")
     hr.add_files(filename=filename, library_name="lib_1")
 
     hr.set_result_check_string("passing testcase")
@@ -462,14 +587,14 @@ def test_get_results_with_failing_design_compile():
     assert len(not_run_test) == 2, "check get_results() not_run_test"
 
 
-def test_get_results_with_failing_tb_compile():
+def test_get_results_with_failing_tb_compile(sim_env, tb_path):
     clear_output()
-    hr = HDLRegression()
+    hr = HDLRegression(simulator=sim_env["simulator"])
     # TB 1
-    filename = get_file_path("../tb/passing_compile.vhd")
+    filename = get_file_path(tb_path + "/passing_compile.vhd")
     hr.add_files(filename=filename, library_name="lib_1")
     # TB 2
-    filename = get_file_path("../tb/tb_compile_error.vhd")
+    filename = get_file_path(tb_path + "/tb_compile_error.vhd")
     hr.add_files(filename=filename, library_name="lib_1")
 
     hr.set_result_check_string("passing testcase")
@@ -483,10 +608,10 @@ def test_get_results_with_failing_tb_compile():
     assert len(not_run_test) == 2, "check get_results() not_run_test"
 
 
-def test_get_results():
+def test_get_results(sim_env, tb_path):
     clear_output()
-    hr = HDLRegression()
-    filename = get_file_path("../tb/tb_passing.vhd")
+    hr = HDLRegression(simulator=sim_env["simulator"])
+    filename = get_file_path(tb_path + "/tb_passing.vhd")
     hr.add_files(filename=filename, library_name="lib_1")
 
     hr.set_result_check_string("passing testcase")
@@ -500,30 +625,27 @@ def test_get_results():
     assert len(not_run_test) == 0, "check get_results() not_run_test"
 
 
-# def test_compile_uvvm():
-#    clear_output()
-#    hr = HDLRegression()
-#    path = hr.compile_uvvm(path_to_uvvm='../../../uvvm_internal')
-#
-#    hr.start()
-#
-#    compiled_lib_list = hr.settings.get_library_compile()
-#    lib_name_list = [lib.get_name() for lib in compiled_lib_list]
-#
-#    assert "bitvis_vip_sbi" in lib_name_list, "Check recompiled"
+def test_compile_uvvm(sim_env, uvvm_path):
+    clear_output()
+    hr = HDLRegression(simulator=sim_env["simulator"])
 
-# def test_compile_uvvm_wrong_path():
-#     clear_output()
-#     hr = HDLRegression()
-#     success = hr.compile_uvvm('../wrong/path/to/uvvm')
-#
-#     assert success is False, "check failing UVVM compilation"
-#
-#
-# def test_compile_uvvm_correct_path():
-#   uvvm_path = '../../../uvvm'
-#   if glob(uvvm_path):
-#     clear_output()
-#     hr = HDLRegression()
-#     success = hr.compile_uvvm(uvvm_path)
-#     assert success is True, "check passing UVVM compilation"
+    if not is_folder_present(uvvm_path):
+        pytest.skip(f"UVVM path '{uvvm_path}' not found, skipping test.")
+    else:
+        success = hr.compile_uvvm(path_to_uvvm=uvvm_path)
+        hr.start()
+
+        assert success is True, "Compile UVVM success"
+
+        compiled_lib_list = hr.settings.get_library_compile()
+        lib_name_list = [lib.get_name() for lib in compiled_lib_list]
+        assert "bitvis_vip_sbi" in lib_name_list, "Check recompiled"
+
+
+def test_compile_uvvm_wrong_path(sim_env):
+    clear_output()
+    hr = HDLRegression(simulator=sim_env["simulator"])
+    uvvm_path = "../wrong/path/to/uvvm"
+    success = hr.compile_uvvm(uvvm_path)
+
+    assert success is False, "check failing UVVM compilation"

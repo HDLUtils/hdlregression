@@ -36,7 +36,6 @@ class HDLRunnerError(Exception):
 
 
 class OutputFileError(HDLRunnerError):
-
     def __init__(self, filename):
         self.filename = filename
 
@@ -45,7 +44,6 @@ class OutputFileError(HDLRunnerError):
 
 
 class TestOutputPathError(HDLRunnerError):
-
     def __init__(self, path):
         self.path = path
 
@@ -116,14 +114,15 @@ class SimRunner:
         if self.testbuilder:
             return self.testbuilder.get_num_tests()
         return 0
-      
+
     def get_fail_test_obj_list(self) -> list:
         if self.test_list is None:
             self.test_list = self._get_test_list()
 
-        fail_list = [test for test in self.test_list
-            if test.get_status() == TestStatus.FAIL]
-        
+        fail_list = [
+            test for test in self.test_list if test.get_status() == TestStatus.FAIL
+        ]
+
         return fail_list
 
     def get_test_list(self) -> list:
@@ -153,7 +152,7 @@ class SimRunner:
         Called from HDLRegression() object to:
         1. Check that library folder exist and create and compile library if not.
         2. Check if library require compile and compile library if required.
-    
+
         Returns:
           success(bool): True when no library compilation error.
         """
@@ -186,7 +185,9 @@ class SimRunner:
             force_compile = self._check_for_force_compile(library, lib_path_missing)
 
             if compile_required or force_compile:
-                self.logger.info("Compiling library: {}".format(library.get_name()), end=" ")
+                self.logger.info(
+                    "Compiling library: {}".format(library.get_name()), end=" "
+                )
                 compiled_library = self._compile_library(
                     library=library, force_compile=force_compile
                 )
@@ -235,35 +236,38 @@ class SimRunner:
                     if test.get_status() == TestStatus.FAIL:
                         print(test.get_test_error_summary())
                         if self.project.settings.get_stop_on_failure():
-                            self.logger.warning("Simulations stopped because of failing testcase.")
+                            self.logger.warning(
+                                "Simulations stopped because of failing testcase."
+                            )
                         self.project.settings.set_return_code(1)
                         failing_test = True
 
                 except Exception as e:
-                    self.logger.error('An error occurred during test run: {}'.format(e))
+                    self.logger.error("An error occurred during test run: {}".format(e))
 
-                finally: 
+                finally:
                     test_queue.task_done()
-    
+
         failing_test = False
 
         # Get tests to run
         self.test_list = self.testbuilder.get_list_of_tests_to_run()
-    
+
         # Backup previous test run results if new tests are run
         if self.test_list:
             self._backup_test_run()
-    
+
         # Start timer
         start_time = round(time.time() * 1000)
-    
+
         num_threads = self._get_number_of_threads()
 
-        if num_threads > 0: 
+        if num_threads > 0:
             self.logger.info(
-                "Running {} out of {} test(s) using {} thread(s).".format(len(self.test_list),
-                                                                          self.get_num_tests(),
-                                                                          num_threads))
+                "Running {} out of {} test(s) using {} thread(s).".format(
+                    len(self.test_list), self.get_num_tests(), num_threads
+                )
+            )
 
             # create test queue for threads to operate with
             test_queue = Queue()
@@ -321,7 +325,7 @@ class SimRunner:
             for test in self.test_list
             if test.get_status() == TestStatus.FAIL
         ]
-        
+
         return fail_list
 
     def _get_pass_with_minor_alert_list(self) -> list:
@@ -333,7 +337,7 @@ class SimRunner:
             for test in self.test_list
             if test.get_status() == TestStatus.PASS_WITH_MINOR
         ]
-        
+
         return pass_with_minor_alerts_list
 
     def _get_not_run_test_list(self) -> list:
@@ -345,7 +349,7 @@ class SimRunner:
             for test in self.test_list
             if test.get_status() == TestStatus.NOT_RUN
         ]
-        
+
         return test_list
 
     def _get_test_list(self) -> list:
@@ -395,7 +399,7 @@ class SimRunner:
 
         # Internal method for dividing test list
         def devide_list_for_threads(lst, sz):
-            return [lst[i: i + sz] for i in range(0, len(lst), sz)]
+            return [lst[i : i + sz] for i in range(0, len(lst), sz)]
 
         if num_threads > 1:
             devided_list = devide_list_for_threads(test_list, num_threads)
@@ -451,45 +455,62 @@ class SimRunner:
         Check if there has been a previous test run and move
         those test results to a backup folder.
         """
-    
+
         def backup_test_results(backup_folder):
             try:
                 if keep_code_coverage:
-                    self.logger.info("Backing up previous test run to: {}.".format(backup_folder))
+                    self.logger.info(
+                        "Backing up previous test run to: {}.".format(backup_folder)
+                    )
                     copytree(self.project.settings.get_test_path(), backup_folder)
                 else:
-                    self.logger.info("Moving previous test run to: {}.".format(backup_folder))
+                    self.logger.info(
+                        "Moving previous test run to: {}.".format(backup_folder)
+                    )
                     os.rename(self.project.settings.get_test_path(), backup_folder)
             except OSError as error:
                 self.logger.warning("Unable to backup tests: {}".format(error))
-    
+
         keep_code_coverage = self.project.settings.get_keep_code_coverage()
-    
-        if self.project.settings.get_time_of_run() and os.path.exists(self.project.settings.get_test_path()):
-            backup_folder = "{}_{}".format(self.project.settings.get_test_path(), self.project.settings.get_time_of_run())
-    
+
+        if self.project.settings.get_time_of_run() and os.path.exists(
+            self.project.settings.get_test_path()
+        ):
+            backup_folder = "{}_{}".format(
+                self.project.settings.get_test_path(),
+                self.project.settings.get_time_of_run(),
+            )
+
             if not os.path.exists(backup_folder):
                 backup_test_results(backup_folder)
             else:
-                self.logger.warning("Backup folder {} already exists.".format(backup_folder))
+                self.logger.warning(
+                    "Backup folder {} already exists.".format(backup_folder)
+                )
 
     def _write_test_mapping(self, tests) -> None:
         """
         Create a test and folder mapping file to locate
         test run with hashed test run folders.
         """
-    
+
         def write_test_mapping_to_file(test_mapping_file):
             try:
                 with open(test_mapping_file, "a+") as mapping_file:
                     for test in tests:
                         mapping_file.write(test.get_folder_to_name_mapping())
             except Exception as error:
-                self.logger.warning("Unable to write test mapping file {}. Error: {}".format(test_mapping_file, error))
-    
+                self.logger.warning(
+                    "Unable to write test mapping file {}. Error: {}".format(
+                        test_mapping_file, error
+                    )
+                )
+
         self.logger.debug("Writing test mapping CSV file.")
-        test_mapping_file = os.path.join(self.project.settings.get_test_path(), "test_mapping.csv")
-        
+        test_mapping_file = os.path.join(
+            self.project.settings.get_test_path(), "test_mapping.csv"
+        )
+
         write_test_mapping_to_file(test_mapping_file)
 
     # ---------------------------------------------------------
@@ -512,7 +533,7 @@ class SimRunner:
 
     def _get_simulator_error_regex(self):
         pass
-      
+
     def _get_simulator_warning_regex(self):
         pass
 
@@ -524,7 +545,7 @@ class SimRunner:
         """
         Saves simulator call commands to file.
         """
-    
+
         def create_cmd_file():
             try:
                 with open(self.command_file, "w"):
@@ -533,31 +554,31 @@ class SimRunner:
                 self.logger.error("Error creating command file: {}".format(e))
                 return False
             return True
-    
+
         def append_cmd_to_file(cmd_str):
             try:
                 with open(self.command_file, "a") as file:
                     file.write("{}\n".format(cmd_str))
             except IOError as e:
                 self.logger.error("Error appending to command file: {}".format(e))
-    
+
         if not self.cmd_file_cleaned:
             self.cmd_file_cleaned = True
             output_dir = self.project.settings.get_output_path()
-    
+
             if not os.path.isdir(output_dir):
                 try:
                     os.mkdir(output_dir)
                 except OSError as e:
                     self.logger.error("Error creating output directory: {}".format(e))
                     return
-    
+
             if not create_cmd_file():
                 return
-    
+
         if isinstance(cmd, list):
             cmd = " ".join(map(str, cmd))
-    
+
         append_cmd_to_file(cmd)
 
     def _get_error_detection_str(self) -> str:
@@ -569,23 +590,23 @@ class SimRunner:
     def _run_cmd(self, command, path="./", output_file=None, test=None) -> bool:
         """
         Runs selected command(s), checks for simulator warning/error.
-    
+
         Param:
             command(lst): command string as list.
             path(str): path to run command
             output_file(str): name of file to put output
-    
+
         Returns:
             bool: True if command was successful, else False
         """
-        
+
         def check_has_line_warning(line) -> bool:
             return bool(re.search(self._get_simulator_warning_regex(), line))
 
         def check_has_line_error(line) -> bool:
             return bool(re.search(self._get_simulator_error_regex(), line))
 
-        def show_errors_and_warnings() -> (tuple):
+        def show_errors_and_warnings() -> tuple:
             # override
             if self.project.settings.get_show_err_warn_output() is True:
                 return (True, True)
@@ -608,10 +629,9 @@ class SimRunner:
 
         (show_sim_errors, show_sim_warnings) = show_errors_and_warnings()
 
-        for line, success in cmd_runner.run(command=command,
-                                            path=path,
-                                            env=self.env_var,
-                                            output_file=output_file):
+        for line, success in cmd_runner.run(
+            command=command, path=path, env=self.env_var, output_file=output_file
+        ):
             line = line.strip()
 
             # Sim output direction
@@ -668,23 +688,33 @@ class SimRunner:
                 return "{}-{}".format(test.get_name(), architecture_name)
             else:
                 if test.get_is_vhdl():
-                    return "{}.{}({})".format(lib_name, test.get_name(), architecture_name)
+                    return "{}.{}({})".format(
+                        lib_name, test.get_name(), architecture_name
+                    )
                 else:
                     return "{}.{}".format(lib_name, test.get_name())
 
         def get_descriptive_test_name():
             if self._is_simulator("ghdl") or self._is_simulator("nvc"):
                 name = "{}.{}".format(lib_name, test.get_name())
-                return "{}({})".format(name, architecture_name) if test.get_is_vhdl() else name
+                return (
+                    "{}({})".format(name, architecture_name)
+                    if test.get_is_vhdl()
+                    else name
+                )
             else:
                 return module_call
 
-        def run_simulation():
+        def run_simulation(descriptive_test_name):
             sim_start_time = round(time.time() * 1000)
-            terminal_output_string = self._create_terminal_test_info_output_string(test, descriptive_test_name)
+            terminal_output_string = self._create_terminal_test_info_output_string(
+                test, descriptive_test_name
+            )
             test.set_test_id_string(terminal_output_string)
 
-            self._write_run_do_file(test=test, generic_call=gen_call, module_call=module_call)
+            self._write_run_do_file(
+                test=test, generic_call=gen_call, module_call=module_call
+            )
 
             self._simulate(test=test, generic_call=gen_call, module_call=module_call)
             self._check_test_result(test=test, sim_start_time=sim_start_time)
@@ -697,7 +727,7 @@ class SimRunner:
         module_call = get_module_call()
         descriptive_test_name = get_descriptive_test_name()
 
-        run_simulation()
+        run_simulation(descriptive_test_name)
 
     @staticmethod
     def _create_test_folder(path) -> None:
@@ -728,9 +758,9 @@ class SimRunner:
         summary_found = False
         test_ok = False
         test_ok_no_minor_alerts = True
-    
+
         use_user_selected_result = bool(self.project.settings.get_result_check_str())
-    
+
         if lines is not None:
             for line in lines:
                 if not use_user_selected_result:
@@ -759,25 +789,29 @@ class SimRunner:
                 self.logger.debug("Checking for {}.".format(result_check_str))
             else:
                 self.logger.debug("Checking for UVVM summary report")
-    
+
         def format_test_result(test_ok, test_ok_no_minor_alerts):
             if test_ok:
                 test_str_result = self.logger.green() + "PASS"
                 if not test_ok_no_minor_alerts:
                     test_str_result += self.logger.yellow() + " (with minor alerts)"
             else:
-                test_str_result = self.logger.red() + "FAIL" 
+                test_str_result = self.logger.red() + "FAIL"
             return test_str_result + self.logger.reset_color()
-          
+
         def format_number_of_sim_errors_and_warnings(test):
             sim_errors = test.get_num_sim_errors()
             sim_warnings = test.get_num_sim_warnings()
             if sim_errors > 0 or sim_warnings > 0:
-                return "\nTest run: sim_errors={}, sim_warnings={}".format(sim_errors, sim_warnings)
+                return "\nTest run: sim_errors={}, sim_warnings={}".format(
+                    sim_errors, sim_warnings
+                )
             else:
                 return ""
 
-        def format_test_details_string(test_str_result, sim_num_errors_and_warnings_str):
+        def format_test_details_string(
+            test_str_result, sim_num_errors_and_warnings_str
+        ):
             sim_end_time = round(time.time() * 1000)
             elapsed_time = sim_end_time - sim_start_time
             sim_sec, sim_min, sim_hrs = convert_from_millisec(elapsed_time)
@@ -787,14 +821,20 @@ class SimRunner:
                 sim_hrs,
                 sim_min,
                 sim_sec,
-                sim_num_errors_and_warnings_str
+                sim_num_errors_and_warnings_str,
             )
-        
+
         def update_test_status_and_info(test):
-            (test_ok, test_ok_no_minor_alerts) = self._check_file_content(test.get_output_no_format())
+            (test_ok, test_ok_no_minor_alerts) = self._check_file_content(
+                test.get_output_no_format()
+            )
             test_str_result = format_test_result(test_ok, test_ok_no_minor_alerts)
-            sim_num_errors_and_warnings_str = format_number_of_sim_errors_and_warnings(test)
-            test_details_str = format_test_details_string(test_str_result, sim_num_errors_and_warnings_str)
+            sim_num_errors_and_warnings_str = format_number_of_sim_errors_and_warnings(
+                test
+            )
+            test_details_str = format_test_details_string(
+                test_str_result, sim_num_errors_and_warnings_str
+            )
             test.set_terminal_test_details_str(test_details_str)
 
             if test_ok is False:
@@ -809,7 +849,9 @@ class SimRunner:
         log_checking()
         update_test_status_and_info(test)
 
-    def _create_terminal_test_info_output_string(self, test, descriptive_test_name) -> str:
+    def _create_terminal_test_info_output_string(
+        self, test, descriptive_test_name
+    ) -> str:
         """
         Create a testcase name based on entity, architecture, test, and generics.
         """
@@ -844,8 +886,10 @@ class SimRunner:
         generics_section = build_generics_section()
         timing_section = build_timing_section()
 
-        return "Running: {}{}{}{}{}\nResult: ".format(test_string_base,
-                                                      testcase_string,
-                                                      test_id_string,
-                                                      generics_section,
-                                                      timing_section)
+        return "Running: {}{}{}{}{}\nResult: ".format(
+            test_string_base,
+            testcase_string,
+            test_id_string,
+            generics_section,
+            timing_section,
+        )

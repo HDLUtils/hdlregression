@@ -61,8 +61,8 @@
 
 
 \title{hdlregression}
-\date{Dec 03, 2023}
-\release{0.47.0
+\date{Jan 24, 2024}
+\release{0.49.0
 }
 \author{UVVM}
 \newcommand{\sphinxlogo}{\vbox{}}
@@ -425,7 +425,8 @@ This command is used for initializing the HDLRegression object which is used for
 and accessing the HDLRegression API.
 
 \sphinxAtStartPar
-The default simulator is Modelsim, but this can be changed by using the \sphinxcode{\sphinxupquote{simulator}} argument as shown
+HDLRegression will attempt to auto\sphinxhyphen{}detect available simulators and will choose either ModelSim, NVC, GHDL, or
+Riviera Pro based on the findings. The preffered simulator can be selected by using the \sphinxcode{\sphinxupquote{simulator}} argument as shown
 in example 2 or using {\hyperref[\detokenize{cli::doc}]{\sphinxcrossref{\DUrole{doc}{Command Line Interface (CLI)}}}} :
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
@@ -464,7 +465,7 @@ string
 “ghdl”, “modelsim”, “nvc”
 &
 \sphinxAtStartPar
-“modelsim”
+auto\sphinxhyphen{}detected
 &
 \sphinxAtStartPar
 optional
@@ -3794,107 +3795,132 @@ hash generated, thus identifying a specific test run can be done by inspecting t
 \PYG{g+go}{├── library.dat}
 \PYG{g+go}{├── settings.dat}
 \PYG{g+go}{├── test}
+\PYG{g+go}{│   ├── irqc\PYGZus{}demo\PYGZus{}tb}
+\PYG{g+go}{│   │   └── func\PYGZus{}1}
+\PYG{g+go}{│   │       ├── \PYGZus{}Alert.txt}
+\PYG{g+go}{│   │       ├── \PYGZus{}Log.txt}
+\PYG{g+go}{│   │       ├── run.do}
+\PYG{g+go}{│   │       └── transcript}
+\PYG{g+go}{│   ├── irqc\PYGZus{}tb}
+\PYG{g+go}{│   │   └── func\PYGZus{}2}
+\PYG{g+go}{│   │       ├── UVVM\PYGZus{}Alert.txt}
+\PYG{g+go}{│   │       ├── UVVM\PYGZus{}Log.txt}
+\PYG{g+go}{│   │       ├── run.do}
+\PYG{g+go}{│   │       └── transcript}
 \PYG{g+go}{│   ├── sim\PYGZus{}report.json}
 \PYG{g+go}{│   ├── test\PYGZus{}mapping.csv}
 \PYG{g+go}{│   ├── uart\PYGZus{}simple\PYGZus{}bfm\PYGZus{}tb}
-\PYG{g+go}{│   │   └── 70910381}
+\PYG{g+go}{│   │   └── func\PYGZus{}4}
 \PYG{g+go}{│   │       ├── UVVM\PYGZus{}Alert.txt}
 \PYG{g+go}{│   │       ├── UVVM\PYGZus{}Log.txt}
 \PYG{g+go}{│   │       ├── run.do}
 \PYG{g+go}{│   │       └── transcript}
 \PYG{g+go}{│   ├── uart\PYGZus{}vvc\PYGZus{}demo\PYGZus{}tb}
-\PYG{g+go}{│   │   └── 70910381}
+\PYG{g+go}{│   │   └── func\PYGZus{}3}
 \PYG{g+go}{│   │       ├── \PYGZus{}Alert.txt}
 \PYG{g+go}{│   │       ├── \PYGZus{}Log.txt}
 \PYG{g+go}{│   │       ├── run.do}
 \PYG{g+go}{│   │       └── transcript}
 \PYG{g+go}{│   └── uart\PYGZus{}vvc\PYGZus{}tb}
-\PYG{g+go}{│       ├── 274144510}
-\PYG{g+go}{│       │   ├── run.do}
-\PYG{g+go}{│       │   ├── skew\PYGZus{}sbi\PYGZus{}read\PYGZus{}over\PYGZus{}uart\PYGZus{}receive\PYGZus{}with\PYGZus{}delay\PYGZus{}functionality\PYGZus{}Alert.txt}
-\PYG{g+go}{│       │   ├── skew\PYGZus{}sbi\PYGZus{}read\PYGZus{}over\PYGZus{}uart\PYGZus{}receive\PYGZus{}with\PYGZus{}delay\PYGZus{}functionality\PYGZus{}Log.txt}
-\PYG{g+go}{│       │   └── transcript}
-\PYG{g+go}{│       ├── 305729147}
-\PYG{g+go}{│       │   ├── check\PYGZus{}simple\PYGZus{}transmit\PYGZus{}Alert.txt}
-\PYG{g+go}{│       │   ├── check\PYGZus{}simple\PYGZus{}transmit\PYGZus{}Log.txt}
-\PYG{g+go}{│       │   ├── run.do}
-\PYG{g+go}{│       │   └── transcript}
-\PYG{g+go}{│       ├── 3122926221}
+\PYG{g+go}{│       ├── func\PYGZus{}10}
 \PYG{g+go}{│       │   ├── run.do}
 \PYG{g+go}{│       │   ├── skew\PYGZus{}sbi\PYGZus{}read\PYGZus{}over\PYGZus{}uart\PYGZus{}receive\PYGZus{}Alert.txt}
 \PYG{g+go}{│       │   ├── skew\PYGZus{}sbi\PYGZus{}read\PYGZus{}over\PYGZus{}uart\PYGZus{}receive\PYGZus{}Log.txt}
 \PYG{g+go}{│       │   └── transcript}
-\PYG{g+go}{│       ├── 3532724195}
-\PYG{g+go}{│       │   ├── check\PYGZus{}multiple\PYGZus{}simultaneous\PYGZus{}receive\PYGZus{}and\PYGZus{}read\PYGZus{}Alert.txt}
-\PYG{g+go}{│       │   ├── check\PYGZus{}multiple\PYGZus{}simultaneous\PYGZus{}receive\PYGZus{}and\PYGZus{}read\PYGZus{}Log.txt}
+\PYG{g+go}{│       ├── func\PYGZus{}11}
+\PYG{g+go}{│       │   ├── run.do}
+\PYG{g+go}{│       │   ├── skew\PYGZus{}sbi\PYGZus{}read\PYGZus{}over\PYGZus{}uart\PYGZus{}receive\PYGZus{}with\PYGZus{}delay\PYGZus{}functionality\PYGZus{}Alert.txt}
+\PYG{g+go}{│       │   ├── skew\PYGZus{}sbi\PYGZus{}read\PYGZus{}over\PYGZus{}uart\PYGZus{}receive\PYGZus{}with\PYGZus{}delay\PYGZus{}functionality\PYGZus{}Log.txt}
+\PYG{g+go}{│       │   └── transcript}
+\PYG{g+go}{│       ├── func\PYGZus{}5}
+\PYG{g+go}{│       │   ├── check\PYGZus{}register\PYGZus{}defaults\PYGZus{}Alert.txt}
+\PYG{g+go}{│       │   ├── check\PYGZus{}register\PYGZus{}defaults\PYGZus{}Log.txt}
 \PYG{g+go}{│       │   ├── run.do}
 \PYG{g+go}{│       │   └── transcript}
-\PYG{g+go}{│       ├── 50272463}
-\PYG{g+go}{│       │   ├── check\PYGZus{}single\PYGZus{}simultaneous\PYGZus{}transmit\PYGZus{}and\PYGZus{}receive\PYGZus{}Alert.txt}
-\PYG{g+go}{│       │   ├── check\PYGZus{}single\PYGZus{}simultaneous\PYGZus{}transmit\PYGZus{}and\PYGZus{}receive\PYGZus{}Log.txt}
+\PYG{g+go}{│       ├── func\PYGZus{}6}
+\PYG{g+go}{│       │   ├── check\PYGZus{}simple\PYGZus{}transmit\PYGZus{}Alert.txt}
+\PYG{g+go}{│       │   ├── check\PYGZus{}simple\PYGZus{}transmit\PYGZus{}Log.txt}
 \PYG{g+go}{│       │   ├── run.do}
 \PYG{g+go}{│       │   └── transcript}
-\PYG{g+go}{│       ├── 54005228}
+\PYG{g+go}{│       ├── func\PYGZus{}7}
 \PYG{g+go}{│       │   ├── check\PYGZus{}simple\PYGZus{}receive\PYGZus{}Alert.txt}
 \PYG{g+go}{│       │   ├── check\PYGZus{}simple\PYGZus{}receive\PYGZus{}Log.txt}
 \PYG{g+go}{│       │   ├── run.do}
 \PYG{g+go}{│       │   └── transcript}
-\PYG{g+go}{│       └── 796266300}
-\PYG{g+go}{│           ├── check\PYGZus{}register\PYGZus{}defaults\PYGZus{}Alert.txt}
-\PYG{g+go}{│           ├── check\PYGZus{}register\PYGZus{}defaults\PYGZus{}Log.txt}
+\PYG{g+go}{│       ├── func\PYGZus{}8}
+\PYG{g+go}{│       │   ├── check\PYGZus{}single\PYGZus{}simultaneous\PYGZus{}transmit\PYGZus{}and\PYGZus{}receive\PYGZus{}Alert.txt}
+\PYG{g+go}{│       │   ├── check\PYGZus{}single\PYGZus{}simultaneous\PYGZus{}transmit\PYGZus{}and\PYGZus{}receive\PYGZus{}Log.txt}
+\PYG{g+go}{│       │   ├── run.do}
+\PYG{g+go}{│       │   └── transcript}
+\PYG{g+go}{│       └── func\PYGZus{}9}
+\PYG{g+go}{│           ├── check\PYGZus{}multiple\PYGZus{}simultaneous\PYGZus{}receive\PYGZus{}and\PYGZus{}read\PYGZus{}Alert.txt}
+\PYG{g+go}{│           ├── check\PYGZus{}multiple\PYGZus{}simultaneous\PYGZus{}receive\PYGZus{}and\PYGZus{}read\PYGZus{}Log.txt}
 \PYG{g+go}{│           ├── run.do}
 \PYG{g+go}{│           └── transcript}
-\PYG{g+go}{├── test\PYGZus{}2022\PYGZhy{}01\PYGZhy{}27\PYGZus{}15.32.55.452648}
+\PYG{g+go}{├── test\PYGZus{}2024\PYGZhy{}01\PYGZhy{}10\PYGZus{}14.51.25.645865}
+\PYG{g+go}{│   ├── irqc\PYGZus{}demo\PYGZus{}tb}
+\PYG{g+go}{│   │   └── func\PYGZus{}1}
+\PYG{g+go}{│   │       ├── \PYGZus{}Alert.txt}
+\PYG{g+go}{│   │       ├── \PYGZus{}Log.txt}
+\PYG{g+go}{│   │       ├── run.do}
+\PYG{g+go}{│   │       └── transcript}
+\PYG{g+go}{│   ├── irqc\PYGZus{}tb}
+\PYG{g+go}{│   │   └── func\PYGZus{}2}
+\PYG{g+go}{│   │       ├── UVVM\PYGZus{}Alert.txt}
+\PYG{g+go}{│   │       ├── UVVM\PYGZus{}Log.txt}
+\PYG{g+go}{│   │       ├── run.do}
+\PYG{g+go}{│   │       └── transcript}
 \PYG{g+go}{│   ├── sim\PYGZus{}report.json}
 \PYG{g+go}{│   ├── test\PYGZus{}mapping.csv}
 \PYG{g+go}{│   ├── uart\PYGZus{}simple\PYGZus{}bfm\PYGZus{}tb}
-\PYG{g+go}{│   │   └── 70910381}
+\PYG{g+go}{│   │   └── func\PYGZus{}4}
 \PYG{g+go}{│   │       ├── UVVM\PYGZus{}Alert.txt}
 \PYG{g+go}{│   │       ├── UVVM\PYGZus{}Log.txt}
 \PYG{g+go}{│   │       ├── run.do}
 \PYG{g+go}{│   │       └── transcript}
 \PYG{g+go}{│   ├── uart\PYGZus{}vvc\PYGZus{}demo\PYGZus{}tb}
-\PYG{g+go}{│   │   └── 70910381}
+\PYG{g+go}{│   │   └── func\PYGZus{}3}
 \PYG{g+go}{│   │       ├── \PYGZus{}Alert.txt}
 \PYG{g+go}{│   │       ├── \PYGZus{}Log.txt}
 \PYG{g+go}{│   │       ├── run.do}
 \PYG{g+go}{│   │       └── transcript}
 \PYG{g+go}{│   └── uart\PYGZus{}vvc\PYGZus{}tb}
-\PYG{g+go}{│       ├── 274144510}
-\PYG{g+go}{│       │   ├── run.do}
-\PYG{g+go}{│       │   ├── skew\PYGZus{}sbi\PYGZus{}read\PYGZus{}over\PYGZus{}uart\PYGZus{}receive\PYGZus{}with\PYGZus{}delay\PYGZus{}functionality\PYGZus{}Alert.txt}
-\PYG{g+go}{│       │   ├── skew\PYGZus{}sbi\PYGZus{}read\PYGZus{}over\PYGZus{}uart\PYGZus{}receive\PYGZus{}with\PYGZus{}delay\PYGZus{}functionality\PYGZus{}Log.txt}
-\PYG{g+go}{│       │   └── transcript}
-\PYG{g+go}{│       ├── 305729147}
-\PYG{g+go}{│       │   ├── check\PYGZus{}simple\PYGZus{}transmit\PYGZus{}Alert.txt}
-\PYG{g+go}{│       │   ├── check\PYGZus{}simple\PYGZus{}transmit\PYGZus{}Log.txt}
-\PYG{g+go}{│       │   ├── run.do}
-\PYG{g+go}{│       │   └── transcript}
-\PYG{g+go}{│       ├── 3122926221}
+\PYG{g+go}{│       ├── func\PYGZus{}10}
 \PYG{g+go}{│       │   ├── run.do}
 \PYG{g+go}{│       │   ├── skew\PYGZus{}sbi\PYGZus{}read\PYGZus{}over\PYGZus{}uart\PYGZus{}receive\PYGZus{}Alert.txt}
 \PYG{g+go}{│       │   ├── skew\PYGZus{}sbi\PYGZus{}read\PYGZus{}over\PYGZus{}uart\PYGZus{}receive\PYGZus{}Log.txt}
 \PYG{g+go}{│       │   └── transcript}
-\PYG{g+go}{│       ├── 3532724195}
-\PYG{g+go}{│       │   ├── check\PYGZus{}multiple\PYGZus{}simultaneous\PYGZus{}receive\PYGZus{}and\PYGZus{}read\PYGZus{}Alert.txt}
-\PYG{g+go}{│       │   ├── check\PYGZus{}multiple\PYGZus{}simultaneous\PYGZus{}receive\PYGZus{}and\PYGZus{}read\PYGZus{}Log.txt}
+\PYG{g+go}{│       ├── func\PYGZus{}11}
+\PYG{g+go}{│       │   ├── run.do}
+\PYG{g+go}{│       │   ├── skew\PYGZus{}sbi\PYGZus{}read\PYGZus{}over\PYGZus{}uart\PYGZus{}receive\PYGZus{}with\PYGZus{}delay\PYGZus{}functionality\PYGZus{}Alert.txt}
+\PYG{g+go}{│       │   ├── skew\PYGZus{}sbi\PYGZus{}read\PYGZus{}over\PYGZus{}uart\PYGZus{}receive\PYGZus{}with\PYGZus{}delay\PYGZus{}functionality\PYGZus{}Log.txt}
+\PYG{g+go}{│       │   └── transcript}
+\PYG{g+go}{│       ├── func\PYGZus{}5}
+\PYG{g+go}{│       │   ├── check\PYGZus{}register\PYGZus{}defaults\PYGZus{}Alert.txt}
+\PYG{g+go}{│       │   ├── check\PYGZus{}register\PYGZus{}defaults\PYGZus{}Log.txt}
 \PYG{g+go}{│       │   ├── run.do}
 \PYG{g+go}{│       │   └── transcript}
-\PYG{g+go}{│       ├── 50272463}
-\PYG{g+go}{│       │   ├── check\PYGZus{}single\PYGZus{}simultaneous\PYGZus{}transmit\PYGZus{}and\PYGZus{}receive\PYGZus{}Alert.txt}
-\PYG{g+go}{│       │   ├── check\PYGZus{}single\PYGZus{}simultaneous\PYGZus{}transmit\PYGZus{}and\PYGZus{}receive\PYGZus{}Log.txt}
+\PYG{g+go}{│       ├── func\PYGZus{}6}
+\PYG{g+go}{│       │   ├── check\PYGZus{}simple\PYGZus{}transmit\PYGZus{}Alert.txt}
+\PYG{g+go}{│       │   ├── check\PYGZus{}simple\PYGZus{}transmit\PYGZus{}Log.txt}
 \PYG{g+go}{│       │   ├── run.do}
 \PYG{g+go}{│       │   └── transcript}
-\PYG{g+go}{│       ├── 54005228}
+\PYG{g+go}{│       ├── func\PYGZus{}7}
 \PYG{g+go}{│       │   ├── check\PYGZus{}simple\PYGZus{}receive\PYGZus{}Alert.txt}
 \PYG{g+go}{│       │   ├── check\PYGZus{}simple\PYGZus{}receive\PYGZus{}Log.txt}
 \PYG{g+go}{│       │   ├── run.do}
 \PYG{g+go}{│       │   └── transcript}
-\PYG{g+go}{│       └── 796266300}
-\PYG{g+go}{│           ├── check\PYGZus{}register\PYGZus{}defaults\PYGZus{}Alert.txt}
-\PYG{g+go}{│           ├── check\PYGZus{}register\PYGZus{}defaults\PYGZus{}Log.txt}
+\PYG{g+go}{│       ├── func\PYGZus{}8}
+\PYG{g+go}{│       │   ├── check\PYGZus{}single\PYGZus{}simultaneous\PYGZus{}transmit\PYGZus{}and\PYGZus{}receive\PYGZus{}Alert.txt}
+\PYG{g+go}{│       │   ├── check\PYGZus{}single\PYGZus{}simultaneous\PYGZus{}transmit\PYGZus{}and\PYGZus{}receive\PYGZus{}Log.txt}
+\PYG{g+go}{│       │   ├── run.do}
+\PYG{g+go}{│       │   └── transcript}
+\PYG{g+go}{│       └── func\PYGZus{}9}
+\PYG{g+go}{│           ├── check\PYGZus{}multiple\PYGZus{}simultaneous\PYGZus{}receive\PYGZus{}and\PYGZus{}read\PYGZus{}Alert.txt}
+\PYG{g+go}{│           ├── check\PYGZus{}multiple\PYGZus{}simultaneous\PYGZus{}receive\PYGZus{}and\PYGZus{}read\PYGZus{}Log.txt}
 \PYG{g+go}{│           ├── run.do}
 \PYG{g+go}{│           └── transcript}
+\PYG{g+go}{├── testcase.dat}
 \PYG{g+go}{├── testgroup.dat}
 \PYG{g+go}{└── testgroup\PYGZus{}collection.dat}
 \end{sphinxVerbatim}
@@ -3908,15 +3934,17 @@ output folders. An example of the layout of a test mapping file is shown below:
 \sphinxSetupCaptionForVerbatim{test\_mapping.csv example}
 \def\sphinxLiteralBlockLabel{\label{\detokenize{output:id2}}}
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{g+go}{./hdlregression/test/uart\PYGZus{}simple\PYGZus{}bfm\PYGZus{}tb/70910381, bitvis\PYGZus{}uart.uart\PYGZus{}simple\PYGZus{}bfm\PYGZus{}tb(func)}
-\PYG{g+go}{./hdlregression/test/uart\PYGZus{}vvc\PYGZus{}tb/1419120764, bitvis\PYGZus{}uart.uart\PYGZus{}vvc\PYGZus{}tb(func): gc\PYGZus{}testcase=check\PYGZus{}register\PYGZus{}defaults}
-\PYG{g+go}{./hdlregression/test/uart\PYGZus{}vvc\PYGZus{}tb/886640571, bitvis\PYGZus{}uart.uart\PYGZus{}vvc\PYGZus{}tb(func): gc\PYGZus{}testcase=check\PYGZus{}simple\PYGZus{}transmit}
-\PYG{g+go}{./hdlregression/test/uart\PYGZus{}vvc\PYGZus{}tb/613945132, bitvis\PYGZus{}uart.uart\PYGZus{}vvc\PYGZus{}tb(func): gc\PYGZus{}testcase=check\PYGZus{}simple\PYGZus{}receive}
-\PYG{g+go}{./hdlregression/test/uart\PYGZus{}vvc\PYGZus{}tb/1155471887, bitvis\PYGZus{}uart.uart\PYGZus{}vvc\PYGZus{}tb(func): gc\PYGZus{}testcase=check\PYGZus{}single\PYGZus{}simultaneous\PYGZus{}transmit\PYGZus{}and\PYGZus{}receive}
-\PYG{g+go}{./hdlregression/test/uart\PYGZus{}vvc\PYGZus{}tb/301996323, bitvis\PYGZus{}uart.uart\PYGZus{}vvc\PYGZus{}tb(func): gc\PYGZus{}testcase=check\PYGZus{}multiple\PYGZus{}simultaneous\PYGZus{}receive\PYGZus{}and\PYGZus{}read}
-\PYG{g+go}{./hdlregression/test/uart\PYGZus{}vvc\PYGZus{}tb/3913552845, bitvis\PYGZus{}uart.uart\PYGZus{}vvc\PYGZus{}tb(func): gc\PYGZus{}testcase=skew\PYGZus{}sbi\PYGZus{}read\PYGZus{}over\PYGZus{}uart\PYGZus{}receive}
-\PYG{g+go}{./hdlregression/test/uart\PYGZus{}vvc\PYGZus{}tb/1589059134, bitvis\PYGZus{}uart.uart\PYGZus{}vvc\PYGZus{}tb(func): gc\PYGZus{}testcase=skew\PYGZus{}sbi\PYGZus{}read\PYGZus{}over\PYGZus{}uart\PYGZus{}receive\PYGZus{}with\PYGZus{}delay\PYGZus{}functionality}
-\PYG{g+go}{./hdlregression/test/uart\PYGZus{}vvc\PYGZus{}demo\PYGZus{}tb/70910381, bitvis\PYGZus{}uart.uart\PYGZus{}vvc\PYGZus{}demo\PYGZus{}tb(func)}
+\PYG{g+go}{1, ./hdlregression/test/irqc\PYGZus{}demo\PYGZus{}tb/func\PYGZus{}1, bitvis\PYGZus{}irqc.irqc\PYGZus{}demo\PYGZus{}tb(func)}
+\PYG{g+go}{2, ./hdlregression/test/irqc\PYGZus{}tb/func\PYGZus{}2, bitvis\PYGZus{}irqc.irqc\PYGZus{}tb(func)}
+\PYG{g+go}{3, ./hdlregression/test/uart\PYGZus{}vvc\PYGZus{}demo\PYGZus{}tb/func\PYGZus{}3, bitvis\PYGZus{}uart.uart\PYGZus{}vvc\PYGZus{}demo\PYGZus{}tb(func)}
+\PYG{g+go}{4, ./hdlregression/test/uart\PYGZus{}simple\PYGZus{}bfm\PYGZus{}tb/func\PYGZus{}4, bitvis\PYGZus{}uart.uart\PYGZus{}simple\PYGZus{}bfm\PYGZus{}tb(func)}
+\PYG{g+go}{5, ./hdlregression/test/uart\PYGZus{}vvc\PYGZus{}tb/func\PYGZus{}5, bitvis\PYGZus{}uart.uart\PYGZus{}vvc\PYGZus{}tb(func):GC\PYGZus{}TESTCASE=check\PYGZus{}register\PYGZus{}defaults}
+\PYG{g+go}{6, ./hdlregression/test/uart\PYGZus{}vvc\PYGZus{}tb/func\PYGZus{}6, bitvis\PYGZus{}uart.uart\PYGZus{}vvc\PYGZus{}tb(func):GC\PYGZus{}TESTCASE=check\PYGZus{}simple\PYGZus{}transmit}
+\PYG{g+go}{7, ./hdlregression/test/uart\PYGZus{}vvc\PYGZus{}tb/func\PYGZus{}7, bitvis\PYGZus{}uart.uart\PYGZus{}vvc\PYGZus{}tb(func):GC\PYGZus{}TESTCASE=check\PYGZus{}simple\PYGZus{}receive}
+\PYG{g+go}{8, ./hdlregression/test/uart\PYGZus{}vvc\PYGZus{}tb/func\PYGZus{}8, bitvis\PYGZus{}uart.uart\PYGZus{}vvc\PYGZus{}tb(func):GC\PYGZus{}TESTCASE=check\PYGZus{}single\PYGZus{}simultaneous\PYGZus{}transmit\PYGZus{}and\PYGZus{}receive}
+\PYG{g+go}{9, ./hdlregression/test/uart\PYGZus{}vvc\PYGZus{}tb/func\PYGZus{}9, bitvis\PYGZus{}uart.uart\PYGZus{}vvc\PYGZus{}tb(func):GC\PYGZus{}TESTCASE=check\PYGZus{}multiple\PYGZus{}simultaneous\PYGZus{}receive\PYGZus{}and\PYGZus{}read}
+\PYG{g+go}{10, ./hdlregression/test/uart\PYGZus{}vvc\PYGZus{}tb/func\PYGZus{}10, bitvis\PYGZus{}uart.uart\PYGZus{}vvc\PYGZus{}tb(func):GC\PYGZus{}TESTCASE=skew\PYGZus{}sbi\PYGZus{}read\PYGZus{}over\PYGZus{}uart\PYGZus{}receive}
+\PYG{g+go}{11, ./hdlregression/test/uart\PYGZus{}vvc\PYGZus{}tb/func\PYGZus{}11, bitvis\PYGZus{}uart.uart\PYGZus{}vvc\PYGZus{}tb(func):GC\PYGZus{}TESTCASE=skew\PYGZus{}sbi\PYGZus{}read\PYGZus{}over\PYGZus{}uart\PYGZus{}receive\PYGZus{}with\PYGZus{}delay\PYGZus{}functionality}
 \end{sphinxVerbatim}
 
 

@@ -49,14 +49,16 @@ output folders. An example of the layout of a test mapping file is shown below:
 .. code-block:: console
     :caption: test_mapping.csv example
         
-    ./hdlregression/test/uart_simple_bfm_tb/70910381, bitvis_uart.uart_simple_bfm_tb(func)
-    ./hdlregression/test/uart_vvc_tb/1419120764, bitvis_uart.uart_vvc_tb(func): gc_testcase=check_register_defaults
-    ./hdlregression/test/uart_vvc_tb/886640571, bitvis_uart.uart_vvc_tb(func): gc_testcase=check_simple_transmit
-    ./hdlregression/test/uart_vvc_tb/613945132, bitvis_uart.uart_vvc_tb(func): gc_testcase=check_simple_receive
-    ./hdlregression/test/uart_vvc_tb/1155471887, bitvis_uart.uart_vvc_tb(func): gc_testcase=check_single_simultaneous_transmit_and_receive
-    ./hdlregression/test/uart_vvc_tb/301996323, bitvis_uart.uart_vvc_tb(func): gc_testcase=check_multiple_simultaneous_receive_and_read
-    ./hdlregression/test/uart_vvc_tb/3913552845, bitvis_uart.uart_vvc_tb(func): gc_testcase=skew_sbi_read_over_uart_receive
-    ./hdlregression/test/uart_vvc_tb/1589059134, bitvis_uart.uart_vvc_tb(func): gc_testcase=skew_sbi_read_over_uart_receive_with_delay_functionality
-    ./hdlregression/test/uart_vvc_demo_tb/70910381, bitvis_uart.uart_vvc_demo_tb(func)
+    1, ./hdlregression/test/irqc_demo_tb/func_1, bitvis_irqc.irqc_demo_tb(func)
+    2, ./hdlregression/test/irqc_tb/func_2, bitvis_irqc.irqc_tb(func)
+    3, ./hdlregression/test/uart_vvc_demo_tb/func_3, bitvis_uart.uart_vvc_demo_tb(func)
+    4, ./hdlregression/test/uart_simple_bfm_tb/func_4, bitvis_uart.uart_simple_bfm_tb(func)
+    5, ./hdlregression/test/uart_vvc_tb/func_5, bitvis_uart.uart_vvc_tb(func):GC_TESTCASE=check_register_defaults
+    6, ./hdlregression/test/uart_vvc_tb/func_6, bitvis_uart.uart_vvc_tb(func):GC_TESTCASE=check_simple_transmit
+    7, ./hdlregression/test/uart_vvc_tb/func_7, bitvis_uart.uart_vvc_tb(func):GC_TESTCASE=check_simple_receive
+    8, ./hdlregression/test/uart_vvc_tb/func_8, bitvis_uart.uart_vvc_tb(func):GC_TESTCASE=check_single_simultaneous_transmit_and_receive
+    9, ./hdlregression/test/uart_vvc_tb/func_9, bitvis_uart.uart_vvc_tb(func):GC_TESTCASE=check_multiple_simultaneous_receive_and_read
+    10, ./hdlregression/test/uart_vvc_tb/func_10, bitvis_uart.uart_vvc_tb(func):GC_TESTCASE=skew_sbi_read_over_uart_receive
+    11, ./hdlregression/test/uart_vvc_tb/func_11, bitvis_uart.uart_vvc_tb(func):GC_TESTCASE=skew_sbi_read_over_uart_receive_with_delay_functionality
 
   

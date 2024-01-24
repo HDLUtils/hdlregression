@@ -20,9 +20,9 @@ from ..report.logger import Logger
 
 
 class HDLScanner:
-    '''
+    """
     Base scanner class
-    '''
+    """
 
     def __init__(self, project, library, filename, hdlfile):
         self.logger = Logger(name=__name__, project=project)
@@ -36,6 +36,10 @@ class HDLScanner:
         self.library_list = []
         self.int_use_list = []
         self.testcase_list = []
+
+        # Assertion
+        self.assertion_list = {"note": 0, "warning": 0, "error": 0, "failure": 0}
+        self.assertion_count = 0
 
     def get_library(self) -> str:
         return self.library
@@ -51,25 +55,25 @@ class HDLScanner:
         return self.filename
 
     def add_library_dep(self, library):
-        if not(library.lower() in self.library_list):
+        if not (library.lower() in self.library_list):
             self.library_list.append(library.lower())
 
     def get_library_dep(self) -> list:
-        '''
+        """
         Returns the library list and empties the stored list.
-        '''
+        """
         library_list_copy = [item for item in self.library_list]
         self.library_list = []
         return library_list_copy
 
     def add_int_dep(self, use_dep):
-        if not(use_dep.lower() in self.int_use_list):
+        if not (use_dep.lower() in self.int_use_list):
             self.int_use_list.append(use_dep.lower())
 
     def get_int_dep(self) -> list:
-        '''
+        """
         Returns the internal use list and empties the stored list.
-        '''
+        """
         list_copy = [item for item in self.int_use_list]
         self.int_use_list = []
         return list_copy
@@ -85,8 +89,14 @@ class HDLScanner:
         module.set_hdlfile(self.hdlfile)
         self.container.add(module)
 
-    def get_module_container(self) -> 'Container':
+    def get_module_container(self) -> "Container":
         return self.container
+
+    def increment_assertion_count(self) -> None:
+        self.assertion_count += 1
+
+    def get_assertion_count(self) -> int:
+        return self.assertion_count
 
     @abstractmethod
     def _clean_code(self, file_content_list) -> list:

@@ -22,7 +22,8 @@ HDLRegression()
 This command is used for initializing the HDLRegression object which is used for defining the regression script
 and accessing the HDLRegression API.
 
-The default simulator is Modelsim, but this can be changed by using the ``simulator`` argument as shown 
+HDLRegression will attempt to auto-detect available simulators and will choose either ModelSim, NVC, GHDL, or
+Riviera Pro based on the findings. The preffered simulator can be selected by using the ``simulator`` argument as shown 
 in example 2 or using :doc:`cli` :
 
 .. code-block:: python
@@ -33,7 +34,7 @@ in example 2 or using :doc:`cli` :
 +-----------------+---------------+-------------------------------+---------------+---------------+
 | Argument        | Type          | Example                       | Default       | Required      |
 +=================+===============+===============================+===============+===============+
-| simulator       | string        | "ghdl", "modelsim", "nvc"     | "modelsim"    | optional      |
+| simulator       | string        | "ghdl", "modelsim", "nvc"     | auto-detected | optional      |
 +-----------------+---------------+-------------------------------+---------------+---------------+
 | arg_parser      | argparser obj | regression_parser             | None          | optional      |
 +-----------------+---------------+-------------------------------+---------------+---------------+

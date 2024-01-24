@@ -16,6 +16,7 @@
 import os
 import platform
 import datetime
+import subprocess
 
 
 class SettingsError(Exception):
@@ -31,12 +32,11 @@ class InvalidPathError(SettingsError):
 
 
 class HDLRegressionSettings:
-
     SIM_WAVE_FILE_FORMAT = ["FST", "VCD"]
 
     def __init__(self):
         self.hdlregression_version = "0.0.0"
-        self.simulator_settings = SimulatorSettings("MODELSIM")
+        self.simulator_settings = SimulatorSettings(settings=self)
         self.compile_time = 0
         self.os_platform = platform.system().lower()
         self.verbosity = False
@@ -169,6 +169,7 @@ class HDLRegressionSettings:
 
     def get_use_log_color(self) -> bool:
         return self.use_log_color
+
     # ----------------------------------
     # Threading
     # ----------------------------------
@@ -194,9 +195,9 @@ class HDLRegressionSettings:
 
     def get_run_success(self) -> bool:
         return self.run_success
-    
+
     # --- simulation status
-    def set_sim_success(self, success : bool):
+    def set_sim_success(self, success: bool):
         self.sim_success = success
 
     def get_sim_success(self) -> bool:
@@ -305,10 +306,10 @@ class HDLRegressionSettings:
 
     def get_list_dependencies(self) -> bool:
         return self.list_dependencies
-    
+
     def set_show_err_warn_output(self, enable):
         self.show_err_warn_output = enable
-        
+
     def get_show_err_warn_output(self) -> bool:
         return self.show_err_warn_output
 
@@ -396,17 +397,20 @@ class HDLRegressionSettings:
     # ----------------------------------
     # Simulator
     # ----------------------------------
-    def set_simulator_name(self, simulator_name, cli_selected=False):
-        if self.simulator_settings.get_is_cli_selected() is False:
-            self.simulator_settings.set_simulator_name(
-                simulator_name, cli_selected=cli_selected
-            )
+
+    def get_simulator_settings(self):
+        return self.simulator_settings
+
+    def get_simulators_info(self) -> dict:
+        return self.simulator_settings.get_simulators_info()
+
+    def set_simulator_name(self, simulator_name, cli=False, api=False, init=False):
+        self.simulator_settings.set_simulator_name(
+            simulator_name, cli=cli, api=api, init=init
+        )
 
     def get_simulator_name(self) -> str:
         return self.simulator_settings.get_simulator_name()
-
-    def get_simulator_is_cli_selected(self) -> bool:
-        return self.simulator_settings.get_is_cli_selected()
 
     def set_simulator_path(self, path):
         if path is not None:
@@ -482,7 +486,6 @@ class HDLRegressionSettings:
     def get_simulator_wave_file_format(self) -> str:
         return self.simulator_wave_file_format
 
-
     # ----------------------------------
     # Netlist
     # ----------------------------------
@@ -520,6 +523,8 @@ class SimulatorSettings:
     ID_GHDL_SIMULATOR = ["ghdl", "GHDL"]
     ID_NVC_SIMULATOR = ["nvc", "NVC"]
 
+    DEF_SIMULATOR_NAME = "GHDL"
+
     DEF_COM_OPTIONS_MODELSIM_VHDL = ["-suppress", "1346,1236,1090", "-2008"]
 
     DEF_COM_OPTIONS_ALDEC_VHDL = [
@@ -547,28 +552,75 @@ class SimulatorSettings:
     DEF_COM_OPTIONS_GHDL_VERILOG = []
     DEF_COM_OPTIONS_NVC_VERILOG = []
 
-    def __init__(self, simulator_name="MODELSIM"):
+    def __init__(self, settings):
+        self.settings = settings
         self.com_options_verilog = []
         self.com_options_vhdl = []
         self.vhdl_com_options_updated = False
         self.verilog_com_options_updated = False
         self.sim_options = []
-        self.cli_selected = False
+        self.cli_selected_simulator = False
         self.simulator_path = None
         self.modelsim_ini = "modelsim.ini"
+        self.simulator_name = None
+        self.simulator_select = {"api": False, "cli": False, "init": False}
 
-        self.set_simulator_name(simulator_name)
+    @staticmethod
+    def is_simulator_installed(simulator: str) -> bool:
+        version = "-version" if simulator == "vsim" else "--version"
+        try:
+            subprocess.run(
+                [simulator, version],
+                check=True,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+            return True
+        except (subprocess.CalledProcessError, FileNotFoundError):
+            return False
 
-    def set_simulator_name(self, simulator_name, cli_selected=False):
-        self.simulator_name = self._validate_simulator_name(simulator_name)
-        if cli_selected is True:
-            self.cli_selected = True
+    def get_simulators_info(self) -> dict:
+        platform_info = platform.system()
+        modelsim_installed = self.is_simulator_installed("vsim")
+        ghdl_installed = self.is_simulator_installed("ghdl")
+        nvc_installed = self.is_simulator_installed("nvc")
+        riviera_pro_installed = self.is_simulator_installed("vsimsa")
+
+        simulator = ""
+        if modelsim_installed:
+            simulator = "MODELSIM"
+        elif nvc_installed:
+            simulator = "NVC"
+        elif ghdl_installed:
+            simulator = "GHDL"
+        elif riviera_pro_installed:
+            simulator = "Riviera-PRO"
+
+        return {
+            "platform": platform_info,
+            "MODELSIM": modelsim_installed,
+            "GHDL": ghdl_installed,
+            "NVC": nvc_installed,
+            "RIVIERA-PRO": riviera_pro_installed,
+            "simulator": simulator,
+        }
+
+    def set_simulator_name(self, simulator_name, cli=False, api=False, init=False):
+        if simulator_name:
+            simulator_name = simulator_name.upper()
+        simulator_info = self.get_simulators_info()
+        valid_simulator = simulator_info.get(simulator_name)
+
+        if valid_simulator:
+            if self.simulator_name is None or api is True or cli is True:
+                self.simulator_name = simulator_name
 
     def get_simulator_name(self) -> str:
-        return self.simulator_name
-
-    def get_is_cli_selected(self) -> bool:
-        return self.cli_selected
+        if self.simulator_name:
+            return self.simulator_name
+        else:
+            sim_info = self.get_simulators_info()
+            return sim_info.get("simulator")
 
     def set_com_options(self, com_options=None, hdl_lang=None):
         if hdl_lang == "vhdl":

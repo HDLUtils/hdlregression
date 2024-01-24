@@ -20,6 +20,7 @@
 # DEALINGS IN HDLRegression.
 #
 
+
 from .hdlcodecoverage import *
 from .arg_parser import arg_parser_reader
 from .hdlregression_pkg import *
@@ -86,30 +87,71 @@ class HDLRegression:
         :param init_from_gui: Regression initialized in from GUI tcl call.
         :type init_from_gui: bool
         """
-
-        # Initialized from regression script, i.e. not from GUI
         self.init_from_gui = init_from_gui
+        self.settings = self._initialize_settings(arg_parser)
+        self.logger = self._initialize_logger()
+        self.hdlcodecoverage = self._initialize_hdl_code_coverage()
 
-        # Gracefully exit on CTRL-C
+        self.cached_simulator_settings = None
+
+        self._initialize_signal_handler()
+        self._load_project_data()
+
+        self._set_simulator(sim_name=simulator)
+
+        self._validate_simulator_with_cached(sim_name=simulator)
+        self._setup_logger()
+        self.reporter = None
+
+    def _initialize_settings(self, arg_parser):
+        self.settings_config = SettingsConfigurator(project=self)
+        self.args = arg_parser_reader(arg_parser=arg_parser)
+        return self.settings_config.setup_settings(HDLRegressionSettings(), self.args)
+
+    def _initialize_logger(self):
+        return Logger(__name__, project=self)
+
+    def _setup_logger(self) -> None:
+        self.logger.set_level(self.settings.get_logger_level())
+
+    def _initialize_hdl_code_coverage(self):
+        return HdlCodeCoverage(project=self)
+
+    def _initialize_signal_handler(self):
         signal(SIGINT, exit_handler)
 
-        # Init configuration obj
-        self.settings_config = SettingsConfigurator(project=self)
+    def _validate_simulator_with_cached(self, sim_name: str = None) -> None:
+        if self.settings.get_clean():
+            return
 
-        # Create settings object
-        self.settings = HDLRegressionSettings()
+        if self.cached_simulator_settings is None:
+            return
+        cached_sim_name = self.cached_simulator_settings.get_simulator_name()
+        sim_name = self.settings.get_simulator_name()
 
-        self.args = arg_parser_reader(arg_parser=arg_parser)
+        if not cached_sim_name:
+            return
 
-        self.logger = Logger(__name__, project=self)
+        if cached_sim_name != sim_name.upper():
+            self.logger.error(
+                "HDLRegression cache was run using %s simulator, current simulator is %s. Aborting"
+                % (
+                    cached_sim_name,
+                    sim_name,
+                )
+            )
+            sys.exit(1)
+
+    def _set_simulator(self, sim_name: str = None):
+        self.settings.set_simulator_name(sim_name)
+        self.hdlcodecoverage.get_code_coverage_obj(sim_name)
+
+    def _load_project_data(self):
         self.hdlcodecoverage = HdlCodeCoverage(project=self)
 
         # Load HDLRegression install version number.
         installed_version = self._get_install_version()
         display_info_text(version=installed_version)
-
-        # Adjust settings with terminal arguments
-        self.settings = self.settings_config.setup_settings(self.settings, self.args)
 
         self.detected_simulators = simulator_detector()
 
@@ -124,23 +166,6 @@ class HDLRegression:
 
         # Update cached version (settings) with installed version number.
         self.settings.set_hdlregression_version(installed_version)
-
-        # Set simulator - will be overrided by CLI argument.
-        if simulator:
-            if not self.settings.get_simulator_is_cli_selected():
-                self.set_simulator(simulator, display_missing_simulator_path=False)
-                self.hdlcodecoverage.get_code_coverage_obj(simulator)
-            else:
-                self.hdlcodecoverage.get_code_coverage_obj(
-                    self.settings.get_simulator_name()
-                )
-        else:
-            self.hdlcodecoverage.get_code_coverage_obj()
-
-        # Reporter object
-        self.reporter = None
-        # Setup logger level
-        self.logger.set_level(self.settings.get_logger_level())
 
     def add_precompiled_library(self, compile_path: str, library_name: str):
         """
@@ -367,6 +392,7 @@ class HDLRegression:
         path: str = None,
         com_options: str = None,
         display_missing_simulator_path=True,
+        set_from_init=False,
     ):
         """
         Sets the simulator in the project config.
@@ -389,14 +415,17 @@ class HDLRegression:
             self.logger.warning("No simulator selected, running with Mentor Modelsim.")
             simulator = "modelsim"
 
-        if self.settings.get_simulator_name() != simulator.upper():
+        if (
+            self.settings.get_simulator_name() != simulator.upper()
+            and set_from_init is False
+        ):
             self.logger.error(
                 "Simulator change require new databases - delete "
                 "./hdlregression folder and rerun test suite."
             )
             self.settings.set_return_code(1)
 
-        self.settings.set_simulator_name(simulator)
+        self.settings.set_simulator_name(simulator, api=True)
         self.settings.set_simulator_path(path)
         if com_options is not None:
             self.settings.set_com_options(com_options)
@@ -603,6 +632,7 @@ class HDLRegression:
 
                 # restore settings gui mode
                 self.settings.set_gui_mode(HDLRegressionSettings().get_gui_mode())
+
                 # Save any settings that have been made while running TCL Runner.
                 self._save_project_to_disk(
                     lib_cont=self.library_container,
@@ -659,6 +689,10 @@ class HDLRegression:
 
                 # Disable threading
                 disable_threading(project=self)
+
+                # Save simulator used for sim
+                # self.settings.set_run_simulator(self.settings.get_simulator_name())
+                # self.cached_simulator = self.settings.get_simulator_settings()
 
                 # Save settings befor returning to project script.
                 self._save_project_to_disk(
@@ -1031,6 +1065,9 @@ class HDLRegression:
             self.settings.set_time_of_run()
             print("hdlregression:success")
 
+        # self.cached_simulator = (
+        #     self.settings.get_simulator_settings.get_simulator_name()
+        # )
         # Save settings befor returning to project script.
         self._save_project_to_disk(
             lib_cont=self.library_container,
@@ -1089,7 +1126,13 @@ class HDLRegression:
         elif simulator == "NVC":
             runner_obj = NVCRunner(project=self)
         else:
-            self.logger.warning("Unknown simulator: %s, using Modelsim." % (simulator))
+            sim_info = self.settings.get_simulators_info()
+            sim_name = sim_info.get("simulator")
+            self.logger.warning(
+                "Simulator %s not available. Autodetecting: %s" % (simulator, sim_name)
+            )
+            self._set_simulator(sim_name)
+            runner_obj = self._get_runner_object(sim_name)
         return runner_obj
 
     def _load_project_databases(self) -> None:
@@ -1257,6 +1300,7 @@ class HDLRegression:
         _dump(tg_col_cont, "testgroup_collection.dat")
         _dump(settings, "settings.dat")
         _dump(self.runner.get_fail_test_obj_list(), "testcase.dat")
+        _dump(self.settings.get_simulator_settings(), "simulator.dat")
 
     def _load_project_from_disk(self) -> tuple:
         """
@@ -1300,10 +1344,12 @@ class HDLRegression:
         tg_col_cont = _load(
             Container("testgroup_collection"), "testgroup_collection.dat"
         )
-        tc_cont = _load(Container("testcase_container"), "testcase.dat")
 
         failing_tc_list = []
         failing_tc_list = _load(failing_tc_list, "testcase.dat")
+        self.cached_simulator_settings = _load(
+            self.cached_simulator_settings, "simulator.dat"
+        )
 
         # Do not load configured generics, testcases or testcase groups when
         # called from runner script, only from GUI
@@ -1315,21 +1361,6 @@ class HDLRegression:
         # default settings for success run and return code:
         settings.set_return_code(0)
         settings.set_run_success(True)
-
-        if os.path.isfile(settings_file):
-            if (
-                settings.get_simulator_name() != self.settings.get_simulator_name()
-                and not self.settings.get_clean()
-            ):
-                self.logger.error(
-                    "HDLRegression cache was run using %s simulator, "
-                    "current simulator is %s. Aborting"
-                    % (
-                        settings.get_simulator_name(),
-                        self.settings.get_simulator_name(),
-                    )
-                )
-                sys.exit(1)
 
         return (lib_cont, generic_cont, tg_cont, tg_col_cont, failing_tc_list, settings)
 

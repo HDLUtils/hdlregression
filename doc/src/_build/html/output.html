@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Generated output &mdash; hdlregression 0.47.0
+  <title>Generated output &mdash; hdlregression 0.49.0
  documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
@@ -169,109 +169,134 @@ hash generated, thus identifying a specific test run can be done by inspecting t
 <span class="linenos"> 55</span><span class="go">├── library.dat</span>
 <span class="linenos"> 56</span><span class="go">├── settings.dat</span>
 <span class="linenos"> 57</span><span class="go">├── test</span>
-<span class="linenos"> 58</span><span class="go">│   ├── sim_report.json</span>
-<span class="linenos"> 59</span><span class="go">│   ├── test_mapping.csv</span>
-<span class="linenos"> 60</span><span class="go">│   ├── uart_simple_bfm_tb</span>
-<span class="linenos"> 61</span><span class="go">│   │   └── 70910381</span>
-<span class="linenos"> 62</span><span class="go">│   │       ├── UVVM_Alert.txt</span>
-<span class="linenos"> 63</span><span class="go">│   │       ├── UVVM_Log.txt</span>
-<span class="linenos"> 64</span><span class="go">│   │       ├── run.do</span>
-<span class="linenos"> 65</span><span class="go">│   │       └── transcript</span>
-<span class="linenos"> 66</span><span class="go">│   ├── uart_vvc_demo_tb</span>
-<span class="linenos"> 67</span><span class="go">│   │   └── 70910381</span>
-<span class="linenos"> 68</span><span class="go">│   │       ├── _Alert.txt</span>
-<span class="linenos"> 69</span><span class="go">│   │       ├── _Log.txt</span>
-<span class="linenos"> 70</span><span class="go">│   │       ├── run.do</span>
-<span class="linenos"> 71</span><span class="go">│   │       └── transcript</span>
-<span class="linenos"> 72</span><span class="go">│   └── uart_vvc_tb</span>
-<span class="linenos"> 73</span><span class="go">│       ├── 274144510</span>
-<span class="linenos"> 74</span><span class="go">│       │   ├── run.do</span>
-<span class="linenos"> 75</span><span class="go">│       │   ├── skew_sbi_read_over_uart_receive_with_delay_functionality_Alert.txt</span>
-<span class="linenos"> 76</span><span class="go">│       │   ├── skew_sbi_read_over_uart_receive_with_delay_functionality_Log.txt</span>
-<span class="linenos"> 77</span><span class="go">│       │   └── transcript</span>
-<span class="linenos"> 78</span><span class="go">│       ├── 305729147</span>
-<span class="linenos"> 79</span><span class="go">│       │   ├── check_simple_transmit_Alert.txt</span>
-<span class="linenos"> 80</span><span class="go">│       │   ├── check_simple_transmit_Log.txt</span>
-<span class="linenos"> 81</span><span class="go">│       │   ├── run.do</span>
-<span class="linenos"> 82</span><span class="go">│       │   └── transcript</span>
-<span class="linenos"> 83</span><span class="go">│       ├── 3122926221</span>
-<span class="linenos"> 84</span><span class="go">│       │   ├── run.do</span>
-<span class="linenos"> 85</span><span class="go">│       │   ├── skew_sbi_read_over_uart_receive_Alert.txt</span>
-<span class="linenos"> 86</span><span class="go">│       │   ├── skew_sbi_read_over_uart_receive_Log.txt</span>
-<span class="linenos"> 87</span><span class="go">│       │   └── transcript</span>
-<span class="linenos"> 88</span><span class="go">│       ├── 3532724195</span>
-<span class="linenos"> 89</span><span class="go">│       │   ├── check_multiple_simultaneous_receive_and_read_Alert.txt</span>
-<span class="linenos"> 90</span><span class="go">│       │   ├── check_multiple_simultaneous_receive_and_read_Log.txt</span>
+<span class="linenos"> 58</span><span class="go">│   ├── irqc_demo_tb</span>
+<span class="linenos"> 59</span><span class="go">│   │   └── func_1</span>
+<span class="linenos"> 60</span><span class="go">│   │       ├── _Alert.txt</span>
+<span class="linenos"> 61</span><span class="go">│   │       ├── _Log.txt</span>
+<span class="linenos"> 62</span><span class="go">│   │       ├── run.do</span>
+<span class="linenos"> 63</span><span class="go">│   │       └── transcript</span>
+<span class="linenos"> 64</span><span class="go">│   ├── irqc_tb</span>
+<span class="linenos"> 65</span><span class="go">│   │   └── func_2</span>
+<span class="linenos"> 66</span><span class="go">│   │       ├── UVVM_Alert.txt</span>
+<span class="linenos"> 67</span><span class="go">│   │       ├── UVVM_Log.txt</span>
+<span class="linenos"> 68</span><span class="go">│   │       ├── run.do</span>
+<span class="linenos"> 69</span><span class="go">│   │       └── transcript</span>
+<span class="linenos"> 70</span><span class="go">│   ├── sim_report.json</span>
+<span class="linenos"> 71</span><span class="go">│   ├── test_mapping.csv</span>
+<span class="linenos"> 72</span><span class="go">│   ├── uart_simple_bfm_tb</span>
+<span class="linenos"> 73</span><span class="go">│   │   └── func_4</span>
+<span class="linenos"> 74</span><span class="go">│   │       ├── UVVM_Alert.txt</span>
+<span class="linenos"> 75</span><span class="go">│   │       ├── UVVM_Log.txt</span>
+<span class="linenos"> 76</span><span class="go">│   │       ├── run.do</span>
+<span class="linenos"> 77</span><span class="go">│   │       └── transcript</span>
+<span class="linenos"> 78</span><span class="go">│   ├── uart_vvc_demo_tb</span>
+<span class="linenos"> 79</span><span class="go">│   │   └── func_3</span>
+<span class="linenos"> 80</span><span class="go">│   │       ├── _Alert.txt</span>
+<span class="linenos"> 81</span><span class="go">│   │       ├── _Log.txt</span>
+<span class="linenos"> 82</span><span class="go">│   │       ├── run.do</span>
+<span class="linenos"> 83</span><span class="go">│   │       └── transcript</span>
+<span class="linenos"> 84</span><span class="go">│   └── uart_vvc_tb</span>
+<span class="linenos"> 85</span><span class="go">│       ├── func_10</span>
+<span class="linenos"> 86</span><span class="go">│       │   ├── run.do</span>
+<span class="linenos"> 87</span><span class="go">│       │   ├── skew_sbi_read_over_uart_receive_Alert.txt</span>
+<span class="linenos"> 88</span><span class="go">│       │   ├── skew_sbi_read_over_uart_receive_Log.txt</span>
+<span class="linenos"> 89</span><span class="go">│       │   └── transcript</span>
+<span class="linenos"> 90</span><span class="go">│       ├── func_11</span>
 <span class="linenos"> 91</span><span class="go">│       │   ├── run.do</span>
-<span class="linenos"> 92</span><span class="go">│       │   └── transcript</span>
-<span class="linenos"> 93</span><span class="go">│       ├── 50272463</span>
-<span class="linenos"> 94</span><span class="go">│       │   ├── check_single_simultaneous_transmit_and_receive_Alert.txt</span>
-<span class="linenos"> 95</span><span class="go">│       │   ├── check_single_simultaneous_transmit_and_receive_Log.txt</span>
-<span class="linenos"> 96</span><span class="go">│       │   ├── run.do</span>
-<span class="linenos"> 97</span><span class="go">│       │   └── transcript</span>
-<span class="linenos"> 98</span><span class="go">│       ├── 54005228</span>
-<span class="linenos"> 99</span><span class="go">│       │   ├── check_simple_receive_Alert.txt</span>
-<span class="linenos">100</span><span class="go">│       │   ├── check_simple_receive_Log.txt</span>
-<span class="linenos">101</span><span class="go">│       │   ├── run.do</span>
-<span class="linenos">102</span><span class="go">│       │   └── transcript</span>
-<span class="linenos">103</span><span class="go">│       └── 796266300</span>
-<span class="linenos">104</span><span class="go">│           ├── check_register_defaults_Alert.txt</span>
-<span class="linenos">105</span><span class="go">│           ├── check_register_defaults_Log.txt</span>
-<span class="linenos">106</span><span class="go">│           ├── run.do</span>
-<span class="linenos">107</span><span class="go">│           └── transcript</span>
-<span class="linenos">108</span><span class="go">├── test_2022-01-27_15.32.55.452648</span>
-<span class="linenos">109</span><span class="go">│   ├── sim_report.json</span>
-<span class="linenos">110</span><span class="go">│   ├── test_mapping.csv</span>
-<span class="linenos">111</span><span class="go">│   ├── uart_simple_bfm_tb</span>
-<span class="linenos">112</span><span class="go">│   │   └── 70910381</span>
-<span class="linenos">113</span><span class="go">│   │       ├── UVVM_Alert.txt</span>
-<span class="linenos">114</span><span class="go">│   │       ├── UVVM_Log.txt</span>
-<span class="linenos">115</span><span class="go">│   │       ├── run.do</span>
-<span class="linenos">116</span><span class="go">│   │       └── transcript</span>
-<span class="linenos">117</span><span class="go">│   ├── uart_vvc_demo_tb</span>
-<span class="linenos">118</span><span class="go">│   │   └── 70910381</span>
-<span class="linenos">119</span><span class="go">│   │       ├── _Alert.txt</span>
-<span class="linenos">120</span><span class="go">│   │       ├── _Log.txt</span>
-<span class="linenos">121</span><span class="go">│   │       ├── run.do</span>
-<span class="linenos">122</span><span class="go">│   │       └── transcript</span>
-<span class="linenos">123</span><span class="go">│   └── uart_vvc_tb</span>
-<span class="linenos">124</span><span class="go">│       ├── 274144510</span>
-<span class="linenos">125</span><span class="go">│       │   ├── run.do</span>
-<span class="linenos">126</span><span class="go">│       │   ├── skew_sbi_read_over_uart_receive_with_delay_functionality_Alert.txt</span>
-<span class="linenos">127</span><span class="go">│       │   ├── skew_sbi_read_over_uart_receive_with_delay_functionality_Log.txt</span>
-<span class="linenos">128</span><span class="go">│       │   └── transcript</span>
-<span class="linenos">129</span><span class="go">│       ├── 305729147</span>
-<span class="linenos">130</span><span class="go">│       │   ├── check_simple_transmit_Alert.txt</span>
-<span class="linenos">131</span><span class="go">│       │   ├── check_simple_transmit_Log.txt</span>
-<span class="linenos">132</span><span class="go">│       │   ├── run.do</span>
-<span class="linenos">133</span><span class="go">│       │   └── transcript</span>
-<span class="linenos">134</span><span class="go">│       ├── 3122926221</span>
-<span class="linenos">135</span><span class="go">│       │   ├── run.do</span>
-<span class="linenos">136</span><span class="go">│       │   ├── skew_sbi_read_over_uart_receive_Alert.txt</span>
-<span class="linenos">137</span><span class="go">│       │   ├── skew_sbi_read_over_uart_receive_Log.txt</span>
-<span class="linenos">138</span><span class="go">│       │   └── transcript</span>
-<span class="linenos">139</span><span class="go">│       ├── 3532724195</span>
-<span class="linenos">140</span><span class="go">│       │   ├── check_multiple_simultaneous_receive_and_read_Alert.txt</span>
-<span class="linenos">141</span><span class="go">│       │   ├── check_multiple_simultaneous_receive_and_read_Log.txt</span>
-<span class="linenos">142</span><span class="go">│       │   ├── run.do</span>
-<span class="linenos">143</span><span class="go">│       │   └── transcript</span>
-<span class="linenos">144</span><span class="go">│       ├── 50272463</span>
-<span class="linenos">145</span><span class="go">│       │   ├── check_single_simultaneous_transmit_and_receive_Alert.txt</span>
-<span class="linenos">146</span><span class="go">│       │   ├── check_single_simultaneous_transmit_and_receive_Log.txt</span>
-<span class="linenos">147</span><span class="go">│       │   ├── run.do</span>
-<span class="linenos">148</span><span class="go">│       │   └── transcript</span>
-<span class="linenos">149</span><span class="go">│       ├── 54005228</span>
-<span class="linenos">150</span><span class="go">│       │   ├── check_simple_receive_Alert.txt</span>
-<span class="linenos">151</span><span class="go">│       │   ├── check_simple_receive_Log.txt</span>
-<span class="linenos">152</span><span class="go">│       │   ├── run.do</span>
-<span class="linenos">153</span><span class="go">│       │   └── transcript</span>
-<span class="linenos">154</span><span class="go">│       └── 796266300</span>
-<span class="linenos">155</span><span class="go">│           ├── check_register_defaults_Alert.txt</span>
-<span class="linenos">156</span><span class="go">│           ├── check_register_defaults_Log.txt</span>
-<span class="linenos">157</span><span class="go">│           ├── run.do</span>
-<span class="linenos">158</span><span class="go">│           └── transcript</span>
-<span class="linenos">159</span><span class="go">├── testgroup.dat</span>
-<span class="linenos">160</span><span class="go">└── testgroup_collection.dat</span>
+<span class="linenos"> 92</span><span class="go">│       │   ├── skew_sbi_read_over_uart_receive_with_delay_functionality_Alert.txt</span>
+<span class="linenos"> 93</span><span class="go">│       │   ├── skew_sbi_read_over_uart_receive_with_delay_functionality_Log.txt</span>
+<span class="linenos"> 94</span><span class="go">│       │   └── transcript</span>
+<span class="linenos"> 95</span><span class="go">│       ├── func_5</span>
+<span class="linenos"> 96</span><span class="go">│       │   ├── check_register_defaults_Alert.txt</span>
+<span class="linenos"> 97</span><span class="go">│       │   ├── check_register_defaults_Log.txt</span>
+<span class="linenos"> 98</span><span class="go">│       │   ├── run.do</span>
+<span class="linenos"> 99</span><span class="go">│       │   └── transcript</span>
+<span class="linenos">100</span><span class="go">│       ├── func_6</span>
+<span class="linenos">101</span><span class="go">│       │   ├── check_simple_transmit_Alert.txt</span>
+<span class="linenos">102</span><span class="go">│       │   ├── check_simple_transmit_Log.txt</span>
+<span class="linenos">103</span><span class="go">│       │   ├── run.do</span>
+<span class="linenos">104</span><span class="go">│       │   └── transcript</span>
+<span class="linenos">105</span><span class="go">│       ├── func_7</span>
+<span class="linenos">106</span><span class="go">│       │   ├── check_simple_receive_Alert.txt</span>
+<span class="linenos">107</span><span class="go">│       │   ├── check_simple_receive_Log.txt</span>
+<span class="linenos">108</span><span class="go">│       │   ├── run.do</span>
+<span class="linenos">109</span><span class="go">│       │   └── transcript</span>
+<span class="linenos">110</span><span class="go">│       ├── func_8</span>
+<span class="linenos">111</span><span class="go">│       │   ├── check_single_simultaneous_transmit_and_receive_Alert.txt</span>
+<span class="linenos">112</span><span class="go">│       │   ├── check_single_simultaneous_transmit_and_receive_Log.txt</span>
+<span class="linenos">113</span><span class="go">│       │   ├── run.do</span>
+<span class="linenos">114</span><span class="go">│       │   └── transcript</span>
+<span class="linenos">115</span><span class="go">│       └── func_9</span>
+<span class="linenos">116</span><span class="go">│           ├── check_multiple_simultaneous_receive_and_read_Alert.txt</span>
+<span class="linenos">117</span><span class="go">│           ├── check_multiple_simultaneous_receive_and_read_Log.txt</span>
+<span class="linenos">118</span><span class="go">│           ├── run.do</span>
+<span class="linenos">119</span><span class="go">│           └── transcript</span>
+<span class="linenos">120</span><span class="go">├── test_2024-01-10_14.51.25.645865</span>
+<span class="linenos">121</span><span class="go">│   ├── irqc_demo_tb</span>
+<span class="linenos">122</span><span class="go">│   │   └── func_1</span>
+<span class="linenos">123</span><span class="go">│   │       ├── _Alert.txt</span>
+<span class="linenos">124</span><span class="go">│   │       ├── _Log.txt</span>
+<span class="linenos">125</span><span class="go">│   │       ├── run.do</span>
+<span class="linenos">126</span><span class="go">│   │       └── transcript</span>
+<span class="linenos">127</span><span class="go">│   ├── irqc_tb</span>
+<span class="linenos">128</span><span class="go">│   │   └── func_2</span>
+<span class="linenos">129</span><span class="go">│   │       ├── UVVM_Alert.txt</span>
+<span class="linenos">130</span><span class="go">│   │       ├── UVVM_Log.txt</span>
+<span class="linenos">131</span><span class="go">│   │       ├── run.do</span>
+<span class="linenos">132</span><span class="go">│   │       └── transcript</span>
+<span class="linenos">133</span><span class="go">│   ├── sim_report.json</span>
+<span class="linenos">134</span><span class="go">│   ├── test_mapping.csv</span>
+<span class="linenos">135</span><span class="go">│   ├── uart_simple_bfm_tb</span>
+<span class="linenos">136</span><span class="go">│   │   └── func_4</span>
+<span class="linenos">137</span><span class="go">│   │       ├── UVVM_Alert.txt</span>
+<span class="linenos">138</span><span class="go">│   │       ├── UVVM_Log.txt</span>
+<span class="linenos">139</span><span class="go">│   │       ├── run.do</span>
+<span class="linenos">140</span><span class="go">│   │       └── transcript</span>
+<span class="linenos">141</span><span class="go">│   ├── uart_vvc_demo_tb</span>
+<span class="linenos">142</span><span class="go">│   │   └── func_3</span>
+<span class="linenos">143</span><span class="go">│   │       ├── _Alert.txt</span>
+<span class="linenos">144</span><span class="go">│   │       ├── _Log.txt</span>
+<span class="linenos">145</span><span class="go">│   │       ├── run.do</span>
+<span class="linenos">146</span><span class="go">│   │       └── transcript</span>
+<span class="linenos">147</span><span class="go">│   └── uart_vvc_tb</span>
+<span class="linenos">148</span><span class="go">│       ├── func_10</span>
+<span class="linenos">149</span><span class="go">│       │   ├── run.do</span>
+<span class="linenos">150</span><span class="go">│       │   ├── skew_sbi_read_over_uart_receive_Alert.txt</span>
+<span class="linenos">151</span><span class="go">│       │   ├── skew_sbi_read_over_uart_receive_Log.txt</span>
+<span class="linenos">152</span><span class="go">│       │   └── transcript</span>
+<span class="linenos">153</span><span class="go">│       ├── func_11</span>
+<span class="linenos">154</span><span class="go">│       │   ├── run.do</span>
+<span class="linenos">155</span><span class="go">│       │   ├── skew_sbi_read_over_uart_receive_with_delay_functionality_Alert.txt</span>
+<span class="linenos">156</span><span class="go">│       │   ├── skew_sbi_read_over_uart_receive_with_delay_functionality_Log.txt</span>
+<span class="linenos">157</span><span class="go">│       │   └── transcript</span>
+<span class="linenos">158</span><span class="go">│       ├── func_5</span>
+<span class="linenos">159</span><span class="go">│       │   ├── check_register_defaults_Alert.txt</span>
+<span class="linenos">160</span><span class="go">│       │   ├── check_register_defaults_Log.txt</span>
+<span class="linenos">161</span><span class="go">│       │   ├── run.do</span>
+<span class="linenos">162</span><span class="go">│       │   └── transcript</span>
+<span class="linenos">163</span><span class="go">│       ├── func_6</span>
+<span class="linenos">164</span><span class="go">│       │   ├── check_simple_transmit_Alert.txt</span>
+<span class="linenos">165</span><span class="go">│       │   ├── check_simple_transmit_Log.txt</span>
+<span class="linenos">166</span><span class="go">│       │   ├── run.do</span>
+<span class="linenos">167</span><span class="go">│       │   └── transcript</span>
+<span class="linenos">168</span><span class="go">│       ├── func_7</span>
+<span class="linenos">169</span><span class="go">│       │   ├── check_simple_receive_Alert.txt</span>
+<span class="linenos">170</span><span class="go">│       │   ├── check_simple_receive_Log.txt</span>
+<span class="linenos">171</span><span class="go">│       │   ├── run.do</span>
+<span class="linenos">172</span><span class="go">│       │   └── transcript</span>
+<span class="linenos">173</span><span class="go">│       ├── func_8</span>
+<span class="linenos">174</span><span class="go">│       │   ├── check_single_simultaneous_transmit_and_receive_Alert.txt</span>
+<span class="linenos">175</span><span class="go">│       │   ├── check_single_simultaneous_transmit_and_receive_Log.txt</span>
+<span class="linenos">176</span><span class="go">│       │   ├── run.do</span>
+<span class="linenos">177</span><span class="go">│       │   └── transcript</span>
+<span class="linenos">178</span><span class="go">│       └── func_9</span>
+<span class="linenos">179</span><span class="go">│           ├── check_multiple_simultaneous_receive_and_read_Alert.txt</span>
+<span class="linenos">180</span><span class="go">│           ├── check_multiple_simultaneous_receive_and_read_Log.txt</span>
+<span class="linenos">181</span><span class="go">│           ├── run.do</span>
+<span class="linenos">182</span><span class="go">│           └── transcript</span>
+<span class="linenos">183</span><span class="go">├── testcase.dat</span>
+<span class="linenos">184</span><span class="go">├── testgroup.dat</span>
+<span class="linenos">185</span><span class="go">└── testgroup_collection.dat</span>
 </pre></div>
 </div>
 </div>
@@ -281,15 +306,17 @@ hash generated, thus identifying a specific test run can be done by inspecting t
 output folders. An example of the layout of a test mapping file is shown below:</p>
 <div class="literal-block-wrapper docutils container" id="id2">
 <div class="code-block-caption"><span class="caption-text">test_mapping.csv example</span><a class="headerlink" href="#id2" title="Permalink to this code"></a></div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./hdlregression/test/uart_simple_bfm_tb/70910381, bitvis_uart.uart_simple_bfm_tb(func)</span>
-<span class="go">./hdlregression/test/uart_vvc_tb/1419120764, bitvis_uart.uart_vvc_tb(func): gc_testcase=check_register_defaults</span>
-<span class="go">./hdlregression/test/uart_vvc_tb/886640571, bitvis_uart.uart_vvc_tb(func): gc_testcase=check_simple_transmit</span>
-<span class="go">./hdlregression/test/uart_vvc_tb/613945132, bitvis_uart.uart_vvc_tb(func): gc_testcase=check_simple_receive</span>
-<span class="go">./hdlregression/test/uart_vvc_tb/1155471887, bitvis_uart.uart_vvc_tb(func): gc_testcase=check_single_simultaneous_transmit_and_receive</span>
-<span class="go">./hdlregression/test/uart_vvc_tb/301996323, bitvis_uart.uart_vvc_tb(func): gc_testcase=check_multiple_simultaneous_receive_and_read</span>
-<span class="go">./hdlregression/test/uart_vvc_tb/3913552845, bitvis_uart.uart_vvc_tb(func): gc_testcase=skew_sbi_read_over_uart_receive</span>
-<span class="go">./hdlregression/test/uart_vvc_tb/1589059134, bitvis_uart.uart_vvc_tb(func): gc_testcase=skew_sbi_read_over_uart_receive_with_delay_functionality</span>
-<span class="go">./hdlregression/test/uart_vvc_demo_tb/70910381, bitvis_uart.uart_vvc_demo_tb(func)</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">1, ./hdlregression/test/irqc_demo_tb/func_1, bitvis_irqc.irqc_demo_tb(func)</span>
+<span class="go">2, ./hdlregression/test/irqc_tb/func_2, bitvis_irqc.irqc_tb(func)</span>
+<span class="go">3, ./hdlregression/test/uart_vvc_demo_tb/func_3, bitvis_uart.uart_vvc_demo_tb(func)</span>
+<span class="go">4, ./hdlregression/test/uart_simple_bfm_tb/func_4, bitvis_uart.uart_simple_bfm_tb(func)</span>
+<span class="go">5, ./hdlregression/test/uart_vvc_tb/func_5, bitvis_uart.uart_vvc_tb(func):GC_TESTCASE=check_register_defaults</span>
+<span class="go">6, ./hdlregression/test/uart_vvc_tb/func_6, bitvis_uart.uart_vvc_tb(func):GC_TESTCASE=check_simple_transmit</span>
+<span class="go">7, ./hdlregression/test/uart_vvc_tb/func_7, bitvis_uart.uart_vvc_tb(func):GC_TESTCASE=check_simple_receive</span>
+<span class="go">8, ./hdlregression/test/uart_vvc_tb/func_8, bitvis_uart.uart_vvc_tb(func):GC_TESTCASE=check_single_simultaneous_transmit_and_receive</span>
+<span class="go">9, ./hdlregression/test/uart_vvc_tb/func_9, bitvis_uart.uart_vvc_tb(func):GC_TESTCASE=check_multiple_simultaneous_receive_and_read</span>
+<span class="go">10, ./hdlregression/test/uart_vvc_tb/func_10, bitvis_uart.uart_vvc_tb(func):GC_TESTCASE=skew_sbi_read_over_uart_receive</span>
+<span class="go">11, ./hdlregression/test/uart_vvc_tb/func_11, bitvis_uart.uart_vvc_tb(func):GC_TESTCASE=skew_sbi_read_over_uart_receive_with_delay_functionality</span>
 </pre></div>
 </div>
 </div>

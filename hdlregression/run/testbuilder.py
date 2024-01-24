@@ -57,16 +57,16 @@ class TestBuilder:
         """
         # Build all possible tests as starting point
         self._build_base_tests()
-        
+
         # Create test output folder names
         for test in self.base_tests_container.get():
             test.create_test_output_folder_name()
-            
+
         # Update status from previous failing test runs
         for old_test in failing_testcase_list:
             if old_test.get_status() == TestStatus.FAIL:
                 for new_test in self.base_tests_container.get():
-                    if new_test.get_test_output_folder() == old_test.get_test_output_folder():
+                    if new_test.get_test_path() == old_test.get_test_path():
                         new_test.set_status(TestStatus.FAIL)
 
         # Run all
@@ -135,7 +135,6 @@ class TestBuilder:
         # Remove any existing test(s)
         self.tests_to_run_container.empty_list()
         self.base_tests_container.empty_list()
-        
 
         sequencer_testcase_string = self.project.settings.get_testcase_identifier_name()
 
@@ -236,7 +235,6 @@ class TestBuilder:
 
                     # No scripted generics tests
                     else:
-
                         # Check if test has GC_TESTCASE setting
                         if arch.get_has_testcase() is False:
                             # Test without generics
@@ -252,7 +250,9 @@ class TestBuilder:
                                 self.tests_to_run_container.add(test)
 
         # Copy to base list, keep in test list.
-        self.base_tests_container.add_element_from_list(self.tests_to_run_container.get())
+        self.base_tests_container.add_element_from_list(
+            self.tests_to_run_container.get()
+        )
 
     @staticmethod
     def _unix_match(search_string, pattern) -> bool:
@@ -263,7 +263,7 @@ class TestBuilder:
 
     def _get_user_testcase_list(self) -> list:
         return self.project.settings.get_testcase_list()
-      
+
     def _copy_filtered_tests_to_tests_to_run_container(self, filtered_tests) -> bool:
         """
         Copies the filtered tests, i.e the ones selected for run,

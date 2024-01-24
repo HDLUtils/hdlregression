@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Application Programming Interface (API) &mdash; hdlregression 0.47.0
+  <title>Application Programming Interface (API) &mdash; hdlregression 0.49.0
  documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
@@ -147,7 +147,8 @@ There are two template script files in the <code class="code bash docutils liter
 <h2>HDLRegression()<a class="headerlink" href="#hdlregression" title="Permalink to this headline"></a></h2>
 <p>This command is used for initializing the HDLRegression object which is used for defining the regression script
 and accessing the HDLRegression API.</p>
-<p>The default simulator is Modelsim, but this can be changed by using the <code class="docutils literal notranslate"><span class="pre">simulator</span></code> argument as shown
+<p>HDLRegression will attempt to auto-detect available simulators and will choose either ModelSim, NVC, GHDL, or
+Riviera Pro based on the findings. The preffered simulator can be selected by using the <code class="docutils literal notranslate"><span class="pre">simulator</span></code> argument as shown
 in example 2 or using <a class="reference internal" href="cli.html"><span class="doc">Command Line Interface (CLI)</span></a> :</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">HDLRegression</span><span class="p">(</span><span class="o">&lt;</span><span class="n">simulator</span><span class="o">&gt;</span><span class="p">)</span>
 </pre></div>
@@ -172,7 +173,7 @@ in example 2 or using <a class="reference internal" href="cli.html"><span class=
 <tr class="row-even"><td><p>simulator</p></td>
 <td><p>string</p></td>
 <td><p>“ghdl”, “modelsim”, “nvc”</p></td>
-<td><p>“modelsim”</p></td>
+<td><p>auto-detected</p></td>
 <td><p>optional</p></td>
 </tr>
 <tr class="row-odd"><td><p>arg_parser</p></td>

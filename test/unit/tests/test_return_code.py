@@ -12,8 +12,10 @@
 
 import sys
 import os
+import platform
 import shutil
 import pytest
+import subprocess
 
 from hdlregression.construct.hdlfile import HDLFile
 from hdlregression import HDLRegression
@@ -43,13 +45,52 @@ def tear_down_function():
         shutil.rmtree("./hdlregression")
 
 
-def test_test_run_ok():
+def is_simulator_installed(simulator):
+    version = "-version" if simulator == "vsim" else "--version"
+    try:
+        subprocess.run([simulator, version], check=True)
+        return True
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return False
+
+
+def is_folder_present(folder_path):
+    return os.path.isdir(folder_path)
+
+
+@pytest.fixture(scope="session")
+def sim_env():
+    # Detect platform and simulators
+    platform_info = platform.system()
+    modelsim_installed = is_simulator_installed("vsim")
+    ghdl_installed = is_simulator_installed("ghdl")
+    nvc_installed = is_simulator_installed("nvc")
+    simulator = (
+        "MODELSIM"
+        if modelsim_installed
+        else "NVC"
+        if nvc_installed
+        else "GHDL"
+        if ghdl_installed
+        else ""
+    )
+
+    return {
+        "platform": platform_info,
+        "modelsim": modelsim_installed,
+        "ghdl": ghdl_installed,
+        "nvc": nvc_installed,
+        "simulator": simulator,
+    }
+
+
+def test_test_run_ok(sim_env, design_path, tb_path):
     clear_output()
-    hr = HDLRegression()
-    filename = get_file_path("../design/dut_adder.vhd")
+    hr = HDLRegression(simulator=sim_env["simulator"])
+    filename = get_file_path(design_path + "../design/dut_adder.vhd")
     hr.add_files(filename, "adder_lib")
 
-    filename = get_file_path("../tb/dut_adder_tb.vhd")
+    filename = get_file_path(tb_path + "/dut_adder_tb.vhd")
     hr.add_files(filename, "adder_lib")
 
     hr.set_result_check_string("passing testcase")
@@ -58,10 +99,10 @@ def test_test_run_ok():
     assert rc == 0, "check return code: test run OK"
 
 
-def test_no_test_run():
+def test_no_test_run(sim_env, design_path):
     clear_output()
-    hr = HDLRegression()
-    filename = get_file_path("../design/dut_adder.vhd")
+    hr = HDLRegression(simulator=sim_env["simulator"])
+    filename = get_file_path(design_path + "/dut_adder.vhd")
     hr.add_files(filename, "adder_lib")
 
     hr.set_result_check_string("passing testcase")
@@ -70,13 +111,13 @@ def test_no_test_run():
     assert rc == 1, "check return code: no tests run"
 
 
-def test_compile_error():
+def test_compile_error(sim_env, design_path, tb_path):
     clear_output()
-    hr = HDLRegression()
-    filename = get_file_path("../design/dut_adder_compile_error.vhd")
+    hr = HDLRegression(simulator=sim_env["simulator"])
+    filename = get_file_path(design_path + "/dut_adder_compile_error.vhd")
     hr.add_files(filename, "adder_lib")
 
-    filename = get_file_path("../tb/dut_adder_tb.vhd")
+    filename = get_file_path(tb_path + "/dut_adder_tb.vhd")
     hr.add_files(filename, "adder_lib")
 
     hr.set_result_check_string("passing testcase")

@@ -13,7 +13,9 @@
 import pytest
 import sys
 import os
+import platform
 import shutil
+import subprocess
 
 from hdlregression import HDLRegression
 
@@ -48,11 +50,50 @@ def tear_down_function():
         shutil.rmtree("./hdlregression")
 
 
-def test_testcase():
-    clear_output()
-    hr = HDLRegression()
+def is_simulator_installed(simulator):
+    version = "-version" if simulator == "vsim" else "--version"
+    try:
+        subprocess.run([simulator, version], check=True)
+        return True
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return False
 
-    filename = "../tb/tb_testcase.vhd"
+
+def is_folder_present(folder_path):
+    return os.path.isdir(folder_path)
+
+
+@pytest.fixture(scope="session")
+def sim_env():
+    # Detect platform and simulators
+    platform_info = platform.system()
+    modelsim_installed = is_simulator_installed("vsim")
+    ghdl_installed = is_simulator_installed("ghdl")
+    nvc_installed = is_simulator_installed("nvc")
+    simulator = (
+        "MODELSIM"
+        if modelsim_installed
+        else "NVC"
+        if nvc_installed
+        else "GHDL"
+        if ghdl_installed
+        else ""
+    )
+
+    return {
+        "platform": platform_info,
+        "modelsim": modelsim_installed,
+        "ghdl": ghdl_installed,
+        "nvc": nvc_installed,
+        "simulator": simulator,
+    }
+
+
+def test_testcase(sim_env, tb_path):
+    clear_output()
+    hr = HDLRegression(simulator=sim_env["simulator"])
+
+    filename = tb_path + "/tb_testcase.vhd"
     filename = get_file_path(filename)
     hr.add_files(filename, "testcase_lib")
     hr.set_result_check_string("testcase_arch: testcase")
@@ -67,9 +108,9 @@ def test_testcase():
     assert len(not_run_list) == 0, "check number of not run tests"
 
 
-def test_testcase_select():
+def test_testcase_select(sim_env):
     clear_output()
-    hr = HDLRegression()
+    hr = HDLRegression(simulator=sim_env["simulator"])
 
     hr.add_testcase("testbench_test.architecture_test.testcase_test")
 
@@ -83,9 +124,9 @@ def test_testcase_select():
     ), "checking add_testcase()"
 
 
-def test_testcase_with_whitespace():
+def test_testcase_with_whitespace(sim_env):
     clear_output()
-    hr = HDLRegression()
+    hr = HDLRegression(simulator=sim_env["simulator"])
 
     hr.add_testcase("testbench_test.architecture_test.testcase_test ")
 
@@ -99,9 +140,9 @@ def test_testcase_with_whitespace():
     ), "checking add_testcase()"
 
 
-def test_testcase_with_tabulator():
+def test_testcase_with_tabulator(sim_env):
     clear_output()
-    hr = HDLRegression()
+    hr = HDLRegression(simulator=sim_env["simulator"])
 
     hr.add_testcase("testbench_test.architecture_test.testcase_test ")
 
@@ -115,11 +156,11 @@ def test_testcase_with_tabulator():
     ), "checking add_testcase()"
 
 
-def test_one_testcase_selected():
+def test_one_testcase_selected(sim_env, tb_path):
     clear_output()
-    hr = HDLRegression()
+    hr = HDLRegression(simulator=sim_env["simulator"])
 
-    filename = "../tb/tb_testcase.vhd"
+    filename = tb_path + "/tb_testcase.vhd"
     filename = get_file_path(filename)
     hr.add_files(filename, "testcase_lib")
     hr.set_result_check_string("testcase_arch: testcase")
@@ -136,11 +177,11 @@ def test_one_testcase_selected():
     assert len(not_run_list) == 0, "check number of not run tests"
 
 
-def test_two_testcases_selected():
+def test_two_testcases_selected(sim_env, tb_path):
     clear_output()
-    hr = HDLRegression()
+    hr = HDLRegression(simulator=sim_env["simulator"])
 
-    filename = "../tb/tb_testcase.vhd"
+    filename = tb_path + "/tb_testcase.vhd"
     filename = get_file_path(filename)
     hr.add_files(filename, "testcase_lib")
     hr.set_result_check_string("testcase_arch: testcase")
@@ -159,11 +200,11 @@ def test_two_testcases_selected():
     assert len(not_run_list) == 0, "check number of not run tests"
 
 
-def test_list_of_testcases():
+def test_list_of_testcases(sim_env, tb_path):
     clear_output()
-    hr = HDLRegression()
+    hr = HDLRegression(simulator=sim_env["simulator"])
 
-    filename = "../tb/tb_testcase.vhd"
+    filename = tb_path + "/tb_testcase.vhd"
     filename = get_file_path(filename)
     hr.add_files(filename, "testcase_lib")
     hr.set_result_check_string("testcase_arch: testcase")
@@ -185,11 +226,11 @@ def test_list_of_testcases():
     assert len(not_run_list) == 0, "check number of not run tests"
 
 
-def test_unsupported_type():
+def test_unsupported_type(sim_env, tb_path):
     clear_output()
-    hr = HDLRegression()
+    hr = HDLRegression(simulator=sim_env["simulator"])
 
-    filename = "../tb/tb_testcase.vhd"
+    filename = tb_path + "/tb_testcase.vhd"
     filename = get_file_path(filename)
     hr.add_files(filename, "testcase_lib")
     hr.set_result_check_string("testcase_arch: testcase")
@@ -200,12 +241,12 @@ def test_unsupported_type():
     assert hr.settings.get_testcase() == None, "check unsupported testcase type"
 
 
-def test_correct_number_of_testcases():
+def test_correct_number_of_testcases(sim_env, tb_path):
     clear_output()
 
-    hr = HDLRegression()
+    hr = HDLRegression(simulator=sim_env["simulator"])
 
-    filename = "../tb/tb_passing.vhd"
+    filename = tb_path + "/tb_passing.vhd"
     filename = get_file_path(filename)
     hr.add_files(filename, "test_lib")
     hr.set_result_check_string("passing testcase")
@@ -216,14 +257,14 @@ def test_correct_number_of_testcases():
     assert len(tests) == 1, "checking number of testcases"
 
 
-def test_list_testcases():
+def test_list_testcases(sim_env, tb_path):
     from hdlregression.hdlregression_pkg import list_testcases
 
     clear_output()
 
-    hr = HDLRegression()
+    hr = HDLRegression(simulator=sim_env["simulator"])
 
-    filename = "../tb/tb_passing.vhd"
+    filename = tb_path + "/tb_passing.vhd"
     filename = get_file_path(filename)
     hr.add_files(filename, "test_lib")
     hr.set_result_check_string("passing testcase")
@@ -234,11 +275,11 @@ def test_list_testcases():
     assert tc_list.strip() == "TC:1 - tb_passing.test", "checking list testcases"
 
 
-def test_wildcard_asterix_testcases():
+def test_wildcard_asterix_testcases(sim_env, tb_path):
     clear_output()
-    hr = HDLRegression()
+    hr = HDLRegression(simulator=sim_env["simulator"])
 
-    filename = "../tb/tb_testcase.vhd"
+    filename = tb_path + "/tb_testcase.vhd"
     filename = get_file_path(filename)
     hr.add_files(filename, "testcase_lib")
     hr.set_result_check_string("testcase_arch: testcase")
@@ -261,11 +302,11 @@ def test_wildcard_asterix_testcases():
         assert testcase in "".join(pass_list)
 
 
-def test_wildcard_question_mark_testcases():
+def test_wildcard_question_mark_testcases(sim_env, tb_path):
     clear_output()
-    hr = HDLRegression()
+    hr = HDLRegression(simulator=sim_env["simulator"])
 
-    filename = "../tb/tb_testcase.vhd"
+    filename = tb_path + "/tb_testcase.vhd"
     filename = get_file_path(filename)
     hr.add_files(filename, "testcase_lib")
     hr.set_result_check_string("testcase_arch: testcase")
@@ -286,11 +327,11 @@ def test_wildcard_question_mark_testcases():
     )
 
 
-def test_wildcard_not_found_testcases():
+def test_wildcard_not_found_testcases(sim_env, tb_path):
     clear_output()
-    hr = HDLRegression()
+    hr = HDLRegression(simulator=sim_env["simulator"])
 
-    filename = "../tb/tb_testcase.vhd"
+    filename = tb_path + "/tb_testcase.vhd"
     filename = get_file_path(filename)
     hr.add_files(filename, "testcase_lib")
     hr.set_result_check_string("testcase_arch: testcase")
@@ -308,11 +349,11 @@ def test_wildcard_not_found_testcases():
     assert len(not_run_list) == 0, "check number of not run tests"
 
 
-def test_wildcard_asterix_architecture_and_testcase():
+def test_wildcard_asterix_architecture_and_testcase(sim_env, tb_path):
     clear_output()
-    hr = HDLRegression()
+    hr = HDLRegression(simulator=sim_env["simulator"])
 
-    filename = "../tb/tb_testcase.vhd"
+    filename = tb_path + "/tb_testcase.vhd"
     filename = get_file_path(filename)
     hr.add_files(filename, "testcase_lib")
     hr.set_result_check_string("testcase_arch: testcase")
@@ -335,12 +376,12 @@ def test_wildcard_asterix_architecture_and_testcase():
         assert testcase in "".join(pass_list)
 
 
-def test_passing_testcase_failing_in_second_run():
+def test_passing_testcase_failing_in_second_run(sim_env, tb_path):
     clear_output()
 
     # First run
-    hr = HDLRegression()
-    filename = "../tb/tb_passing.vhd"
+    hr = HDLRegression(simulator=sim_env["simulator"])
+    filename = tb_path + "/tb_passing.vhd"
     filename = get_file_path(filename)
     hr.add_files(filename, "testcase_lib")
     hr.set_result_check_string("passing testcase")
@@ -353,7 +394,7 @@ def test_passing_testcase_failing_in_second_run():
     assert len(pass_list) == 1, "check number of passing tests"
     assert len(not_run_list) == 0, "check number of not run tests"
 
-    # Second 
+    # Second
     hr = HDLRegression()
     hr.set_result_check_string("failing_testcase")
     return_code = hr.start(regression_mode=True)
@@ -363,4 +404,4 @@ def test_passing_testcase_failing_in_second_run():
     assert return_code == 1, "check number of failing tests"
     assert len(fail_list) == 1, "check number of failing tests"
     assert len(pass_list) == 0, "check number of passing tests"
-    assert len(not_run_list) == 0, "check number of not run tests"    
+    assert len(not_run_list) == 0, "check number of not run tests"

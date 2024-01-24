@@ -13,7 +13,9 @@
 import pytest
 import sys
 import os
+import platform
 import shutil
+import subprocess
 
 from hdlregression import HDLRegression
 
@@ -48,20 +50,64 @@ def tear_down_function():
         shutil.rmtree("./hdlregression")
 
 
-def test_warning():
+def is_simulator_installed(simulator):
+    version = "-version" if simulator == "vsim" else "--version"
+    try:
+        subprocess.run([simulator, version], check=True)
+        return True
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return False
+
+
+def is_folder_present(folder_path):
+    return os.path.isdir(folder_path)
+
+
+@pytest.fixture(scope="session")
+def sim_env():
+    # Detect platform and simulators
+    platform_info = platform.system()
+    modelsim_installed = is_simulator_installed("vsim")
+    ghdl_installed = is_simulator_installed("ghdl")
+    nvc_installed = is_simulator_installed("nvc")
+    simulator = (
+        "MODELSIM"
+        if modelsim_installed
+        else "NVC"
+        if nvc_installed
+        else "GHDL"
+        if ghdl_installed
+        else ""
+    )
+
+    return {
+        "platform": platform_info,
+        "modelsim": modelsim_installed,
+        "ghdl": ghdl_installed,
+        "nvc": nvc_installed,
+        "simulator": simulator,
+    }
+
+
+def test_number_of_tests(sim_env, dut_path, tb_path):
     clear_output()
-    hr = HDLRegression()
+    hr = HDLRegression(simulator=sim_env["simulator"])
 
-    filename = "../tb/tb_warning.vhd"
+    filename = dut_path + "/dut_assertion.vhd"
     filename = get_file_path(filename)
-    hr.add_files(filename, "testcase_lib")
-    hr.set_result_check_string("This is a warning message.")
+    hr.add_files(filename, "assert_lib")
 
-    return_code = hr.start(verbose=False)
+    filename = tb_path + "/tb_assertion.vhd"
+    filename = get_file_path(filename)
+    hr.add_files(filename, "assert_lib")
+
+    hr.set_result_check_string("TC done")
+
+    result = hr.start()
 
     (pass_list, fail_list, not_run_list) = hr.get_results()
 
-    assert return_code == 0, "check number of failing tests"
+    assert result == 0, "check number of failing tests"
     assert len(fail_list) == 0, "check number of failing tests"
-    assert len(pass_list) == 1, "check number of passing tests"
+    assert len(pass_list) == 2, "check number of passing tests"
     assert len(not_run_list) == 0, "check number of not run tests"

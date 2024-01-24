@@ -19,6 +19,7 @@ from pickle import FALSE
 
 from ..hdlregression_pkg import get_window_width
 
+
 class TestStatus:
     PASS = "PASS"
     PASS_WITH_MINOR = "PASS_WITH_MINOR"
@@ -27,8 +28,6 @@ class TestStatus:
 
 
 class HdlRegressionTest:
-  
-  
     def __init__(self, tb=None, settings=None):
         self.path = None
         self.tb = None
@@ -39,10 +38,10 @@ class HdlRegressionTest:
         self.terminal_test_details_str = None
         self.test_error_summary = None
         self.terminal_test_string = None
-        
+
         self.num_sim_errors = 0
         self.num_sim_warnings = 0
-        
+
         self.test_status = TestStatus.NOT_RUN
 
         self.hdlfile = None
@@ -64,7 +63,7 @@ class HdlRegressionTest:
         Input is one single line.
         """
         self.test_output.append(output_lines)
-        
+
     def add_output_lines(self, output_lines):
         """
         Save test output so it can be printed to terminal in verbose mode.
@@ -78,12 +77,12 @@ class HdlRegressionTest:
         Returns sim output from test run.
         """
         return "\n".join(self.test_output)
-      
+
     def get_output_no_format(self) -> list:
         return self.test_output
 
     def get_test_error_summary(self) -> str:
-        sep = ("="*get_window_width())
+        sep = "=" * get_window_width()
         output_lines = self.test_output
         error_lines = "\n".join(output_lines[len(output_lines) - 30 :])
         test_error_summary = "\n\n{}\n\n{}\n\n{}\n\n".format(sep, error_lines, sep)
@@ -132,7 +131,7 @@ class HdlRegressionTest:
         return self.hdlfile
 
     # ----------- test status ---------------
-    def set_status(self, status:TestStatus):
+    def set_status(self, status: TestStatus):
         self.test_status = status.upper()
 
     def get_status(self) -> TestStatus:
@@ -183,49 +182,30 @@ class HdlRegressionTest:
 
         test_id_str = str(self.get_id_number())
         map_string = (
-            test_id_str
-            + ", "
-            + self.get_test_output_folder()
-            + ", "
-            + test_map_name
-            + "\n"
+            test_id_str + ", " + self.get_test_path() + ", " + test_map_name + "\n"
         )
         return map_string
 
-    def get_test_path(self) -> str:
-        path = os.path.join(self.settings.get_test_path(), self.get_tb().get_name())
-        if self.get_is_vhdl():
-            # Generate unique name for the test run
-            test_base_path = path
-            gc_str = self.get_gc_str()
-            tb_arch_name = self.get_arch().get_name()
-
-            test_folder = zlib.adler32((tb_arch_name + gc_str).encode())
-            path = os.path.join(test_base_path, str(test_folder))
-
-        return path
-
     def get_test_base_path(self) -> str:
         return os.path.join(self.settings.get_test_path(), self.get_tb().get_name())
-      
+
+    def get_test_path(self) -> str:
+        return self.test_output_folder_name
+
     def create_test_output_folder_name(self):
         """
         Create a test folder for this test run and return folder name.
         """
+        test_base_path = self.get_test_base_path()
         if self.get_is_vhdl():
             # Generate unique name for the test run
-            test_base_path = self.get_test_base_path()
             gc_str = self.get_gc_str()
             tb_arch_name = self.get_arch().get_name()
 
-            test_folder = zlib.adler32((tb_arch_name + gc_str).encode())
-            self.test_output_folder_name = os.path.join(test_base_path, str(test_folder))
+            test_folder = tb_arch_name + "_" + str(self.get_id_number())
+            self.test_output_folder_name = os.path.join(test_base_path, test_folder)
         else:
-            self.test_output_folder_name = self.get_test_base_path()
-      
-
-    def get_test_output_folder(self) -> str:
-        return self.test_output_folder_name
+            self.test_output_folder_name = test_base_path
 
     def set_id_number(self, number):
         self.id_number = number
@@ -244,7 +224,7 @@ class HdlRegressionTest:
 
     def get_netlist_timing(self) -> str:
         return self.netlist_timing
-      
+
     def set_num_sim_warnings(self, num):
         self.num_sim_warnings = num
 
@@ -262,7 +242,7 @@ class HdlRegressionTest:
 
     def get_num_sim_errors(self) -> int:
         return self.num_sim_errors
-    
+
 
 class VHDLTest(HdlRegressionTest):
     def __init__(self, tb=None, arch=None, tc=None, gc=[], settings=None):
