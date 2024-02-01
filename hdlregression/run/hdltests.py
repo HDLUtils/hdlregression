@@ -25,6 +25,7 @@ class TestStatus:
     PASS_WITH_MINOR = "PASS_WITH_MINOR"
     FAIL = "FAIL"
     NOT_RUN = "NOT_RUN"
+    RE_RUN = "RE_RUN"
 
 
 class HdlRegressionTest:

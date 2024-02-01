@@ -127,7 +127,7 @@ def test_sequencer_generated_testcases(sim_env, tb_path):
     organize_libraries_by_dependency(project=hr)
 
     runner = hr._get_runner_object(simulator)
-    runner.prepare_test_modules_and_objects(failing_testcase_list=[])
+    runner.prepare_test_modules_and_objects(re_run_tc_list=[])
 
     run_tests = runner.testbuilder.get_list_of_tests_to_run()
 

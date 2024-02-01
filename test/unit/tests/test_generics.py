@@ -177,7 +177,7 @@ def test_path_generics(sim_env, tb_path):
     )
     hr.start()
 
-    simulated_tests = hr.runner.test_list
+    simulated_tests = hr.runner.get_test_list()
     assert len(simulated_tests) == 2, "check number of tests"
 
     run_test_path = simulated_tests[0].get_gc_str().replace("//", "/")

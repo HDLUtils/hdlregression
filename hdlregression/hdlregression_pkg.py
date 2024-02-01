@@ -27,11 +27,12 @@ from pickle import FALSE
 
 
 def dict_keys_to_lower(dictionary) -> dict:
-    '''
+    """
     Convert dictionary keys to lower case
-    '''
+    """
     dictionary = dict((k.lower(), v) for k, v in dictionary.items())
     return dictionary
+
 
 # ====================================================================
 # Listing methods
@@ -39,12 +40,13 @@ def dict_keys_to_lower(dictionary) -> dict:
 
 
 def list_compile_order(container) -> str:
-    '''
+    """
     List libraries with belonging files in compile order.
 
     Returns:
     comp_order_str(str): a string with compile order for project.
-    '''
+    """
+
     def compile_string(library):
         if library.get_need_compile():
             return "(recompile)"
@@ -52,7 +54,7 @@ def list_compile_order(container) -> str:
             return "(recompile)"
         else:
             return ""
-  
+
     comp_order_str = "\nProject compile order:\n\n"
 
     for idx, library in enumerate(container.get()):
@@ -60,12 +62,16 @@ def list_compile_order(container) -> str:
 
         if idx > 0:
             comp_order_str += "|\n"
-        comp_order_str += "|--[{}]-- {} {}\n".format((idx+1), library.get_name(), compile_str)
+        comp_order_str += "|--[{}]-- {} {}\n".format(
+            (idx + 1), library.get_name(), compile_str
+        )
 
         for hdlfile in library.get_compile_order_list():
             tb = "(TB)" if hdlfile.get_is_tb() else ""
             rc = "(rc)" if hdlfile.get_need_compile() else ""
-            comp_order_str += "|      |--- {} {} {}\n".format(hdlfile.get_filename_with_path(), tb, rc)
+            comp_order_str += "|      |--- {} {} {}\n".format(
+                hdlfile.get_filename_with_path(), tb, rc
+            )
 
     comp_order_str += "\n"
     return comp_order_str
@@ -97,8 +103,8 @@ def list_testgroup(container) -> str:
             tg_lines.append(line)
 
     if not tg_lines:
-        return 'No test group found.'
-    return '\n'.join(tg_lines)
+        return "No test group found."
+    return "\n".join(tg_lines)
 
 
 def list_testcases(runner) -> str:
@@ -113,17 +119,20 @@ def list_testcases(runner) -> str:
     runner.testbuilder.build_tb_module_list()
     runner.testbuilder._build_base_tests()
     run_tests = runner.testbuilder.get_list_of_tests_to_run()
-    
 
     for test in run_tests:
-        generics = test.get_gc_str(filter_testcase_id=True).replace('-g', '') if test.get_gc_str() else ''
+        generics = (
+            test.get_gc_str(filter_testcase_id=True).replace("-g", "")
+            if test.get_gc_str()
+            else ""
+        )
         tc_line = "TC:{0} - {1}".format(test.get_id_number(), test.get_testcase_name())
         tc_lines.append(tc_line)
 
         if generics:
             tc_lines.append("    Generics: {0}".format(generics))
 
-    return '\n'.join(tc_lines)
+    return "\n".join(tc_lines)
 
 
 # ========================================================
@@ -132,10 +141,11 @@ def list_testcases(runner) -> str:
 #
 # ========================================================
 
+
 def get_window_width() -> int:
     try:
         # Fallback for Windows platforms
-        if os.name == 'nt':
+        if os.name == "nt":
             return os.get_terminal_size().columns
         else:
             # Fallback for UNIX platforms
@@ -144,37 +154,40 @@ def get_window_width() -> int:
         # Return a default value if unable to determine the terminal width
         return 80
 
+
 def os_adjust_path(path) -> str:
     if platform.system().lower() == "windows":
-        return path.replace('\\', '//')
+        return path.replace("\\", "//")
     else:
-        return path.replace('\\', '\\\\')
+        return path.replace("\\", "\\\\")
 
 
 SIMULATORS = ["GHDL", "MODELSIM", "NVC"]
 
+
 def simulator_detector() -> list:
-    '''
+    """
     Method will be used for getting a modelsim.ini file
-    '''
+    """
     detected_simulators = []
-    path_env = os.environ['PATH']
-    if 'ghdl' in path_env.lower():
-        detected_simulators.append('GHDL')
-    if 'nvc' in path_env.lower():
-        detected_simulators.append('NVC')
-    if 'modelsim' in path_env.lower():
-        detected_simulators.append('MODELSIM')
-    if 'aldec' in path_env.lower():
-        detected_simulators.append('ALDEC')
+    path_env = os.environ["PATH"]
+    if "ghdl" in path_env.lower():
+        detected_simulators.append("GHDL")
+    if "nvc" in path_env.lower():
+        detected_simulators.append("NVC")
+    if "modelsim" in path_env.lower():
+        detected_simulators.append("MODELSIM")
+    if "aldec" in path_env.lower():
+        detected_simulators.append("ALDEC")
 
     return detected_simulators
 
+
 def adjust_generic_value_paths(generic_list, settings, logger) -> list:
-    '''
+    """
     Check generic values if they are marked as PATH and pad
     paths with user script path information.
-    '''
+    """
 
     # Helper methods
     def check_if_generic_value_is_path(generic_data) -> bool:
@@ -182,10 +195,10 @@ def adjust_generic_value_paths(generic_list, settings, logger) -> list:
             return False
         elif isinstance(generic_data, tuple):
             if len(generic_data) != 2:
-                logger.warning('Add generic value as tuple require 2 items.')
+                logger.warning("Add generic value as tuple require 2 items.")
                 return False
             else:
-                if generic_data[1].upper() == 'PATH':
+                if generic_data[1].upper() == "PATH":
                     return True
         return False
 
@@ -206,21 +219,19 @@ def adjust_generic_value_paths(generic_list, settings, logger) -> list:
 
 def convert_from_millisec(millis):
     total_seconds = millis // 1000
-    
+
     hours = total_seconds // 3600
     total_seconds %= 3600
-    
+
     minutes = total_seconds // 60
     seconds = total_seconds % 60
     return int(seconds), int(minutes), int(hours)
 
 
-def validate_testgroup_parameters(testgroup_name: str,
-                                  entity: str,
-                                  architecture: str,
-                                  testcase: str,
-                                  generic: list) -> bool:
-    '''
+def validate_testgroup_parameters(
+    testgroup_name: str, entity: str, architecture: str, testcase: str, generic: list
+) -> bool:
+    """
     :param testgroup_name: Name of testgroup
     :type testgroup_name: str
     :param entity: Name of testbench entity
@@ -234,7 +245,7 @@ def validate_testgroup_parameters(testgroup_name: str,
 
     :rtype: bool
     :return: True if all validated OK, otherwise False.
-    '''
+    """
     v_arguments_ok = True
     if not architecture:
         if testcase or generic:
@@ -260,68 +271,82 @@ def validate_testgroup_parameters(testgroup_name: str,
     return v_arguments_ok
 
 
-def validate_cached_version(project,
-                            installed_version: str) -> bool:
-    '''
+def validate_cached_version(project, installed_version: str) -> bool:
+    """
     Compare installed version with cache version.
 
     :rtype: bool
     :return: True if cached version matches installed version.
-    '''
+    """
     # Load cached HDLRegression version number
     cached_version = project.settings.get_hdlregression_version()
     # Compare current version with cached version
-    if (cached_version != installed_version) and (cached_version != '0.0.0'):
-        print('WARNING! HDLRegression v{} not compatible with cached v{}.\nExecuting database rebuild.'.format(installed_version, cached_version))
+    if (cached_version != installed_version) and (cached_version != "0.0.0"):
+        print(
+            "WARNING! HDLRegression v{} not compatible with cached v{}.\nExecuting database rebuild.".format(
+                installed_version, cached_version
+            )
+        )
         return False
     return True
 
 
 def print_info_msg_when_no_test_has_run(project, runner):
-    ''' Display info message if no tests have been run. '''
+    """Display info message if no tests have been run."""
     if runner.get_num_tests() == 0:
-        project.logger.info('\nNo tests found.')
+        project.logger.info("\nNo tests found.")
         project.logger.info(
             'Ensure that the "--hdlregression:tb" (VHDL) / "//hdlregression:tb"'
-            ' (Verilog) pragma is set in the testbench file(s).')
+            " (Verilog) pragma is set in the testbench file(s)."
+        )
     elif project.get_num_tests_run() == 0:
         project.logger.info(
-            'Test run not required. Use "-fr"/"--fullRegression" to re-run all tests.')
+            'Test run not required. Use "-fr"/"--fullRegression" to re-run all tests.'
+        )
 
 
 def display_info_text(version) -> None:
-    ''' Presents HDLRegression version number and QR info. '''
+    """Presents HDLRegression version number and QR info."""
     width = get_window_width()
-    divisor_line = ('=' * width)
-    print('''
+    divisor_line = "=" * width
+    print(
+        """
 {}
   HDLRegression version {}
   See /doc/hdlregression.pdf for documentation.
 {}
 
-'''.format(divisor_line, version, divisor_line))
+""".format(
+            divisor_line, version, divisor_line
+        )
+    )
 
 
 def print_run_success(project):
     width = get_window_width()
-    print('%s' % ('-' * width))
-    
+    print("%s" % ("-" * width))
+
     elapsed_time = project.settings.get_sim_time()
     sim_sec, sim_min, sim_hrs = convert_from_millisec(elapsed_time)
-    project.logger.info("Simulation run time: %dh:%dm:%ds." % (sim_hrs, sim_min, sim_sec))
+    project.logger.info(
+        "Simulation run time: %dh:%dm:%ds." % (sim_hrs, sim_min, sim_sec)
+    )
 
     if project.settings.get_return_code() == 0:
-        project.logger.info('SIMULATION SUCCESS: %d passing test(s).'
-                            % (project.get_num_pass_tests()), color='green')
+        project.logger.info(
+            "SIMULATION SUCCESS: %d passing test(s)." % (project.get_num_pass_tests()),
+            color="green",
+        )
         num_minor_alerts = project.get_num_pass_with_minor_alert_tests()
         if num_minor_alerts > 0:
             project.logger.warning(
-                '%d test(s) passed with minor alert(s).'
-                % (num_minor_alerts))
+                "%d test(s) passed with minor alert(s)." % (num_minor_alerts)
+            )
     else:
-        project.logger.warning('SIMULATION FAIL: %d tests run, %d test(s) failed.'
-                               % (project.get_num_tests_run(),
-                                  project.get_num_fail_tests()))
+        project.logger.warning(
+            "SIMULATION FAIL: %d tests run, %d test(s) failed."
+            % (project.get_num_tests_run(), project.get_num_fail_tests())
+        )
 
 
 def clean_generated_output(project, restore_settings=False):
@@ -336,20 +361,21 @@ def empty_project_folder(project):
     # Clean output, i.e. delete all
     if os.path.isdir(project.settings.get_output_path()):
         shutil.rmtree(project.settings.get_output_path())
-        project.logger.info('Project output path %s cleaned.' % 
-                            (project.settings.get_output_path()))
+        project.logger.info(
+            "Project output path %s cleaned." % (project.settings.get_output_path())
+        )
         try:
             os.mkdir(project.settings.get_output_path())
         except OSError as error:
-            project.logger.error(
-                'Unable to create output folder, %s.' % (error))
+            project.logger.error("Unable to create output folder, %s." % (error))
     else:
-        project.logger.info('No output folder to delete: %s.' % 
-                            (project.settings.get_output_path()))
+        project.logger.info(
+            "No output folder to delete: %s." % (project.settings.get_output_path())
+        )
 
 
 def disable_threading(project):
-    ''' Disable threading so the next run will start as normal. '''
+    """Disable threading so the next run will start as normal."""
     project.settings.set_threading(False)
     project.settings.set_num_threads(1)
 
@@ -361,70 +387,68 @@ def run_from_gui(project) -> bool:
         return False
 
 
-def update_settings_from_arguments(project,
-                                   kwargs: dict):
-    '''
+def update_settings_from_arguments(project, kwargs: dict):
+    """
     Adjust the run settings with scripted run arguments
     passed on with the start() call.
 
     :param kwargs: Keyword arguments
     :type kwargs: dict
-    '''
+    """
 
     # Update if GUI mode is selected without overriding terminal argument
     if not project.settings.get_gui_mode():
-        if 'gui_mode' in kwargs:
-            project.settings.set_gui_mode(kwargs.get('gui_mode'))
+        if "gui_mode" in kwargs:
+            project.settings.set_gui_mode(kwargs.get("gui_mode"))
 
     # Set what to do if a testcase fails.
     if not project.settings.get_stop_on_failure():
-        if 'stop_on_failure' in kwargs:
-            project.settings.set_stop_on_failure(
-                kwargs.get('stop_on_failure'))
+        if "stop_on_failure" in kwargs:
+            project.settings.set_stop_on_failure(kwargs.get("stop_on_failure"))
 
     # Regression_mode: only run new and changed code
     if project.settings.get_run_all() is True:  # CLI argument
         project.settings.set_run_all(True)
-    elif 'regression_mode' in kwargs:  # API argument
-        project.settings.set_run_all(kwargs.get('regression_mode'))
+    elif "regression_mode" in kwargs:  # API argument
+        project.settings.set_run_all(kwargs.get("regression_mode"))
     else:  # default
         project.settings.set_run_all(False)
 
     # Enable multi-threading
-    if 'threading' in kwargs:
-        project.logger.info('Threading active.')
-        project.settings.set_threading(kwargs.get('threading'))
+    if "threading" in kwargs:
+        project.logger.info("Threading active.")
+        project.settings.set_threading(kwargs.get("threading"))
     # Verbosity
-    if 'verbose' in kwargs:
+    if "verbose" in kwargs:
         project.settings.set_verbose(True)
     # Simulation options
-    if 'sim_options' in kwargs:
-        project.settings.set_sim_options(kwargs.get('sim_options'))
-    if 'netlist_timing' in kwargs:
-        project.settings.set_netlist_timing(kwargs.get('netlist_timing'))
+    if "sim_options" in kwargs:
+        project.settings.set_sim_options(kwargs.get("sim_options"))
+    if "netlist_timing" in kwargs:
+        project.settings.set_netlist_timing(kwargs.get("netlist_timing"))
 
     # Coverage options
-    if 'keep_code_coverage' in kwargs:
-        if kwargs.get('keep_code_coverage') is True:
+    if "keep_code_coverage" in kwargs:
+        if kwargs.get("keep_code_coverage") is True:
             project.settings.set_keep_code_coverage(keep_code_coverage=True)
 
     # UVVM specific
-    if 'no_default_com_options' in kwargs:
-        if kwargs.get('no_default_com_options') is True:
+    if "no_default_com_options" in kwargs:
+        if kwargs.get("no_default_com_options") is True:
             # Check if running with defaults
             if project.settings.get_is_default_com_options() is True:
                 project.settings.remove_com_options()
 
-    if 'ignore_simulator_exit_codes' in kwargs:
-        exit_codes = kwargs.get('ignore_simulator_exit_codes')
+    if "ignore_simulator_exit_codes" in kwargs:
+        exit_codes = kwargs.get("ignore_simulator_exit_codes")
         if isinstance(exit_codes, list) is False:
-            project.logger.warning('ignore_simulator_exit_codes is not list.')
+            project.logger.warning("ignore_simulator_exit_codes is not list.")
         else:
             project.settings.set_ignored_simulator_exit_codes(exit_codes)
 
 
 def request_libraries_prepare(project) -> None:
-    ''' Invoke all Library Objects to prepare for compile/simulate. '''
+    """Invoke all Library Objects to prepare for compile/simulate."""
 
     # Thread method
     def library_prepare(library) -> None:
@@ -454,8 +478,7 @@ def organize_libraries_by_dependency(project) -> None:
     :return: Status of setting up library dependencies.
     """
     # Skip if no libraries have changes.
-    lib_changes = any(lib.get_need_compile()
-                      for lib in project.library_container.get())
+    lib_changes = any(lib.get_need_compile() for lib in project.library_container.get())
     if lib_changes is False:
         return True
 
@@ -479,17 +502,22 @@ def organize_libraries_by_dependency(project) -> None:
 
                 if check_lib.get_name() in with_lib.get_lib_dep():
                     if with_lib.get_name() in check_lib.get_lib_dep():
-                        project.logger.error('Recursive library dependency: %s and %s.' % (
-                            check_lib.get_name(), with_lib.get_name()))
+                        project.logger.error(
+                            "Recursive library dependency: %s and %s."
+                            % (check_lib.get_name(), with_lib.get_name())
+                        )
                         continue
                     lowest_value_index = j
             # Swap values of the lowest unsorted element with the
             # first unsorted element.
             if i != lowest_value_index:
                 project.logger.debug(
-                    f"Swapping: {check_lib.get_name()} <-> {with_lib.get_name()}.")
-                (libraries[i], libraries[lowest_value_index]) = \
-                    (libraries[lowest_value_index], libraries[i])
+                    f"Swapping: {check_lib.get_name()} <-> {with_lib.get_name()}."
+                )
+                (libraries[i], libraries[lowest_value_index]) = (
+                    libraries[lowest_value_index],
+                    libraries[i],
+                )
                 swapped = True
     return True
 
@@ -511,70 +539,76 @@ def check_file_exist(filename) -> bool:
 
 
 def print_invalid_path_warning(project, path):
-    project.logger.warning('Path or file not found: %s\n'
-                           ' -> In Python strings, the backslash "\\" is a special character, also called the "escape" character.\n'
-                           '    Use forwardslash "/", double backslash "\\\\" or raw text string r"path".' % (path))
+    project.logger.warning(
+        "Path or file not found: %s\n"
+        ' -> In Python strings, the backslash "\\" is a special character, also called the "escape" character.\n'
+        '    Use forwardslash "/", double backslash "\\\\" or raw text string r"path".'
+        % (path)
+    )
 
 
 def compile_uvvm_all(project, path) -> bool:
-    '''
+    """
     Locate uvvm/script/component_list.txt
     Inside each verification component: locate <comp>/script/compile_order.txt and run add_files()
-    '''
+    """
     uvvm_path = path
     if os.path.isdir(uvvm_path) is False:
-        project.logger.error(f'Path to UVVM is incorrect: {uvvm_path}')
+        project.logger.error(f"Path to UVVM is incorrect: {uvvm_path}")
         return False
-    uvvm_component_script = os.path.join(
-        uvvm_path, 'script', 'component_list.txt')
+    uvvm_component_script = os.path.join(uvvm_path, "script", "component_list.txt")
     if os.path.isfile(uvvm_component_script) is False:
         project.logger.error(
-            f'UVVM component_list.txt not found: {uvvm_component_script}')
+            f"UVVM component_list.txt not found: {uvvm_component_script}"
+        )
         return False
 
-    with open(uvvm_component_script, 'r') as component_file:
+    with open(uvvm_component_script, "r") as component_file:
         component_list = component_file.readlines()
 
     uvvm_components = [component.strip() for component in component_list]
 
     for component in uvvm_components:
-        script_path = os.path.join(uvvm_path, component, 'script')
-        compile_order_file = os.path.join(script_path, 'compile_order.txt')
+        script_path = os.path.join(uvvm_path, component, "script")
+        compile_order_file = os.path.join(script_path, "compile_order.txt")
         if os.path.isfile(compile_order_file) is False:
             project.logger.warning(
-                f'UVVM compile_order.txt not found for: {component.strip()}')
+                f"UVVM compile_order.txt not found for: {component.strip()}"
+            )
         else:
-            with open(compile_order_file, 'r') as f:
+            with open(compile_order_file, "r") as f:
                 lines = f.readlines()
 
             # filter out library line at the beginning
             src_file_list = [
-                line.strip() for line in lines if not '#' in line and line.isspace() is False]
+                line.strip()
+                for line in lines
+                if not "#" in line and line.isspace() is False
+            ]
 
             # Convert to absolute paths and add to add_file()
             for line in src_file_list:
                 file_path = os.path.join(script_path, line)
-                project.add_files(os_adjust_path(file_path),
-                                  library_name=component)
+                project.add_files(os_adjust_path(file_path), library_name=component)
 
     return True
 
 
 def compile_osvvm_all(project, path) -> bool:
-    '''
+    """
     Add files from osvvm.pro script in the order specified there.
-    '''
+    """
     osvvm_path = path
     if os.path.isdir(osvvm_path) is False:
-        project.logger.error(f'Path to OSVVM is incorrect: {osvvm_path}')
+        project.logger.error(f"Path to OSVVM is incorrect: {osvvm_path}")
         return False
 
-    compile_order_file = os.path.join(osvvm_path, 'osvvm.pro')
-    with open(compile_order_file, 'r') as f:
+    compile_order_file = os.path.join(osvvm_path, "osvvm.pro")
+    with open(compile_order_file, "r") as f:
         lines = f.readlines()
 
     files = []
-    pattern = r'^\s*analyze\s+([\w.-]+\.\w+)'
+    pattern = r"^\s*analyze\s+([\w.-]+\.\w+)"
     for line in lines:
         match = re.search(pattern, line)
         if match:

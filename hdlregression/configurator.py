@@ -19,9 +19,9 @@ from .report.logger import Logger
 
 
 class SettingsConfigurator:
-    '''
+    """
     Class for handling project fonfigurations.
-    '''
+    """
 
     def __init__(self, project=None):
         self.logger = Logger(name=__name__, project=project)
@@ -29,15 +29,15 @@ class SettingsConfigurator:
         self.settings = None
 
     @staticmethod
-    def unset_argument_settings(settings) -> 'HDLRegressionSettings':
-        '''
+    def unset_argument_settings(settings) -> "HDLRegressionSettings":
+        """
         Restorest any CLI argument adjusted settings back to default.
 
         args:
             settings (HDLRegressionSettings): the current run settings.
         returns:
             settings (HDLRegressionSettings): the adjusted run settings.
-        '''
+        """
         default_settings = HDLRegressionSettings()
         settings.set_verbose(default_settings.get_verbose())
         settings.set_run_all(default_settings.get_run_all())
@@ -47,16 +47,15 @@ class SettingsConfigurator:
         settings.set_testcase(default_settings.get_testcase())
         settings.set_testgroup(default_settings.get_testgroup())
         settings.set_list_testcase(default_settings.get_list_testcase())
-        settings.set_list_compile_order(
-            default_settings.get_list_compile_order())
+        settings.set_list_compile_order(default_settings.get_list_compile_order())
         settings.set_list_testgroup(default_settings.get_list_testgroup())
         settings.set_stop_on_failure(default_settings.get_stop_on_failure())
+        settings.set_no_sim(default_settings.get_no_sim())
         return settings
 
     @staticmethod
-    def setup_settings(settings, args) -> 'HDLRegressionSettings':
-        '''
+    def setup_settings(settings, args) -> "HDLRegressionSettings":
+        """
         Adjust the run settings with any selected CLI arguments.
-        '''
+        """
         return arg_parser_update_settings(settings, args)
-

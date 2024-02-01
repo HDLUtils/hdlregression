@@ -71,9 +71,6 @@ class SimRunner:
             self.project.settings.get_output_path(), "commands.do"
         )
 
-        # Init list of all test objects
-        self.test_list = []
-
         # Test builder will create a list of test objects to run
         self.testbuilder = TestBuilder(project=project)
 
@@ -116,32 +113,39 @@ class SimRunner:
         return 0
 
     def get_fail_test_obj_list(self) -> list:
-        if self.test_list is None:
-            self.test_list = self._get_test_list()
-
-        fail_list = [
-            test for test in self.test_list if test.get_status() == TestStatus.FAIL
+        return [
+            test
+            for test in self.get_test_list()
+            if test.get_status() == TestStatus.FAIL
         ]
 
-        return fail_list
+    def get_re_run_test_obj_list(self) -> list:
+        return [
+            test
+            for test in self.get_test_list()
+            if test.get_status() in ["FAIL", "NOT_RUN", "RE_RUN"]
+        ]
 
     def get_test_list(self) -> list:
         """
         Returns a list of all test objects.
         """
-        if self.test_list is None:
-            self.test_list = self._get_test_list()
-        return self.test_list
+        return self.testbuilder.get_list_of_tests_to_run()
+
+    def mark_tests_for_re_run(self):
+        for test in self.testbuilder.get_list_of_tests_to_run():
+            if test.get_status() in ["FAIL", "NOT_RUN", "RE_RUN"]:
+                test.set_status(TestStatus.RE_RUN)
 
     def _setup_ini(self):
         pass
 
-    def prepare_test_modules_and_objects(self, failing_testcase_list):
+    def prepare_test_modules_and_objects(self, re_run_tc_list):
         """
         Locate testbench modules and build test objects
         """
         self.testbuilder.build_tb_module_list()
-        self.testbuilder.build_list_of_tests_to_run(failing_testcase_list)
+        self.testbuilder.build_list_of_tests_to_run(re_run_tc_list)
 
     @abstractmethod
     def _compile_library(self, library, force_compile=False) -> "HDLLibrary":
@@ -228,10 +232,6 @@ class SimRunner:
                     # Display test information and results
                     print(test.get_terminal_test_details_str())
 
-                    # Print test output in verbose mode
-                    if self.project.settings.get_verbose():
-                        print(test.get_output())
-
                     # Present errors
                     if test.get_status() == TestStatus.FAIL:
                         print(test.get_test_error_summary())
@@ -241,6 +241,9 @@ class SimRunner:
                             )
                         self.project.settings.set_return_code(1)
                         failing_test = True
+                    # Print test output in verbose mode
+                    elif self.project.settings.get_verbose():
+                        print(test.get_output())
 
                 except Exception as e:
                     self.logger.error("An error occurred during test run: {}".format(e))
@@ -251,10 +254,10 @@ class SimRunner:
         failing_test = False
 
         # Get tests to run
-        self.test_list = self.testbuilder.get_list_of_tests_to_run()
+        test_list = self.testbuilder.get_list_of_tests_to_run()
 
         # Backup previous test run results if new tests are run
-        if self.test_list:
+        if test_list:
             self._backup_test_run()
 
         # Start timer
@@ -265,13 +268,13 @@ class SimRunner:
         if num_threads > 0:
             self.logger.info(
                 "Running {} out of {} test(s) using {} thread(s).".format(
-                    len(self.test_list), self.get_num_tests(), num_threads
+                    len(test_list), self.get_num_tests(), num_threads
                 )
             )
 
             # create test queue for threads to operate with
             test_queue = Queue()
-            for test in self.test_list:
+            for test in self.get_test_list():
                 test_queue.put(test)
 
             # run threads
@@ -289,7 +292,7 @@ class SimRunner:
             self.project.settings.set_sim_time(elapsed_time)
 
             # Write mapping file for run tests.
-            self._write_test_mapping(self.test_list)
+            self._write_test_mapping(self.get_test_list())
 
         if failing_test is True:
             self.project.settings.set_sim_success(False)
@@ -305,55 +308,32 @@ class SimRunner:
     # ===================================================================================================
 
     def _get_pass_test_list(self) -> list:
-        if self.test_list is None:
-            self.test_list = self._get_test_list()
-
-        pass_list = [
+        return [
             test.get_test_id_string()
-            for test in self.test_list
+            for test in self.get_test_list()
             if test.get_status() == TestStatus.PASS
         ]
 
-        return pass_list
-
     def _get_fail_test_list(self) -> list:
-        if self.test_list is None:
-            self.test_list = self._get_test_list()
-
-        fail_list = [
+        return [
             test.get_test_id_string()
-            for test in self.test_list
+            for test in self.get_test_list()
             if test.get_status() == TestStatus.FAIL
         ]
 
-        return fail_list
-
     def _get_pass_with_minor_alert_list(self) -> list:
-        if self.test_list is None:
-            self.test_list = self._get_test_list()
-
-        pass_with_minor_alerts_list = [
+        return [
             test.get_test_id_string()
-            for test in self.test_list
+            for test in self.get_test_list()
             if test.get_status() == TestStatus.PASS_WITH_MINOR
         ]
 
-        return pass_with_minor_alerts_list
-
     def _get_not_run_test_list(self) -> list:
-        if not self.test_list:
-            self.test_list = self.testbuilder.get_list_of_tests_to_run()
-
-        test_list = [
+        return [
             test.get_test_id_string()
-            for test in self.test_list
+            for test in self.get_test_list()
             if test.get_status() == TestStatus.NOT_RUN
         ]
-
-        return test_list
-
-    def _get_test_list(self) -> list:
-        return self.testbuilder.get_list_of_tests_to_run()
 
     @classmethod
     @abstractmethod
@@ -419,12 +399,11 @@ class SimRunner:
         """
         # Default number of threads
         num_threads = 1
-        num_tests_to_run = len(self.test_list)
+        num_tests_to_run = len(self.get_test_list())
         # Adjust to one thread per parser if threading is enabled
         if self.project.settings.get_num_threads() > 0:
             num_threads = self.project.settings.get_num_threads()
             # Adjust that we do not use more threads than required
-            # if self.get_num_tests_run() < num_threads:
             if num_tests_to_run < num_threads:
                 num_threads = num_tests_to_run
         return num_threads

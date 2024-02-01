@@ -50,7 +50,7 @@ class TestBuilder:
                 for module in hdlfile.get_tb_modules():
                     self.testbench_container.add(module)
 
-    def build_list_of_tests_to_run(self, failing_testcase_list):
+    def build_list_of_tests_to_run(self, re_run_tc_list):
         """
         Builds a list of all testbenches and testcases
         that are selected to be run.
@@ -63,11 +63,15 @@ class TestBuilder:
             test.create_test_output_folder_name()
 
         # Update status from previous failing test runs
-        for old_test in failing_testcase_list:
+        for old_test in re_run_tc_list:
             if old_test.get_status() == TestStatus.FAIL:
                 for new_test in self.base_tests_container.get():
                     if new_test.get_test_path() == old_test.get_test_path():
                         new_test.set_status(TestStatus.FAIL)
+            if old_test.get_status() == TestStatus.RE_RUN:
+                for new_test in self.base_tests_container.get():
+                    if new_test.get_test_path() == old_test.get_test_path():
+                        new_test.set_status(TestStatus.RE_RUN)
 
         # Run all
         if self.project.settings.get_run_all():
@@ -89,19 +93,12 @@ class TestBuilder:
 
         # Run testcase
         elif self.project.settings.get_testcase():
-            self.logger.debug("building tests for testcase")
             self._build_testcase()
-            if self._get_num_tests_to_run() == 0:
-                self._set_return_code(1)
         # Run testgroup
         elif self.project.settings.get_testgroup():
-            self.logger.debug("building tests for testgroup")
             self._build_testgroup()
-            if self._get_num_tests_to_run() == 0:
-                self._set_return_code(1)
         # Run only changed
         else:
-            self.logger.debug("building tests for changed only")
             self._build_modified()
 
     def get_list_of_tests_to_run(self) -> list:
@@ -290,6 +287,7 @@ class TestBuilder:
             else:
                 return None
 
+        self.logger.debug("building tests for testcase")
         # Get user seleceted testcase
         testcase_list = self._get_user_testcase_list()
 
@@ -307,6 +305,7 @@ class TestBuilder:
 
         # Verify if any testcases were found
         if self.tests_to_run_container.num_elements() == 0:
+            self._set_return_code(1)
             for testcase in testcase_list:
                 self.logger.warning("No testcase match for: %s" % (testcase))
 
@@ -381,6 +380,7 @@ class TestBuilder:
         Build a list of tests that are
         part of testgroup.
         """
+        self.logger.debug("building tests for testgroup")
         filtered_tests = []
 
         # Get which testgroup to run.
@@ -423,6 +423,7 @@ class TestBuilder:
         self._copy_filtered_tests_to_tests_to_run_container(filtered_tests)
 
         if self.tests_to_run_container.num_elements() == 0:
+            self._set_return_code(1)
             self.logger.warning("No test found for test group: %s" % (testgroup_to_run))
 
     def _build_modified(self) -> None:
@@ -430,11 +431,15 @@ class TestBuilder:
         Build a list of tests that have to
         be re-run due to changes.
         """
+        self.logger.debug("building tests for changed only")
+
         filtered_tests = []
         for test in self.base_tests_container.get():
             if test.get_hdlfile().get_need_compile() is True:
                 filtered_tests.append(test)
             elif test.get_status() == TestStatus.FAIL:
+                filtered_tests.append(test)
+            elif test.get_status() == TestStatus.RE_RUN:
                 filtered_tests.append(test)
             elif not self.project.settings.get_run_success():
                 filtered_tests.append(test)

@@ -39,6 +39,7 @@ from .run.runner_ghdl import GHDLRunner
 from .run.runner_aldec import RivieraRunner
 from .construct.hdllibrary import HDLLibrary, PrecompiledLibrary
 from .configurator import SettingsConfigurator
+from .run.hdltests import TestStatus
 import sys
 import os
 import pickle
@@ -102,70 +103,6 @@ class HDLRegression:
         self._validate_simulator_with_cached(sim_name=simulator)
         self._setup_logger()
         self.reporter = None
-
-    def _initialize_settings(self, arg_parser):
-        self.settings_config = SettingsConfigurator(project=self)
-        self.args = arg_parser_reader(arg_parser=arg_parser)
-        return self.settings_config.setup_settings(HDLRegressionSettings(), self.args)
-
-    def _initialize_logger(self):
-        return Logger(__name__, project=self)
-
-    def _setup_logger(self) -> None:
-        self.logger.set_level(self.settings.get_logger_level())
-
-    def _initialize_hdl_code_coverage(self):
-        return HdlCodeCoverage(project=self)
-
-    def _initialize_signal_handler(self):
-        signal(SIGINT, exit_handler)
-
-    def _validate_simulator_with_cached(self, sim_name: str = None) -> None:
-        if self.settings.get_clean():
-            return
-
-        if self.cached_simulator_settings is None:
-            return
-        cached_sim_name = self.cached_simulator_settings.get_simulator_name()
-        sim_name = self.settings.get_simulator_name()
-
-        if not cached_sim_name:
-            return
-
-        if cached_sim_name != sim_name.upper():
-            self.logger.error(
-                "HDLRegression cache was run using %s simulator, current simulator is %s. Aborting"
-                % (
-                    cached_sim_name,
-                    sim_name,
-                )
-            )
-            sys.exit(1)
-
-    def _set_simulator(self, sim_name: str = None):
-        self.settings.set_simulator_name(sim_name)
-        self.hdlcodecoverage.get_code_coverage_obj(sim_name)
-
-    def _load_project_data(self):
-        self.hdlcodecoverage = HdlCodeCoverage(project=self)
-
-        # Load HDLRegression install version number.
-        installed_version = self._get_install_version()
-        display_info_text(version=installed_version)
-
-        self.detected_simulators = simulator_detector()
-
-        # # Load any previously saved HDLRegression cache.
-        self._load_project_databases()
-
-        # Validate cached HDLRegression version, i.e. saved DB.
-        version_ok = validate_cached_version(
-            project=self, installed_version=installed_version
-        )
-        self._rebuild_databases_if_required_or_requested(version_ok)
-
-        # Update cached version (settings) with installed version number.
-        self.settings.set_hdlregression_version(installed_version)
 
     def add_precompiled_library(self, compile_path: str, library_name: str):
         """
@@ -608,7 +545,7 @@ class HDLRegression:
             modelsim_ini_file = self.runner._setup_ini()
             self._add_precompiled_libraries_to_modelsim_ini(modelsim_ini_file)
 
-            self.runner.prepare_test_modules_and_objects(self.failing_tc_list)
+            self.runner.prepare_test_modules_and_objects(self.re_run_tc_list)
             (compile_success, self.library_container) = self.runner.compile_libraries()
 
             if not compile_success:
@@ -617,15 +554,7 @@ class HDLRegression:
             else:
                 # Need to save project settings for Tcl Runner to know about
                 # libraries and files set in the regression script.
-                self._save_project_to_disk(
-                    lib_cont=self.library_container,
-                    generic_cont=self.generic_container,
-                    tg_cont=self.testgroup_container,
-                    tg_col_cont=self.testgroup_collection_container,
-                    failing_tc_list=self.runner._get_fail_test_list(),
-                    settings=self.settings,
-                    reset=False,
-                )
+                self._save_project_to_disk(reset=False)
 
                 # create tcl file and start GUI mode.
                 self.runner.simulate()
@@ -634,15 +563,7 @@ class HDLRegression:
                 self.settings.set_gui_mode(HDLRegressionSettings().get_gui_mode())
 
                 # Save any settings that have been made while running TCL Runner.
-                self._save_project_to_disk(
-                    lib_cont=self.library_container,
-                    generic_cont=self.generic_container,
-                    tg_cont=self.testgroup_container,
-                    tg_col_cont=self.testgroup_collection_container,
-                    failing_tc_list=self.runner._get_fail_test_list(),
-                    settings=self.settings,
-                    reset=True,
-                )
+                self._save_project_to_disk(reset=True)
 
         else:
             """
@@ -654,7 +575,7 @@ class HDLRegression:
             modelsim_ini_file = self.runner._setup_ini()
             self._add_precompiled_libraries_to_modelsim_ini(modelsim_ini_file)
 
-            self.runner.prepare_test_modules_and_objects(self.failing_tc_list)
+            self.runner.prepare_test_modules_and_objects(self.re_run_tc_list)
 
             # Compile libraries and files
             (compile_success, self.library_container) = self.runner.compile_libraries()
@@ -667,9 +588,10 @@ class HDLRegression:
             else:
                 if self.settings.get_no_sim() is True:
                     self.logger.info("\nSkipping simulations")
+                    self.runner.mark_tests_for_re_run()
+
                 else:
                     self.logger.info("\nStarting simulations...")
-                    # Run simulation
                     sim_success = self.runner.simulate() if self.runner else False
 
                     if not sim_success or (self.get_num_fail_tests() > 0):
@@ -695,14 +617,7 @@ class HDLRegression:
                 # self.cached_simulator = self.settings.get_simulator_settings()
 
                 # Save settings befor returning to project script.
-                self._save_project_to_disk(
-                    lib_cont=self.library_container,
-                    generic_cont=self.generic_container,
-                    tg_cont=self.testgroup_container,
-                    tg_col_cont=self.testgroup_collection_container,
-                    failing_tc_list=self.runner._get_fail_test_list(),
-                    settings=self.settings,
-                )
+                self._save_project_to_disk(reset=True)
 
         if self.get_num_tests_run() > 0:
             print_run_success(project=self)
@@ -948,6 +863,70 @@ class HDLRegression:
     #
     # ========================================================
 
+    def _initialize_settings(self, arg_parser):
+        self.settings_config = SettingsConfigurator(project=self)
+        self.args = arg_parser_reader(arg_parser=arg_parser)
+        return self.settings_config.setup_settings(HDLRegressionSettings(), self.args)
+
+    def _initialize_logger(self):
+        return Logger(__name__, project=self)
+
+    def _setup_logger(self) -> None:
+        self.logger.set_level(self.settings.get_logger_level())
+
+    def _initialize_hdl_code_coverage(self):
+        return HdlCodeCoverage(project=self)
+
+    def _initialize_signal_handler(self):
+        signal(SIGINT, exit_handler)
+
+    def _validate_simulator_with_cached(self, sim_name: str = None) -> None:
+        if self.settings.get_clean():
+            return
+
+        if self.cached_simulator_settings is None:
+            return
+        cached_sim_name = self.cached_simulator_settings.get_simulator_name()
+        sim_name = self.settings.get_simulator_name()
+
+        if not cached_sim_name:
+            return
+
+        if cached_sim_name != sim_name.upper():
+            self.logger.error(
+                "HDLRegression cache was run using %s simulator, current simulator is %s. Aborting"
+                % (
+                    cached_sim_name,
+                    sim_name,
+                )
+            )
+            sys.exit(1)
+
+    def _set_simulator(self, sim_name: str = None):
+        self.settings.set_simulator_name(sim_name)
+        self.hdlcodecoverage.get_code_coverage_obj(sim_name)
+
+    def _load_project_data(self):
+        self.hdlcodecoverage = HdlCodeCoverage(project=self)
+
+        # Load HDLRegression install version number.
+        installed_version = self._get_install_version()
+        display_info_text(version=installed_version)
+
+        self.detected_simulators = simulator_detector()
+
+        # # Load any previously saved HDLRegression cache.
+        self._load_project_databases()
+
+        # Validate cached HDLRegression version, i.e. saved DB.
+        version_ok = validate_cached_version(
+            project=self, installed_version=installed_version
+        )
+        self._rebuild_databases_if_required_or_requested(version_ok)
+
+        # Update cached version (settings) with installed version number.
+        self.settings.set_hdlregression_version(installed_version)
+
     def _rebuild_databases_if_required_or_requested(self, version_ok: bool):
         """
         Execute deleting of DBs and building of new DBs.
@@ -1069,14 +1048,7 @@ class HDLRegression:
         #     self.settings.get_simulator_settings.get_simulator_name()
         # )
         # Save settings befor returning to project script.
-        self._save_project_to_disk(
-            lib_cont=self.library_container,
-            generic_cont=self.generic_container,
-            tg_cont=self.testgroup_container,
-            tg_col_cont=self.testgroup_collection_container,
-            failing_tc_list=self.runner._get_fail_test_list(),
-            settings=self.settings,
-        )
+        self._save_project_to_disk(reset=True)
 
         # Exit with return code
         return self.settings.get_return_code()
@@ -1137,14 +1109,7 @@ class HDLRegression:
 
     def _load_project_databases(self) -> None:
         # Load previous run if available, or create new containers
-        (
-            self.library_container,
-            self.generic_container,
-            self.testgroup_container,
-            self.testgroup_collection_container,
-            self.failing_tc_list,
-            self.settings,
-        ) = self._load_project_from_disk()
+        self._load_project_from_disk()
 
         # Create basic output folders if they do not exist
         try:
@@ -1252,31 +1217,10 @@ class HDLRegression:
         # else
         return None
 
-    def _save_project_to_disk(
-        self,
-        lib_cont: "Container",
-        generic_cont: "Container",
-        tg_cont: "Container",
-        tg_col_cont: "Container",
-        failing_tc_list: list,
-        settings: "HDLRegressionSettings",
-        reset: bool = True,
-    ):
+    def _save_project_to_disk(self, reset: bool = True):
         """
         Save project structure to files.
 
-        :param lib_cont: Container obj with all library information.
-        :type lib_cont: Container
-        :param generic_cont: Container obj with all generic information.
-        :type generic_cont: Container
-        :param tg_cont: Container obj with all test group information.
-        :type tg_cont: Container
-        :param tg_col_cont: Container obj with all testgroup containers information.
-        :type tg_col_cont: Container
-        :param List of failing testcases in current run
-        :type failing_tc_list : list
-        :parsm settings: All run settings.
-        :type settings: HDLRegressionSettings
         :param reset: Enables resetting of all HDLRegressionSettings obj settings.
         :type reset: bool
         """
@@ -1289,41 +1233,28 @@ class HDLRegression:
             pickle.dump(container, dump_file, pickle.HIGHEST_PROTOCOL)
             dump_file.close()
 
+        simulator_settings = self.settings.get_simulator_settings()
         if reset:
             # Do not save argument settings, i.e. this will make next run
             # behave as selected with previous run arguments.
-            settings = self.settings_config.unset_argument_settings(settings)
+            self.settings = self.settings_config.unset_argument_settings(self.settings)
 
-        _dump(lib_cont, "library.dat")
-        _dump(generic_cont, "generic.dat")
-        _dump(tg_cont, "testgroup.dat")
-        _dump(tg_col_cont, "testgroup_collection.dat")
-        _dump(settings, "settings.dat")
-        _dump(self.runner.get_fail_test_obj_list(), "testcase.dat")
-        _dump(self.settings.get_simulator_settings(), "simulator.dat")
+        _dump(self.library_container, "library.dat")
+        _dump(self.generic_container, "generic.dat")
+        _dump(self.testgroup_container, "testgroup.dat")
+        _dump(self.testgroup_collection_container, "testgroup_collection.dat")
+        _dump(self.settings, "settings.dat")
+        _dump(self.runner.get_re_run_test_obj_list(), "testcase.dat")
+        _dump(simulator_settings, "simulator.dat")
 
-    def _load_project_from_disk(self) -> tuple:
+    def _load_project_from_disk(self) -> None:
         """
         Load project structure from files.
-
-        :rtype: Container
-        :return lib_cont: Structure with all library information.
-        :rtype: Container
-        :return generic_cont: Structure with all generics information.
-        :rtype: Container
-        :return tg_cont: Structure with all test group information.
-        :rtype: Container
-        :return tg_col_cont: Structure with all test groups.
-        :rtype: list
-        :return failing_tc_list: List of failing testcases in previous run
-        :rtype: HDLRegressionSettings
-        :return settings: Obj with all run settings.
         """
-        path = os.getcwd()
 
         # Helper method
         def _load(container, filename):
-            filename = os.path.join(path, "hdlregression", filename)
+            filename = os.path.join(os.getcwd(), "hdlregression", filename)
             filename = os_adjust_path(filename)
             try:
                 load_file = open(filename, "rb")
@@ -1333,20 +1264,18 @@ class HDLRegression:
                 self.logger.debug("Unable to locate container file %s" % (filename))
             return container
 
-        settings_file = os.path.join(path, "hdlregression", "settings.dat")
-        settings_file = os_adjust_path(settings_file)
+        self.settings = _load(HDLRegressionSettings(), "settings.dat")
+        self.library_container = _load(Container("library"), "library.dat")
 
-        settings = _load(HDLRegressionSettings(), "settings.dat")
-        lib_cont = _load(Container("library"), "library.dat")
-
-        generic_cont = _load(Container("generic"), "generic.dat")
-        tg_cont = _load(Container("testgroup"), "testgroup.dat")
-        tg_col_cont = _load(
+        self.generic_container = _load(Container("generic"), "generic.dat")
+        self.testgroup_container = _load(Container("testgroup"), "testgroup.dat")
+        self.testgroup_collection_container = _load(
             Container("testgroup_collection"), "testgroup_collection.dat"
         )
 
-        failing_tc_list = []
-        failing_tc_list = _load(failing_tc_list, "testcase.dat")
+        # self.failing_tc_list = _load([], "testcase.dat")
+        self.re_run_tc_list = _load([], "testcase.dat")
+
         self.cached_simulator_settings = _load(
             self.cached_simulator_settings, "simulator.dat"
         )
@@ -1354,15 +1283,13 @@ class HDLRegression:
         # Do not load configured generics, testcases or testcase groups when
         # called from runner script, only from GUI
         if self.init_from_gui is False:
-            generic_cont.empty_list()
-            tg_cont.empty_list()
-            tg_col_cont.empty_list()
+            self.generic_container.empty_list()
+            self.testgroup_container.empty_list()
+            self.testgroup_collection_container.empty_list()
 
         # default settings for success run and return code:
-        settings.set_return_code(0)
-        settings.set_run_success(True)
-
-        return (lib_cont, generic_cont, tg_cont, tg_col_cont, failing_tc_list, settings)
+        self.settings.set_return_code(0)
+        self.settings.set_run_success(True)
 
 
 # pylint: disable=unused-argument
