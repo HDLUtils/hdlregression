@@ -73,11 +73,7 @@ def sim_env():
     simulator = (
         "MODELSIM"
         if modelsim_installed
-        else "NVC"
-        if nvc_installed
-        else "GHDL"
-        if ghdl_installed
-        else ""
+        else "NVC" if nvc_installed else "GHDL" if ghdl_installed else ""
     )
 
     return {

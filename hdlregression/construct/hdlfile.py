@@ -23,7 +23,16 @@ from ..scan.verilogscanner import VerilogScanner
 
 class HDLFile:
 
-    def __init__(self, filename_with_path, project, library, hdl_version, com_options, parse_file, code_coverage):
+    def __init__(
+        self,
+        filename_with_path,
+        project,
+        library,
+        hdl_version,
+        com_options,
+        parse_file,
+        code_coverage,
+    ):
         self.project = project
         self.library = library
         self.hdl_version = hdl_version
@@ -49,9 +58,9 @@ class HDLFile:
         self.com_options = self.set_com_options(com_options=com_options)
 
     def _get_file_content_as_list(self) -> list:
-        '''
+        """
         Reads the file and returns the content as a list.
-        '''
+        """
         with open(self.filename_with_path, encoding="ISO-8859-1") as read_file:
             file_content_list = read_file.readlines()
         return file_content_list
@@ -66,21 +75,20 @@ class HDLFile:
         self.compile_time = time.time()
 
     def get_need_compile(self) -> bool:
-        need_compile = (self.get_file_change_date() > self.compile_time)
+        need_compile = self.get_file_change_date() > self.compile_time
         need_compile = need_compile or self.get_library().get_need_compile()
         return need_compile
 
     def set_need_compile(self, need_compile: bool):
-        '''
+        """
         Resets the last compile time for this file.
-        '''
+        """
         if need_compile is True:
             self.compile_time = 0
 
     def get_file_change_date(self) -> str:
         try:
-            self.file_change_date = os.path.getmtime(
-                self.get_filename_with_path())
+            self.file_change_date = os.path.getmtime(self.get_filename_with_path())
         except:
             self.file_change_date = 0
         finally:
@@ -90,14 +98,14 @@ class HDLFile:
         pass
 
     def set_filename(self, filename_with_path: str):
-        '''
+        """
         Extract path and filename from file absolute path,
         calculate hash, tokenize and parse file content.
-        '''
+        """
         self.filename_with_path = filename_with_path
         # Sep path and file name
         _, name = os.path.split(filename_with_path)
-        self.name_from_file = name[0:name.find('.')]
+        self.name_from_file = name[0 : name.find(".")]
         self.filename = name
 
     def get_filename(self) -> str:
@@ -110,10 +118,10 @@ class HDLFile:
         return self.name_from_file
 
     def get_modules(self) -> list:
-        '''
+        """
         Builds and return a list of all modules
         that have been created after scanning the file.
-        '''
+        """
         modules_list = []
         if self.scanner:
             container = self.scanner.get_module_container()
@@ -121,23 +129,22 @@ class HDLFile:
         return modules_list
 
     def get_tb_modules(self) -> list:
-        '''
+        """
         Builds and returns a list of all TB modules
         that have been created after scanning the file.
-        '''
+        """
         modules_list = []
         if self.scanner:
             container = self.scanner.get_module_container()
-            modules_list = [module for module in container.get()
-                            if module.get_is_tb()]
+            modules_list = [module for module in container.get() if module.get_is_tb()]
         return modules_list
 
     def get_is_tb(self) -> bool:
-        '''
+        """
         Checks all modules created after scanning the file
         and return True if any module is a TB.
         I.e. the file contain a TB.
-        '''
+        """
         return False
 
     def set_hdl_version(self, hdl_version):
@@ -147,17 +154,17 @@ class HDLFile:
         return self.hdl_version
 
     def set_com_options(self, com_options) -> list:
-        '''
+        """
         Set compile options for file. A check and conversion
         is performed to ensure that the options are passed
         on as a list.
 
         Params:
           com_options(list): list of file compile options.
-        '''
+        """
         if com_options:
-            if not(isinstance(com_options, list)):
-                com_options = com_options.join(' ')
+            if not (isinstance(com_options, list)):
+                com_options = com_options.split()
         return com_options
 
     def get_com_options(self) -> str:
@@ -165,34 +172,34 @@ class HDLFile:
             return self.com_options
         else:
             if self.get_is_vhdl() is True:
-                return self.project.settings.get_com_options('vhdl')
+                return self.project.settings.get_com_options("vhdl")
             else:
-                return self.project.settings.get_com_options('verilog')
+                return self.project.settings.get_com_options("verilog")
 
     def add_hdlfile_this_dep_on(self, hdlfile) -> None:
-        '''
+        """
         Adds a HDLFile which this HDLFile depends on.
-        '''
+        """
         if hdlfile not in self.hdlfile_this_dep_on_list:
             self.hdlfile_this_dep_on_list.append(hdlfile)
 
     def get_hdlfile_this_dep_on(self) -> list:
-        '''
+        """
         Returns a list of HDLFiles which this HDLFile depends on.
-        '''
+        """
         return self.hdlfile_this_dep_on_list
 
     def add_hdlfile_dep_on_this(self, hdlfile) -> None:
-        '''
+        """
         Adds a HDLFile that depends on this HDLFile.
-        '''
+        """
         if hdlfile not in self.hdlfile_dep_on_this_list:
             self.hdlfile_dep_on_this_list.append(hdlfile)
 
     def get_hdlfile_dep_on_this(self) -> None:
-        '''
+        """
         Returns a list of HDLFiles that depends on this HDLFile.
-        '''
+        """
         return self.hdlfile_dep_on_this_list
 
     def set_code_coverage(self, enabled):
@@ -219,12 +226,28 @@ class HDLFile:
 
 class VHDLFile(HDLFile):
 
-    def __init__(self, filename_with_path, project, library, hdl_version, com_options, parse_file, code_coverage):
-        super().__init__(filename_with_path, project,
-                         library, hdl_version, com_options, parse_file, code_coverage)
+    def __init__(
+        self,
+        filename_with_path,
+        project,
+        library,
+        hdl_version,
+        com_options,
+        parse_file,
+        code_coverage,
+    ):
+        super().__init__(
+            filename_with_path,
+            project,
+            library,
+            hdl_version,
+            com_options,
+            parse_file,
+            code_coverage,
+        )
 
     def parse_file_if_needed(self) -> bool:
-        '''
+        """
         Read content of file, inspect file and update file content.
         Create a scanner object for the file and scan the content, i.e
         check of TB pragma, find generics and testcases, create module
@@ -232,7 +255,7 @@ class VHDLFile(HDLFile):
 
         :rtype: bool
         :return: True if file has been parsed, else False
-        '''
+        """
 
         # Files that should not be parsed are set to False, i.e.
         # return True to caller - caller does not care if file is parsed.
@@ -242,10 +265,12 @@ class VHDLFile(HDLFile):
         file_content_list = self._get_file_content_as_list()
 
         # Create an Inspector() object for tokenizing and parsing
-        self.scanner = VHDLScanner(project=self.project,
-                                   library=self.get_library(),
-                                   filename=self.get_filename_with_path(),
-                                   hdlfile=self)
+        self.scanner = VHDLScanner(
+            project=self.project,
+            library=self.get_library(),
+            filename=self.get_filename_with_path(),
+            hdlfile=self,
+        )
 
         if self.scanner is None:
             return False
@@ -255,53 +280,64 @@ class VHDLFile(HDLFile):
             return True
 
     def _get_com_options(self, simulator) -> str:
-        '''
+        """
         Return a list of compile options for this file.
             Params:
               simulator(str): simulator type name (GHDL, MODELSIM, ALDEC)
 
             Returns:
               com_options(str): simulator options for file.
-        '''
+        """
         hdl_version = self.get_hdl_version()
-        default_com_options = self.project.settings.get_com_options(
-            hdl_lang='vhdl')
+        default_com_options = self.project.settings.get_com_options(hdl_lang="vhdl")
 
         # User defined hdl_version set
         if simulator.upper() == "GHDL":
             if hdl_version not in ["87", "93", "02", "08"]:
                 hdl_version = "08"
             if self.com_options:
-                self.com_options = [directive.replace(
-                    "--std=08", "--std=%s" % (hdl_version)) for directive in self.com_options]
+                self.com_options = [
+                    directive.replace("--std=08", "--std=%s" % (hdl_version))
+                    for directive in self.com_options
+                ]
             else:
-                self.com_options = [directive.replace(
-                    "--std=08", "--std=%s" % (hdl_version)) for directive in default_com_options]
+                self.com_options = [
+                    directive.replace("--std=08", "--std=%s" % (hdl_version))
+                    for directive in default_com_options
+                ]
 
         elif simulator.upper() == "ALDEC":
             if not hdl_version:
                 hdl_version = "2008"
             if self.com_options:
-                self.com_options = [directive.replace(
-                    "-2008", "-%s" % (hdl_version)) for directive in self.com_options]
+                self.com_options = [
+                    directive.replace("-2008", "-%s" % (hdl_version))
+                    for directive in self.com_options
+                ]
             else:
-                self.com_options = [directive.replace(
-                    "-2008", "-%s" % (hdl_version)) for directive in default_com_options]
+                self.com_options = [
+                    directive.replace("-2008", "-%s" % (hdl_version))
+                    for directive in default_com_options
+                ]
 
         else:
             if not hdl_version:
                 hdl_version = "2008"
             if self.com_options:
-                self.com_options = [directive.replace(
-                    "-2008", "-%s" % (hdl_version)) for directive in self.com_options]
+                self.com_options = [
+                    directive.replace("-2008", "-%s" % (hdl_version))
+                    for directive in self.com_options
+                ]
             else:
-                self.com_options = [directive.replace(
-                    "-2008", "-%s" % (hdl_version)) for directive in default_com_options]
+                self.com_options = [
+                    directive.replace("-2008", "-%s" % (hdl_version))
+                    for directive in default_com_options
+                ]
 
         return self.com_options
 
     def check_file_type(self, filetype) -> bool:
-        if filetype.lower() == 'vhdl':
+        if filetype.lower() == "vhdl":
             return True
         return False
 
@@ -309,11 +345,11 @@ class VHDLFile(HDLFile):
         return True
 
     def get_is_tb(self) -> bool:
-        '''
+        """
         Checks all modules created after scanning the file
         and return True if any module is a TB.
         I.e. the file contain a TB.
-        '''
+        """
         if self.scanner is not None:
             container = self.scanner.get_module_container()
             for module in container.get():
@@ -324,9 +360,26 @@ class VHDLFile(HDLFile):
 
 class NetlistFile(VHDLFile):
 
-    def __init__(self, filename_with_path, project, library, hdl_version, com_options, parse_file, netlist_instance, code_coverage):
-        super().__init__(filename_with_path, project,
-                         library, hdl_version, com_options, parse_file, code_coverage)
+    def __init__(
+        self,
+        filename_with_path,
+        project,
+        library,
+        hdl_version,
+        com_options,
+        parse_file,
+        netlist_instance,
+        code_coverage,
+    ):
+        super().__init__(
+            filename_with_path,
+            project,
+            library,
+            hdl_version,
+            com_options,
+            parse_file,
+            code_coverage,
+        )
         self.netlist_instance = netlist_instance
 
     def get_is_netlist(self) -> bool:
@@ -341,26 +394,44 @@ class NetlistFile(VHDLFile):
 
 class VerilogFile(HDLFile):
 
-    def __init__(self, filename_with_path, project, library, hdl_version, com_options, parse_file, code_coverage):
-        super().__init__(filename_with_path, project,
-                         library, hdl_version, com_options, parse_file, code_coverage)
+    def __init__(
+        self,
+        filename_with_path,
+        project,
+        library,
+        hdl_version,
+        com_options,
+        parse_file,
+        code_coverage,
+    ):
+        super().__init__(
+            filename_with_path,
+            project,
+            library,
+            hdl_version,
+            com_options,
+            parse_file,
+            code_coverage,
+        )
 
     def parse_file_if_needed(self) -> bool:
-        '''
+        """
         Read content of file, inspect file and update file content.
         Create a scanner object for the file and scan the content, i.e
         check of TB pragma, find generics and testcases, create module
         objects+++.
-        '''
+        """
         # Check if file should be parsed
         if self.parse_file is False:
             return True
 
         file_content_list = self._get_file_content_as_list()
-        self.scanner = VerilogScanner(project=self.project,
-                                      library=self.get_library(),
-                                      filename=self.get_filename_with_path(),
-                                      hdlfile=self)
+        self.scanner = VerilogScanner(
+            project=self.project,
+            library=self.get_library(),
+            filename=self.get_filename_with_path(),
+            hdlfile=self,
+        )
 
         if self.scanner is None:
             return False
@@ -370,24 +441,23 @@ class VerilogFile(HDLFile):
             return True
 
     def _get_com_options(self, simulator) -> str:
-        '''
+        """
         Return a list of compile options for this file.
             Params:
               simulator(str): simulator type name (MODELSIM, ALDEC)
 
             Returns:
               com_options(str): simulator options for file.
-        '''
+        """
         hdl_version = self.get_hdl_version()
-        default_com_options = self.project.settings.get_com_options(
-            hdl_lang='verilog')
+        default_com_options = self.project.settings.get_com_options(hdl_lang="verilog")
         if self.com_options is not None:
             return self.com_options
         else:
             return default_com_options
 
     def check_file_type(self, filetype) -> bool:
-        if filetype.lower() == 'verilog':
+        if filetype.lower() == "verilog":
             return True
         return False
 
@@ -395,11 +465,11 @@ class VerilogFile(HDLFile):
         return True
 
     def get_is_tb(self) -> bool:
-        '''
+        """
         Checks all modules created after scanning the file
         and return True if any module is a TB.
         I.e. the file contain a TB.
-        '''
+        """
         if self.scanner is not None:
             container = self.scanner.get_module_container()
             for module in container.get():
@@ -410,18 +480,50 @@ class VerilogFile(HDLFile):
 
 class SVFile(HDLFile):
 
-    def __init__(self, filename_with_path, project, library, hdl_version, com_options, parse_file, code_coverage):
-        super().__init__(filename_with_path, project,
-                         library, hdl_version, com_options, parse_file, code_coverage)
+    def __init__(
+        self,
+        filename_with_path,
+        project,
+        library,
+        hdl_version,
+        com_options,
+        parse_file,
+        code_coverage,
+    ):
+        super().__init__(
+            filename_with_path,
+            project,
+            library,
+            hdl_version,
+            com_options,
+            parse_file,
+            code_coverage,
+        )
 
     def check_file_type(self, filetype) -> bool:
-        if filetype.lower() == 'systemverilog':
+        if filetype.lower() == "systemverilog":
             return True
         return False
 
 
 class UnknownFile(HDLFile):
 
-    def __init__(self, filename_with_path, project, library, hdl_version, com_options, parse_file, code_coverage):
-        super().__init__(filename_with_path, project,
-                         library, hdl_version, com_options, parse_file, code_coverage)
+    def __init__(
+        self,
+        filename_with_path,
+        project,
+        library,
+        hdl_version,
+        com_options,
+        parse_file,
+        code_coverage,
+    ):
+        super().__init__(
+            filename_with_path,
+            project,
+            library,
+            hdl_version,
+            com_options,
+            parse_file,
+            code_coverage,
+        )

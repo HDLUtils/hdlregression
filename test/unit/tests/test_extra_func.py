@@ -73,11 +73,7 @@ def sim_env():
     simulator = (
         "MODELSIM"
         if modelsim_installed
-        else "NVC"
-        if nvc_installed
-        else "GHDL"
-        if ghdl_installed
-        else ""
+        else "NVC" if nvc_installed else "GHDL" if ghdl_installed else ""
     )
 
     return {
@@ -89,11 +85,11 @@ def sim_env():
     }
 
 
-def test_number_of_tests(sim_env, dut_path, tb_path):
+def test_number_of_tests(sim_env, design_path, tb_path):
     clear_output()
     hr = HDLRegression(simulator=sim_env["simulator"])
 
-    filename = dut_path + "/dut_assertion.vhd"
+    filename = design_path + "/dut_assertion.vhd"
     filename = get_file_path(filename)
     hr.add_files(filename, "assert_lib")
 
@@ -111,3 +107,24 @@ def test_number_of_tests(sim_env, dut_path, tb_path):
     assert len(fail_list) == 0, "check number of failing tests"
     assert len(pass_list) == 2, "check number of passing tests"
     assert len(not_run_list) == 0, "check number of not run tests"
+
+
+@pytest.mark.ghdl
+def test_ghdl_with_fsynopsis(sim_env, tb_path, design_path):
+    if not sim_env["ghdl"]:
+        pytest.skip("GHDL not installed")
+    else:
+        clear_output()
+        hr = HDLRegression(simulator="GHDL")
+        filename = tb_path + "/tb_and_gate.vhd"
+        filename = get_file_path(filename)
+        hr.add_files(filename=filename, library_name="test_lib")
+
+        filename = design_path + "/dut_and_gate.vhd"
+        filename = get_file_path(filename)
+        hr.add_files(
+            com_options="-fsynopsis", filename=filename, library_name="test_lib"
+        )
+
+        success = hr.start()
+        assert success, "GHDL simulation with -fsynopsis failed"
