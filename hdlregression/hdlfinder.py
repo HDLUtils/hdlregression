@@ -15,48 +15,56 @@
 
 
 import os
-from glob import glob
-
+import fnmatch
 from .report.logger import Logger
 
 
 class HDLFinder:
-    '''
+    """
     Class for locating files and creating hdlregression file objects.
-    '''
+    """
 
     def __init__(self, project, filename=None):
         self.logger = Logger(name=__name__, project=project)
         self.project = project
-        # Init file name string list as empty list.
-        self.file_list = []
+        self.file_list = []  # Init file name string list as empty list.
 
-        # Locate file(s) based on filename, skip if is dir
         if filename:
             if os.path.isdir(filename):
-                self.logger.warning('Filename is directory: %s' % (filename))
-            elif filename:
+                self.logger.warning("Filename is directory: %s" % filename)
+            else:
                 self.find_files(filename)
 
     def find_files(self, filename, recursive=False) -> None:
-        '''
-        Find all files and add to list.
-        '''
-        if not self.project.settings.get_is_gui_mode():
-            filename = os.path.join(
-                self.project.settings.get_script_path(), filename)
+        """
+        Find all files and add to list in a case-insensitive manner.
+        """
+        script_path = (
+            self.project.settings.get_script_path()
+            if not self.project.settings.get_is_gui_mode()
+            else ""
+        )
+        search_path = os.path.join(script_path, filename)
+        search_path = os.path.normpath(search_path)
+        search_dir = os.path.dirname(search_path) or "."
+        search_pattern = os.path.basename(search_path)
 
-        filename = os.path.normpath(filename)
-        filename = os.path.realpath(filename)
-
-        files = glob(filename, recursive=recursive)
-
-        for item in files:
-            if not(item in self.file_list):
-                self.file_list.append(item)
+        if recursive:
+            for root, dirs, files in os.walk(search_dir):
+                for name in files:
+                    if fnmatch.fnmatch(name.lower(), search_pattern.lower()):
+                        full_path = os.path.join(root, name)
+                        if full_path not in self.file_list:
+                            self.file_list.append(full_path)
+        else:
+            for item in os.listdir(search_dir):
+                if fnmatch.fnmatch(item.lower(), search_pattern.lower()):
+                    full_path = os.path.join(search_dir, item)
+                    if full_path not in self.file_list:
+                        self.file_list.append(full_path)
 
     def get_file_list(self) -> list:
-        '''
+        """
         Return list of all files found.
-        '''
+        """
         return self.file_list

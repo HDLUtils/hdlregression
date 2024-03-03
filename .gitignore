@@ -50,3 +50,7 @@ build/
 dist/
 
 /.pytest_cache/
+
+hdlregression.code-workspace
+
+test/unit/transcript
