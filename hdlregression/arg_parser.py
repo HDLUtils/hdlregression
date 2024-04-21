@@ -92,7 +92,7 @@ def arg_parser_reader(arg_parser=None):
             action="store",
             type=str,
             nargs=1,
-            help="select simulator Modelsim/GHDL",
+            help="select simulator Modelsim/GHDL/NVC/Riviera_Pro",
         )
         arg_parser.add_argument(
             "-t",

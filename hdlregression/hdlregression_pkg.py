@@ -162,7 +162,7 @@ def os_adjust_path(path) -> str:
         return path.replace("\\", "\\\\")
 
 
-SIMULATORS = ["GHDL", "MODELSIM", "NVC"]
+SIMULATORS = ["GHDL", "MODELSIM", "NVC", "RIVIERA_PRO"]
 
 
 def simulator_detector() -> list:
@@ -179,6 +179,8 @@ def simulator_detector() -> list:
         detected_simulators.append("MODELSIM")
     if "aldec" in path_env.lower():
         detected_simulators.append("ALDEC")
+    if "riviera" in path_env.lower():
+        detected_simulators.append("RIVIERA_PRO")
 
     return detected_simulators
 

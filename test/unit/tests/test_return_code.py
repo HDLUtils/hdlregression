@@ -68,11 +68,7 @@ def sim_env():
     simulator = (
         "MODELSIM"
         if modelsim_installed
-        else "NVC"
-        if nvc_installed
-        else "GHDL"
-        if ghdl_installed
-        else ""
+        else "NVC" if nvc_installed else "GHDL" if ghdl_installed else ""
     )
 
     return {
@@ -87,7 +83,7 @@ def sim_env():
 def test_test_run_ok(sim_env, design_path, tb_path):
     clear_output()
     hr = HDLRegression(simulator=sim_env["simulator"])
-    filename = get_file_path(design_path + "../design/dut_adder.vhd")
+    filename = get_file_path(design_path + "/dut_adder.vhd")
     hr.add_files(filename, "adder_lib")
 
     filename = get_file_path(tb_path + "/dut_adder_tb.vhd")

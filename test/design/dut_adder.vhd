@@ -1,20 +1,18 @@
 library IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.STD_LOGIC_ARITH.ALL;
-use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use IEEE.std_logic_1164.all;
+use IEEE.numeric_std.all;
 
 entity adder is
 	Port(
-		A   : in  STD_LOGIC_VECTOR(3 downto 0);
-		B   : in  STD_LOGIC_VECTOR(3 downto 0);
-		SUM : out STD_LOGIC_VECTOR(3 downto 0)
+		A   : in  std_logic_vector(3 downto 0);
+		B   : in  std_logic_vector(3 downto 0);
+		SUM : out std_logic_vector(3 downto 0)
 	);
 end entity adder;
 
 architecture Behavioral of adder is
 begin
-	process(A, B)
-	begin
-		SUM <= A + B;
-	end process;
+
+	sum <= std_logic_vector(unsigned(a) + unsigned(b));
+
 end architecture Behavioral;

@@ -507,27 +507,45 @@ class HDLRegressionSettings:
 
 class TestcaseSettings:
     def __init__(self):
-        pass
+        self.copy_file = {}
 
+    def copy_file_to_testcase_folder(self, filename: str, testcase: str) -> None:
+        testcase = testcase.lower()
+        if testcase in self.copy_file:
+            self.copy_file[testcase].append(filename)
+        else:
+            self.copy_file[testcase] = [filename]
+
+    def get_copy_file_to_testcase_folder(self, testcase: str) -> list:
+        return self.copy_file.get(str(testcase), [])
 
 class SimulatorSettings:
     ID_MODELSIM_SIMULATOR = ["modelsim", "MODELSIM", "mentor", "MENTOR"]
     ID_RIVIERA_SIMULATOR = [
-        "aldec",
-        "ALDEC",
         "riviera",
         "RIVIERA",
         "riviera_pro",
         "RIVIERA_PRO",
     ]
+    ID_ALDEC_SIMULATOR = ["aldec", "ALDEC"]
+
     ID_GHDL_SIMULATOR = ["ghdl", "GHDL"]
     ID_NVC_SIMULATOR = ["nvc", "NVC"]
-
-    DEF_SIMULATOR_NAME = "GHDL"
 
     DEF_COM_OPTIONS_MODELSIM_VHDL = ["-suppress", "1346,1236,1090", "-2008"]
 
     DEF_COM_OPTIONS_ALDEC_VHDL = [
+        "-2008",
+        "-nowarn",
+        "COMP96_0564",
+        "-nowarn",
+        "COMP96_0048",
+        "-nowarn",
+        "DAGGEN_0001",
+        "-dbg",
+    ]
+
+    DEF_COM_OPTIONS_RIVIERA_VHDL = [
         "-2008",
         "-nowarn",
         "COMP96_0564",
@@ -549,6 +567,7 @@ class SimulatorSettings:
 
     DEF_COM_OPTIONS_MODELSIM_VERILOG = ["-vlog01compat"]
     DEF_COM_OPTIONS_ALDEC_VERILOG = []
+    DEF_COM_OPTIONS_RIVIERA_VERILOG = []
     DEF_COM_OPTIONS_GHDL_VERILOG = []
     DEF_COM_OPTIONS_NVC_VERILOG = []
 
@@ -566,11 +585,10 @@ class SimulatorSettings:
         self.simulator_select = {"api": False, "cli": False, "init": False}
 
     @staticmethod
-    def is_simulator_installed(simulator: str) -> bool:
-        version = "-version" if simulator == "vsim" else "--version"
+    def is_simulator_installed(simulator: str, version_call="--version") -> bool:
         try:
             subprocess.run(
-                [simulator, version],
+                [simulator, version_call],
                 check=True,
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL,
@@ -581,10 +599,10 @@ class SimulatorSettings:
 
     def get_simulators_info(self) -> dict:
         platform_info = platform.system()
-        modelsim_installed = self.is_simulator_installed("vsim")
-        ghdl_installed = self.is_simulator_installed("ghdl")
-        nvc_installed = self.is_simulator_installed("nvc")
-        riviera_pro_installed = self.is_simulator_installed("vsimsa")
+        modelsim_installed = self.is_simulator_installed("vsim", version_call="-version")
+        ghdl_installed = self.is_simulator_installed("ghdl", version_call="--version")
+        nvc_installed = self.is_simulator_installed("nvc", version_call="--version")
+        riviera_pro_installed = self.is_simulator_installed("vsimsa", version_call="-version")
 
         simulator = ""
         if modelsim_installed:
@@ -594,14 +612,14 @@ class SimulatorSettings:
         elif ghdl_installed:
             simulator = "GHDL"
         elif riviera_pro_installed:
-            simulator = "Riviera-PRO"
+            simulator = "RIVIERA_PRO"
 
         return {
             "platform": platform_info,
             "MODELSIM": modelsim_installed,
             "GHDL": ghdl_installed,
             "NVC": nvc_installed,
-            "RIVIERA-PRO": riviera_pro_installed,
+            "RIVIERA_PRO": riviera_pro_installed,
             "simulator": simulator,
         }
 
@@ -653,6 +671,8 @@ class SimulatorSettings:
                 return self.DEF_COM_OPTIONS_GHDL_VHDL
             elif self.get_simulator_name() == "NVC":
                 return self.DEF_COM_OPTIONS_NVC_VHDL
+            elif self.get_simulator_name() == "RIVIERA_PRO":
+                return self.DEF_COM_OPTIONS_RIVIERA_VHDL
             else:
                 return self.DEF_COM_OPTIONS_MODELSIM_VHDL
 
@@ -668,6 +688,8 @@ class SimulatorSettings:
                 return self.DEF_COM_OPTIONS_GHDL_VERILOG
             elif self.get_simulator_name() == "NVC":
                 return self.DEF_COM_OPTIONS_NVC_VERILOG
+            elif self.get_simulator_name() == "RIVIERA_PRO":
+                return self.DEF_COM_OPTIONS_RIVIERA_VERILOG
             else:
                 return self.DEF_COM_OPTIONS_MODELSIM_VERILOG
 
@@ -730,10 +752,12 @@ class SimulatorSettings:
         if simulator_name in self.ID_MODELSIM_SIMULATOR:
             return "MODELSIM"
         elif simulator_name in self.ID_RIVIERA_SIMULATOR:
+            return "RIVIERA_PRO"
+        elif simulator_name in self.ID_ALDEC_SIMULATOR:
             return "ALDEC"
         elif simulator_name in self.ID_GHDL_SIMULATOR:
             return "GHDL"
         elif simulator_name in self.ID_NVC_SIMULATOR:
             return "NVC"
         else:
-            ValueError(f"Simulator {simulator_name} unsupported.")
+            ValueError("Simulator {} unsupported.".format(simulator_name))

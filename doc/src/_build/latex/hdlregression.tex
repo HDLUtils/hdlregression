@@ -61,8 +61,8 @@
 
 
 \title{hdlregression}
-\date{Mar 03, 2024}
-\release{0.50.0
+\date{Apr 19, 2024}
+\release{0.51.0
 }
 \author{UVVM}
 \newcommand{\sphinxlogo}{\vbox{}}
@@ -1150,6 +1150,71 @@ starting with bullet point 1, and if no testcases have been added, moving on to 
 
 \section{Advanced methods}
 \label{\detokenize{api:advanced-methods}}
+
+\subsection{add\_file\_to\_run\_folder()}
+\label{\detokenize{api:add-file-to-run-folder}}
+\sphinxAtStartPar
+Copies a single file to the testcase run folder.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{n}{add\PYGZus{}file\PYGZus{}to\PYGZus{}run\PYGZus{}folder}\PYG{p}{(}\PYG{o}{\PYGZlt{}}\PYG{n}{filename}\PYG{o}{\PYGZgt{}}\PYG{p}{,} \PYG{o}{\PYGZlt{}}\PYG{n}{tc\PYGZus{}id}\PYG{o}{\PYGZgt{}}\PYG{p}{)}
+\end{sphinxVerbatim}
+
+
+\begin{savenotes}\sphinxattablestart
+\centering
+\begin{tabulary}{\linewidth}[t]{|T|T|T|}
+\hline
+\sphinxstyletheadfamily 
+\sphinxAtStartPar
+Argument
+&\sphinxstyletheadfamily 
+\sphinxAtStartPar
+Type
+&\sphinxstyletheadfamily 
+\sphinxAtStartPar
+Required
+\\
+\hline
+\sphinxAtStartPar
+filename
+&
+\sphinxAtStartPar
+string
+&
+\sphinxAtStartPar
+\sphinxstylestrong{mandatory}
+\\
+\hline
+\sphinxAtStartPar
+tc\_id
+&
+\sphinxAtStartPar
+string
+&
+\sphinxAtStartPar
+\sphinxstylestrong{mandatory}
+\\
+\hline
+\end{tabulary}
+\par
+\sphinxattableend\end{savenotes}
+
+\sphinxAtStartPar
+\sphinxstylestrong{Example:}
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{l+m+mf}{1.} \PYG{n}{hr}\PYG{o}{.}\PYG{n}{add\PYGZus{}file\PYGZus{}to\PYGZus{}run\PYGZus{}folder}\PYG{p}{(}\PYG{n}{filename}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{c:/design/tb/input\PYGZus{}data.txt}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,} \PYG{n}{tc\PYGZus{}id}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{1}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+
+\PYG{l+m+mf}{2.} \PYG{n}{hr}\PYG{o}{.}\PYG{n}{add\PYGZus{}file\PYGZus{}to\PYGZus{}run\PYGZus{}folder}\PYG{p}{(}\PYG{n}{filename}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{../tb/input\PYGZus{}data.txt}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,} \PYG{n}{tc\PYGZus{}id}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{7}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+\end{sphinxVerbatim}
+
+\begin{sphinxadmonition}{note}{Note:}
+\sphinxAtStartPar
+Relative paths will be relative to the regression script
+and not where the regression script is called from.
+\end{sphinxadmonition}
+
 
 \subsection{add\_generics()}
 \label{\detokenize{api:add-generics}}
@@ -2319,7 +2384,7 @@ compile options and setting simulator executable path, or by using {\hyperref[\d
 
 \begin{savenotes}\sphinxattablestart
 \centering
-\begin{tabulary}{\linewidth}[t]{|T|T|T|T|T|}
+\begin{tabulary}{\linewidth}[t]{|T|T|T|T|}
 \hline
 \sphinxstyletheadfamily 
 \sphinxAtStartPar
@@ -2332,9 +2397,6 @@ Options
 Example
 &\sphinxstyletheadfamily 
 \sphinxAtStartPar
-Default
-&\sphinxstyletheadfamily 
-\sphinxAtStartPar
 Required
 \\
 \hline
@@ -2345,10 +2407,7 @@ simulator
 \sphinxstyleemphasis{simulator name} (string)
 &
 \sphinxAtStartPar
-“MODELSIM”, “GHDL”, “NVC”
-&
-\sphinxAtStartPar
-“MODELSIM”
+“MODELSIM”/”GHDL”/”NVC”/”RIVIERA\_PRO”
 &
 \sphinxAtStartPar
 \sphinxstylestrong{mandatory}
@@ -2362,7 +2421,7 @@ simulator\_path
 &
 \sphinxAtStartPar
 “c:/ghdl/bin”
-&&
+&
 \sphinxAtStartPar
 optional
 \\
@@ -2375,7 +2434,7 @@ com\_options
 &
 \sphinxAtStartPar
 “\sphinxhyphen{}suppress 1346,1236,1090 \sphinxhyphen{}2008”
-&&
+&
 \sphinxAtStartPar
 optional
 \\

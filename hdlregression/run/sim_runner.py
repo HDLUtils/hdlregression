@@ -16,6 +16,7 @@
 import os
 import re
 import time
+import shutil
 from abc import abstractmethod
 from threading import Thread
 from queue import Queue
@@ -54,10 +55,14 @@ class TestOutputPathError(HDLRunnerError):
 class SimRunner:
     """
     Super class for simulation running:
-    - RunnerMentor
-    - RunnerGHDL
+    - MentorRunner
+    - GHDLRunner
+    - NVCRunner
     - TclRunner
+    - RivieraRunner
     """
+
+    SIMULATOR_NAME = ""
 
     def __init__(self, project):
         self.logger = Logger(name=__name__, project=project)
@@ -79,6 +84,9 @@ class SimRunner:
         self.RE_UVVM_RESULT = None
         self.RE_USER = None
         self._compile_regex()
+
+    def get_simulator_name(self) -> str:
+        return self.SIMULATOR_NAME
 
     def get_test_result(self) -> list:
         pass_list = self._get_pass_test_list()
@@ -226,7 +234,7 @@ class SimRunner:
             while not test_queue.empty():
                 try:
                     test = test_queue.get()
-                    self._create_test_folder(test.get_test_path())
+                    self._prepare_test_folder(test)
                     self._run_terminal_test(test)
 
                     # Display test information and results
@@ -707,6 +715,29 @@ class SimRunner:
         descriptive_test_name = get_descriptive_test_name()
 
         run_simulation(descriptive_test_name)
+        
+    def _prepare_test_folder(self, test):
+        test_folder = test.get_test_path()
+            
+        self._create_test_folder(test_folder)
+                
+        tc_id = test.get_id_number()
+        file_list = self.project.testcase_settings.get_copy_file_to_testcase_folder(tc_id)
+
+        try:
+            sim_path = self.project.settings.get_sim_path()
+            for filename in file_list:
+                source_path = os.path.join(sim_path, filename)
+                if os.path.exists(source_path):
+                    shutil.copy(source_path, test_folder)
+                else:
+                    self.logger.warning("File not found: {}".format(source_path))   
+        except OSError as e:
+            self.logger.error("File system error: {}".format(e))
+        except Exception as e:
+            self.logger.error("An unexpected error occurred: {}".format(e))
+                
+        
 
     @staticmethod
     def _create_test_folder(path) -> None:

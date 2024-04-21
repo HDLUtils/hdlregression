@@ -20,11 +20,11 @@ import os
 from .sim_runner import SimRunner, OutputFileError
 from ..report.logger import Logger
 from ..hdlregression_pkg import os_adjust_path
-from ..scan.hdl_regex_pkg import RE_ALDEC_WARNING, RE_ALDEC_ERROR
+from ..scan.hdl_regex_pkg import RE_RIVIERA_WARNING, RE_RIVIERA_ERROR
 
-class AldecRunner(SimRunner):
+class RivieraRunner(SimRunner):
 
-    SIMULATOR_NAME = "ALDEC"
+    SIMULATOR_NAME = "RIVIERA_PRO"
 
     def __init__(self, project):
         super().__init__(project)
@@ -63,11 +63,11 @@ class AldecRunner(SimRunner):
             hdlfile_path = hdlfile_path.replace('\\', '\\\\')
 
         if hdlfile.check_file_type('vhdl') is True:
-            sim_exec = self._get_simulator_executable('vcom')
+            sim_exec = self._get_simulator_executable('acom')
         elif hdlfile.check_file_type('verilog') is True:
-            sim_exec = self._get_simulator_executable('vlog')            
+            sim_exec = self._get_simulator_executable('avlog')            
         elif hdlfile.check_file_type('systemverilog') is True:
-            sim_exec = self._get_simulator_executable('vlog')            
+            sim_exec = self._get_simulator_executable('avlog')            
         else:
             self.logger.error('Unknown HDLFile type')
             return []
@@ -104,8 +104,8 @@ class AldecRunner(SimRunner):
         library_compile_path = os.path.join(libraries_path, library.get_name())
         library_compile_path = os_adjust_path(library_compile_path)
 
-        vmap_exec = self._get_simulator_executable('vmap')
-        vlib_exec = self._get_simulator_executable('vlib')
+        vmap_exec = self._get_simulator_executable('amap')
+        vlib_exec = self._get_simulator_executable('alib')
 
         # Create library
         if not os.path.isdir(library_compile_path):
@@ -141,10 +141,10 @@ class AldecRunner(SimRunner):
     #
     # =========================================================================
     def _get_simulator_error_regex(self):
-        return RE_ALDEC_ERROR
+        return RE_RIVIERA_ERROR
       
     def _get_simulator_warning_regex(self):
-        return RE_ALDEC_WARNING
+        return RE_RIVIERA_WARNING
 
     def _get_netlist_call(self) -> str:
         '''

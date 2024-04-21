@@ -26,6 +26,7 @@ from .arg_parser import arg_parser_reader
 from .hdlregression_pkg import *
 from .report.logger import Logger
 from .settings import HDLRegressionSettings
+from .settings import TestcaseSettings
 from .construct.container import Container
 from .report.jsonreporter import JSONReporter
 from .report.csvreporter import CSVReporter
@@ -36,7 +37,8 @@ from .run.cmd_runner import CommandRunner
 from .run.runner_modelsim import ModelsimRunner
 from .run.runner_nvc import NVCRunner
 from .run.runner_ghdl import GHDLRunner
-from .run.runner_aldec import RivieraRunner
+from .run.runner_riviera import RivieraRunner
+from .run.runner_aldec import AldecRunner
 from .construct.hdllibrary import HDLLibrary, PrecompiledLibrary
 from .configurator import SettingsConfigurator
 from .run.hdltests import TestStatus
@@ -45,7 +47,7 @@ import os
 import pickle
 from signal import signal, SIGINT
 
-# Enable terminal colors on windows OS∫
+# Enable terminal colors on windows OS
 if os.name == "nt":
     from ctypes import windll
 
@@ -97,12 +99,10 @@ class HDLRegression:
 
         self._initialize_signal_handler()
         self._load_project_data()
-
         self._set_simulator(sim_name=simulator)
-
-        self._validate_simulator_with_cached(sim_name=simulator)
         self._setup_logger()
         self.reporter = None
+        self.testcase_settings = TestcaseSettings()
 
     def add_precompiled_library(self, compile_path: str, library_name: str):
         """
@@ -191,6 +191,19 @@ class HDLRegression:
             netlist_inst=netlist_inst,
             code_coverage=code_coverage,
         )
+        
+        
+    def add_file_to_run_folder(self, filename:str, tc_id:str):
+        """
+        Copies a file to the folder where a testcase is run from.
+        
+        :param: filename : filename with full or relative path
+        :type filename : str
+        :param: tc_id : testcase id number that use included file
+        :type tc_id : str
+        
+        """
+        self.testcase_settings.copy_file_to_testcase_folder(filename, tc_id)
 
     def remove_file(self, filename, library_name):
         """
@@ -203,7 +216,7 @@ class HDLRegression:
         :type filename: str
         """
         # Get library object to store file objects
-        library = self._get_library_object(self.settings.get_library_name())
+        library = self._get_library_object(library_name)
         library.remove_file(filename)
 
     def set_dependency(self, library_name: str, dependent_libs: list):
@@ -325,11 +338,10 @@ class HDLRegression:
 
     def set_simulator(
         self,
-        simulator: str = None,
+        simulator: str,
         path: str = None,
         com_options: str = None,
         display_missing_simulator_path=True,
-        set_from_init=False,
     ):
         """
         Sets the simulator in the project config.
@@ -341,26 +353,14 @@ class HDLRegression:
         :param com_options: Compile options to use with simulator.
         :type com_options: str
         """
-        self.logger.debug("Setting simulator: %s." % (simulator))
-
         if not path and display_missing_simulator_path is True:
             self.logger.info(
-                "Simulator %s expected to be in path environment." % (simulator)
+                "Simulator {} expected to be in path environment.".format(simulator)
             )
 
         if not simulator:
-            self.logger.warning("No simulator selected, running with Mentor Modelsim.")
-            simulator = "modelsim"
-
-        if (
-            self.settings.get_simulator_name() != simulator.upper()
-            and set_from_init is False
-        ):
-            self.logger.error(
-                "Simulator change require new databases - delete "
-                "./hdlregression folder and rerun test suite."
-            )
-            self.settings.set_return_code(1)
+            self.logger.warning("Missing argument: set_simulator(simulator=?).")
+            return
 
         self.settings.set_simulator_name(simulator, api=True)
         self.settings.set_simulator_path(path)
@@ -571,6 +571,9 @@ class HDLRegression:
             Only tests affected by changes are run, unless the "-fr" argument,
             or no previous test runs have been made, then all tests are run.
             """
+            self.logger.info("Simulator: {}".format(self.runner.get_simulator_name()))
+            self._validate_simulator_with_cached(self.runner.get_simulator_name())
+
             # Prepare modelsim.ini file
             modelsim_ini_file = self.runner._setup_ini()
             self._add_precompiled_libraries_to_modelsim_ini(modelsim_ini_file)
@@ -611,10 +614,6 @@ class HDLRegression:
 
                 # Disable threading
                 disable_threading(project=self)
-
-                # Save simulator used for sim
-                # self.settings.set_run_simulator(self.settings.get_simulator_name())
-                # self.cached_simulator = self.settings.get_simulator_settings()
 
                 # Save settings befor returning to project script.
                 self._save_project_to_disk(reset=True)
@@ -894,17 +893,16 @@ class HDLRegression:
 
         if cached_sim_name != sim_name.upper():
             self.logger.error(
-                "HDLRegression cache was run using %s simulator, current simulator is %s. Aborting"
-                % (
-                    cached_sim_name,
-                    sim_name,
+                "HDLRegression cache was run using {} simulator, current simulator is {}. Aborting".format(
+                    cached_sim_name, sim_name
                 )
             )
             sys.exit(1)
 
     def _set_simulator(self, sim_name: str = None):
-        self.settings.set_simulator_name(sim_name)
-        self.hdlcodecoverage.get_code_coverage_obj(sim_name)
+        if sim_name:
+            self.settings.set_simulator_name(sim_name)
+            self.hdlcodecoverage.get_code_coverage_obj(sim_name)
 
     def _load_project_data(self):
         self.hdlcodecoverage = HdlCodeCoverage(project=self)
@@ -1044,9 +1042,6 @@ class HDLRegression:
             self.settings.set_time_of_run()
             print("hdlregression:success")
 
-        # self.cached_simulator = (
-        #     self.settings.get_simulator_settings.get_simulator_name()
-        # )
         # Save settings befor returning to project script.
         self._save_project_to_disk(reset=True)
 
@@ -1088,10 +1083,9 @@ class HDLRegression:
         :rtype: Runner
         :return: Simulator runner object.
         """
-        runner_obj = ModelsimRunner(project=self)
         if simulator == "MODELSIM":
             runner_obj = ModelsimRunner(project=self)
-        elif simulator == "ALDEC":
+        elif simulator == "RIVIERA_PRO":
             runner_obj = RivieraRunner(project=self)
         elif simulator == "GHDL":
             runner_obj = GHDLRunner(project=self)
