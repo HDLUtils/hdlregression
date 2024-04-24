@@ -123,19 +123,27 @@ def test_remove_leading_hyphen(sim_env):
     ), "check code coverage settings removed hyphen"
 
 
-def test_illegal_character(sim_env):
+def test_illegal_character(sim_env, capsys):
     """
     Check that code coverage settings are set
     """
     clear_output()
     hr = HDLRegression()
 
+    coverage_settings = "bcuestx"
     hr.set_code_coverage(
-        code_coverage_settings="bcuestx", code_coverage_file="no_file.ucdb"
+        code_coverage_settings=coverage_settings, code_coverage_file="no_file.ucdb"
     )
+    hr.start()
+    
+    # Capture the output from stdout and stderr
+    captured = capsys.readouterr()
 
+    # Assuming the error message is printed to stderr
+    assert "Invalid coverage settings in: bcuestx" in captured.out    
+    
     assert (
-        hr.hdlcodecoverage.get_code_coverage_settings() is None
+        hr.hdlcodecoverage.get_code_coverage_settings() is coverage_settings
     ), "check code coverage settings not set"
 
 

@@ -60,12 +60,7 @@ class HdlCodeCoverage:
         if not isinstance(settings, str):
             self.project.logger.error('Code coverage settings not correct type: type<str>.')
             return
-
-        if self.check_code_coverage_legal_chars(settings) is False:
-            self.project.logger.warning(
-                'Invalid coverge settings in: %s' % (settings))
-        else:
-            self.code_coverage_settings = settings.replace('-', '')
+        self.code_coverage_settings = settings.replace('-', '')
 
     def get_code_coverage_settings(self) -> str:
         return self.code_coverage_settings
@@ -104,8 +99,11 @@ class HdlCodeCoverage:
         '''
         Validates code coverage settings characters.
         '''
-        legal = [cov_set in self.ID_CODE_COVERAGE for cov_set in code_coverage_settings]
-        return all(legal)
+        if code_coverage_settings:
+            legal = [cov_set in self.ID_CODE_COVERAGE for cov_set in code_coverage_settings]
+            return all(legal)
+        else:
+            return True
 
     def get_simulator_exec(self, command) -> str:
       return self.project.settings.get_simulator_exec(command)
@@ -201,6 +199,11 @@ class HdlCodeCoverage:
         save a merge in hdlregression/test/coverage.
         '''
         simulator = self.project.settings.get_simulator_name()
+        
+        # Validate coverage settings
+        if self.check_code_coverage_legal_chars(self.code_coverage_settings) is False:
+            self.project.logger.warning('Invalid coverage settings in: %s' % (self.code_coverage_settings))
+            return False
 
         if self.get_code_coverage_file() is not None:
             if simulator == 'GHDL':

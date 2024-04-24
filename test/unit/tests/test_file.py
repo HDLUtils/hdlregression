@@ -96,14 +96,17 @@ def test_add_files_directory(sim_env, uvvm_path):
     """
     Check that directory will add no files, i.e. no filename or wildcard.
     """
-    clear_output()
-    hr = HDLRegression(simulator=sim_env["simulator"])
-
-    test_path = get_file_path(uvvm_path + "/bitvis_uart/src/")
-    hr.add_files(test_path, "bitvis_uart")
-    library = hr._get_library_object("bitvis_uart")
-    file_list = library.get_hdlfile_list()
-    assert len(file_list) == 0, "No files added"
+    if not is_folder_present(uvvm_path):
+        pytest.skip(f"UVVM path '{uvvm_path}' not found, skipping test.")
+    else:    
+        clear_output()
+        hr = HDLRegression(simulator=sim_env["simulator"])
+    
+        test_path = get_file_path(uvvm_path + "/bitvis_uart/src/")
+        hr.add_files(test_path, "bitvis_uart")
+        library = hr._get_library_object("bitvis_uart")
+        file_list = library.get_hdlfile_list()
+        assert len(file_list) == 0, "No files added"
 
 
 def test_add_files_wildcase(sim_env, tb_path):
