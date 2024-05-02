@@ -421,12 +421,16 @@ class SimRunner:
         ID_UVVM_SUMMARY = r"FINAL SUMMARY OF ALL ALERTS"
         ID_UVVM_RESULT_ALL_PASS = r">> Simulation SUCCESS: No mismatch between counted and expected serious alerts"
         ID_UVVM_RESULT_PASS_WITH_MINOR = r", but mismatch in minor alerts"
+        ID_UVVM_ERROR_WARNING = r"\bUVVM:\s+\*\*\*\s+(TB_)?(WARNING|ERROR)"
         self.RE_UVVM_SUMMARY = re.compile(ID_UVVM_SUMMARY, flags=re.IGNORECASE)
         self.RE_UVVM_RESULT_ALL_PASS = re.compile(
             ID_UVVM_RESULT_ALL_PASS, flags=re.IGNORECASE
         )
         self.RE_UVVM_RESULT_PASS_WITH_MINOR = re.compile(
             ID_UVVM_RESULT_PASS_WITH_MINOR, flags=re.IGNORECASE
+        )
+        self.RE_UVVM_ERROR_WARNING = re.compile(
+            ID_UVVM_ERROR_WARNING, flags=re.IGNORECASE
         )
 
         if self.project.settings.get_result_check_str():
@@ -739,6 +743,52 @@ class SimRunner:
                 
         
 
+    def _prepare_test_folder(self, test):
+        test_folder = test.get_test_path()
+
+        self._create_test_folder(test_folder)
+
+        tc_id = test.get_id_number()
+        file_list = self.project.testcase_settings.get_copy_file_to_testcase_folder(
+            tc_id
+        )
+
+        try:
+            sim_path = self.project.settings.get_sim_path()
+            for filename in file_list:
+                source_path = os.path.join(sim_path, filename)
+                if os.path.exists(source_path):
+                    shutil.copy(source_path, test_folder)
+                else:
+                    self.logger.warning("File not found: {}".format(source_path))
+        except OSError as e:
+            self.logger.error("File system error: {}".format(e))
+        except Exception as e:
+            self.logger.error("An unexpected error occurred: {}".format(e))
+
+    def _prepare_test_folder(self, test):
+        test_folder = test.get_test_path()
+
+        self._create_test_folder(test_folder)
+
+        tc_id = test.get_id_number()
+        file_list = self.project.testcase_settings.get_copy_file_to_testcase_folder(
+            tc_id
+        )
+
+        try:
+            sim_path = self.project.settings.get_sim_path()
+            for filename in file_list:
+                source_path = os.path.join(sim_path, filename)
+                if os.path.exists(source_path):
+                    shutil.copy(source_path, test_folder)
+                else:
+                    self.logger.warning("File not found: {}".format(source_path))
+        except OSError as e:
+            self.logger.error("File system error: {}".format(e))
+        except Exception as e:
+            self.logger.error("An unexpected error occurred: {}".format(e))
+
     @staticmethod
     def _create_test_folder(path) -> None:
         """
@@ -757,6 +807,9 @@ class SimRunner:
 
     def _has_minor_alerts(self, line):
         return re.search(self.RE_UVVM_RESULT_PASS_WITH_MINOR, line)
+
+    def _has_uvvm_error_warning(self, line):
+        return re.search(self.RE_UVVM_ERROR_WARNING, line)
 
     def _is_user_selected_result_match(self, line):
         return re.search(self.RE_USER, line)
@@ -781,7 +834,12 @@ class SimRunner:
                             test_ok = True
                             if self._has_minor_alerts(line):
                                 test_ok_no_minor_alerts = False
-                            break
+
+                    # Conctinue to check for errors/warnings
+                    if summary_found and test_ok:
+                        if self._has_uvvm_error_warning(line):
+                            test_ok = False
+
                 elif self._is_user_selected_result_match(line):
                     test_ok = True
                     break

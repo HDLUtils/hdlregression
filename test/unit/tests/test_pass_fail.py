@@ -73,11 +73,7 @@ def sim_env():
     simulator = (
         "MODELSIM"
         if modelsim_installed
-        else "NVC"
-        if nvc_installed
-        else "GHDL"
-        if ghdl_installed
-        else ""
+        else "NVC" if nvc_installed else "GHDL" if ghdl_installed else ""
     )
 
     return {
@@ -187,3 +183,26 @@ def test_multiple_pass_mupltiple_fail(sim_env, tb_path):
     assert "regression_lib.tb_failing_2.test" in "\t".join(
         fail_list
     ), "checking failing test in regression"
+
+
+def test_alert_after_uvvm_summary(sim_env, uvvm_path, tb_path):
+    clear_output()
+    hr = HDLRegression(simulator=sim_env["simulator"])
+
+    if not is_folder_present(uvvm_path):
+        pytest.skip(f"UVVM path '{uvvm_path}' not found, skipping test.")
+    else:
+        util_path = get_file_path(uvvm_path + "/uvvm_util/src/*.vhd")
+        hr.add_files(util_path, "uvvm_util")
+
+        test_path = get_file_path(tb_path + "/failing_after_report_tb.vhd")
+        hr.add_files(test_path, "test_lib")
+
+        res = hr.start()
+        (pass_list, fail_list, not_run_list) = hr.get_results()
+
+        assert res == 1, "check: failing regression"
+        assert len(fail_list) == 1, "check: number of failing testcases"
+        assert (
+            fail_list[0] == "test_lib.tb_failing_after_report.failing_arch (test_id: 1)"
+        ), "check: test_lib.failing testcase name {}".format(fail_list)

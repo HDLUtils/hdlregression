@@ -4,7 +4,7 @@ import os
 
 @pytest.fixture(scope="session")
 def uvvm_path():
-    return os.path.abspath("../../../UVVM")
+    return os.path.abspath("../../../UVVM/GITHUB_UVVM")
 
 
 @pytest.fixture(scope="session")

@@ -46,6 +46,7 @@ import sys
 import os
 import pickle
 from signal import signal, SIGINT
+from hdlregression.run.vivado_runner import VivadoRunner
 
 # Enable terminal colors on windows OS
 if os.name == "nt":
@@ -1091,6 +1092,8 @@ class HDLRegression:
             runner_obj = GHDLRunner(project=self)
         elif simulator == "NVC":
             runner_obj = NVCRunner(project=self)
+        elif simulator == "VIVADO":
+            runner_obj = VivadoRunner(project=self)            
         else:
             sim_info = self.settings.get_simulators_info()
             sim_name = sim_info.get("simulator")

@@ -528,11 +528,12 @@ class SimulatorSettings:
         "RIVIERA_PRO",
     ]
     ID_ALDEC_SIMULATOR = ["aldec", "ALDEC"]
-
     ID_GHDL_SIMULATOR = ["ghdl", "GHDL"]
     ID_NVC_SIMULATOR = ["nvc", "NVC"]
+    ID_VIVADO_SIMULATOR = ["vivado", "VIVADO"]
 
     DEF_COM_OPTIONS_MODELSIM_VHDL = ["-suppress", "1346,1236,1090", "-2008"]
+    DEF_COM_OPTIONS_VIVADO_VHDL = ["--2008"]
 
     DEF_COM_OPTIONS_ALDEC_VHDL = [
         "-2008",
@@ -566,6 +567,7 @@ class SimulatorSettings:
     DEF_COM_OPTIONS_NVC_VHDL = ["--relaxed"]
 
     DEF_COM_OPTIONS_MODELSIM_VERILOG = ["-vlog01compat"]
+    DEF_COM_OPTIONS_VIVADO_VERILOG = []
     DEF_COM_OPTIONS_ALDEC_VERILOG = []
     DEF_COM_OPTIONS_RIVIERA_VERILOG = []
     DEF_COM_OPTIONS_GHDL_VERILOG = []
@@ -597,13 +599,16 @@ class SimulatorSettings:
         except (subprocess.CalledProcessError, FileNotFoundError):
             return False
 
+
     def get_simulators_info(self) -> dict:
         platform_info = platform.system()
         modelsim_installed = self.is_simulator_installed("vsim", version_call="-version")
         ghdl_installed = self.is_simulator_installed("ghdl", version_call="--version")
         nvc_installed = self.is_simulator_installed("nvc", version_call="--version")
         riviera_pro_installed = self.is_simulator_installed("vsimsa", version_call="-version")
-
+        vivado_installed = self.is_simulator_installed("xsim", version_call="--version")  # Check for Vivado installation
+    
+        # Determine which simulator is currently set as default
         simulator = ""
         if modelsim_installed:
             simulator = "MODELSIM"
@@ -613,15 +618,19 @@ class SimulatorSettings:
             simulator = "GHDL"
         elif riviera_pro_installed:
             simulator = "RIVIERA_PRO"
-
+        elif vivado_installed:
+            simulator = "VIVADO"
+    
         return {
             "platform": platform_info,
             "MODELSIM": modelsim_installed,
             "GHDL": ghdl_installed,
             "NVC": nvc_installed,
             "RIVIERA_PRO": riviera_pro_installed,
+            "VIVADO": vivado_installed,
             "simulator": simulator,
         }
+
 
     def set_simulator_name(self, simulator_name, cli=False, api=False, init=False):
         if simulator_name:
@@ -673,6 +682,8 @@ class SimulatorSettings:
                 return self.DEF_COM_OPTIONS_NVC_VHDL
             elif self.get_simulator_name() == "RIVIERA_PRO":
                 return self.DEF_COM_OPTIONS_RIVIERA_VHDL
+            elif self.get_simulator_name() == "VIVADO":
+                return self.DEF_COM_OPTIONS_VIVADO_VHDL
             else:
                 return self.DEF_COM_OPTIONS_MODELSIM_VHDL
 
@@ -690,6 +701,8 @@ class SimulatorSettings:
                 return self.DEF_COM_OPTIONS_NVC_VERILOG
             elif self.get_simulator_name() == "RIVIERA_PRO":
                 return self.DEF_COM_OPTIONS_RIVIERA_VERILOG
+            elif self.get_simulator_name() == "VIVADO":
+                return self.DEF_COM_OPTIONS_VIVADO_VERILOG
             else:
                 return self.DEF_COM_OPTIONS_MODELSIM_VERILOG
 
@@ -759,5 +772,7 @@ class SimulatorSettings:
             return "GHDL"
         elif simulator_name in self.ID_NVC_SIMULATOR:
             return "NVC"
+        elif simulator_name in self.ID_VIVADO_SIMULATOR:
+            return "VIVADO"
         else:
             ValueError("Simulator {} unsupported.".format(simulator_name))

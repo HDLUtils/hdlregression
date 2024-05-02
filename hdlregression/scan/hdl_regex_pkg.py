@@ -55,6 +55,14 @@ RE_GHDL_ERROR = re.compile(ID_GHDL_ERROR, flags=re.IGNORECASE)
 ID_GHDL_WARNING = r"(warning: (.*):(\d+):(\d+):\s(.*))"
 RE_GHDL_WARNING = re.compile(ID_GHDL_WARNING, flags=re.IGNORECASE)
 
+# Regex for detecting Xsim errors
+ID_VIVADO_ERROR = r"[\r\n\s]?ERROR[:\s]"
+RE_VIVADO_ERROR = re.compile(ID_VIVADO_ERROR, flags=re.IGNORECASE)
+
+# Regex for detecting Xsim warnings
+ID_VIVADO_WARNING = r"[\r\n\s]?WARNING[:\s]"
+RE_VIVADO_WARNING = re.compile(ID_VIVADO_WARNING, flags=re.IGNORECASE)
+
 # --------------------------------------------------------------
 #  VHDL regular expressions
 # --------------------------------------------------------------
