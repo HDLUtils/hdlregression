@@ -206,6 +206,18 @@ class HDLRegression:
         """
         self.testcase_settings.copy_file_to_testcase_folder(filename, tc_id)
 
+    def add_file_to_run_folder(self, filename: str, tc_id: str):
+        """
+        Copies a file to the folder where a testcase is run from.
+
+        :param: filename : filename with full or relative path
+        :type filename : str
+        :param: tc_id : testcase id number that use included file
+        :type tc_id : str
+
+        """
+        self.testcase_settings.copy_file_to_testcase_folder(filename, tc_id)
+
     def remove_file(self, filename, library_name):
         """
         Remove a file that has been added to a library object
@@ -559,6 +571,8 @@ class HDLRegression:
 
                 # create tcl file and start GUI mode.
                 self.runner.simulate()
+
+                print_info_msg_when_no_test_has_run(project=self, runner=self.runner)
 
                 # restore settings gui mode
                 self.settings.set_gui_mode(HDLRegressionSettings().get_gui_mode())
@@ -1093,7 +1107,7 @@ class HDLRegression:
         elif simulator == "NVC":
             runner_obj = NVCRunner(project=self)
         elif simulator == "VIVADO":
-            runner_obj = VivadoRunner(project=self)            
+            runner_obj = VivadoRunner(project=self)
         else:
             sim_info = self.settings.get_simulators_info()
             sim_name = sim_info.get("simulator")

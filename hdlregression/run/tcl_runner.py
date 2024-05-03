@@ -23,19 +23,19 @@ from ..hdlregression_pkg import os_adjust_path
 
 
 class TclRunner(ModelsimRunner):
-    '''
+    """
     The TclRunner object creates a tcl file that is sourced
     when a simulator is opened in gui mode. The tcl file
     provides a project menu for compiling and running
     simulations.
-    '''
+    """
 
     simulator_name = "MODELSIM"
 
     def __init__(self, project=None):
         super().__init__(project)
         self.logger = Logger(name=__name__, project=project)
-        self.logger.debug('TclRunner active.')
+        self.logger.debug("TclRunner active.")
         self.project = project
         self.test_folder = None
         self.gui_do_file = None
@@ -47,20 +47,23 @@ class TclRunner(ModelsimRunner):
         self.test_name = None
 
     def _set_test_specifics(self, test):
-        '''
+        """
         Sets the current test name (entity.architecture.testcase) and
         the current vsim testcase call, i.e. entity(architecture) -gGC_TESTCASE=<testcase>
-        '''
+        """
         self.test_name = test.get_testcase_name()
 
-        self.test_call = test.get_library().get_name() + '.' + test.get_name()
+        self.test_call = test.get_library().get_name() + "." + test.get_name()
         # VHDL architecture
-        self.test_call += '(' + test.get_arch().get_name() + \
-            ') ' if test.get_is_vhdl() is True else ' '
+        self.test_call += (
+            "(" + test.get_arch().get_name() + ") "
+            if test.get_is_vhdl() is True
+            else " "
+        )
         # Sequencer built-in testcase
-        self.test_call += test.get_gc_str() + ' '
+        self.test_call += test.get_gc_str() + " "
 
-        self.test_call += ' '.join(self.project.settings.get_sim_options())
+        self.test_call += " ".join(self.project.settings.get_sim_options())
 
         self.test_call += self._get_netlist_call()
 
@@ -83,40 +86,40 @@ class TclRunner(ModelsimRunner):
             # Start simulator
             rc = self._load_simulator(test)
             if rc == 2:
-                self.logger.info('Test run aborted by user.')
+                self.logger.info("Test run aborted by user.")
                 return None
             elif rc == 1:
-                self.logger.warning('Failure running test, aborting.')
+                self.logger.warning("Failure running test, aborting.")
 
     def _is_simulator(self, simulator) -> bool:
         return simulator.upper() == self.simulator_name
 
     def _create_gui_do_file(self, test) -> None:
-        '''
+        """
         Creates a gui.do file for the tcl file.
-        '''
-        gui_do_file = self._get_test_path(filename='gui.do', test=test)
+        """
+        gui_do_file = self._get_test_path(filename="gui.do", test=test)
 
         # with open(self.tcl_file, 'w') as cf:
-        with open(gui_do_file, 'w') as cf:
+        with open(gui_do_file, "w") as cf:
             cf.write(self._get_proc(test))
             cf.write(self._init())
 
     def _load_simulator(self, test) -> int:
         os.environ["MODELSIM"] = self._get_modelsim_ini_path()
 
-        gui_do_file = self._get_test_path(filename='gui.do', test=test)
+        gui_do_file = self._get_test_path(filename="gui.do", test=test)
 
-        sim_exe = self._get_simulator_executable('vsim')
+        sim_exe = self._get_simulator_executable("vsim")
         command = [sim_exe]
-        command += ['-gui']
-        command += ['-do']
+        command += ["-gui"]
+        command += ["-do"]
         command += [gui_do_file]
         self.runner = CommandRunner(project=self.project)
         rc = self.runner.gui_run(command=command)
         return int(rc[2])
 
-    def _get_test_path(self, filename='', test=None) -> str:
+    def _get_test_path(self, filename="", test=None) -> str:
         sim_path = self.project.settings.get_sim_path()
         test_path = test.get_test_path()
         return_path = os.path.join(sim_path, test_path, filename)
@@ -124,15 +127,17 @@ class TclRunner(ModelsimRunner):
 
     def _cd_sim(self) -> str:
         sim_path = os_adjust_path(self.project.settings.get_sim_path())
-        txt = '''
+        txt = """
 proc _cd_sim {} {
     eval {cd %s}
 }
-''' % (sim_path)
+""" % (
+            sim_path
+        )
         return txt
 
     def _get_menu(self) -> str:
-        txt = '''
+        txt = """
 proc h {} {
     quietly set test_name {%s}
     puts   ""
@@ -156,24 +161,30 @@ proc h {} {
     puts   "$test_name"
     puts   ""
 }
-''' % (self.test_name)
+""" % (
+            self.test_name
+        )
         return txt
 
     def _simulate(self, test) -> str:
-        transcript_file = self._get_test_path(filename='transcript', test=test)
-        txt = '''
+        transcript_file = self._get_test_path(filename="transcript", test=test)
+        txt = """
 proc s {} {
     puts "Running test: %s"
     restart -f; run -all; transcript file %s
 }
-''' % (self.test_name, transcript_file)
+""" % (
+            self.test_name,
+            transcript_file,
+        )
         return txt
 
     def _recompile_changed(self) -> str:
-        cmd = '{*}python -c "import sys; sys.path.append(\'%s\'); ' % (
-            self.project._get_install_path())
+        cmd = "{*}python -c \"import sys; sys.path.append('%s'); " % (
+            self.project._get_install_path()
+        )
         cmd += 'from hdlregression import HDLRegression; hu = HDLRegression(init_from_gui=True); hu._start_gui()" --compileChanges'
-        txt = '''
+        txt = """
 proc r {} {
     set cmd_show {%s}
 
@@ -194,14 +205,18 @@ proc r {} {
         puts "Re-compilation FAILED!"
     }
 }
-''' % (cmd, cmd)
+""" % (
+            cmd,
+            cmd,
+        )
         return txt
 
     def _recompile_all(self) -> str:
-        cmd = '{*}python -c "import sys; sys.path.append(\'%s\'); ' % (
-            self.project._get_install_path())
+        cmd = "{*}python -c \"import sys; sys.path.append('%s'); " % (
+            self.project._get_install_path()
+        )
         cmd += 'from hdlregression import HDLRegression; hu = HDLRegression(init_from_gui=True); hu._start_gui()" --compileAll'
-        txt = '''
+        txt = """
 proc ra {} {
     set cmd_show {%s}
 
@@ -223,14 +238,18 @@ proc ra {} {
         puts "Re-compilation FAILED!"
     }
 }
-''' % (cmd, cmd)
+""" % (
+            cmd,
+            cmd,
+        )
         return txt
 
     def _recompile_all_only(self) -> str:
-        cmd = '{*}python -c "import sys; sys.path.append(\'%s\'); ' % (
-            self.project._get_install_path())
+        cmd = "{*}python -c \"import sys; sys.path.append('%s'); " % (
+            self.project._get_install_path()
+        )
         cmd += 'from hdlregression import HDLRegression; hu = HDLRegression(init_from_gui=True); hu._start_gui()" --compileAll'
-        txt = '''
+        txt = """
 proc ro {} {
     set cmd_show {%s}
 
@@ -251,34 +270,37 @@ proc ro {} {
         puts "Re-compilation FAILED!"
     }
 }
-''' % (cmd, cmd)
+""" % (
+            cmd,
+            cmd,
+        )
         return txt
 
     @staticmethod
     def _restart_and_run() -> str:
-        txt = '''
+        txt = """
 proc rr {} {
     restart -f; run -all
 }
-'''
+"""
         return txt
 
     @staticmethod
     def _restart() -> str:
-        txt = '''
+        txt = """
 proc rs {} {
     restart -f
 }
-'''
+"""
         return txt
 
     @staticmethod
     def _quit_complete() -> str:
-        txt = '''
+        txt = """
 proc qc {} {
     quit -code $::quit_force
 }
-'''
+"""
         return txt
 
     def _get_proc(self, test) -> str:
@@ -297,11 +319,11 @@ proc qc {} {
 
     def _init(self) -> str:
         modelsim_ini = self._get_modelsim_ini_path()
-        test_call = 'vsim '
+        test_call = "vsim "
         test_call += self.test_call
-        test_call += ' -modelsimini {' + modelsim_ini + '};'
+        test_call += " -modelsimini {" + modelsim_ini + "};"
 
-        txt = '''
+        txt = """
 # Define exit codes
 quietly set quit_normal 0
 quietly set quit_error 1
@@ -310,12 +332,14 @@ quietly set quit_force 2
 eval {%s}
 # Display information header and menu options
 h
-''' % (test_call)
+""" % (
+            test_call
+        )
         return txt
 
     @staticmethod
     def _get_quietly() -> str:
-        txt = '''
+        txt = """
 # Overload quietly (Modelsim specific command) to let it work in Riviera-Pro
 proc quietly { args } {
   if {[llength $args] == 0} {
@@ -325,12 +349,12 @@ proc quietly { args } {
     uplevel $args; list;
   }
 }
-'''
+"""
         return txt
 
     @staticmethod
     def _get_checker_proc() -> str:
-        txt = '''
+        txt = """
 proc return_checker {return_line} {
     puts "HDLRegression: ${return_line}"
 
@@ -340,5 +364,5 @@ proc return_checker {return_line} {
         return fasle
     }
 }
-'''
+"""
         return txt
