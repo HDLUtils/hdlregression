@@ -4,14 +4,11 @@ HDLRegression FPGA regression test runner
 Getting started
 ---------------
 
-HDLRegression can be installed as a local Python3 package running these two commands in the HDLRegression folder:
+HDLRegression can be installed as a local Python3 package running in developer mode using the following command in the HDLRegression folder:
 
-$ python setup.py build
+$ python -m pip install -e .
 
-$ python setup.py develop
-
-
-Or, used without package installation, but by adding HDLRegression to the Python PATH inside the regression script:
+Or, used without package installation (not recommended), but by adding HDLRegression to the Python PATH inside the regression script:
 
 1. import sys
 2. sys.path.append(<path_to_hdlregression_folder>)
