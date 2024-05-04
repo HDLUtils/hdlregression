@@ -59,7 +59,7 @@ class HDLRegressionSettings:
         self.sim_path = None
         self.src_path = None
         self.script_path = None
-        self.output_path = "./hdlregression"
+        self.output_path = "./hdlregression_output"
 
         self.library_compile_list = []
         self.library_name = "my_work_lib"
