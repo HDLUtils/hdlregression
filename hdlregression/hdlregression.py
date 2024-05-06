@@ -1238,7 +1238,7 @@ class HDLRegression:
 
         # Helper method
         def _dump(container, filename):
-            filename = os.path.join(os.getcwd(), "hdlregression", filename)
+            filename = os.path.join(os.getcwd(), "hdlregression_output", filename)
             filename = os_adjust_path(filename)
             dump_file = open(filename, "wb")
             pickle.dump(container, dump_file, pickle.HIGHEST_PROTOCOL)
@@ -1265,7 +1265,7 @@ class HDLRegression:
 
         # Helper method
         def _load(container, filename):
-            filename = os.path.join(os.getcwd(), "hdlregression", filename)
+            filename = os.path.join(os.getcwd(), "hdlregression_output", filename)
             filename = os_adjust_path(filename)
             try:
                 load_file = open(filename, "rb")
