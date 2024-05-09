@@ -99,7 +99,7 @@ def test_clean(sim_env, tb_path):
 
     hr = HDLRegression(sim_env["simulator"])
     hr.settings.set_clean(True)
-    hr._rebuild_databases_if_required_or_requested(True)
+    hr._rebuild_databases_if_required_or_requested(True, "hdlregression")
 
     test_folder = get_file_path("../hdlregression/test/*")
     test_folder = glob.glob(test_folder)
