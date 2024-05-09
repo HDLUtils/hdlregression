@@ -80,7 +80,7 @@ class HDLRegression:
     # pylint: disable=too-many-public-methods
 
     def __init__(
-        self, simulator: str = None, init_from_gui: bool = False, arg_parser=None
+        self, simulator: str = None, init_from_gui: bool = False, arg_parser=None, output_path: str = None
     ):
         """
         Initializes the HDLRegression class which provides a set
@@ -90,6 +90,8 @@ class HDLRegression:
         :type simulator: str
         :param init_from_gui: Regression initialized in from GUI tcl call.
         :type init_from_gui: bool
+        :param output_path: Path to store output and configuration
+        :type output_path: str
         """
         self.init_from_gui = init_from_gui
         self.settings = self._initialize_settings(arg_parser)
@@ -99,7 +101,8 @@ class HDLRegression:
         self.cached_simulator_settings = None
 
         self._initialize_signal_handler()
-        self._load_project_data()
+        if output_path is None: output_path = self.settings.get_output_path() 
+        self._load_project_data(output_path)
         self._set_simulator(sim_name=simulator)
         self._setup_logger()
         self.reporter = None
@@ -919,7 +922,7 @@ class HDLRegression:
             self.settings.set_simulator_name(sim_name)
             self.hdlcodecoverage.get_code_coverage_obj(sim_name)
 
-    def _load_project_data(self):
+    def _load_project_data(self, output_path: str):
         self.hdlcodecoverage = HdlCodeCoverage(project=self)
 
         # Load HDLRegression install version number.
@@ -929,18 +932,18 @@ class HDLRegression:
         self.detected_simulators = simulator_detector()
 
         # # Load any previously saved HDLRegression cache.
-        self._load_project_databases()
+        self._load_project_databases(output_path)
 
         # Validate cached HDLRegression version, i.e. saved DB.
         version_ok = validate_cached_version(
             project=self, installed_version=installed_version
         )
-        self._rebuild_databases_if_required_or_requested(version_ok)
+        self._rebuild_databases_if_required_or_requested(version_ok, output_path)
 
         # Update cached version (settings) with installed version number.
         self.settings.set_hdlregression_version(installed_version)
 
-    def _rebuild_databases_if_required_or_requested(self, version_ok: bool):
+    def _rebuild_databases_if_required_or_requested(self, version_ok: bool, output_path: str):
         """
         Execute deleting of DBs and building of new DBs.
 
@@ -949,7 +952,7 @@ class HDLRegression:
         """
         if (version_ok is False) or (self.settings.get_clean()):
             empty_project_folder(project=self)
-            self._load_project_databases()
+            self._load_project_databases(output_path)
 
     def _generate_run_report_files(self):
         if not self.reporter:
@@ -1118,9 +1121,9 @@ class HDLRegression:
             runner_obj = self._get_runner_object(sim_name)
         return runner_obj
 
-    def _load_project_databases(self) -> None:
+    def _load_project_databases(self, output_path: str) -> None:
         # Load previous run if available, or create new containers
-        self._load_project_from_disk()
+        self._load_project_from_disk(output_path)
 
         # Create basic output folders if they do not exist
         try:
@@ -1237,8 +1240,8 @@ class HDLRegression:
         """
 
         # Helper method
-        def _dump(container, filename):
-            filename = os.path.join(os.getcwd(), "hdlregression", filename)
+        def _dump(container, filename, output_path):
+            filename = os.path.join(os.getcwd(), output_path, filename)
             filename = os_adjust_path(filename)
             dump_file = open(filename, "wb")
             pickle.dump(container, dump_file, pickle.HIGHEST_PROTOCOL)
@@ -1250,22 +1253,22 @@ class HDLRegression:
             # behave as selected with previous run arguments.
             self.settings = self.settings_config.unset_argument_settings(self.settings)
 
-        _dump(self.library_container, "library.dat")
-        _dump(self.generic_container, "generic.dat")
-        _dump(self.testgroup_container, "testgroup.dat")
-        _dump(self.testgroup_collection_container, "testgroup_collection.dat")
-        _dump(self.settings, "settings.dat")
-        _dump(self.runner.get_re_run_test_obj_list(), "testcase.dat")
-        _dump(simulator_settings, "simulator.dat")
+        _dump(self.library_container, "library.dat", self.settings.get_output_path())
+        _dump(self.generic_container, "generic.dat", self.settings.get_output_path())
+        _dump(self.testgroup_container, "testgroup.dat", self.settings.get_output_path())
+        _dump(self.testgroup_collection_container, "testgroup_collection.dat", self.settings.get_output_path())
+        _dump(self.settings, "settings.dat", self.settings.get_output_path())
+        _dump(self.runner.get_re_run_test_obj_list(), "testcase.dat", self.settings.get_output_path())
+        _dump(simulator_settings, "simulator.dat", self.settings.get_output_path())
 
-    def _load_project_from_disk(self) -> None:
+    def _load_project_from_disk(self, output_path: str) -> None:
         """
         Load project structure from files.
         """
 
         # Helper method
-        def _load(container, filename):
-            filename = os.path.join(os.getcwd(), "hdlregression", filename)
+        def _load(container, filename, output_path):
+            filename = os.path.join(os.getcwd(), output_path, filename)
             filename = os_adjust_path(filename)
             try:
                 load_file = open(filename, "rb")
@@ -1275,20 +1278,21 @@ class HDLRegression:
                 self.logger.debug("Unable to locate container file %s" % (filename))
             return container
 
-        self.settings = _load(HDLRegressionSettings(), "settings.dat")
-        self.library_container = _load(Container("library"), "library.dat")
+        self.settings = _load(HDLRegressionSettings(), "settings.dat", output_path)
+        self.settings.set_output_path(output_path)
+        self.library_container = _load(Container("library"), "library.dat", output_path)
 
-        self.generic_container = _load(Container("generic"), "generic.dat")
-        self.testgroup_container = _load(Container("testgroup"), "testgroup.dat")
+        self.generic_container = _load(Container("generic"), "generic.dat", output_path)
+        self.testgroup_container = _load(Container("testgroup"), "testgroup.dat", output_path)
         self.testgroup_collection_container = _load(
-            Container("testgroup_collection"), "testgroup_collection.dat"
+            Container("testgroup_collection"), "testgroup_collection.dat", output_path
         )
 
         # self.failing_tc_list = _load([], "testcase.dat")
-        self.re_run_tc_list = _load([], "testcase.dat")
+        self.re_run_tc_list = _load([], "testcase.dat", output_path)
 
         self.cached_simulator_settings = _load(
-            self.cached_simulator_settings, "simulator.dat"
+            self.cached_simulator_settings, "simulator.dat", output_path
         )
 
         # Do not load configured generics, testcases or testcase groups when
