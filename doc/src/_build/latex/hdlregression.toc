@@ -22,10 +22,10 @@
 \contentsline {subsection}{\numberline {4.2.3}start()}{12}{subsection.4.2.3}%
 \contentsline {section}{\numberline {4.3}Advanced methods}{14}{section.4.3}%
 \contentsline {subsection}{\numberline {4.3.1}add\_file\_to\_run\_folder()}{14}{subsection.4.3.1}%
-\contentsline {subsection}{\numberline {4.3.2}add\_generics()}{14}{subsection.4.3.2}%
+\contentsline {subsection}{\numberline {4.3.2}add\_generics()}{15}{subsection.4.3.2}%
 \contentsline {subsection}{\numberline {4.3.3}add\_precompiled\_library()}{15}{subsection.4.3.3}%
-\contentsline {subsection}{\numberline {4.3.4}add\_testcase()}{15}{subsection.4.3.4}%
-\contentsline {subsection}{\numberline {4.3.5}add\_to\_testgroup()}{16}{subsection.4.3.5}%
+\contentsline {subsection}{\numberline {4.3.4}add\_testcase()}{16}{subsection.4.3.4}%
+\contentsline {subsection}{\numberline {4.3.5}add\_to\_testgroup()}{17}{subsection.4.3.5}%
 \contentsline {subsection}{\numberline {4.3.6}compile\_uvvm()}{17}{subsection.4.3.6}%
 \contentsline {subsection}{\numberline {4.3.7}compile\_osvvm()}{18}{subsection.4.3.7}%
 \contentsline {subsection}{\numberline {4.3.8}configure\_library()}{18}{subsection.4.3.8}%

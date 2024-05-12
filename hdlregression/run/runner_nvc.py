@@ -77,7 +77,9 @@ class NVCRunner(SimRunner):
         hdl_version = self._convert_hdl_version(hdlfile.get_hdl_version())
 
         output_path = os.path.join(
-            self.project.settings.get_sim_path(), self.project.setting.get_output_path(), "library"
+            self.project.settings.get_sim_path(),
+            self.project.settings.get_output_path(),
+            "library",
         )
         library_name = hdlfile.get_library().get_name()
         library_compile_path = os.path.join(output_path, library_name)
