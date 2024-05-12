@@ -39,7 +39,7 @@ class VivadoRunner(SimRunner):
         return (simulator.upper() == cls.SIMULATOR_NAME)
 
     def _get_compile_call(self, hdlfile) -> list:
-        libraries_path = os.path.join(self.project.settings.get_sim_path(), 'hdlregression', 'library')
+        libraries_path = os.path.join(self.project.settings.get_sim_path(), self.project.settings.get_output_path(), 'library')
         compile_path = os.path.join(libraries_path, hdlfile.get_library().get_name())
         hdlfile_path = os.path.join(hdlfile.get_filename_with_path())
 
@@ -71,7 +71,7 @@ class VivadoRunner(SimRunner):
 
     def _compile_library(self, library, force_compile=False) -> 'HDLLibrary':
         compile_ok = True
-        libraries_path = os.path.join(self.project.settings.get_sim_path(), 'hdlregression', 'library')
+        libraries_path = os.path.join(self.project.settings.get_sim_path(), self.project.settings.get_output_path(), 'library')
         libraries_path = os_adjust_path(libraries_path)
 
         # Library compile path

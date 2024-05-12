@@ -43,7 +43,7 @@ class ModelsimRunner(SimRunner):
             modelsim_ini_file(str): full path of modelsim.ini file.
         '''
         if not self._is_simulator('GHDL'):
-            libraries_path = os.path.join(self.project.settings.get_sim_path(), 'hdlregression', 'library')
+            libraries_path = os.path.join(self.project.settings.get_sim_path(), self.project.settings.get_output_path(), 'library')
             libraries_path = os_adjust_path(libraries_path)
 
             modelsim_ini_file = os.path.join(libraries_path, 'modelsim.ini')
@@ -75,7 +75,7 @@ class ModelsimRunner(SimRunner):
         Returns:
             return_list(list): a list with simulator command to be used with a subprocess call.
         '''
-        libraries_path = os.path.join(self.project.settings.get_sim_path(), 'hdlregression', 'library')
+        libraries_path = os.path.join(self.project.settings.get_sim_path(), self.project.settings.get_output_path(), 'library')
         compile_path = os.path.join(libraries_path, hdlfile.get_library().get_name())
 
         hdlfile_path = os.path.join(hdlfile.get_filename_with_path())
@@ -122,7 +122,7 @@ class ModelsimRunner(SimRunner):
         '''
         compile_ok = True
 
-        libraries_path = os.path.join(self.project.settings.get_sim_path(), 'hdlregression', 'library')
+        libraries_path = os.path.join(self.project.settings.get_sim_path(), self.project.settings.get_output_path(), 'library')
         libraries_path = os_adjust_path(libraries_path)
 
         # Define where library compile should be located
@@ -178,7 +178,7 @@ class ModelsimRunner(SimRunner):
         Called from: _get_simulator_call()
         '''
         modelsim_ini = os.path.join(self.project.settings.get_sim_path(),
-                                    'hdlregression',
+                                    self.project.settings.get_output_path(),
                                     'library',
                                     'modelsim.ini')
         return os_adjust_path(modelsim_ini)
