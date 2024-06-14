@@ -34,10 +34,11 @@ class BaseModule:
 
     def set_hdlfile(self, hdlfile):
         self.hdlfile = hdlfile
-        self.logger.debug("[%s] file=%s" % (self.get_name(),
-                                            self.hdlfile.get_filename_with_path()))
+        self.logger.debug(
+            "[%s] file=%s" % (self.get_name(), self.hdlfile.get_filename_with_path())
+        )
 
-    def get_hdlfile(self) -> 'HDLFile':
+    def get_hdlfile(self) -> "HDLFile":
         return self.hdlfile
 
     def set_name(self, name):
@@ -55,7 +56,9 @@ class BaseModule:
 
     def set_library(self, library):
         self.library = library
-        self.logger.debug("[%s] library=%s" % (self.get_name(), self.library.get_name()))
+        self.logger.debug(
+            "[%s] library=%s" % (self.get_name(), self.library.get_name())
+        )
 
     def get_library(self) -> str:
         return self.library
@@ -79,25 +82,23 @@ class BaseModule:
         if isinstance(dep_name_list, list):
             for item in dep_name_list:
                 item_name = item.lower()
-                if not(item_name in self.int_dep_list):
+                if not (item_name in self.int_dep_list):
                     self.int_dep_list.append(item_name)
-                    self.logger.debug("[%s] int_dep=%s" % (self.get_name(),
-                                                           item_name))
+                    self.logger.debug("[%s] int_dep=%s" % (self.get_name(), item_name))
         else:
             dep_name = dep_name_list.lower()
-            if not(dep_name in self.int_dep_list):
+            if not (dep_name in self.int_dep_list):
                 self.int_dep_list.append(dep_name)
-                self.logger.debug("[%s] int_dep=%s" % (self.get_name(),
-                                                       dep_name))
+                self.logger.debug("[%s] int_dep=%s" % (self.get_name(), dep_name))
 
     def get_int_dep(self) -> list:
         return self.int_dep_list
 
     def get_int_dep_on_this(self) -> list:
-        '''
+        """
         Returns a list of module names that depend on
         this module.
-        '''
+        """
         return self.int_dep_on_this_list
 
     def remove_int_dep(self, module_name) -> None:
@@ -109,37 +110,34 @@ class BaseModule:
         if isinstance(dep, list):
             for item in dep:
                 item_name = item.lower()
-                if not(item_name in self.ext_dep_list):
+                if not (item_name in self.ext_dep_list):
                     self.ext_dep_list.append(item_name)
-                    self.logger.debug("[%s] ext_dep=%s" % (self.get_name(),
-                                                           item_name))
+                    self.logger.debug("[%s] ext_dep=%s" % (self.get_name(), item_name))
         else:
             dep_name = dep.lower()
-            if not(dep_name in self.ext_dep_list):
+            if not (dep_name in self.ext_dep_list):
                 self.ext_dep_list.append(dep_name)
-                self.logger.debug("[%s] ext_dep=%s" % (self.get_name(),
-                                                       dep_name))
+                self.logger.debug("[%s] ext_dep=%s" % (self.get_name(), dep_name))
 
     def get_ext_dep(self) -> list:
         return self.ext_dep_list
 
     def set_complete(self, complete=True):
         self.complete = complete
-        self.logger.debug("[%s] complete=%s" % (self.get_name(),
-                                                complete))
+        self.logger.debug("[%s] complete=%s" % (self.get_name(), complete))
 
     def get_complete(self) -> bool:
         return self.complete
 
     def set_depend_of_this(self, dep):
-        if not(dep in self.depent_of_this_list):
+        if not (dep in self.depent_of_this_list):
             self.depent_of_this_list.append(dep)
 
     def get_depend_of_this(self) -> list:
         return self.depent_of_this_list
 
     def set_this_depend_of(self, dep):
-        if not(dep in self.this_depend_of_list):
+        if not (dep in self.this_depend_of_list):
             self.this_depend_of_list.append(dep)
 
     def get_this_depend_of(self) -> list:
@@ -152,56 +150,56 @@ class BaseModule:
         return self.is_tb
 
     def get_is_entity(self) -> bool:
-        return (self.get_type() == 'entity')
+        return self.get_type() == "entity"
 
     def get_is_context(self) -> bool:
-        return (self.get_type() == 'context')
+        return self.get_type() == "context"
 
     def get_is_package(self) -> bool:
-        return (self.get_type() == 'package')
+        return self.get_type() == "package"
 
     def get_is_package_body(self) -> bool:
-        return (self.get_type() == 'package_body')
+        return self.get_type() == "package_body"
 
     def get_is_architecture(self) -> bool:
-        return (self.get_type() == 'architecture')
+        return self.get_type() == "architecture"
 
     def get_is_new_package(self) -> bool:
-        return (self.get_type() == 'new_package')
+        return self.get_type() == "new_package"
 
     def get_is_configuration(self) -> bool:
-        return (self.get_type() == 'configuration')
+        return self.get_type() == "configuration"
 
     def get_is_verilog_module(self) -> bool:
-        return (self.get_type() == 'verilog_module')
+        return self.get_type() == "verilog_module"
 
 
 class EntityModule(BaseModule):
     def __init__(self, name, library, logger):
         super().__init__(logger)
         super().set_name(name)
-        super().set_type('entity')
+        super().set_type("entity")
         super().set_library(library)
         self.arch_list = []
         self.generic_list = []
 
     def add_generic(self, generic):
-        generic = generic.lower().replace(' ', '')
-        if not(generic in self.generic_list):
+        generic = generic.lower().replace(" ", "")
+        if not (generic in self.generic_list):
             self.generic_list.append(generic)
 
     def get_generic(self) -> list:
         return self.generic_list
 
     def add_architecture(self, arch):
-        if not(arch in self.arch_list):
+        if not (arch in self.arch_list):
             self.arch_list.append(arch)
 
     def get_architecture(self) -> list:
         return self.arch_list
 
     def get_type(self) -> str:
-        return 'entity'
+        return "entity"
 
 
 class PackageModule(BaseModule):
@@ -209,11 +207,11 @@ class PackageModule(BaseModule):
     def __init__(self, name, library, logger):
         super().__init__(logger)
         super().set_name(name)
-        super().set_type('package')
+        super().set_type("package")
         super().set_library(library)
 
     def get_type(self) -> str:
-        return 'package'
+        return "package"
 
 
 class PackageBodyModule(BaseModule):
@@ -221,11 +219,11 @@ class PackageBodyModule(BaseModule):
     def __init__(self, name, library, logger):
         super().__init__(logger)
         super().set_name(name)
-        super().set_type('package_body')
+        super().set_type("package_body")
         super().set_library(library)
 
     def get_type(self) -> str:
-        return 'package_body'
+        return "package_body"
 
 
 class NewPackageModule(BaseModule):
@@ -233,11 +231,11 @@ class NewPackageModule(BaseModule):
     def __init__(self, name, library, logger):
         super().__init__(logger)
         super().set_name(name)
-        super().set_type('new_package')
+        super().set_type("new_package")
         super().set_library(library)
 
     def get_type(self) -> str:
-        return 'package'
+        return "package"
 
 
 class ContextModule(BaseModule):
@@ -245,11 +243,11 @@ class ContextModule(BaseModule):
     def __init__(self, name, library, logger):
         super().__init__(logger)
         super().set_name(name)
-        super().set_type('context')
+        super().set_type("context")
         super().set_library(library)
 
     def get_type(self) -> str:
-        return 'context'
+        return "context"
 
 
 class ConfigurationModule(BaseModule):
@@ -257,11 +255,11 @@ class ConfigurationModule(BaseModule):
     def __init__(self, name, library, logger):
         super().__init__(logger)
         super().set_name(name)
-        super().set_type('configuration')
+        super().set_type("configuration")
         super().set_library(library)
 
     def get_type(self) -> str:
-        return 'configuration'
+        return "configuration"
 
 
 class ArchitectureModule(BaseModule):
@@ -269,12 +267,11 @@ class ArchitectureModule(BaseModule):
     def __init__(self, name, arch_of, library, logger):
         super().__init__(logger)
         super().set_name(name)
-        super().set_type('architecture')
+        super().set_type("architecture")
         super().set_library(library)
         self.set_arch_of(arch_of)
         self.testcase_list = []
-        self.logger.debug("[%s] arch_of=%s" % (self.get_name(),
-                                               self.get_arch_of()))
+        self.logger.debug("[%s] arch_of=%s" % (self.get_name(), self.get_arch_of()))
 
     def set_arch_of(self, arch_of) -> str:
         self.arch_of = arch_of.lower()
@@ -285,35 +282,35 @@ class ArchitectureModule(BaseModule):
     def add_testcase(self, testcase):
         if testcase not in self.testcase_list:
             self.testcase_list.append(testcase)
-            self.logger.debug("[%s] testcase=%s" % (self.get_name(),
-                                                    testcase))
+            self.logger.debug("[%s] testcase=%s" % (self.get_name(), testcase))
 
     def get_testcase(self) -> list:
         return self.testcase_list
 
     def get_has_testcase(self) -> bool:
-        return (len(self.testcase_list) > 0)
+        return len(self.testcase_list) > 0
 
     def get_type(self) -> str:
-        return 'architecture'
+        return "architecture"
 
 
 # ================================================
 # Verilog
 # ================================================
 
+
 class VerilogModule(BaseModule):
 
     def __init__(self, name, library, logger):
         super().__init__(logger)
         super().set_name(name)
-        super().set_type('verilog_module')
+        super().set_type("verilog_module")
         super().set_library(library)
         self.parameter_list = []
         self.testcase_list = []
 
     def add_parameter(self, parameter):
-        parameter = parameter.replace(' ', '')
+        parameter = parameter.replace(" ", "")
         if parameter not in self.parameter_list:
             self.parameter_list.append(parameter)
 
@@ -321,22 +318,20 @@ class VerilogModule(BaseModule):
         return self.parameter_list
 
     def get_type(self) -> str:
-        return 'verilog_module'
+        return "verilog_module"
 
     def add_int_dep(self, dep):
         if isinstance(dep, list):
             for item in dep:
                 item_name = item
-                if not(item_name in self.int_dep_list):
+                if not (item_name in self.int_dep_list):
                     self.int_dep_list.append(item_name)
-                    self.logger.debug("[%s] int_dep=%s" % (self.get_name(),
-                                                           item_name))
+                    self.logger.debug("[%s] int_dep=%s" % (self.get_name(), item_name))
         else:
             dep_name = dep
             if dep_name not in self.int_dep_list:
                 self.int_dep_list.append(dep_name)
-                self.logger.debug("[%s] int_dep=%s" % (self.get_name(),
-                                                       dep_name))
+                self.logger.debug("[%s] int_dep=%s" % (self.get_name(), dep_name))
 
     def get_int_dep(self) -> list:
         return self.int_dep_list
@@ -344,11 +339,10 @@ class VerilogModule(BaseModule):
     def add_testcase(self, testcase):
         if testcase not in self.testcase_list:
             self.testcase_list.append(testcase)
-            self.logger.debug("[%s] testcase=%s" % (self.get_name(),
-                                                    testcase))
+            self.logger.debug("[%s] testcase=%s" % (self.get_name(), testcase))
 
     def get_testcase(self) -> list:
         return self.testcase_list
 
     def get_has_testcase(self) -> bool:
-        return (len(self.testcase_list) > 0)
+        return len(self.testcase_list) > 0

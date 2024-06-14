@@ -232,32 +232,32 @@ class SimRunner:
             Executes tests from the queue in a separate thread.
             """
             while not test_queue.empty():
-                try:
-                    test = test_queue.get()
-                    self._prepare_test_folder(test)
-                    self._run_terminal_test(test)
+                # try:
+                test = test_queue.get()
+                self._prepare_test_folder(test)
+                self._run_terminal_test(test)
 
-                    # Display test information and results
-                    print(test.get_terminal_test_details_str())
+                # Display test information and results
+                print(test.get_terminal_test_details_str())
 
-                    # Present errors
-                    if test.get_status() == TestStatus.FAIL:
-                        print(test.get_test_error_summary())
-                        if self.project.settings.get_stop_on_failure():
-                            self.logger.warning(
-                                "Simulations stopped because of failing testcase."
-                            )
-                        self.project.settings.set_return_code(1)
-                        failing_test = True
-                    # Print test output in verbose mode
-                    elif self.project.settings.get_verbose():
-                        print(test.get_output())
+                # Present errors
+                if test.get_status() == TestStatus.FAIL:
+                    print(test.get_test_error_summary())
+                    if self.project.settings.get_stop_on_failure():
+                        self.logger.warning(
+                            "Simulations stopped because of failing testcase."
+                        )
+                    self.project.settings.set_return_code(1)
+                    failing_test = True
+                # Print test output in verbose mode
+                elif self.project.settings.get_verbose():
+                    print(test.get_output())
 
-                except Exception as e:
-                    self.logger.error("An error occurred during test run: {}".format(e))
+                # except Exception as e:
+                #    self.logger.error("An error occurred during test run: {}".format(e))
 
-                finally:
-                    test_queue.task_done()
+                # finally:
+                test_queue.task_done()
 
         failing_test = False
 
@@ -598,15 +598,12 @@ class SimRunner:
             return bool(re.search(self._get_simulator_error_regex(), line))
 
         def show_errors_and_warnings() -> tuple:
-            # override
-            if self.project.settings.get_show_err_warn_output() is True:
-                return (True, True)
-            # compilation
-            elif test is None:
-                return (True, True)
+            # override or compilation
+            if self.project.settings.get_show_err_warn_output() is True or test is None:
+                return True
             # simulation
             else:
-                return (False, False)
+                return False
 
         # Write command to file
         self._save_cmd(command)
@@ -618,7 +615,7 @@ class SimRunner:
 
         success = True
 
-        (show_sim_errors, show_sim_warnings) = show_errors_and_warnings()
+        show_sim_errors_and_warnings = show_errors_and_warnings()
 
         for line, success in cmd_runner.run(
             command=command, path=path, env=self.env_var, output_file=output_file
@@ -629,13 +626,13 @@ class SimRunner:
             self._output_handler(test, line)
 
             if check_has_line_error(line) is True or not success:
-                if show_sim_errors is True:
+                if show_sim_errors_and_warnings is True:
                     self.logger.error(line)
                 if test is not None:
                     test.inc_num_sim_errors()
 
             if check_has_line_warning(line) is True:
-                if show_sim_warnings is True:
+                if show_sim_errors_and_warnings is True:
                     self.logger.warning(line)
                 if test is not None:
                     test.inc_num_sim_warnings()
@@ -667,127 +664,41 @@ class SimRunner:
     def _simulate(self, test, generic_call, module_call) -> tuple:
         pass
 
+    @abstractmethod
+    def _get_module_call(self, test, architecture_name):
+        pass
+
+    @abstractmethod
+    def _get_descriptive_test_name(self, test, architecture_name, module_call):
+        pass
+
     def _run_terminal_test(self, test) -> None:
         """
         Run test in terminal mode
         """
 
-        def get_module_call():
-            if self._is_simulator("ghdl"):
-                return architecture_name
-            elif self._is_simulator("nvc"):
-                return "{}-{}".format(test.get_name(), architecture_name)
-            else:
-                if test.get_is_vhdl():
-                    return "{}.{}({})".format(
-                        lib_name, test.get_name(), architecture_name
-                    )
-                else:
-                    return "{}.{}".format(lib_name, test.get_name())
-
-        def get_descriptive_test_name():
-            if self._is_simulator("ghdl") or self._is_simulator("nvc"):
-                name = "{}.{}".format(lib_name, test.get_name())
-                return (
-                    "{}({})".format(name, architecture_name)
-                    if test.get_is_vhdl()
-                    else name
-                )
-            else:
-                return module_call
-
-        def run_simulation(descriptive_test_name):
+        def run_simulation(test, descriptive_test_name, module_call, gen_call):
             sim_start_time = round(time.time() * 1000)
             terminal_output_string = self._create_terminal_test_info_output_string(
                 test, descriptive_test_name
             )
             test.set_test_id_string(terminal_output_string)
-
             self._write_run_do_file(
                 test=test, generic_call=gen_call, module_call=module_call
             )
-
             self._simulate(test=test, generic_call=gen_call, module_call=module_call)
             self._check_test_result(test=test, sim_start_time=sim_start_time)
             test.set_folder_to_name_mapping(descriptive_test_name)
 
         gen_call = test.get_gc_str()
         architecture_name = "" if not test.get_is_vhdl() else test.get_arch().get_name()
-        lib_name = test.get_library().get_name()
 
-        module_call = get_module_call()
-        descriptive_test_name = get_descriptive_test_name()
-
-        run_simulation(descriptive_test_name)
-        
-    def _prepare_test_folder(self, test):
-        test_folder = test.get_test_path()
-            
-        self._create_test_folder(test_folder)
-                
-        tc_id = test.get_id_number()
-        file_list = self.project.testcase_settings.get_copy_file_to_testcase_folder(tc_id)
-
-        try:
-            sim_path = self.project.settings.get_sim_path()
-            for filename in file_list:
-                source_path = os.path.join(sim_path, filename)
-                if os.path.exists(source_path):
-                    shutil.copy(source_path, test_folder)
-                else:
-                    self.logger.warning("File not found: {}".format(source_path))   
-        except OSError as e:
-            self.logger.error("File system error: {}".format(e))
-        except Exception as e:
-            self.logger.error("An unexpected error occurred: {}".format(e))
-                
-        
-
-    def _prepare_test_folder(self, test):
-        test_folder = test.get_test_path()
-
-        self._create_test_folder(test_folder)
-
-        tc_id = test.get_id_number()
-        file_list = self.project.testcase_settings.get_copy_file_to_testcase_folder(
-            tc_id
+        module_call = self._get_module_call(test, architecture_name)
+        descriptive_test_name = self._get_descriptive_test_name(
+            test, architecture_name, module_call
         )
 
-        try:
-            sim_path = self.project.settings.get_sim_path()
-            for filename in file_list:
-                source_path = os.path.join(sim_path, filename)
-                if os.path.exists(source_path):
-                    shutil.copy(source_path, test_folder)
-                else:
-                    self.logger.warning("File not found: {}".format(source_path))
-        except OSError as e:
-            self.logger.error("File system error: {}".format(e))
-        except Exception as e:
-            self.logger.error("An unexpected error occurred: {}".format(e))
-
-    def _prepare_test_folder(self, test):
-        test_folder = test.get_test_path()
-
-        self._create_test_folder(test_folder)
-
-        tc_id = test.get_id_number()
-        file_list = self.project.testcase_settings.get_copy_file_to_testcase_folder(
-            tc_id
-        )
-
-        try:
-            sim_path = self.project.settings.get_sim_path()
-            for filename in file_list:
-                source_path = os.path.join(sim_path, filename)
-                if os.path.exists(source_path):
-                    shutil.copy(source_path, test_folder)
-                else:
-                    self.logger.warning("File not found: {}".format(source_path))
-        except OSError as e:
-            self.logger.error("File system error: {}".format(e))
-        except Exception as e:
-            self.logger.error("An unexpected error occurred: {}".format(e))
+        run_simulation(test, descriptive_test_name, module_call, gen_call)
 
     def _prepare_test_folder(self, test):
         test_folder = test.get_test_path()
@@ -897,13 +808,6 @@ class SimRunner:
         Add passing/failing test to test lists and present to transcript.
         """
 
-        def log_checking():
-            result_check_str = self.project.settings.get_result_check_str()
-            if result_check_str:
-                self.logger.debug("Checking for {}.".format(result_check_str))
-            else:
-                self.logger.debug("Checking for UVVM summary report")
-
         def format_test_result(test_ok, test_ok_no_minor_alerts):
             if test_ok:
                 test_str_result = self.logger.green() + "PASS"
@@ -960,7 +864,6 @@ class SimRunner:
             else:
                 test.set_status(TestStatus.NOT_RUN)
 
-        log_checking()
         update_test_status_and_info(test)
 
     def _create_terminal_test_info_output_string(

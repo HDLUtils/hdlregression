@@ -181,7 +181,8 @@ def test_add_precompiled_library():
     lib_name = "pytest_lib"
     compile_path = "../precompiled_path"
 
-    hr.add_precompiled_library(compile_path=compile_path, library_name=lib_name)
+    hr.add_precompiled_library(
+        compile_path=compile_path, library_name=lib_name)
 
     lib = hr._get_library_object(library_name=lib_name)
 
@@ -230,7 +231,8 @@ def test_add_file_with_default_settings(sim_env, tb_path):
     library = hr._get_library_object(library_name="new_library_name")
     hr._prepare_libraries()
 
-    module_list = [module.get_name() for module in library._get_list_of_lib_modules()]
+    module_list = [module.get_name()
+                   for module in library._get_list_of_lib_modules()]
     assert "simple_tb" in module_list, "check modules"
 
     for file_obj in library.get_hdlfile_list():
@@ -263,7 +265,8 @@ def test_add_file_with_new_settings(sim_env, tb_path):
     library = hr._get_library_object(library_name="new_library_name")
     hr._prepare_libraries()
 
-    module_list = [module.get_name() for module in library._get_list_of_lib_modules()]
+    module_list = [module.get_name()
+                   for module in library._get_list_of_lib_modules()]
     assert "simple_tb" in module_list, "check modules"
 
     for file_obj in library.get_hdlfile_list():
@@ -290,7 +293,8 @@ def test_add_library_dependency(sim_env, tb_path):
 
     library = hr._get_library_object(library_name="lib_1")
 
-    hr.set_dependency(library_name="lib_1", dependent_libs=["dep_lib_1", "dep_lib_2"])
+    hr.set_dependency(library_name="lib_1", dependent_libs=[
+                      "dep_lib_1", "dep_lib_2"])
     hr._prepare_libraries()
 
     dep_libs = [lib.get_name() for lib in library.get_lib_obj_dep()]
@@ -323,11 +327,13 @@ def test_add_generics(sim_env, tb_path):
     filename = get_file_path(tb_path + "/tb_simple.vhd")
     hr.add_files(filename=filename, library_name="lib_1")
 
-    hr.add_generics(entity="simple_tb", architecture="test_arch", generics=["GC_1", 2])
+    hr.add_generics(entity="simple_tb",
+                    architecture="test_arch", generics=["GC_1", 2])
 
     containers = hr.generic_container.get()
     assert len(containers) == 1, "check number of generics"
-    assert containers[0].get_name() == "simple_tb", "check correct generic container"
+    assert containers[0].get_name(
+    ) == "simple_tb", "check correct generic container"
 
     for generic in containers[0].get():
         assert generic[0] == "test_arch", "check architecture set for generic"
@@ -487,7 +493,8 @@ def test_add_to_testgroup(sim_env, tb_path):
         testgroup_name="test_1", create_if_not_found=False
     )
     for testcase in testgroup.get():
-        assert testcase == ("simple_tb", "simple_arch", "test_1", []), "check testgroup"
+        assert testcase == ("simple_tb", "simple_arch",
+                            "test_1", []), "check testgroup"
 
 
 def test_default_testcase_identifier():
@@ -531,7 +538,8 @@ def test_set_code_coverage_updated_modelsim(sim_env, tb_path):
         clear_output()
         hr = HDLRegression(simulator="MODELSIM")
         filename = get_file_path(tb_path + "/tb_simple.vhd")
-        hr.add_files(filename=filename, library_name="lib_1", code_coverage=True)
+        hr.add_files(filename=filename, library_name="lib_1",
+                     code_coverage=True)
         hr.set_code_coverage(
             code_coverage_settings="btc",
             code_coverage_file="test_cov.ucdb",
@@ -560,6 +568,99 @@ def test_no_default_com_options(sim_env, tb_path):
     hr.start(no_default_com_options=True)
 
     assert hr.settings.get_com_options() == [], "check no default com options set"
+
+
+def test_com_options_as_string(sim_env, tb_path):
+    clear_output()
+    hr = HDLRegression(simulator=sim_env["simulator"])
+
+    filename = get_file_path(tb_path + "/tb_simple.vhd")
+    hr.add_files(
+        filename=filename,
+        library_name="new_library_name",
+        com_options="some_option",
+    )
+    library = hr._get_library_object(library_name="new_library_name")
+    hr._prepare_libraries()
+
+    for file_obj in library.get_hdlfile_list():
+        assert file_obj.get_com_options() == [
+            "some_option"
+        ], "check VHDL compile options"
+
+def test_com_options_as_string_with_options(sim_env, tb_path):
+    clear_output()
+    hr = HDLRegression(simulator=sim_env["simulator"])
+
+    filename = get_file_path(tb_path + "/tb_simple.vhd")
+    hr.add_files(
+        filename=filename,
+        library_name="new_library_name",
+        com_options="some_option1 some_option2 some_option3",
+    )
+    library = hr._get_library_object(library_name="new_library_name")
+    hr._prepare_libraries()
+
+    for file_obj in library.get_hdlfile_list():
+        assert file_obj.get_com_options() == [
+            "some_option1", "some_option2", "some_option3"
+        ], "check VHDL compile options"
+
+def test_com_options_as_string_with_options_comma_separrated(sim_env, tb_path):
+    clear_output()
+    hr = HDLRegression(simulator=sim_env["simulator"])
+
+    filename = get_file_path(tb_path + "/tb_simple.vhd")
+    hr.add_files(
+        filename=filename,
+        library_name="new_library_name",
+        com_options="some_option1,some_option2, some_option3 , some_option4",
+    )
+    library = hr._get_library_object(library_name="new_library_name")
+    hr._prepare_libraries()
+
+    for file_obj in library.get_hdlfile_list():
+        assert file_obj.get_com_options() == [
+            "some_option1", "some_option2", "some_option3", "some_option4"
+        ], "check VHDL compile options"
+
+
+def test_com_options_as_short_list(sim_env, tb_path):
+    clear_output()
+    hr = HDLRegression(simulator=sim_env["simulator"])
+
+    filename = get_file_path(tb_path + "/tb_simple.vhd")
+    hr.add_files(
+        filename=filename,
+        library_name="new_library_name",
+        com_options=["some_option"],
+    )
+    library = hr._get_library_object(library_name="new_library_name")
+    hr._prepare_libraries()
+
+    for file_obj in library.get_hdlfile_list():
+        assert file_obj.get_com_options() == [
+            "some_option"
+        ], "check VHDL compile options"
+
+
+def test_com_options_as_long_list(sim_env, tb_path):
+    clear_output()
+    hr = HDLRegression(simulator=sim_env["simulator"])
+
+    filename = get_file_path(tb_path + "/tb_simple.vhd")
+    hr.add_files(
+        filename=filename,
+        library_name="new_library_name",
+        com_options=["some_option1", "some_option2", "some_option3"],
+    )
+    library = hr._get_library_object(library_name="new_library_name")
+    hr._prepare_libraries()
+
+    for file_obj in library.get_hdlfile_list():
+        assert file_obj.get_com_options() == [
+            "some_option1", "some_option2", "some_option3"
+        ], "check VHDL compile options"
 
 
 def test_get_results_with_failing_design_compile(sim_env, tb_path):

@@ -87,7 +87,9 @@ class GHDLRunner(SimRunner):
         hdl_version = self._convert_hdl_version(hdlfile.get_hdl_version())
 
         output_path = os.path.join(
-            self.project.settings.get_sim_path(), self.project.settings.get_output_path(),"library"
+            self.project.settings.get_sim_path(),
+            self.project.settings.get_output_path(),
+            "library",
         )
         library_name = hdlfile.get_library().get_name()
         library_compile_path = os.path.join(output_path, library_name)
@@ -175,6 +177,14 @@ class GHDLRunner(SimRunner):
             test=test,
         )
         return success
+
+    def _get_module_call(self, test, architecture_name):
+        return architecture_name
+
+    def _get_descriptive_test_name(self, test, architecture_name, module_call):
+        lib_name = test.get_library().get_name()
+        name = "{}.{}".format(lib_name, test.get_name())
+        return "{}({})".format(name, architecture_name) if test.get_is_vhdl() else name
 
     def _get_ignored_error_detection_str(self) -> str:
         return ""

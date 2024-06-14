@@ -164,6 +164,7 @@ class HDLFile:
         """
         if com_options:
             if not (isinstance(com_options, list)):
+                com_options = com_options.strip().replace(",", " ")
                 com_options = com_options.split()
         return com_options
 

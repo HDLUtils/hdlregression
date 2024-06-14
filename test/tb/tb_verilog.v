@@ -1,20 +1,20 @@
 //HDLRegression:tb
 module tb_verilog_testcase #(
-        parameter TESTCASE = "DEFAULT"
+        parameter GC_TESTCASE = "DEFAULT"
     );
 
     initial
     begin
-        if (TESTCASE == "testcase_1")
-            $display("Passing test : %s", TESTCASE);
-        else if (TESTCASE == "testcase_2")
-            $display("Passing test : %s", TESTCASE);
-        else if ( TESTCASE=="testcase_3" )
-            $display("Passing test : %s", TESTCASE);
-        else if (TESTCASE== "testcase_4" )
-            $display("Passing test : %s", TESTCASE);
+        if (GC_TESTCASE == "testcase_1")
+            $display("Passing test : %s", GC_TESTCASE);
+        else if (GC_TESTCASE == "testcase_2")
+            $display("Passing test : %s", GC_TESTCASE);
+        else if ( GC_TESTCASE=="testcase_3" )
+            $display("Passing test : %s", GC_TESTCASE);
+        else if (GC_TESTCASE== "testcase_4" )
+            $display("Passing test : %s", GC_TESTCASE);
         else
-            $display("Passing test : %s", TESTCASE);
+            $display("Passing test : %s", GC_TESTCASE);
     end
 
 endmodule

@@ -170,5 +170,13 @@ class NVCRunner(SimRunner):
         )
         return success
 
+    def _get_module_call(self, test, architecture_name):
+        return "{}-{}".format(test.get_name(), architecture_name)
+
+    def _get_descriptive_test_name(self, test, architecture_name, module_call):
+        lib_name = test.get_library().get_name()
+        name = "{}.{}".format(lib_name, test.get_name())
+        return "{}({})".format(name, architecture_name) if test.get_is_vhdl() else name
+
     def _get_ignored_error_detection_str(self) -> str:
         return ""

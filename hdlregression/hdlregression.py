@@ -80,7 +80,11 @@ class HDLRegression:
     # pylint: disable=too-many-public-methods
 
     def __init__(
-        self, simulator: str = None, init_from_gui: bool = False, arg_parser=None, output_path: str = None
+        self,
+        simulator: str = None,
+        init_from_gui: bool = False,
+        arg_parser=None,
+        output_path: str = None,
     ):
         """
         Initializes the HDLRegression class which provides a set
@@ -101,7 +105,8 @@ class HDLRegression:
         self.cached_simulator_settings = None
 
         self._initialize_signal_handler()
-        if output_path is None: output_path = self.settings.get_output_path() 
+        if output_path is None:
+            output_path = self.settings.get_output_path()
         self._load_project_data(output_path)
         self._set_simulator(sim_name=simulator)
         self._setup_logger()
@@ -195,17 +200,28 @@ class HDLRegression:
             netlist_inst=netlist_inst,
             code_coverage=code_coverage,
         )
-        
-        
-    def add_file_to_run_folder(self, filename:str, tc_id:str):
+
+    def add_file_to_run_folder(self, filename: str, tc_id: str):
         """
         Copies a file to the folder where a testcase is run from.
-        
+
         :param: filename : filename with full or relative path
         :type filename : str
         :param: tc_id : testcase id number that use included file
         :type tc_id : str
-        
+
+        """
+        self.testcase_settings.copy_file_to_testcase_folder(filename, tc_id)
+
+    def add_file_to_run_folder(self, filename: str, tc_id: str):
+        """
+        Copies a file to the folder where a testcase is run from.
+
+        :param: filename : filename with full or relative path
+        :type filename : str
+        :param: tc_id : testcase id number that use included file
+        :type tc_id : str
+
         """
         self.testcase_settings.copy_file_to_testcase_folder(filename, tc_id)
 
@@ -955,7 +971,9 @@ class HDLRegression:
         # Update cached version (settings) with installed version number.
         self.settings.set_hdlregression_version(installed_version)
 
-    def _rebuild_databases_if_required_or_requested(self, version_ok: bool, output_path: str):
+    def _rebuild_databases_if_required_or_requested(
+        self, version_ok: bool, output_path: str
+    ):
         """
         Execute deleting of DBs and building of new DBs.
 
@@ -1267,10 +1285,20 @@ class HDLRegression:
 
         _dump(self.library_container, "library.dat", self.settings.get_output_path())
         _dump(self.generic_container, "generic.dat", self.settings.get_output_path())
-        _dump(self.testgroup_container, "testgroup.dat", self.settings.get_output_path())
-        _dump(self.testgroup_collection_container, "testgroup_collection.dat", self.settings.get_output_path())
+        _dump(
+            self.testgroup_container, "testgroup.dat", self.settings.get_output_path()
+        )
+        _dump(
+            self.testgroup_collection_container,
+            "testgroup_collection.dat",
+            self.settings.get_output_path(),
+        )
         _dump(self.settings, "settings.dat", self.settings.get_output_path())
-        _dump(self.runner.get_re_run_test_obj_list(), "testcase.dat", self.settings.get_output_path())
+        _dump(
+            self.runner.get_re_run_test_obj_list(),
+            "testcase.dat",
+            self.settings.get_output_path(),
+        )
         _dump(simulator_settings, "simulator.dat", self.settings.get_output_path())
 
     def _load_project_from_disk(self, output_path: str) -> None:
@@ -1295,7 +1323,9 @@ class HDLRegression:
         self.library_container = _load(Container("library"), "library.dat", output_path)
 
         self.generic_container = _load(Container("generic"), "generic.dat", output_path)
-        self.testgroup_container = _load(Container("testgroup"), "testgroup.dat", output_path)
+        self.testgroup_container = _load(
+            Container("testgroup"), "testgroup.dat", output_path
+        )
         self.testgroup_collection_container = _load(
             Container("testgroup_collection"), "testgroup_collection.dat", output_path
         )

@@ -519,6 +519,7 @@ class TestcaseSettings:
     def get_copy_file_to_testcase_folder(self, testcase: str) -> list:
         return self.copy_file.get(str(testcase), [])
 
+
 class SimulatorSettings:
     ID_MODELSIM_SIMULATOR = ["modelsim", "MODELSIM", "mentor", "MENTOR"]
     ID_RIVIERA_SIMULATOR = [
@@ -587,27 +588,47 @@ class SimulatorSettings:
         self.simulator_select = {"api": False, "cli": False, "init": False}
 
     @staticmethod
-    def is_simulator_installed(simulator: str, version_call="--version") -> bool:
+    def is_simulator_installed(
+        simulator_call: str, version_call: str = "--version", simulator_name: str = None
+    ) -> bool:
         try:
-            subprocess.run(
-                [simulator, version_call],
+            # Capturing the output instead of sending it to DEVNULL
+            result = subprocess.run(
+                [simulator_call, version_call],
                 check=True,
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
+                stdout=subprocess.PIPE,  # Capture stdout
+                stderr=subprocess.PIPE,  # Capture stderr to handle any error messages
+                universal_newlines=True,  # Ensure the output is returned as a string
             )
-            return True
+            if simulator_name:
+                # Check if the simulator name is in the output
+                if simulator_name.lower() in result.stdout.lower():
+                    return True
+            else:
+                if simulator_call.lower() in result.stdout.lower():
+                    return True
+            return False
         except (subprocess.CalledProcessError, FileNotFoundError):
             return False
 
-
     def get_simulators_info(self) -> dict:
         platform_info = platform.system()
-        modelsim_installed = self.is_simulator_installed("vsim", version_call="-version")
-        ghdl_installed = self.is_simulator_installed("ghdl", version_call="--version")
-        nvc_installed = self.is_simulator_installed("nvc", version_call="--version")
-        riviera_pro_installed = self.is_simulator_installed("vsimsa", version_call="-version")
-        vivado_installed = self.is_simulator_installed("xsim", version_call="--version")  # Check for Vivado installation
-    
+        modelsim_installed = self.is_simulator_installed(
+            simulator_call="vsim", version_call="-version"
+        )
+        ghdl_installed = self.is_simulator_installed(
+            simulator_call="ghdl", version_call="--version"
+        )
+        nvc_installed = self.is_simulator_installed(
+            simulator_call="nvc", version_call="--version"
+        )
+        riviera_pro_installed = self.is_simulator_installed(
+            simulator_call="vsimsa", version_call="-version", simulator_name="riviera"
+        )
+        vivado_installed = self.is_simulator_installed(
+            simulator_call="xsim", version_call="--version", simulator_name="vivado"
+        )
+
         # Determine which simulator is currently set as default
         simulator = ""
         if modelsim_installed:
@@ -620,7 +641,7 @@ class SimulatorSettings:
             simulator = "RIVIERA_PRO"
         elif vivado_installed:
             simulator = "VIVADO"
-    
+
         return {
             "platform": platform_info,
             "MODELSIM": modelsim_installed,
@@ -630,7 +651,6 @@ class SimulatorSettings:
             "VIVADO": vivado_installed,
             "simulator": simulator,
         }
-
 
     def set_simulator_name(self, simulator_name, cli=False, api=False, init=False):
         if simulator_name:

@@ -43,14 +43,14 @@ class Library:
         return self.lib_name
 
     def _search_and_return_file_list(self, filename) -> list:
-        '''
+        """
         Search for files and return list for filanames with path.
-        '''
+        """
         # Create a HDLFinder object to locate files if wildcards are used
         filefinder = HDLFinder(filename=filename, project=self.project)
         # Raise a warning if no files were found
         if len(filefinder.get_file_list()) == 0:
-            self.logger.warning('Not found: %s' % (filename))
+            self.logger.warning("Not found: %s" % (filename))
         return filefinder.get_file_list()
 
     def update_file_list(self) -> None:
@@ -96,13 +96,13 @@ class PrecompiledLibrary(Library):
         super().__init__(name=name, project=project)
 
     def set_compile_path(self, compile_path):
-        self.compile_path = compile_path.replace('\\', '/')
+        self.compile_path = compile_path.replace("\\", "/")
 
     def get_compile_path(self) -> str:
         return self.compile_path
 
     def set_filename(self, filename):
-        self.filename = filename.replace('\\', '/')
+        self.filename = filename.replace("\\", "/")
 
     def get_filename(self) -> str:
         return self.filename
@@ -113,7 +113,7 @@ class PrecompiledLibrary(Library):
 
 class HDLLibrary(Library):
     """
-      Library class for holding file objects.
+    Library class for holding file objects.
     """
 
     def __init__(self, name=None, project=None):
@@ -133,56 +133,82 @@ class HDLLibrary(Library):
     def set_never_recompile(self, stop_recompile) -> None:
         self.no_recompile = stop_recompile
 
-    def _get_new_hdlfile_obj(self, file_item, hdl_version, com_options, parse_file, code_coverage, netlist_instance):
+    def _get_new_hdlfile_obj(
+        self,
+        file_item,
+        hdl_version,
+        com_options,
+        parse_file,
+        code_coverage,
+        netlist_instance,
+    ):
         # VHDL file
-        if file_item.lower().endswith('.vhdl') or file_item.lower().endswith('.vhd'):
-            return VHDLFile(filename_with_path=file_item,
-                            library=self,
-                            hdl_version=hdl_version,
-                            com_options=com_options,
-                            parse_file=parse_file,
-                            code_coverage=code_coverage,
-                            project=self.project)
+        if file_item.lower().endswith(".vhdl") or file_item.lower().endswith(".vhd"):
+            return VHDLFile(
+                filename_with_path=file_item,
+                library=self,
+                hdl_version=hdl_version,
+                com_options=com_options,
+                parse_file=parse_file,
+                code_coverage=code_coverage,
+                project=self.project,
+            )
 
         # Verilog file
-        elif file_item.lower().endswith('.v'):
-            return VerilogFile(filename_with_path=file_item,
-                               library=self,
-                               hdl_version=hdl_version,
-                               com_options=com_options,
-                               parse_file=parse_file,
-                               code_coverage=code_coverage,
-                               project=self.project)
-        elif file_item.lower().endswith('.sdf'):
-            return NetlistFile(filename_with_path=file_item,
-                               library=self,
-                               hdl_version=hdl_version,
-                               com_options=com_options,
-                               parse_file=parse_file,
-                               code_coverage=code_coverage,
-                               netlist_instance=netlist_instance,
-                               project=self.project)
-        elif file_item.lower().endswith('.sv'):
-            return SVFile(filename_with_path=file_item,
-                          library=self,
-                          hdl_version=hdl_version,
-                          com_options=com_options,
-                          parse_file=False,
-                          code_coverage=code_coverage,
-                          project=self.project)
+        elif file_item.lower().endswith(".v"):
+            return VerilogFile(
+                filename_with_path=file_item,
+                library=self,
+                hdl_version=hdl_version,
+                com_options=com_options,
+                parse_file=parse_file,
+                code_coverage=code_coverage,
+                project=self.project,
+            )
+        elif file_item.lower().endswith(".sdf"):
+            return NetlistFile(
+                filename_with_path=file_item,
+                library=self,
+                hdl_version=hdl_version,
+                com_options=com_options,
+                parse_file=parse_file,
+                code_coverage=code_coverage,
+                netlist_instance=netlist_instance,
+                project=self.project,
+            )
+        elif file_item.lower().endswith(".sv"):
+            return SVFile(
+                filename_with_path=file_item,
+                library=self,
+                hdl_version=hdl_version,
+                com_options=com_options,
+                parse_file=False,
+                code_coverage=code_coverage,
+                project=self.project,
+            )
         else:
-            self.logger.warning('Unknown file type: %s' % (file_item))
-            return UnknownFile(filename_with_path=file_item,
-                               library=self,
-                               hdl_version=hdl_version,
-                               com_options=com_options,
-                               parse_file=False,
-                               code_coverage=code_coverage,
-                               project=self.project)
+            self.logger.warning("Unknown file type: %s" % (file_item))
+            return UnknownFile(
+                filename_with_path=file_item,
+                library=self,
+                hdl_version=hdl_version,
+                com_options=com_options,
+                parse_file=False,
+                code_coverage=code_coverage,
+                project=self.project,
+            )
         return None
 
-    def add_file(self, filename, hdl_version, com_options, parse_file, code_coverage, netlist_instance) -> None:
-        '''
+    def add_file(
+        self,
+        filename,
+        hdl_version,
+        com_options,
+        parse_file,
+        code_coverage,
+        netlist_instance,
+    ) -> None:
+        """
         Locates the file and creates a HDLFile object
         that is added to the internal list.
         There is only one HDLFile object per file.
@@ -190,7 +216,7 @@ class HDLLibrary(Library):
         1. Locate file(s) in a list (warning if not found)
         2. Check if file (with this path) has already been added.
         3. Create a HDLFile object and add it to the hdlfile_container.
-        '''
+        """
         # Iterate list of found files
         for file_item in self._search_and_return_file_list(filename):
 
@@ -199,19 +225,23 @@ class HDLLibrary(Library):
 
             # New file?
             if not hdlfile_obj:
-                hdlfile_obj = self._get_new_hdlfile_obj(file_item=file_item,
-                                                        hdl_version=hdl_version,
-                                                        com_options=com_options,
-                                                        parse_file=parse_file,
-                                                        netlist_instance=netlist_instance,
-                                                        code_coverage=code_coverage)
-                self.logger.debug('%s add_file(%s) - new file' % 
-                                  (self.get_name(), file_item))
+                hdlfile_obj = self._get_new_hdlfile_obj(
+                    file_item=file_item,
+                    hdl_version=hdl_version,
+                    com_options=com_options,
+                    parse_file=parse_file,
+                    netlist_instance=netlist_instance,
+                    code_coverage=code_coverage,
+                )
+                self.logger.debug(
+                    "%s add_file(%s) - new file" % (self.get_name(), file_item)
+                )
 
             # Existing file
             else:
-                self.logger.debug('%s add_file(%s) - existing file' % 
-                                  (self.get_name(), file_item))
+                self.logger.debug(
+                    "%s add_file(%s) - existing file" % (self.get_name(), file_item)
+                )
             self.temp_hdlfile_container.add(hdlfile_obj)
 
     def remove_file(self, filename) -> bool:
@@ -225,11 +255,11 @@ class HDLLibrary(Library):
                 file_found = True
         return file_found
 
-    def get_hdlfile_obj(self, filename) -> 'HDLFile':
-        '''
+    def get_hdlfile_obj(self, filename) -> "HDLFile":
+        """
         Returns the file object if found in the file list.
         Returns None if no file object is found.
-        '''
+        """
         # Check with all hdlfile objects in this library (container).
         for hdlfile in self.get_hdlfile_list():
             hdlfile_name = hdlfile.get_filename_with_path()
@@ -240,24 +270,28 @@ class HDLLibrary(Library):
         return None
 
     def update_file_list(self) -> None:
-        '''
+        """
         Update cached file liste with any changes from new run.
         Files that are no longer present in the regression script
         are moved from cache.
 
         Update library recompilation if necessary.
-        '''
+        """
 
         def check_list(new_list, old_list) -> tuple:
-            new_names = [new_file.get_filename()
-                         for new_file in new_list.get()]
-            old_names = [old_file.get_filename()
-                         for old_file in old_list.get()]
+            new_names = [new_file.get_filename() for new_file in new_list.get()]
+            old_names = [old_file.get_filename() for old_file in old_list.get()]
 
-            new_files = [hdlfile for hdlfile in new_list.get(
-            ) if hdlfile.get_filename() not in old_names]
-            removed_files = [hdlfile for hdlfile in old_list.get(
-            ) if hdlfile.get_filename() not in new_names]
+            new_files = [
+                hdlfile
+                for hdlfile in new_list.get()
+                if hdlfile.get_filename() not in old_names
+            ]
+            removed_files = [
+                hdlfile
+                for hdlfile in old_list.get()
+                if hdlfile.get_filename() not in new_names
+            ]
             return (new_files, removed_files)
 
         # This check is only for regression scripts that call start()
@@ -265,18 +299,18 @@ class HDLLibrary(Library):
         if self.temp_hdlfile_container.num_elements() > 0:
 
             # Get lists of new files and removed files
-            (new_files, removed_files) = check_list(self.temp_hdlfile_container,
-                                                    self.hdlfile_container)
+            (new_files, removed_files) = check_list(
+                self.temp_hdlfile_container, self.hdlfile_container
+            )
 
             # Add new files to container
             for new_file in new_files:
                 self.hdlfile_container.add(new_file)
-                self.logger.debug('Added: %s' % (new_file.get_filename()))
+                self.logger.debug("Added: %s" % (new_file.get_filename()))
             # Remove removed files from container
             for removed_file in removed_files:
                 self.hdlfile_container.remove(removed_file)
-                self.logger.debug('Removed: %s' % 
-                                  (removed_file.get_filename()))
+                self.logger.debug("Removed: %s" % (removed_file.get_filename()))
 
             # Updated library recompile when file number has changed.
             if new_files or removed_files:
@@ -286,13 +320,13 @@ class HDLLibrary(Library):
             self.temp_hdlfile_container.empty_list()
 
     def check_library_files_for_changes(self) -> None:
-        '''
+        """
         Request each file process/scan file content and
         build module recompile info.
-        '''
+        """
 
-        def devide_list_for_threads(lst, sz): return [
-            lst[i:i + sz] for i in range(0, len(lst), sz)]
+        def devide_list_for_threads(lst, sz):
+            return [lst[i : i + sz] for i in range(0, len(lst), sz)]
 
         def check_if_changed_and_parse(hdlfile) -> None:
             if hdlfile.get_need_compile() is True:
@@ -303,7 +337,8 @@ class HDLLibrary(Library):
                         dep_hdlfile.set_need_compile(True)
                 else:
                     self.logger.warning(
-                        'File was not parsed: %s' % (hdlfile.get_filename_with_path()))
+                        "File was not parsed: %s" % (hdlfile.get_filename_with_path())
+                    )
 
         # Get list of all HDL file objects in this library
         hdlfile_list = self.hdlfile_container.get()
@@ -330,16 +365,16 @@ class HDLLibrary(Library):
         return self.lib_hdlfile_compile_order_list
 
     def set_need_compile(self, compile) -> None:
-        '''
+        """
         Sets the recompile status for the library.
         Will be set if a dependency library need to compile.
-        '''
+        """
         self.compile_req = compile
 
     def get_need_compile(self) -> bool:
-        '''
+        """
         Returns the recompile status of this library.
-        '''
+        """
         # Library set to never recompile
         if self.no_recompile is True:
             return False
@@ -351,10 +386,10 @@ class HDLLibrary(Library):
             return self.compile_req
 
     def _get_list_of_lib_modules(self) -> list:
-        '''
+        """
         Returns a list of all modules detected by scanning
         the files in this library.
-        '''
+        """
         module_list = []
         for hdlfile in self.get_hdlfile_list():
             if hdlfile:
@@ -363,11 +398,11 @@ class HDLLibrary(Library):
         return module_list
 
     def prepare_for_run(self) -> None:
-        '''
+        """
         Run all necessary steps for compiling this library,
         i.e. scan files, detect dependencies, sort in
         order by dependency.
-        '''
+        """
         # Create list of all modules
         self.module_list = self._get_list_of_lib_modules()
 
@@ -390,10 +425,10 @@ class HDLLibrary(Library):
             print(self._present_library())
 
     def _create_module_from_name(self) -> None:
-        '''
+        """
         Iterate all modules and filters on component/configuration
         modules to extract dependent
-        '''
+        """
         for module in self.module_list:
             if module.get_is_configuration():
                 for dep_module in self.module_list:
@@ -403,35 +438,42 @@ class HDLLibrary(Library):
                             continue
 
     def _remove_non_existing_modules(self) -> None:
-        '''
+        """
         Remove all modules created/detected when scanning files,
         which are not real modules (or have not been detected as modules).
-        '''
+        """
         for module in self.module_list:
             for dep_module_name in module.get_int_dep():
-                if module.get_type() == 'verilog_module':
-                    match = any(dep_module for dep_module in self.module_list if dep_module.get_name(
-                    ) == dep_module_name)
+                if module.get_type() == "verilog_module":
+                    match = any(
+                        dep_module
+                        for dep_module in self.module_list
+                        if dep_module.get_name() == dep_module_name
+                    )
                 else:
-                    match = any(dep_module for dep_module in self.module_list if dep_module.get_name(
-                    ).lower() == dep_module_name)
+                    match = any(
+                        dep_module
+                        for dep_module in self.module_list
+                        if dep_module.get_name().lower() == dep_module_name
+                    )
                 if match is False:
                     module.remove_int_dep(dep_module_name)
-                    self.logger.debug(
-                        'Removing unknown module: %s' % (dep_module_name))
+                    self.logger.debug("Removing unknown module: %s" % (dep_module_name))
 
     def _connect_dep_modules(self):
-        '''
+        """
         Build connection between modules/packages/instances, i.e.
         each object knows whom it depende on and whom depends on it.
         That is, all modules in all files inside this library are
         dependency connected.
-        '''
+        """
         for update_module in self.module_list:
             update_module_hdlfile = update_module.get_hdlfile()
 
             for check_module in self.module_list:
-                if (update_module == check_module) and (update_module.get_hdlfile() == check_module.get_hdlfile()):
+                if (update_module == check_module) and (
+                    update_module.get_hdlfile() == check_module.get_hdlfile()
+                ):
                     continue
 
                 check_module_hdlfile = check_module.get_hdlfile()
@@ -441,26 +483,28 @@ class HDLLibrary(Library):
                     check_module.set_this_depend_of(update_module)
                     update_module.set_depend_of_this(check_module)
                     # Update HDLFile objects dependency
-                    check_module_hdlfile.add_hdlfile_this_dep_on(
-                        update_module_hdlfile)
-                    update_module_hdlfile.add_hdlfile_dep_on_this(
-                        check_module_hdlfile)
+                    check_module_hdlfile.add_hdlfile_this_dep_on(update_module_hdlfile)
+                    update_module_hdlfile.add_hdlfile_dep_on_this(check_module_hdlfile)
 
                 elif check_module.get_name() in update_module.get_int_dep():
                     update_module.set_this_depend_of(check_module)
                     check_module.set_depend_of_this(update_module)
                     # Update HDLFile objects dependency
-                    update_module_hdlfile.add_hdlfile_this_dep_on(
-                        check_module_hdlfile)
-                    check_module_hdlfile.add_hdlfile_dep_on_this(
-                        update_module_hdlfile)
+                    update_module_hdlfile.add_hdlfile_this_dep_on(check_module_hdlfile)
+                    check_module_hdlfile.add_hdlfile_dep_on_this(update_module_hdlfile)
 
                 # ================================================================
                 # The following connection do not belong to verilog modules.
                 # ================================================================
-                if check_module.get_type() != 'verilog_module' and update_module.get_type() != 'verilog_module':
+                if (
+                    check_module.get_type() != "verilog_module"
+                    and update_module.get_type() != "verilog_module"
+                ):
                     # Connect architecture with entity
-                    if check_module.get_is_architecture() and update_module.get_is_entity():
+                    if (
+                        check_module.get_is_architecture()
+                        and update_module.get_is_entity()
+                    ):
 
                         # Knowledge:
                         # - architecture knows which entity name
@@ -470,24 +514,29 @@ class HDLLibrary(Library):
                             update_module.set_depend_of_this(check_module)
                             update_module.add_architecture(check_module)
 
-                    if update_module.get_is_architecture() and check_module.get_is_entity():
+                    if (
+                        update_module.get_is_architecture()
+                        and check_module.get_is_entity()
+                    ):
                         if update_module.get_arch_of() == check_module.get_name():
                             update_module.set_this_depend_of(check_module)
                             check_module.set_depend_of_this(update_module)
                             check_module.add_architecture(update_module)
                             # Update HDLFile objects dependency
                             update_module_hdlfile.add_hdlfile_this_dep_on(
-                                check_module_hdlfile)
+                                check_module_hdlfile
+                            )
                             check_module_hdlfile.add_hdlfile_dep_on_this(
-                                update_module_hdlfile)
+                                update_module_hdlfile
+                            )
 
     def _create_list_of_files_in_compile_order(self):
-        '''
+        """
         Get all modules (arranged in compile order) and add their
         filename to library_hdlfile_compile_order_list.
         Note! Each file is only listed one time.
         Note! The modules have to be arranged in compile order.
-        '''
+        """
         file_list = self.get_hdlfile_list()
         num_files = len(file_list)
         swapped = True
@@ -499,7 +548,9 @@ class HDLLibrary(Library):
                 # has no dependencies.
                 lowest_value_index = i
 
-                self.logger.debug("Check dep on {}".format(file_list[lowest_value_index].get_name()))
+                self.logger.debug(
+                    "Check dep on {}".format(file_list[lowest_value_index].get_name())
+                )
                 # This loop iterates over the unsorted items
                 for j in range(i + 1, num_files):
                     check_file = file_list[j]
@@ -507,8 +558,17 @@ class HDLLibrary(Library):
 
                     if check_file in with_file.get_hdlfile_this_dep_on():
                         if with_file in check_file.get_hdlfile_this_dep_on():
-                            if not check_file.get_filename_with_path() == with_file.get_filename_with_path():
-                                self.logger.warning("{} : recursing dependency {} <-> {}.".format(self.get_name(), check_file.get_name(), with_file.get_name()))
+                            if (
+                                not check_file.get_filename_with_path()
+                                == with_file.get_filename_with_path()
+                            ):
+                                self.logger.warning(
+                                    "{} : recursing dependency {} <-> {}.".format(
+                                        self.get_name(),
+                                        check_file.get_name(),
+                                        with_file.get_name(),
+                                    )
+                                )
                                 continue
                         else:
                             lowest_value_index = j
@@ -516,37 +576,41 @@ class HDLLibrary(Library):
                 # Swap values of the lowest unsorted element with
                 # the first unsorted element.
                 if i != lowest_value_index:
-                    file_list[i], file_list[lowest_value_index] = file_list[lowest_value_index], file_list[i]
+                    file_list[i], file_list[lowest_value_index] = (
+                        file_list[lowest_value_index],
+                        file_list[i],
+                    )
                     swapped = True
 
         # Update
         self.lib_hdlfile_compile_order_list = file_list
 
     def _get_lib_deps_from_modules(self) -> None:
-        '''
+        """
         Check with each module which libraries they depend on.
-        '''
+        """
         for module in self.module_list:
             for library in module.get_ext_dep():
                 self.add_lib_dep(library)
 
     def get_lib_dep(self) -> list:
-        '''
+        """
         Returns:
         lib_dep(list): dependencies for this library.
-        '''
+        """
         return self.lib_dep
 
     def add_lib_dep(self, library) -> None:
-        '''
+        """
         Method for manually add a library as a dependency.
-        '''
+        """
         if library.lower() not in self.lib_dep:
             self.lib_dep.append(library.lower())
 
             # Get the HDLLibrary object and save in list
-            lib_obj = self.project._get_library_object(library.lower(),
-                                                       create_new_if_missing=False)
+            lib_obj = self.project._get_library_object(
+                library.lower(), create_new_if_missing=False
+            )
             if lib_obj is not None:
                 if lib_obj not in self.lib_obj_dep_list:
                     self.lib_obj_dep_list.append(lib_obj)
@@ -555,18 +619,26 @@ class HDLLibrary(Library):
         return self.lib_obj_dep_list
 
     def _present_library(self) -> str:
-        '''
+        """
         Printer method for presenting the library w/modules
         in dependency order and w/compile status.
-        '''
-        txt = ("\n%s Library %s modules inter-connect %s\n" % 
-               ("="*20, self.get_name(), "="*20))
+        """
+        txt = "\n%s Library %s modules inter-connect %s\n" % (
+            "=" * 20,
+            self.get_name(),
+            "=" * 20,
+        )
         for idx, module in enumerate(self.module_list):
-            if (module.get_is_entity() or module.get_is_package() or
-                module.get_is_context() or module.get_is_new_package() or
-                module.get_is_architecture() or module.get_is_package_body() or
-                (module.get_type() == 'verilog_module') or
-                    module.get_is_configuration()):
+            if (
+                module.get_is_entity()
+                or module.get_is_package()
+                or module.get_is_context()
+                or module.get_is_new_package()
+                or module.get_is_architecture()
+                or module.get_is_package_body()
+                or (module.get_type() == "verilog_module")
+                or module.get_is_configuration()
+            ):
 
                 my_dep = ""
                 for item in module.get_this_depend_of():
@@ -576,14 +648,21 @@ class HDLLibrary(Library):
                 for item in module.get_depend_of_this():
                     dep_on_me += item.get_name() + "(" + item.get_type() + ")" + ", "
 
-                txt += ("|-(%d) %s (%s):\n|      ---->:%s\n|      <----:%s\n" % 
-                        (idx + 1, module.get_name(), module.get_type(), my_dep, dep_on_me))
+                txt += "|-(%d) %s (%s):\n|      ---->:%s\n|      <----:%s\n" % (
+                    idx + 1,
+                    module.get_name(),
+                    module.get_type(),
+                    my_dep,
+                    dep_on_me,
+                )
 
-        txt += ("\n%s Library %s files compile order %s\n" % 
-                ("="*20, self.get_name(), "="*20))
+        txt += "\n%s Library %s files compile order %s\n" % (
+            "=" * 20,
+            self.get_name(),
+            "=" * 20,
+        )
         for idx, hdlfile in enumerate(self.lib_hdlfile_compile_order_list):
             tb_str = "(TB)" if hdlfile.get_is_tb() else ""
-            txt += ("(%d) %s %s\n" % 
-                    (idx + 1, hdlfile.get_filename_with_path(), tb_str))
+            txt += "(%d) %s %s\n" % (idx + 1, hdlfile.get_filename_with_path(), tb_str)
 
         return txt

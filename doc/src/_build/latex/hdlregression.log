@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2022.1.21)  12 MAY 2024 20:05
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2022.1.21)  14 JUN 2024 14:15
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1049,7 +1049,7 @@ t.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/txfonts/t1xtt.pfb>
 </usr/local/texlive/2021/texmf-dist/fonts/type1/public/txfonts/t1xtt.pfb></usr/
 local/texlive/2021/texmf-dist/fonts/type1/public/txfonts/tcxtt.pfb></usr/local/
 texlive/2021/texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
-Output written on hdlregression.pdf (69 pages, 3975382 bytes).
+Output written on hdlregression.pdf (69 pages, 3975510 bytes).
 PDF statistics:
  863 PDF objects out of 1000 (max. 8388607)
  738 compressed objects within 8 object streams
