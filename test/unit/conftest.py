@@ -2,9 +2,18 @@ import pytest
 import os
 
 
+def is_running_in_docker():
+    path_to_check = "/.dockerenv"
+    return os.path.exists(path_to_check)
+
+
 @pytest.fixture(scope="session")
 def uvvm_path():
-    return os.path.abspath("../../../UVVM/GITHUB_UVVM")
+    if is_running_in_docker():
+        docker_path = "../../../uvvm"
+        return os.path.abspath(docker_path)
+    else:
+        return os.path.abspath("../../../UVVM/GITHUB_UVVM")
 
 
 @pytest.fixture(scope="session")

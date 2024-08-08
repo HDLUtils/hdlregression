@@ -1,21 +1,24 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Application Programming Interface (API) &mdash; hdlregression 0.53.1
+  <title>Application Programming Interface (API) &mdash; hdlregression 0.54.0
  documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/doctools.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=d55afa0e"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -28,12 +31,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #F5F5F5" >
-            <a href="index.html">
-            <img src="_static/hdlregression_scaled.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/hdlregression_scaled.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -106,8 +113,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Application Programming Interface (API)</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Application Programming Interface (API)</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -118,11 +125,11 @@
            <div itemprop="articleBody">
              
   <section id="application-programming-interface-api">
-<h1>Application Programming Interface (API)<a class="headerlink" href="#application-programming-interface-api" title="Permalink to this headline"></a></h1>
+<h1>Application Programming Interface (API)<a class="headerlink" href="#application-programming-interface-api" title="Link to this heading"></a></h1>
 <p>HDLRegression is configured and run using a Python script that imports the HDLRegression module and
 uses a set of API methods. Because HDLRegression is written in Python the test designer can
 utilize the full Python API and modules to make advanced regression scripts.
-There are two template script files in the <code class="code bash docutils literal notranslate"><span class="pre">/template</span></code> folder to help new users get started.</p>
+There are two template script files in the <code class="code highlight bash docutils literal highlight-bash">/template</code> folder to help new users get started.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span> <span class="nn">sys</span>
 <span class="linenos"> 2</span><span class="c1"># ----------- USER HDLRegression PATH -----------------</span>
 <span class="linenos"> 3</span><span class="c1"># If HDLRegression is not installed as a Python package (see doc)</span>
@@ -145,7 +152,7 @@ There are two template script files in the <code class="code bash docutils liter
 </pre></div>
 </div>
 <section id="hdlregression">
-<h2>HDLRegression()<a class="headerlink" href="#hdlregression" title="Permalink to this headline"></a></h2>
+<h2>HDLRegression()<a class="headerlink" href="#hdlregression" title="Link to this heading"></a></h2>
 <p>This command is used for initializing the HDLRegression object which is used for defining the regression script
 and accessing the HDLRegression API.</p>
 <p>HDLRegression will attempt to auto-detect available simulators and will choose either ModelSim, NVC, GHDL, or
@@ -155,13 +162,6 @@ in example 2 or using <a class="reference internal" href="cli.html"><span class=
 </pre></div>
 </div>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 18%" />
-<col style="width: 16%" />
-<col style="width: 33%" />
-<col style="width: 16%" />
-<col style="width: 16%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Argument</p></th>
 <th class="head"><p>Type</p></th>
@@ -224,9 +224,9 @@ in example 2.</p>
 </div>
 </section>
 <section id="basic-methods">
-<h2>Basic methods<a class="headerlink" href="#basic-methods" title="Permalink to this headline"></a></h2>
+<h2>Basic methods<a class="headerlink" href="#basic-methods" title="Link to this heading"></a></h2>
 <section id="add-files">
-<h3>add_files()<a class="headerlink" href="#add-files" title="Permalink to this headline"></a></h3>
+<h3>add_files()<a class="headerlink" href="#add-files" title="Link to this heading"></a></h3>
 <div class="line-block">
 <div class="line">Specifies a single or set of files that will be associated with a library name.</div>
 <div class="line">The library name can be selected explicitly using the <code class="docutils literal notranslate"><span class="pre">library_name</span></code> argument or by first setting a library name
@@ -243,12 +243,6 @@ can be called several times in the regressions script, addressing the same or a 
 </pre></div>
 </div>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 18%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Argument</p></th>
 <th class="head"><p>Type</p></th>
@@ -352,10 +346,6 @@ compilation order and not compile the file.</p>
 <p class="admonition-title">Tip</p>
 <p>Use wildcards to more effectively filter searches, i.e. testcases and filenames.</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 26%" />
-<col style="width: 74%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Pattern</p></th>
 <th class="head"><p>Meaning</p></th>
@@ -379,17 +369,12 @@ compilation order and not compile the file.</p>
 </div>
 </section>
 <section id="set-library">
-<h3>set_library()<a class="headerlink" href="#set-library" title="Permalink to this headline"></a></h3>
+<h3>set_library()<a class="headerlink" href="#set-library" title="Link to this heading"></a></h3>
 <p>Changes the default library name used when <a class="reference internal" href="#add-files">add_files()</a> is used without the <code class="docutils literal notranslate"><span class="pre">library_name</span></code> argument.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">set_default_library</span><span class="p">(</span><span class="o">&lt;</span><span class="n">library_name</span><span class="o">&gt;</span><span class="p">)</span>
 </pre></div>
 </div>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 40%" />
-<col style="width: 26%" />
-<col style="width: 35%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Argument</p></th>
 <th class="head"><p>Type</p></th>
@@ -413,7 +398,7 @@ compilation order and not compile the file.</p>
 </div>
 </section>
 <section id="start">
-<h3>start()<a class="headerlink" href="#start" title="Permalink to this headline"></a></h3>
+<h3>start()<a class="headerlink" href="#start" title="Link to this heading"></a></h3>
 <div class="line-block">
 <div class="line">This method will initiate compilation, simulation, reporting etc.</div>
 <div class="line">After calling this method, adding files or making changes to simulation configurations in the regression script</div>
@@ -423,10 +408,6 @@ compilation order and not compile the file.</p>
 <p><strong>Return code</strong></p>
 <p>The return code from the start() method is either 0 or 1, based on whether the success criteria listed below are met:</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 84%" />
-<col style="width: 16%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Criteria</p></th>
 <th class="head"><p>Return code</p></th>
@@ -454,12 +435,6 @@ yet this can be changed using the available arguments or by using the <a class="
 </pre></div>
 </div>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 36%" />
-<col style="width: 28%" />
-<col style="width: 18%" />
-<col style="width: 18%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Argument</p></th>
 <th class="head"><p>Options &amp; Type</p></th>
@@ -566,19 +541,14 @@ a subset of tests needs to be rerun to achieve wanted code coverage.</p></li>
 </section>
 </section>
 <section id="advanced-methods">
-<h2>Advanced methods<a class="headerlink" href="#advanced-methods" title="Permalink to this headline"></a></h2>
+<h2>Advanced methods<a class="headerlink" href="#advanced-methods" title="Link to this heading"></a></h2>
 <section id="add-file-to-run-folder">
-<h3>add_file_to_run_folder()<a class="headerlink" href="#add-file-to-run-folder" title="Permalink to this headline"></a></h3>
+<h3>add_file_to_run_folder()<a class="headerlink" href="#add-file-to-run-folder" title="Link to this heading"></a></h3>
 <p>Copies a single file to the testcase run folder.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">add_file_to_run_folder</span><span class="p">(</span><span class="o">&lt;</span><span class="n">filename</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">tc_id</span><span class="o">&gt;</span><span class="p">)</span>
 </pre></div>
 </div>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 29%" />
-<col style="width: 48%" />
-<col style="width: 23%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Argument</p></th>
 <th class="head"><p>Type</p></th>
@@ -609,7 +579,7 @@ and not where the regression script is called from.</p>
 </div>
 </section>
 <section id="add-generics">
-<h3>add_generics()<a class="headerlink" href="#add-generics" title="Permalink to this headline"></a></h3>
+<h3>add_generics()<a class="headerlink" href="#add-generics" title="Link to this heading"></a></h3>
 <p>Selects the generics to be used when running a testcase.
 A test run is created when generics are added to a testcase, thus calling <a class="reference internal" href="#add-generics">add_generics()</a> two times will create
 two test runs.</p>
@@ -617,11 +587,6 @@ two test runs.</p>
 </pre></div>
 </div>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 29%" />
-<col style="width: 48%" />
-<col style="width: 23%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Argument</p></th>
 <th class="head"><p>Type</p></th>
@@ -670,7 +635,7 @@ and not where the regression script is called from.</p>
 </div>
 </section>
 <section id="add-precompiled-library">
-<h3>add_precompiled_library()<a class="headerlink" href="#add-precompiled-library" title="Permalink to this headline"></a></h3>
+<h3>add_precompiled_library()<a class="headerlink" href="#add-precompiled-library" title="Link to this heading"></a></h3>
 <p>Specifies the name and path of a precompiled library.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -681,11 +646,6 @@ Any number of precompiled libraries can be added.</p>
 </pre></div>
 </div>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 29%" />
-<col style="width: 46%" />
-<col style="width: 25%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Argument</p></th>
 <th class="head"><p>Type</p></th>
@@ -705,7 +665,7 @@ Any number of precompiled libraries can be added.</p>
 </table>
 </section>
 <section id="add-testcase">
-<h3>add_testcase()<a class="headerlink" href="#add-testcase" title="Permalink to this headline"></a></h3>
+<h3>add_testcase()<a class="headerlink" href="#add-testcase" title="Link to this heading"></a></h3>
 <p>Adding testcase(s) will configure HDLRegression to only run these testcases.
 All testcases are run if no testcases are added using this command.
 Selecting testcase can also be done by using <a class="reference internal" href="cli.html"><span class="doc">command line interfaces</span></a>, and testcases selected from CLI will
@@ -724,10 +684,6 @@ override any scripted testcase selecition.</p>
 <p class="admonition-title">Tip</p>
 <p>Use wildcards to more effectively filter searches, i.e. testcases and filenames.</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 26%" />
-<col style="width: 74%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Pattern</p></th>
 <th class="head"><p>Meaning</p></th>
@@ -753,11 +709,6 @@ override any scripted testcase selecition.</p>
 </pre></div>
 </div>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 31%" />
-<col style="width: 44%" />
-<col style="width: 25%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Argument</p></th>
 <th class="head"><p>Type</p></th>
@@ -787,7 +738,7 @@ override any scripted testcase selecition.</p>
 </div>
 </section>
 <section id="add-to-testgroup">
-<h3>add_to_testgroup()<a class="headerlink" href="#add-to-testgroup" title="Permalink to this headline"></a></h3>
+<h3>add_to_testgroup()<a class="headerlink" href="#add-to-testgroup" title="Link to this heading"></a></h3>
 <div class="line-block">
 <div class="line">Will add tests to a collection of tests, i.e. <a class="reference internal" href="intro.html#test-group"><span class="std std-ref">test group</span></a>, that can be run in groups.
 The test group is given a name that is used for addressing the test collection.</div>
@@ -798,11 +749,6 @@ The test group is given a name that is used for addressing the test collection.<
 </pre></div>
 </div>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 29%" />
-<col style="width: 48%" />
-<col style="width: 23%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Argument</p></th>
 <th class="head"><p>Type</p></th>
@@ -844,10 +790,6 @@ The test group is given a name that is used for addressing the test collection.<
 <p class="admonition-title">Tip</p>
 <p>Use wildcards to more effectively filter searches, i.e. testcases and filenames.</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 26%" />
-<col style="width: 74%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Pattern</p></th>
 <th class="head"><p>Meaning</p></th>
@@ -871,17 +813,12 @@ The test group is given a name that is used for addressing the test collection.<
 </div>
 </section>
 <section id="compile-uvvm">
-<h3>compile_uvvm()<a class="headerlink" href="#compile-uvvm" title="Permalink to this headline"></a></h3>
+<h3>compile_uvvm()<a class="headerlink" href="#compile-uvvm" title="Link to this heading"></a></h3>
 <p>Compiles UVVM to HDLRegression library folder, making UVVM available to all tests run by HDLRegression.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">compile_uvvm</span><span class="p">(</span><span class="o">&lt;</span><span class="n">path_to_uvvm</span><span class="o">&gt;</span><span class="p">)</span>
 </pre></div>
 </div>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 28%" />
-<col style="width: 51%" />
-<col style="width: 22%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Argument</p></th>
 <th class="head"><p>Example</p></th>
@@ -907,17 +844,12 @@ The test group is given a name that is used for addressing the test collection.<
 </div>
 </section>
 <section id="compile-osvvm">
-<h3>compile_osvvm()<a class="headerlink" href="#compile-osvvm" title="Permalink to this headline"></a></h3>
+<h3>compile_osvvm()<a class="headerlink" href="#compile-osvvm" title="Link to this heading"></a></h3>
 <p>Compiles OSVVM to HDLRegression library folder, making OSVVM available to all tests run by HDLRegression.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">compile_osvvm</span><span class="p">(</span><span class="o">&lt;</span><span class="n">path_to_osvvm</span><span class="o">&gt;</span><span class="p">)</span>
 </pre></div>
 </div>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 28%" />
-<col style="width: 51%" />
-<col style="width: 22%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Argument</p></th>
 <th class="head"><p>Example</p></th>
@@ -943,18 +875,12 @@ The test group is given a name that is used for addressing the test collection.<
 </div>
 </section>
 <section id="configure-library">
-<h3>configure_library()<a class="headerlink" href="#configure-library" title="Permalink to this headline"></a></h3>
+<h3>configure_library()<a class="headerlink" href="#configure-library" title="Link to this heading"></a></h3>
 <p>Set special settings for a library that differs significantly from the regular settings.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">configure_library</span><span class="p">(</span><span class="o">&lt;</span><span class="n">library</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">never_recompile</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">set_lib_dep</span><span class="o">&gt;</span><span class="p">)</span>
 </pre></div>
 </div>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 18%" />
-<col style="width: 36%" />
-<col style="width: 32%" />
-<col style="width: 14%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Argument</p></th>
 <th class="head"><p>Options</p></th>
@@ -986,7 +912,7 @@ The test group is given a name that is used for addressing the test collection.<
 </div>
 </section>
 <section id="gen-report">
-<h3>gen_report()<a class="headerlink" href="#gen-report" title="Permalink to this headline"></a></h3>
+<h3>gen_report()<a class="headerlink" href="#gen-report" title="Link to this heading"></a></h3>
 <p>Writes a test run report file to the <code class="docutils literal notranslate"><span class="pre">hdlregression/test</span></code> folder. The default report file is <code class="docutils literal notranslate"><span class="pre">report.txt</span></code>
 and can be changed using the <code class="docutils literal notranslate"><span class="pre">report_file</span></code> argument. The report file is saved in the <code class="docutils literal notranslate"><span class="pre">/hdlregression/test</span></code> folder, thus no path
 should be given to the report name.</p>
@@ -994,12 +920,6 @@ should be given to the report name.</p>
 </pre></div>
 </div>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 25%" />
-<col style="width: 36%" />
-<col style="width: 20%" />
-<col style="width: 20%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Argument</p></th>
 <th class="head"><p>Options &amp; Type</p></th>
@@ -1036,7 +956,7 @@ should be given to the report name.</p>
 </div>
 </section>
 <section id="get-args">
-<h3>get_args()<a class="headerlink" href="#get-args" title="Permalink to this headline"></a></h3>
+<h3>get_args()<a class="headerlink" href="#get-args" title="Link to this heading"></a></h3>
 <p>The command is used for getting the parsed arguments from HDLRegression.
 This method can be used when there is a argparser object that is created in the regression script.
 See <a class="reference internal" href="#hdlregression">HDLRegression()</a> example 2 for usage.</p>
@@ -1046,7 +966,7 @@ See <a class="reference internal" href="#hdlregression">HDLRegression()</a> exam
 </div>
 </section>
 <section id="get-file-list">
-<h3>get_file_list()<a class="headerlink" href="#get-file-list" title="Permalink to this headline"></a></h3>
+<h3>get_file_list()<a class="headerlink" href="#get-file-list" title="Link to this heading"></a></h3>
 <p>The command is used for reading back the files added to the libraries in HDLRegression.
 All files from all libraries are returned in a list.</p>
 <p><strong>Example:</strong></p>
@@ -1055,17 +975,12 @@ All files from all libraries are returned in a list.</p>
 </div>
 </section>
 <section id="remove-file">
-<h3>remove_file()<a class="headerlink" href="#remove-file" title="Permalink to this headline"></a></h3>
+<h3>remove_file()<a class="headerlink" href="#remove-file" title="Link to this heading"></a></h3>
 <p>Removes a file that has been added to a library, e.g. after using <code class="docutils literal notranslate"><span class="pre">add_files()</span></code> with asterix for adding several files.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">remove_file</span><span class="p">(</span><span class="o">&lt;</span><span class="n">filename</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">library_name</span><span class="o">&gt;</span><span class="p">)</span>
 </pre></div>
 </div>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 43%" />
-<col style="width: 24%" />
-<col style="width: 33%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Argument</p></th>
 <th class="head"><p>Type</p></th>
@@ -1095,18 +1010,13 @@ All files from all libraries are returned in a list.</p>
 </div>
 </section>
 <section id="run-command">
-<h3>run_command()<a class="headerlink" href="#run-command" title="Permalink to this headline"></a></h3>
+<h3>run_command()<a class="headerlink" href="#run-command" title="Link to this heading"></a></h3>
 <p>The command is executed by HLDRegression at the given stage in the regression script. I.e. pre-simulation commands will have
 to be called prior to <a class="reference internal" href="#start">start()</a> and post-simulation commands need to be called after <a class="reference internal" href="#start">start()</a>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">run_command</span><span class="p">(</span><span class="o">&lt;</span><span class="n">command</span><span class="o">&gt;</span><span class="p">)</span>
 </pre></div>
 </div>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 31%" />
-<col style="width: 44%" />
-<col style="width: 25%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Argument</p></th>
 <th class="head"><p>Type</p></th>
@@ -1142,18 +1052,12 @@ and not where the regression script is called from.</p>
 </div>
 </section>
 <section id="set-code-coverage">
-<h3>set_code_coverage()<a class="headerlink" href="#set-code-coverage" title="Permalink to this headline"></a></h3>
+<h3>set_code_coverage()<a class="headerlink" href="#set-code-coverage" title="Link to this heading"></a></h3>
 <p>Sets the code coverage settings used when running the tests.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">set_code_coverage</span><span class="p">(</span><span class="o">&lt;</span><span class="n">code_coverage_settings</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">code_coverage_file</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">exclude_file</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">merge_options</span><span class="o">&gt;</span><span class="p">)</span>
 </pre></div>
 </div>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 21%" />
-<col style="width: 26%" />
-<col style="width: 21%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Argument</p></th>
 <th class="head"><p>Type</p></th>
@@ -1207,18 +1111,13 @@ code coverage for the complete test suite.</p></li>
 </div>
 </section>
 <section id="set-dependency">
-<h3>set_dependency()<a class="headerlink" href="#set-dependency" title="Permalink to this headline"></a></h3>
+<h3>set_dependency()<a class="headerlink" href="#set-dependency" title="Link to this heading"></a></h3>
 <p>Specifies the libraries that have a dependency to the <code class="docutils literal notranslate"><span class="pre">library_name</span></code> library, and ensures that <code class="docutils literal notranslate"><span class="pre">library_name</span></code> is
 compiled after all of the libraries listed in <code class="docutils literal notranslate"><span class="pre">dep_library</span></code>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">set_dependency</span><span class="p">(</span><span class="o">&lt;</span><span class="n">library_name</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">dep_library</span><span class="o">&gt;</span><span class="p">)</span>
 </pre></div>
 </div>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 29%" />
-<col style="width: 46%" />
-<col style="width: 25%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Argument</p></th>
 <th class="head"><p>Type</p></th>
@@ -1245,7 +1144,7 @@ compiled after all of the libraries listed in <code class="docutils literal notr
 </div>
 </section>
 <section id="set-result-check-string">
-<h3>set_result_check_string()<a class="headerlink" href="#set-result-check-string" title="Permalink to this headline"></a></h3>
+<h3>set_result_check_string()<a class="headerlink" href="#set-result-check-string" title="Link to this heading"></a></h3>
 <p>The result of a test run is determined by scanning the simulation log file, searching after a specific string.
 If the string is found the test run is set as <strong>PASS</strong>, and <strong>FAIL</strong> otherwise, thus only a passing test should
 report the check string.</p>
@@ -1253,11 +1152,6 @@ report the check string.</p>
 </pre></div>
 </div>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 32%" />
-<col style="width: 42%" />
-<col style="width: 25%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Argument</p></th>
 <th class="head"><p>Type</p></th>
@@ -1281,27 +1175,27 @@ criteria for a passing test.</p>
 </pre></div>
 </div>
 <div class="literal-block-wrapper docutils container" id="id1">
-<div class="code-block-caption"><span class="caption-text">Example TB with testcase result string</span><a class="headerlink" href="#id1" title="Permalink to this code"></a></div>
-<div class="highlight-vhdl notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="n">p_seq</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">process</span><span class="w"></span>
-<span class="linenos"> 2</span><span class="w">    </span><span class="k">variable</span><span class="w"> </span><span class="n">v_check_ok</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">false</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 3</span><span class="k">begin</span><span class="w"></span>
-<span class="linenos"> 4</span><span class="w">    </span><span class="c1">-- testcase checks, e.g.</span><span class="w"></span>
-<span class="linenos"> 5</span><span class="w">    </span><span class="c1">-- v_check_ok := check_value(v_act_data, v_exp_data, error, &quot;checking receive data&quot;, C_SCOPE);</span><span class="w"></span>
+<div class="code-block-caption"><span class="caption-text">Example TB with testcase result string</span><a class="headerlink" href="#id1" title="Link to this code"></a></div>
+<div class="highlight-vhdl notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="n">p_seq</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">process</span>
+<span class="linenos"> 2</span><span class="w">    </span><span class="k">variable</span><span class="w"> </span><span class="n">v_check_ok</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">false</span><span class="p">;</span>
+<span class="linenos"> 3</span><span class="k">begin</span>
+<span class="linenos"> 4</span><span class="w">    </span><span class="c1">-- testcase checks, e.g.</span>
+<span class="linenos"> 5</span><span class="w">    </span><span class="c1">-- v_check_ok := check_value(v_act_data, v_exp_data, error, &quot;checking receive data&quot;, C_SCOPE);</span>
 <span class="linenos"> 6</span><span class="w">    </span>
-<span class="linenos"> 7</span><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">v_check_ok</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">true</span><span class="w"> </span><span class="k">then</span><span class="w"></span>
-<span class="linenos"> 8</span><span class="w">        </span><span class="n">report</span><span class="w"> </span><span class="s">&quot;testcase passed&quot;</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 9</span><span class="w">    </span><span class="k">end</span><span class="w"> </span><span class="k">if</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 7</span><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">v_check_ok</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">true</span><span class="w"> </span><span class="k">then</span>
+<span class="linenos"> 8</span><span class="w">        </span><span class="n">report</span><span class="w"> </span><span class="s">&quot;testcase passed&quot;</span><span class="p">;</span>
+<span class="linenos"> 9</span><span class="w">    </span><span class="k">end</span><span class="w"> </span><span class="k">if</span><span class="p">;</span>
 <span class="linenos">10</span>
-<span class="linenos">11</span><span class="w">    </span><span class="c1">-- Finish the simulation</span><span class="w"></span>
-<span class="linenos">12</span><span class="w">    </span><span class="nn">std.env</span><span class="p">.</span><span class="n">stop</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">13</span><span class="w">    </span><span class="k">wait</span><span class="p">;</span><span class="w">  </span><span class="c1">-- to stop completely</span><span class="w"></span>
-<span class="linenos">14</span><span class="k">end</span><span class="w"> </span><span class="k">process</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">11</span><span class="w">    </span><span class="c1">-- Finish the simulation</span>
+<span class="linenos">12</span><span class="w">    </span><span class="nn">std.env</span><span class="p">.</span><span class="n">stop</span><span class="p">;</span>
+<span class="linenos">13</span><span class="w">    </span><span class="k">wait</span><span class="p">;</span><span class="w">  </span><span class="c1">-- to stop completely</span>
+<span class="linenos">14</span><span class="k">end</span><span class="w"> </span><span class="k">process</span><span class="p">;</span>
 </pre></div>
 </div>
 </div>
 </section>
 <section id="set-simulator">
-<h3>set_simulator()<a class="headerlink" href="#set-simulator" title="Permalink to this headline"></a></h3>
+<h3>set_simulator()<a class="headerlink" href="#set-simulator" title="Link to this heading"></a></h3>
 <p>HDLRegression is configured to run using Modelsim and VHDL version 2008 as default. This method allows for changing</p>
 <ul class="simple">
 <li><p>Simulator</p></li>
@@ -1318,12 +1212,6 @@ compile options and setting simulator executable path, or by using <a class="ref
 </pre></div>
 </div>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 16%" />
-<col style="width: 38%" />
-<col style="width: 33%" />
-<col style="width: 13%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Argument</p></th>
 <th class="head"><p>Options</p></th>
@@ -1366,7 +1254,7 @@ and not where the regression script is called from.</p>
 </div>
 </section>
 <section id="set-testcase-identifier-name">
-<h3>set_testcase_identifier_name()<a class="headerlink" href="#set-testcase-identifier-name" title="Permalink to this headline"></a></h3>
+<h3>set_testcase_identifier_name()<a class="headerlink" href="#set-testcase-identifier-name" title="Link to this heading"></a></h3>
 <p>Sets the name of the testcase generic used when defining several testcases
 inside a single testbench architecture. The default testcase generic is <code class="docutils literal notranslate"><span class="pre">GC_TESTCASE</span></code>,
 but any name can be given.</p>
@@ -1382,11 +1270,6 @@ and if-matched strings.</p></li>
 </pre></div>
 </div>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 31%" />
-<col style="width: 44%" />
-<col style="width: 25%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Argument</p></th>
 <th class="head"><p>Type</p></th>
@@ -1405,37 +1288,37 @@ and if-matched strings.</p></li>
 </pre></div>
 </div>
 <div class="literal-block-wrapper docutils container" id="id2">
-<div class="code-block-caption"><span class="caption-text">Example TB with testcase ID generic</span><a class="headerlink" href="#id2" title="Permalink to this code"></a></div>
-<div class="highlight-vhdl notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">--hdlregression:tb</span><span class="w"></span>
-<span class="linenos"> 2</span><span class="k">entity</span><span class="w"> </span><span class="nc">tb_top</span><span class="w"> </span><span class="k">is</span><span class="w"></span>
-<span class="linenos"> 3</span><span class="w">    </span><span class="k">generic</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
-<span class="linenos"> 4</span><span class="w">        </span><span class="n">GC_TESTCASE</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="s">&quot;read_test&quot;</span><span class="w"></span>
+<div class="code-block-caption"><span class="caption-text">Example TB with testcase ID generic</span><a class="headerlink" href="#id2" title="Link to this code"></a></div>
+<div class="highlight-vhdl notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">--hdlregression:tb</span>
+<span class="linenos"> 2</span><span class="k">entity</span><span class="w"> </span><span class="nc">tb_top</span><span class="w"> </span><span class="k">is</span>
+<span class="linenos"> 3</span><span class="w">    </span><span class="k">generic</span><span class="w"> </span><span class="p">(</span>
+<span class="linenos"> 4</span><span class="w">        </span><span class="n">GC_TESTCASE</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="s">&quot;read_test&quot;</span>
 <span class="linenos"> 5</span><span class="w">    </span><span class="p">);</span><span class="w">    </span>
-<span class="linenos"> 6</span><span class="k">end</span><span class="w"> </span><span class="nc">tb_top</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 6</span><span class="k">end</span><span class="w"> </span><span class="nc">tb_top</span><span class="p">;</span>
 <span class="linenos"> 7</span>
-<span class="linenos"> 8</span><span class="k">architecture</span><span class="w"> </span><span class="nc">test</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="nc">simple_tb</span><span class="w"> </span><span class="k">is</span><span class="w"></span>
+<span class="linenos"> 8</span><span class="k">architecture</span><span class="w"> </span><span class="nc">test</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="nc">simple_tb</span><span class="w"> </span><span class="k">is</span>
 <span class="linenos"> 9</span><span class="w">    </span><span class="k">constant</span><span class="w"> </span><span class="n">C_SCOPE</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="s">&quot;SIMPLE_TB&quot;</span><span class="p">;</span><span class="w"> </span>
-<span class="linenos">10</span><span class="w">  </span><span class="k">begin</span><span class="w"></span>
+<span class="linenos">10</span><span class="w">  </span><span class="k">begin</span>
 <span class="linenos">11</span><span class="w">    </span><span class="n">p_main</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">process</span><span class="w">  </span>
-<span class="linenos">12</span><span class="w">    </span><span class="k">begin</span><span class="w"></span>
-<span class="linenos">13</span><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">GC_TESTCASE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;read_test&quot;</span><span class="w"> </span><span class="k">then</span><span class="w"></span>
-<span class="linenos">14</span><span class="w">            </span><span class="c1">-- read tests</span><span class="w"></span>
-<span class="linenos">15</span><span class="w">        </span><span class="k">elsif</span><span class="w"> </span><span class="n">GC_TESTCASE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;write_test&quot;</span><span class="w"> </span><span class="k">then</span><span class="w"></span>
-<span class="linenos">16</span><span class="w">            </span><span class="c1">-- write tests</span><span class="w"></span>
-<span class="linenos">17</span><span class="w">        </span><span class="k">else</span><span class="w"></span>
-<span class="linenos">18</span><span class="w">            </span><span class="n">report</span><span class="w"> </span><span class="s">&quot;Unknown test &quot;</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">GC_TESTCASE</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">19</span><span class="w">        </span><span class="k">end</span><span class="w"> </span><span class="k">if</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">20</span><span class="w">    </span><span class="c1">-- Finish the simulation</span><span class="w"></span>
-<span class="linenos">21</span><span class="w">    </span><span class="nn">std.env</span><span class="p">.</span><span class="n">stop</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">22</span><span class="w">    </span><span class="k">wait</span><span class="p">;</span><span class="w">  </span><span class="c1">-- to stop completely        </span><span class="w"></span>
-<span class="linenos">23</span><span class="w">    </span><span class="k">end</span><span class="w"> </span><span class="k">process</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">24</span><span class="k">end</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">12</span><span class="w">    </span><span class="k">begin</span>
+<span class="linenos">13</span><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">GC_TESTCASE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;read_test&quot;</span><span class="w"> </span><span class="k">then</span>
+<span class="linenos">14</span><span class="w">            </span><span class="c1">-- read tests</span>
+<span class="linenos">15</span><span class="w">        </span><span class="k">elsif</span><span class="w"> </span><span class="n">GC_TESTCASE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;write_test&quot;</span><span class="w"> </span><span class="k">then</span>
+<span class="linenos">16</span><span class="w">            </span><span class="c1">-- write tests</span>
+<span class="linenos">17</span><span class="w">        </span><span class="k">else</span>
+<span class="linenos">18</span><span class="w">            </span><span class="n">report</span><span class="w"> </span><span class="s">&quot;Unknown test &quot;</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">GC_TESTCASE</span><span class="p">;</span>
+<span class="linenos">19</span><span class="w">        </span><span class="k">end</span><span class="w"> </span><span class="k">if</span><span class="p">;</span>
+<span class="linenos">20</span><span class="w">    </span><span class="c1">-- Finish the simulation</span>
+<span class="linenos">21</span><span class="w">    </span><span class="nn">std.env</span><span class="p">.</span><span class="n">stop</span><span class="p">;</span>
+<span class="linenos">22</span><span class="w">    </span><span class="k">wait</span><span class="p">;</span><span class="w">  </span><span class="c1">-- to stop completely        </span>
+<span class="linenos">23</span><span class="w">    </span><span class="k">end</span><span class="w"> </span><span class="k">process</span><span class="p">;</span>
+<span class="linenos">24</span><span class="k">end</span><span class="p">;</span>
 </pre></div>
 </div>
 </div>
 </section>
 <section id="set-simulator-wave-file-format">
-<h3>set_simulator_wave_file_format()<a class="headerlink" href="#set-simulator-wave-file-format" title="Permalink to this headline"></a></h3>
+<h3>set_simulator_wave_file_format()<a class="headerlink" href="#set-simulator-wave-file-format" title="Link to this heading"></a></h3>
 <p>Sets the wave dump format for GHDL and NVC wave files. Options are FST and VCD.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -1448,11 +1331,6 @@ and if-matched strings.</p></li>
 </pre></div>
 </div>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 31%" />
-<col style="width: 44%" />
-<col style="width: 25%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Argument</p></th>
 <th class="head"><p>Type</p></th>
@@ -1474,9 +1352,9 @@ and if-matched strings.</p></li>
 </section>
 </section>
 <section id="statistical-methods">
-<h2>Statistical methods<a class="headerlink" href="#statistical-methods" title="Permalink to this headline"></a></h2>
+<h2>Statistical methods<a class="headerlink" href="#statistical-methods" title="Link to this heading"></a></h2>
 <section id="get-results">
-<h3>get_results()<a class="headerlink" href="#get-results" title="Permalink to this headline"></a></h3>
+<h3>get_results()<a class="headerlink" href="#get-results" title="Link to this heading"></a></h3>
 <p>Returns a list of all passed, failed and not run tests.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">get_results</span><span class="p">()</span>
 </pre></div>
@@ -1494,7 +1372,7 @@ and if-matched strings.</p></li>
 </div>
 </section>
 <section id="get-num-tests-run">
-<h3>get_num_tests_run()<a class="headerlink" href="#get-num-tests-run" title="Permalink to this headline"></a></h3>
+<h3>get_num_tests_run()<a class="headerlink" href="#get-num-tests-run" title="Link to this heading"></a></h3>
 <p>Returns the number of tests run.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">get_num_tests_run</span><span class="p">()</span>
 </pre></div>
@@ -1505,7 +1383,7 @@ and if-matched strings.</p></li>
 </div>
 </section>
 <section id="get-num-pass-tests">
-<h3>get_num_pass_tests()<a class="headerlink" href="#get-num-pass-tests" title="Permalink to this headline"></a></h3>
+<h3>get_num_pass_tests()<a class="headerlink" href="#get-num-pass-tests" title="Link to this heading"></a></h3>
 <p>Returns the number of passed test runs.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">get_num_pass_tests</span><span class="p">()</span>
 </pre></div>
@@ -1516,7 +1394,7 @@ and if-matched strings.</p></li>
 </div>
 </section>
 <section id="get-num-fail-tests">
-<h3>get_num_fail_tests()<a class="headerlink" href="#get-num-fail-tests" title="Permalink to this headline"></a></h3>
+<h3>get_num_fail_tests()<a class="headerlink" href="#get-num-fail-tests" title="Link to this heading"></a></h3>
 <p>Returns the number of failed test runs.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">get_num_fail_tests</span><span class="p">()</span>
 </pre></div>
@@ -1527,7 +1405,7 @@ and if-matched strings.</p></li>
 </div>
 </section>
 <section id="get-num-pass-with-minor-alert-tests">
-<h3>get_num_pass_with_minor_alert_tests()<a class="headerlink" href="#get-num-pass-with-minor-alert-tests" title="Permalink to this headline"></a></h3>
+<h3>get_num_pass_with_minor_alert_tests()<a class="headerlink" href="#get-num-pass-with-minor-alert-tests" title="Link to this heading"></a></h3>
 <p>Returns the number of passed test runs that completed with minor alerts.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>

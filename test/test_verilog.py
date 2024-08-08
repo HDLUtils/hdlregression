@@ -19,5 +19,7 @@ hr = HDLRegression()
 hr.add_file("../test/tb/tb_verilog.v", "test_lib")
 hr.set_result_check_string("Passing test : ")
 
+hr.add_generics(entity="tb_verilog_testcase", generics=["GC_DUMMY", "bobo"])
+
 # ------------ USER CONFIG END ---------------
 hr.start()

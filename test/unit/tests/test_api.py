@@ -174,16 +174,12 @@ def test_set_library():
     assert lib_name == "new_default_lib_name", "checking setting default library name"
 
 
-def test_add_precompiled_library():
+def test_add_precompiled_library(sim_env, precompiled_path):
     clear_output()
     hr = HDLRegression()
 
     lib_name = "pytest_lib"
-    compile_path = "../precompiled_path"
-
-    hr.add_precompiled_library(
-        compile_path=compile_path, library_name=lib_name)
-
+    hr.add_precompiled_library(compile_path=precompiled_path, library_name=lib_name)
     lib = hr._get_library_object(library_name=lib_name)
 
     assert (
@@ -191,7 +187,7 @@ def test_add_precompiled_library():
     ), "checking library is precompiled class (%s)" % (lib.get_name())
     assert lib.get_name() == lib_name, "checking precompiled library name"
     assert (
-        lib.get_compile_path() == compile_path
+        lib.get_compile_path() == precompiled_path
     ), "checking precompiled library path setting"
 
 
@@ -202,21 +198,26 @@ def test_start_dry_run_parameter():
     assert return_code == 1, "checking dry_run return code - exp 1 for no testcases run"
 
 
-def test_default_library_with_add_files(sim_env, tb_path):
+def test_default_library_with_add_files(sim_env, tb_path, uvvm_path):
     clear_output()
     hr = HDLRegression()
     filename = get_file_path(tb_path + "/tb_simple.vhd")
     hr.add_files(filename=filename)
+    filename = get_file_path(uvvm_path + "/uvvm_util/src/*.vhd")
+    hr.add_files(filename=filename, library_name="uvvm_util")
     hr.start(dry_run=True)
     lib = hr._get_library_object(library_name="my_work_lib")
     assert lib.get_name() == "my_work_lib", "checking default library name"
 
 
-def test_set_library_with_add_files(sim_env, tb_path):
+def test_set_library_with_add_files(sim_env, tb_path, uvvm_path):
     clear_output()
     hr = HDLRegression()
     filename = get_file_path(tb_path + "/tb_simple.vhd")
     hr.add_files(filename=filename, library_name="new_library_name")
+
+    filename = get_file_path(uvvm_path + "/uvvm_util/src/*.vhd")
+    hr.add_files(filename=filename, library_name="uvvm_util")
     hr.start(dry_run=True)
     lib = hr._get_library_object(library_name="new_library_name")
     assert lib.get_name() == "new_library_name", "checking default library name"
@@ -588,6 +589,7 @@ def test_com_options_as_string(sim_env, tb_path):
             "some_option"
         ], "check VHDL compile options"
 
+
 def test_com_options_as_string_with_options(sim_env, tb_path):
     clear_output()
     hr = HDLRegression(simulator=sim_env["simulator"])
@@ -603,8 +605,11 @@ def test_com_options_as_string_with_options(sim_env, tb_path):
 
     for file_obj in library.get_hdlfile_list():
         assert file_obj.get_com_options() == [
-            "some_option1", "some_option2", "some_option3"
+            "some_option1",
+            "some_option2",
+            "some_option3",
         ], "check VHDL compile options"
+
 
 def test_com_options_as_string_with_options_comma_separrated(sim_env, tb_path):
     clear_output()
@@ -621,7 +626,10 @@ def test_com_options_as_string_with_options_comma_separrated(sim_env, tb_path):
 
     for file_obj in library.get_hdlfile_list():
         assert file_obj.get_com_options() == [
-            "some_option1", "some_option2", "some_option3", "some_option4"
+            "some_option1",
+            "some_option2",
+            "some_option3",
+            "some_option4",
         ], "check VHDL compile options"
 
 
@@ -659,7 +667,9 @@ def test_com_options_as_long_list(sim_env, tb_path):
 
     for file_obj in library.get_hdlfile_list():
         assert file_obj.get_com_options() == [
-            "some_option1", "some_option2", "some_option3"
+            "some_option1",
+            "some_option2",
+            "some_option3",
         ], "check VHDL compile options"
 
 

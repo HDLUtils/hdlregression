@@ -73,11 +73,7 @@ def sim_env():
     simulator = (
         "MODELSIM"
         if modelsim_installed
-        else "NVC"
-        if nvc_installed
-        else "GHDL"
-        if ghdl_installed
-        else ""
+        else "NVC" if nvc_installed else "GHDL" if ghdl_installed else ""
     )
 
     return {
@@ -182,3 +178,34 @@ def test_path_generics(sim_env, tb_path):
 
     run_test_path = simulated_tests[0].get_gc_str().replace("//", "/")
     assert "../script/test_path" in run_test_path, "checking generic path"
+
+
+@pytest.mark.modelsim
+def test_sequencer_test_case_parameter(sim_env, tb_path):
+    """
+    Test sequencer test cases
+    """
+    if not sim_env["modelsim"]:
+        pytest.skip("Modelsim not installed")
+    else:
+        clear_output()
+        hr = HDLRegression(simulator="modelsim")
+
+        filename = tb_path + "/tb_verilog.v"
+        filename = get_file_path(filename)
+        hr.add_files(filename, "verilog_lib")
+        hr.set_result_check_string("Passing test :")
+
+        hr.add_generics(
+            entity="tb_verilog_testcase",
+            generics=["GC_DUMMY", "100"],
+        )
+
+        rt = hr.start()
+
+        num_failing_tests = hr.get_num_fail_tests()
+        num_passing_tests = hr.get_num_pass_tests()
+
+        assert rt == 0, "Check: successful run"
+        assert num_failing_tests == 0, "Check: number of failing tests"
+        assert num_passing_tests == 4, "Check: number of passing tests"

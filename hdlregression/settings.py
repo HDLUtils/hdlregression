@@ -645,8 +645,8 @@ class SimulatorSettings:
         return {
             "platform": platform_info,
             "MODELSIM": modelsim_installed,
-            "GHDL": ghdl_installed,
             "NVC": nvc_installed,
+            "GHDL": ghdl_installed,
             "RIVIERA_PRO": riviera_pro_installed,
             "VIVADO": vivado_installed,
             "simulator": simulator,

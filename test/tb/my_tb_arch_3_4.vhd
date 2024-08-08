@@ -3,7 +3,7 @@ begin
 
     p_seq : process
     begin
-        report "arch_3";
+        report "arch_3 : sim done";
         -- Finish the simulation
         std.env.stop;
         wait;  -- to stop completely
@@ -17,7 +17,7 @@ begin
 
     p_seq : process
     begin
-        report "arch_4";
+        report "arch_4 : sim done";
         -- Finish the simulation
         std.env.stop;
         wait;  -- to stop completely

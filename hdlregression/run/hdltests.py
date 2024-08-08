@@ -381,6 +381,7 @@ class VerilogTest(HdlRegressionTest):
         if generic_list is not None:
             generic_name = ""
             for idx, gc_item in enumerate(generic_list):
+
                 if idx % 2 == 0:
                     generic_name = gc_item.upper()
                 else:

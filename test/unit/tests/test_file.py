@@ -76,11 +76,7 @@ def sim_env():
     simulator = (
         "MODELSIM"
         if modelsim_installed
-        else "NVC"
-        if nvc_installed
-        else "GHDL"
-        if ghdl_installed
-        else ""
+        else "NVC" if nvc_installed else "GHDL" if ghdl_installed else ""
     )
 
     return {
@@ -98,10 +94,10 @@ def test_add_files_directory(sim_env, uvvm_path):
     """
     if not is_folder_present(uvvm_path):
         pytest.skip(f"UVVM path '{uvvm_path}' not found, skipping test.")
-    else:    
+    else:
         clear_output()
         hr = HDLRegression(simulator=sim_env["simulator"])
-    
+
         test_path = get_file_path(uvvm_path + "/bitvis_uart/src/")
         hr.add_files(test_path, "bitvis_uart")
         library = hr._get_library_object("bitvis_uart")
@@ -116,13 +112,17 @@ def test_add_files_wildcase(sim_env, tb_path):
     clear_output()
     hr = HDLRegression(simulator=sim_env["simulator"])
 
+    test_files = get_file_path(tb_path + "/my_tb_ent.vhd")
+    hr.add_files(test_files, "test_lib")
     test_files = get_file_path(tb_path + "/my_tb_arch_*.vhd")
     hr.add_files(test_files, "test_lib")
+
+    hr.set_result_check_string(" : sim done")
     hr.start()
 
     library = hr._get_library_object("test_lib")
     file_list = library.get_hdlfile_list()
-    assert len(file_list) == 3, "Check number of files added"
+    assert len(file_list) == 4, "Check number of files added"
 
 
 def test_add_files_name(sim_env, tb_path):
@@ -131,6 +131,8 @@ def test_add_files_name(sim_env, tb_path):
     """
     clear_output()
     hr = HDLRegression(simulator=sim_env["simulator"])
+    test_files = get_file_path(tb_path + "/my_tb_ent.vhd")
+    hr.add_files(test_files, "test_lib")
 
     test_files = [
         tb_path + "/my_tb_arch_1.vhd",
@@ -141,12 +143,14 @@ def test_add_files_name(sim_env, tb_path):
     for test_file in test_files:
         test_file = get_file_path(test_file)
         hr.add_files(test_file, "test_lib")
+
+    hr.set_result_check_string(" : sim done")
     hr.start()
 
     library = hr._get_library_object("test_lib")
     file_list = library.get_hdlfile_list()
 
-    assert len(file_list) == 3, "Check number of files added"
+    assert len(file_list) == 4, "Check number of files added"
 
 
 def test_readback_file_list_one_library(sim_env, tb_path):
@@ -157,6 +161,7 @@ def test_readback_file_list_one_library(sim_env, tb_path):
     hr = HDLRegression(simulator=sim_env["simulator"])
 
     test_files = [
+        tb_path + "/my_tb_ent.vhd",
         tb_path + "/my_tb_arch_1.vhd",
         tb_path + "/my_tb_arch_2.vhd",
         tb_path + "/my_tb_arch_3_4.vhd",
@@ -165,6 +170,8 @@ def test_readback_file_list_one_library(sim_env, tb_path):
     for test_file in test_files:
         test_file = get_file_path(test_file)
         hr.add_files(test_file, "test_lib")
+
+    hr.set_result_check_string(" : sim done")
     hr.start()
 
     file_list = hr.get_file_list()
@@ -185,6 +192,7 @@ def test_readback_file_list_multiple_libraries(sim_env, tb_path):
     hr = HDLRegression(simulator=sim_env["simulator"])
 
     test_files_1 = [
+        tb_path + "/my_tb_ent.vhd",
         tb_path + "/my_tb_arch_1.vhd",
         tb_path + "/my_tb_arch_2.vhd",
         tb_path + "/my_tb_arch_3_4.vhd",
@@ -198,11 +206,13 @@ def test_readback_file_list_multiple_libraries(sim_env, tb_path):
 
     for test_file in test_files_2:
         test_file = get_file_path(test_file)
-        hr.add_files(test_file, "test_lib_1")
+        hr.add_files(test_file, "test_lib_2")
 
     test_files_3 = [tb_path + "/tb_failing.vhd"]
     test_file = get_file_path(test_files_3[0])
     hr.add_files(test_file, "test_lib_3")
+
+    hr.set_result_check_string(" : sim done")
     hr.start()
 
     file_list = hr.get_file_list()

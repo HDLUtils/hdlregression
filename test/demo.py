@@ -37,13 +37,16 @@ hr = HDLRegression()
 
 
 def add_uvvm_basic(hr):
-    hr.add_files(filename="../../uvvm/uvvm_util/src/*.vhd", library_name="uvvm_util")
     hr.add_files(
-        filename="../../uvvm/uvvm_vvc_framework/src/*.vhd",
+        filename="../../UVVM/INTERNAL_UVVM/uvvm_util/src/*.vhd",
+        library_name="uvvm_util",
+    )
+    hr.add_files(
+        filename="../../UVVM/INTERNAL_UVVM/uvvm_vvc_framework/src/*.vhd",
         library_name="uvvm_vvc_framework",
     )
     hr.add_files(
-        filename="../../uvvm/bitvis_vip_scoreboard/src/*.vhd",
+        filename="../../UVVM/INTERNAL_UVVM/bitvis_vip_scoreboard/src/*.vhd",
         library_name="bitvis_vip_scoreboard",
     )
 
@@ -71,53 +74,62 @@ def test_1(hr):
     # ========================================================================
     # Add DUT
     hr.add_files(
-        filename="../../uvvm/bitvis_uart/src/*.vhd",
+        filename="../../UVVM/INTERNAL_UVVM/bitvis_uart/src/*.vhd",
         library_name="bitvis_uart",
         code_coverage=True,
     )
 
     hr.add_files(
-        filename="../../uvvm/bitvis_irqc/src/*.vhd", library_name="bitvis_irqc"
+        filename="../../UVVM/INTERNAL_UVVM/bitvis_irqc/src/*.vhd",
+        library_name="bitvis_irqc",
     )
 
     # ========================================================================
     # Add verification IPs
     hr.add_files(
-        filename="../../uvvm/bitvis_vip_sbi/src/*.vhd", library_name="bitvis_vip_sbi"
+        filename="../../UVVM/INTERNAL_UVVM/bitvis_vip_sbi/src/*.vhd",
+        library_name="bitvis_vip_sbi",
     )
     hr.add_files(
-        filename="../../uvvm/uvvm_vvc_framework/src_target_dependent/*.vhd",
+        filename="../../UVVM/INTERNAL_UVVM/uvvm_vvc_framework/src_target_dependent/*.vhd",
         library_name="bitvis_vip_sbi",
     )
 
     hr.add_files(
-        filename="../../uvvm/bitvis_vip_uart/src/*.vhd", library_name="bitvis_vip_uart"
+        filename="../../UVVM/INTERNAL_UVVM/bitvis_vip_uart/src/*.vhd",
+        library_name="bitvis_vip_uart",
     )
     hr.add_files(
-        filename="../../uvvm/uvvm_vvc_framework/src_target_dependent/*.vhd",
+        filename="../../UVVM/INTERNAL_UVVM/uvvm_vvc_framework/src_target_dependent/*.vhd",
         library_name="bitvis_vip_uart",
     )
 
     hr.add_files(
-        filename="../../uvvm/bitvis_vip_clock_generator/src/*.vhd",
+        filename="../../UVVM/INTERNAL_UVVM/bitvis_vip_clock_generator/src/*.vhd",
         library_name="bitvis_vip_clock_generator",
     )
     hr.add_files(
-        filename="../../uvvm/uvvm_vvc_framework/src_target_dependent/*.vhd",
+        filename="../../UVVM/INTERNAL_UVVM/uvvm_vvc_framework/src_target_dependent/*.vhd",
         library_name="bitvis_vip_clock_generator",
     )
 
     # ========================================================================
     # Add testbench
-    hr.add_files(filename="../../uvvm/bitvis_uart/tb/*.vhd", library_name="bitvis_uart")
     hr.add_files(
-        filename="../../uvvm/bitvis_uart/tb/maintenance_tb/*.vhd",
+        filename="../../UVVM/INTERNAL_UVVM/bitvis_uart/tb/*.vhd",
+        library_name="bitvis_uart",
+    )
+    hr.add_files(
+        filename="../../UVVM/INTERNAL_UVVM/bitvis_uart/tb/maintenance_tb/*.vhd",
         library_name="bitvis_uart",
     )
 
-    hr.add_files(filename="../../uvvm/bitvis_irqc/tb/*.vhd", library_name="bitvis_irqc")
     hr.add_files(
-        filename="../../uvvm/bitvis_irqc/tb/maintenance_tb/*.vhd",
+        filename="../../UVVM/INTERNAL_UVVM/bitvis_irqc/tb/*.vhd",
+        library_name="bitvis_irqc",
+    )
+    hr.add_files(
+        filename="../../UVVM/INTERNAL_UVVM/bitvis_irqc/tb/maintenance_tb/*.vhd",
         library_name="bitvis_irqc",
     )
 
@@ -139,6 +151,7 @@ def test_1(hr):
         testcase="*receive*",
     )
 
+    hr.set_simulator_wave_file_format("FST")
     hr.add_to_testgroup(testgroup_name="selection_tests", entity="uart_vvc_demo_tb")
     hr.add_to_testgroup(testgroup_name="selection_tests", entity="uart_simple_bfm_tb")
 
@@ -166,7 +179,10 @@ def test_1(hr):
 
 
 def test_2(hr):
-    hr.add_files(filename="../../uvvm/uvvm_util/src/*.vhd", library_name="uvvm_util")
+    hr.add_files(
+        filename="../../UVVM/INTERNAL_UVVM/uvvm_util/src/*.vhd",
+        library_name="uvvm_util",
+    )
     hr.add_files(filename="tb/demo_tb.vhd", library_name="test_2_lib")
 
     hr.start()

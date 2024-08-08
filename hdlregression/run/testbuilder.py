@@ -129,6 +129,31 @@ class TestBuilder:
         Build a list of all tests.
         """
 
+        def get_api_selected_gc(tb) -> list:
+            """
+            Find generic container for this testbench,
+            and return the list of generics.
+            """
+            generics_list = []
+            # Locate generic container for this TB, i.e.
+            # generics set by test script designer.
+            for gc in self.project.generic_container.get():
+                if self._str_match(gc.get_name(), tb.get_name()):
+                    generics_list = gc.get()
+            return generics_list
+
+        def is_verilog_testbench(testbench) -> bool:
+            return testbench.get_hdlfile().check_file_type("verilog")
+
+        def user_has_selected_sequencer_testcase(generic_list) -> bool:
+            """Checks if the user has entered a sequencer built-in testcase to run."""
+            for gc in generic_list:
+                for gc_item in gc:
+                    if isinstance(gc_item, str):
+                        if self._str_match(gc_item, sequencer_testcase_string):
+                            return True
+            return False
+
         # Remove any existing test(s)
         self.tests_to_run_container.empty_list()
         self.base_tests_container.empty_list()
@@ -138,30 +163,26 @@ class TestBuilder:
         self.test_id_count = 0
         # Iterate all TBs
         for tb in self.testbench_container.get():
-            # Locate generic container for this TB, i.e.
-            # generics set by test script designer.
-            gc_list_all = []
-            for gc in self.project.generic_container.get():
-                if self._str_match(gc.get_name(), tb.get_name()):
-                    gc_list_all = gc.get()
+            api_selected_gc_list = get_api_selected_gc(tb)
 
             # ------------------------------------
             # Verilog TB
             # ------------------------------------
-            if tb.get_hdlfile().check_file_type("verilog"):
-                tc_gc_set = False
-                for gc in gc_list_all:
-                    for gc_item in gc:
-                        if isinstance(gc_item, str):
-                            if self._str_match(gc_item, sequencer_testcase_string):
-                                tc_gc_set = True
+            if is_verilog_testbench(tb) is True:
+                api_selected_gc_list = [
+                    (generic, value) for _, (generic, value) in api_selected_gc_list
+                ]
+
+                tc_gc_selected = user_has_selected_sequencer_testcase(
+                    api_selected_gc_list
+                )
 
                 # Scripted generics tests
-                if gc_list_all:
+                if api_selected_gc_list:
                     # Create tests with all sequencer built-in testcases?
-                    if tc_gc_set is False and tb.get_has_testcase():
+                    if tc_gc_selected is False and tb.get_has_testcase():
                         for tc in tb.get_testcase():
-                            for gc in gc_list_all:
+                            for gc in api_selected_gc_list:
                                 test = self._get_test_object(tb=tb)
                                 test.set_gc(gc)
                                 test.set_tc(tc)
@@ -181,7 +202,7 @@ class TestBuilder:
             else:
                 # Generics for non-specified architecture, i.e. all architectures
                 gc_list_no_arch = [
-                    gc for (gc_arch, gc) in gc_list_all if gc_arch is None
+                    gc for (gc_arch, gc) in api_selected_gc_list if gc_arch is None
                 ]
 
                 # Match with architecture
@@ -189,7 +210,7 @@ class TestBuilder:
                     # Script generics set for this architecture
                     gc_list_this_arch = [
                         gc
-                        for (gc_arch, gc) in gc_list_all
+                        for (gc_arch, gc) in api_selected_gc_list
                         if gc_arch is not None
                         if self._str_match(gc_arch, arch.get_name())
                     ]
@@ -198,17 +219,14 @@ class TestBuilder:
                     # architecture and generics set for this architecture
                     gc_list_combined = gc_list_this_arch + gc_list_no_arch
 
-                    tc_gc_set = False
-                    for gc in gc_list_combined:
-                        for gc_item in gc:
-                            if isinstance(gc_item, str):
-                                if self._str_match(gc_item, sequencer_testcase_string):
-                                    tc_gc_set = True
+                    tc_gc_selected = user_has_selected_sequencer_testcase(
+                        gc_list_combined
+                    )
 
                     # Scripted generics tests
                     if gc_list_combined:
                         # Create tests with all sequencer built-in testcases?
-                        if tc_gc_set is False and arch.get_has_testcase():
+                        if tc_gc_selected is False and arch.get_has_testcase():
                             for tc in arch.get_testcase():
                                 for gc in gc_list_combined:
                                     test = self._get_test_object(tb=tb)

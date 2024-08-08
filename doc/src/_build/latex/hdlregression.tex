@@ -10,6 +10,9 @@
 %% let collapsible pdf bookmarks panel have high depth per default
 \PassOptionsToPackage{bookmarksdepth=5}{hyperref}
 
+\PassOptionsToPackage{booktabs}{sphinx}
+\PassOptionsToPackage{colorrows}{sphinx}
+
 \PassOptionsToPackage{warn}{textcomp}
 \usepackage[utf8]{inputenc}
 \ifdefined\DeclareUnicodeCharacter
@@ -61,14 +64,19 @@
 
 
 \title{hdlregression}
-\date{Jun 14, 2024}
-\release{0.53.1
+\date{Aug 08, 2024}
+\release{0.54.0
 }
 \author{UVVM}
 \newcommand{\sphinxlogo}{\vbox{}}
 \renewcommand{\releasename}{Release}
 \makeindex
 \begin{document}
+
+\ifdefined\shorthandoff
+  \ifnum\catcode`\=\string=\active\shorthandoff{=}\fi
+  \ifnum\catcode`\"=\active\shorthandoff{"}\fi
+\fi
 
 \pagestyle{empty}
 \sphinxmaketitle
@@ -77,6 +85,8 @@
 \pagestyle{normal}
 \phantomsection\label{\detokenize{index::doc}}
 
+
+\sphinxstepscope
 
 
 \chapter{Introduction}
@@ -386,6 +396,8 @@ Relative paths will be relative to the regression script
 and not where the regression script is called from.
 \end{sphinxadmonition}
 
+\sphinxstepscope
+
 
 \chapter{Application Programming Interface (API)}
 \label{\detokenize{api:application-programming-interface-api}}\label{\detokenize{api::doc}}
@@ -393,7 +405,9 @@ and not where the regression script is called from.
 HDLRegression is configured and run using a Python script that imports the HDLRegression module and
 uses a set of API methods. Because HDLRegression is written in Python the test designer can
 utilize the full Python API and modules to make advanced regression scripts.
-There are two template script files in the \sphinxcode{\sphinxupquote{/template}} folder to help new users get started.
+There are two template script files in the \sphinxcode{\sphinxupquote{%
+/template%
+}} folder to help new users get started.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
 \PYG{k+kn}{import} \PYG{n+nn}{sys}
@@ -435,9 +449,10 @@ in example 2 or using {\hyperref[\detokenize{cli::doc}]{\sphinxcrossref{\DUrole{
 
 
 \begin{savenotes}\sphinxattablestart
+\sphinxthistablewithglobalstyle
 \centering
-\begin{tabulary}{\linewidth}[t]{|T|T|T|T|T|}
-\hline
+\begin{tabulary}{\linewidth}[t]{TTTTT}
+\sphinxtoprule
 \sphinxstyletheadfamily 
 \sphinxAtStartPar
 Argument
@@ -454,7 +469,8 @@ Default
 \sphinxAtStartPar
 Required
 \\
-\hline
+\sphinxmidrule
+\sphinxtableatstartofbodyhook
 \sphinxAtStartPar
 simulator
 &
@@ -470,7 +486,7 @@ auto\sphinxhyphen{}detected
 \sphinxAtStartPar
 optional
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 arg\_parser
 &
@@ -486,7 +502,7 @@ None
 \sphinxAtStartPar
 optional
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 output\_path
 &
@@ -502,9 +518,9 @@ None
 \sphinxAtStartPar
 optional
 \\
-\hline
+\sphinxbottomrule
 \end{tabulary}
-\par
+\sphinxtableafterendhook\par
 \sphinxattableend\end{savenotes}
 
 \sphinxAtStartPar
@@ -573,9 +589,10 @@ can be called several times in the regressions script, addressing the same or a 
 
 
 \begin{savenotes}\sphinxattablestart
+\sphinxthistablewithglobalstyle
 \centering
-\begin{tabulary}{\linewidth}[t]{|T|T|T|T|}
-\hline
+\begin{tabulary}{\linewidth}[t]{TTTT}
+\sphinxtoprule
 \sphinxstyletheadfamily 
 \sphinxAtStartPar
 Argument
@@ -589,7 +606,8 @@ Default
 \sphinxAtStartPar
 Required
 \\
-\hline
+\sphinxmidrule
+\sphinxtableatstartofbodyhook
 \sphinxAtStartPar
 filename
 &
@@ -599,7 +617,7 @@ string
 \sphinxAtStartPar
 \sphinxstylestrong{mandatory}
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 library\_name
 &
@@ -612,7 +630,7 @@ string
 \sphinxAtStartPar
 optional
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 hdl\_version
 &
@@ -625,7 +643,7 @@ string
 \sphinxAtStartPar
 optional
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 com\_options
 &
@@ -635,7 +653,7 @@ string
 \sphinxAtStartPar
 optional
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 parse\_file
 &
@@ -648,7 +666,7 @@ True
 \sphinxAtStartPar
 optional
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 netlist\_inst
 &
@@ -658,7 +676,7 @@ string
 \sphinxAtStartPar
 optional
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 code\_coverage
 &
@@ -668,9 +686,9 @@ boolean
 \sphinxAtStartPar
 optional
 \\
-\hline
+\sphinxbottomrule
 \end{tabulary}
-\par
+\sphinxtableafterendhook\par
 \sphinxattableend\end{savenotes}
 
 \sphinxAtStartPar
@@ -755,9 +773,10 @@ Use wildcards to more effectively filter searches, i.e. testcases and filenames.
 
 
 \begin{savenotes}\sphinxattablestart
+\sphinxthistablewithglobalstyle
 \centering
-\begin{tabulary}{\linewidth}[t]{|T|T|}
-\hline
+\begin{tabulary}{\linewidth}[t]{TT}
+\sphinxtoprule
 \sphinxstyletheadfamily 
 \sphinxAtStartPar
 Pattern
@@ -765,37 +784,38 @@ Pattern
 \sphinxAtStartPar
 Meaning
 \\
-\hline
+\sphinxmidrule
+\sphinxtableatstartofbodyhook
 \sphinxAtStartPar
 *
 &
 \sphinxAtStartPar
 match all
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 ?
 &
 \sphinxAtStartPar
 match a single charecter
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 {[}seq{]}
 &
 \sphinxAtStartPar
 match any character in seq
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 {[}!seq{]}
 &
 \sphinxAtStartPar
 match all character not in seq
 \\
-\hline
+\sphinxbottomrule
 \end{tabulary}
-\par
+\sphinxtableafterendhook\par
 \sphinxattableend\end{savenotes}
 \end{sphinxadmonition}
 
@@ -811,9 +831,10 @@ Changes the default library name used when {\hyperref[\detokenize{api:add-files}
 
 
 \begin{savenotes}\sphinxattablestart
+\sphinxthistablewithglobalstyle
 \centering
-\begin{tabulary}{\linewidth}[t]{|T|T|T|}
-\hline
+\begin{tabulary}{\linewidth}[t]{TTT}
+\sphinxtoprule
 \sphinxstyletheadfamily 
 \sphinxAtStartPar
 Argument
@@ -824,7 +845,8 @@ Type
 \sphinxAtStartPar
 Required
 \\
-\hline
+\sphinxmidrule
+\sphinxtableatstartofbodyhook
 \sphinxAtStartPar
 library\_name
 &
@@ -834,9 +856,9 @@ string
 \sphinxAtStartPar
 \sphinxstylestrong{mandatory}
 \\
-\hline
+\sphinxbottomrule
 \end{tabulary}
-\par
+\sphinxtableafterendhook\par
 \sphinxattableend\end{savenotes}
 
 \sphinxAtStartPar
@@ -869,9 +891,10 @@ The return code from the start() method is either 0 or 1, based on whether the s
 
 
 \begin{savenotes}\sphinxattablestart
+\sphinxthistablewithglobalstyle
 \centering
-\begin{tabulary}{\linewidth}[t]{|T|T|}
-\hline
+\begin{tabulary}{\linewidth}[t]{TT}
+\sphinxtoprule
 \sphinxstyletheadfamily 
 \sphinxAtStartPar
 Criteria
@@ -879,37 +902,38 @@ Criteria
 \sphinxAtStartPar
 Return code
 \\
-\hline
+\sphinxmidrule
+\sphinxtableatstartofbodyhook
 \sphinxAtStartPar
 No compilation error and testcase(s) has been run without errors
 &
 \sphinxAtStartPar
 0
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 No compilation error and no testcase run
 &
 \sphinxAtStartPar
 1
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 No compilation error and testcase run with one or more errors
 &
 \sphinxAtStartPar
 1
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 Compilation error (no testcases will be run)
 &
 \sphinxAtStartPar
 1
 \\
-\hline
+\sphinxbottomrule
 \end{tabulary}
-\par
+\sphinxtableafterendhook\par
 \sphinxattableend\end{savenotes}
 
 \sphinxAtStartPar
@@ -925,9 +949,10 @@ yet this can be changed using the available arguments or by using the {\hyperref
 
 
 \begin{savenotes}\sphinxattablestart
+\sphinxthistablewithglobalstyle
 \centering
-\begin{tabulary}{\linewidth}[t]{|T|T|T|T|}
-\hline
+\begin{tabulary}{\linewidth}[t]{TTTT}
+\sphinxtoprule
 \sphinxstyletheadfamily 
 \sphinxAtStartPar
 Argument
@@ -941,7 +966,8 @@ Default
 \sphinxAtStartPar
 Required
 \\
-\hline
+\sphinxmidrule
+\sphinxtableatstartofbodyhook
 \sphinxAtStartPar
 gui\_mode
 &
@@ -954,7 +980,7 @@ False
 \sphinxAtStartPar
 optional
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 regression\_mode
 &
@@ -967,7 +993,7 @@ True
 \sphinxAtStartPar
 optional
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 stop\_on\_failure
 &
@@ -980,7 +1006,7 @@ False
 \sphinxAtStartPar
 optional
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 threading
 &
@@ -993,7 +1019,7 @@ False
 \sphinxAtStartPar
 optional
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 sim\_options
 &
@@ -1006,7 +1032,7 @@ None
 \sphinxAtStartPar
 optional
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 netlist\_timing
 &
@@ -1019,7 +1045,7 @@ None
 \sphinxAtStartPar
 optional
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 keep\_code\_coverage
 &
@@ -1032,7 +1058,7 @@ False
 \sphinxAtStartPar
 optional
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 no\_default\_com\_options
 &
@@ -1045,7 +1071,7 @@ False
 \sphinxAtStartPar
 optional
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 ignore\_simulator\_exit\_codes
 &
@@ -1058,9 +1084,9 @@ list of int
 \sphinxAtStartPar
 optional
 \\
-\hline
+\sphinxbottomrule
 \end{tabulary}
-\par
+\sphinxtableafterendhook\par
 \sphinxattableend\end{savenotes}
 
 \sphinxAtStartPar
@@ -1178,9 +1204,10 @@ Copies a single file to the testcase run folder.
 
 
 \begin{savenotes}\sphinxattablestart
+\sphinxthistablewithglobalstyle
 \centering
-\begin{tabulary}{\linewidth}[t]{|T|T|T|}
-\hline
+\begin{tabulary}{\linewidth}[t]{TTT}
+\sphinxtoprule
 \sphinxstyletheadfamily 
 \sphinxAtStartPar
 Argument
@@ -1191,7 +1218,8 @@ Type
 \sphinxAtStartPar
 Required
 \\
-\hline
+\sphinxmidrule
+\sphinxtableatstartofbodyhook
 \sphinxAtStartPar
 filename
 &
@@ -1201,7 +1229,7 @@ string
 \sphinxAtStartPar
 \sphinxstylestrong{mandatory}
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 tc\_id
 &
@@ -1211,9 +1239,9 @@ string
 \sphinxAtStartPar
 \sphinxstylestrong{mandatory}
 \\
-\hline
+\sphinxbottomrule
 \end{tabulary}
-\par
+\sphinxtableafterendhook\par
 \sphinxattableend\end{savenotes}
 
 \sphinxAtStartPar
@@ -1245,9 +1273,10 @@ two test runs.
 
 
 \begin{savenotes}\sphinxattablestart
+\sphinxthistablewithglobalstyle
 \centering
-\begin{tabulary}{\linewidth}[t]{|T|T|T|}
-\hline
+\begin{tabulary}{\linewidth}[t]{TTT}
+\sphinxtoprule
 \sphinxstyletheadfamily 
 \sphinxAtStartPar
 Argument
@@ -1258,7 +1287,8 @@ Type
 \sphinxAtStartPar
 Required
 \\
-\hline
+\sphinxmidrule
+\sphinxtableatstartofbodyhook
 \sphinxAtStartPar
 entity
 &
@@ -1268,7 +1298,7 @@ string
 \sphinxAtStartPar
 \sphinxstylestrong{mandatory}
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 architecture
 &
@@ -1278,7 +1308,7 @@ string
 \sphinxAtStartPar
 optional
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 generics
 &
@@ -1288,9 +1318,9 @@ list {[}string, int/string/bool{]}
 \sphinxAtStartPar
 \sphinxstylestrong{mandatory}
 \\
-\hline
+\sphinxbottomrule
 \end{tabulary}
-\par
+\sphinxtableafterendhook\par
 \sphinxattableend\end{savenotes}
 
 \begin{sphinxadmonition}{important}{Important:}\begin{itemize}
@@ -1340,9 +1370,10 @@ Any number of precompiled libraries can be added.
 
 
 \begin{savenotes}\sphinxattablestart
+\sphinxthistablewithglobalstyle
 \centering
-\begin{tabulary}{\linewidth}[t]{|T|T|T|}
-\hline
+\begin{tabulary}{\linewidth}[t]{TTT}
+\sphinxtoprule
 \sphinxstyletheadfamily 
 \sphinxAtStartPar
 Argument
@@ -1353,7 +1384,8 @@ Type
 \sphinxAtStartPar
 Required
 \\
-\hline
+\sphinxmidrule
+\sphinxtableatstartofbodyhook
 \sphinxAtStartPar
 compile\_path
 &
@@ -1363,7 +1395,7 @@ string
 \sphinxAtStartPar
 \sphinxstylestrong{mandatory}
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 library\_name
 &
@@ -1373,9 +1405,9 @@ string
 \sphinxAtStartPar
 \sphinxstylestrong{mandatory}
 \\
-\hline
+\sphinxbottomrule
 \end{tabulary}
-\par
+\sphinxtableafterendhook\par
 \sphinxattableend\end{savenotes}
 
 
@@ -1416,9 +1448,10 @@ Use wildcards to more effectively filter searches, i.e. testcases and filenames.
 
 
 \begin{savenotes}\sphinxattablestart
+\sphinxthistablewithglobalstyle
 \centering
-\begin{tabulary}{\linewidth}[t]{|T|T|}
-\hline
+\begin{tabulary}{\linewidth}[t]{TT}
+\sphinxtoprule
 \sphinxstyletheadfamily 
 \sphinxAtStartPar
 Pattern
@@ -1426,37 +1459,38 @@ Pattern
 \sphinxAtStartPar
 Meaning
 \\
-\hline
+\sphinxmidrule
+\sphinxtableatstartofbodyhook
 \sphinxAtStartPar
 *
 &
 \sphinxAtStartPar
 match all
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 ?
 &
 \sphinxAtStartPar
 match a single charecter
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 {[}seq{]}
 &
 \sphinxAtStartPar
 match any character in seq
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 {[}!seq{]}
 &
 \sphinxAtStartPar
 match all character not in seq
 \\
-\hline
+\sphinxbottomrule
 \end{tabulary}
-\par
+\sphinxtableafterendhook\par
 \sphinxattableend\end{savenotes}
 \end{sphinxadmonition}
 
@@ -1466,9 +1500,10 @@ match all character not in seq
 
 
 \begin{savenotes}\sphinxattablestart
+\sphinxthistablewithglobalstyle
 \centering
-\begin{tabulary}{\linewidth}[t]{|T|T|T|}
-\hline
+\begin{tabulary}{\linewidth}[t]{TTT}
+\sphinxtoprule
 \sphinxstyletheadfamily 
 \sphinxAtStartPar
 Argument
@@ -1479,7 +1514,8 @@ Type
 \sphinxAtStartPar
 Required
 \\
-\hline
+\sphinxmidrule
+\sphinxtableatstartofbodyhook
 \sphinxAtStartPar
 \sphinxstyleemphasis{testcase}
 &
@@ -1489,9 +1525,9 @@ string / list of strings
 \sphinxAtStartPar
 \sphinxstylestrong{mandatory}
 \\
-\hline
+\sphinxbottomrule
 \end{tabulary}
-\par
+\sphinxtableafterendhook\par
 \sphinxattableend\end{savenotes}
 
 \sphinxAtStartPar
@@ -1528,9 +1564,10 @@ The test group is given a name that is used for addressing the test collection.
 
 
 \begin{savenotes}\sphinxattablestart
+\sphinxthistablewithglobalstyle
 \centering
-\begin{tabulary}{\linewidth}[t]{|T|T|T|}
-\hline
+\begin{tabulary}{\linewidth}[t]{TTT}
+\sphinxtoprule
 \sphinxstyletheadfamily 
 \sphinxAtStartPar
 Argument
@@ -1541,7 +1578,8 @@ Type
 \sphinxAtStartPar
 Required
 \\
-\hline
+\sphinxmidrule
+\sphinxtableatstartofbodyhook
 \sphinxAtStartPar
 testgroup\_name
 &
@@ -1551,7 +1589,7 @@ string
 \sphinxAtStartPar
 \sphinxstylestrong{mandatory}
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 entity
 &
@@ -1561,7 +1599,7 @@ string
 \sphinxAtStartPar
 \sphinxstylestrong{mandatory}
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 architecture
 &
@@ -1571,7 +1609,7 @@ string
 \sphinxAtStartPar
 optional
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 testcase
 &
@@ -1581,7 +1619,7 @@ string
 \sphinxAtStartPar
 optional
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 generic
 &
@@ -1591,9 +1629,9 @@ list {[}string, int/string/bool{]}
 \sphinxAtStartPar
 optional
 \\
-\hline
+\sphinxbottomrule
 \end{tabulary}
-\par
+\sphinxtableafterendhook\par
 \sphinxattableend\end{savenotes}
 
 \begin{sphinxadmonition}{note}{Note:}\begin{itemize}
@@ -1618,9 +1656,10 @@ Use wildcards to more effectively filter searches, i.e. testcases and filenames.
 
 
 \begin{savenotes}\sphinxattablestart
+\sphinxthistablewithglobalstyle
 \centering
-\begin{tabulary}{\linewidth}[t]{|T|T|}
-\hline
+\begin{tabulary}{\linewidth}[t]{TT}
+\sphinxtoprule
 \sphinxstyletheadfamily 
 \sphinxAtStartPar
 Pattern
@@ -1628,37 +1667,38 @@ Pattern
 \sphinxAtStartPar
 Meaning
 \\
-\hline
+\sphinxmidrule
+\sphinxtableatstartofbodyhook
 \sphinxAtStartPar
 *
 &
 \sphinxAtStartPar
 match all
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 ?
 &
 \sphinxAtStartPar
 match a single charecter
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 {[}seq{]}
 &
 \sphinxAtStartPar
 match any character in seq
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 {[}!seq{]}
 &
 \sphinxAtStartPar
 match all character not in seq
 \\
-\hline
+\sphinxbottomrule
 \end{tabulary}
-\par
+\sphinxtableafterendhook\par
 \sphinxattableend\end{savenotes}
 \end{sphinxadmonition}
 
@@ -1674,9 +1714,10 @@ Compiles UVVM to HDLRegression library folder, making UVVM available to all test
 
 
 \begin{savenotes}\sphinxattablestart
+\sphinxthistablewithglobalstyle
 \centering
-\begin{tabulary}{\linewidth}[t]{|T|T|T|}
-\hline
+\begin{tabulary}{\linewidth}[t]{TTT}
+\sphinxtoprule
 \sphinxstyletheadfamily 
 \sphinxAtStartPar
 Argument
@@ -1687,7 +1728,8 @@ Example
 \sphinxAtStartPar
 Required
 \\
-\hline
+\sphinxmidrule
+\sphinxtableatstartofbodyhook
 \sphinxAtStartPar
 path\_to\_uvvm
 &
@@ -1697,9 +1739,9 @@ path\_to\_uvvm
 \sphinxAtStartPar
 \sphinxstylestrong{mandatory}
 \\
-\hline
+\sphinxbottomrule
 \end{tabulary}
-\par
+\sphinxtableafterendhook\par
 \sphinxattableend\end{savenotes}
 
 \sphinxAtStartPar
@@ -1729,9 +1771,10 @@ Compiles OSVVM to HDLRegression library folder, making OSVVM available to all te
 
 
 \begin{savenotes}\sphinxattablestart
+\sphinxthistablewithglobalstyle
 \centering
-\begin{tabulary}{\linewidth}[t]{|T|T|T|}
-\hline
+\begin{tabulary}{\linewidth}[t]{TTT}
+\sphinxtoprule
 \sphinxstyletheadfamily 
 \sphinxAtStartPar
 Argument
@@ -1742,7 +1785,8 @@ Example
 \sphinxAtStartPar
 Required
 \\
-\hline
+\sphinxmidrule
+\sphinxtableatstartofbodyhook
 \sphinxAtStartPar
 path\_to\_osvvm
 &
@@ -1752,9 +1796,9 @@ path\_to\_osvvm
 \sphinxAtStartPar
 \sphinxstylestrong{mandatory}
 \\
-\hline
+\sphinxbottomrule
 \end{tabulary}
-\par
+\sphinxtableafterendhook\par
 \sphinxattableend\end{savenotes}
 
 \sphinxAtStartPar
@@ -1784,9 +1828,10 @@ Set special settings for a library that differs significantly from the regular s
 
 
 \begin{savenotes}\sphinxattablestart
+\sphinxthistablewithglobalstyle
 \centering
-\begin{tabulary}{\linewidth}[t]{|T|T|T|T|}
-\hline
+\begin{tabulary}{\linewidth}[t]{TTTT}
+\sphinxtoprule
 \sphinxstyletheadfamily 
 \sphinxAtStartPar
 Argument
@@ -1800,7 +1845,8 @@ Example
 \sphinxAtStartPar
 Required
 \\
-\hline
+\sphinxmidrule
+\sphinxtableatstartofbodyhook
 \sphinxAtStartPar
 library
 &
@@ -1813,7 +1859,7 @@ library
 \sphinxAtStartPar
 \sphinxstylestrong{mandatory}
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 never\_recompile
 &
@@ -1826,7 +1872,7 @@ True
 \sphinxAtStartPar
 optional
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 set\_lib\_dep
 &
@@ -1839,9 +1885,9 @@ set\_lib\_dep
 \sphinxAtStartPar
 optional
 \\
-\hline
+\sphinxbottomrule
 \end{tabulary}
-\par
+\sphinxtableafterendhook\par
 \sphinxattableend\end{savenotes}
 
 \sphinxAtStartPar
@@ -1865,9 +1911,10 @@ should be given to the report name.
 
 
 \begin{savenotes}\sphinxattablestart
+\sphinxthistablewithglobalstyle
 \centering
-\begin{tabulary}{\linewidth}[t]{|T|T|T|T|}
-\hline
+\begin{tabulary}{\linewidth}[t]{TTTT}
+\sphinxtoprule
 \sphinxstyletheadfamily 
 \sphinxAtStartPar
 Argument
@@ -1881,7 +1928,8 @@ Default
 \sphinxAtStartPar
 Required
 \\
-\hline
+\sphinxmidrule
+\sphinxtableatstartofbodyhook
 \sphinxAtStartPar
 report\_file
 &
@@ -1894,7 +1942,7 @@ report\_file
 \sphinxAtStartPar
 optional
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 compile\_order
 &
@@ -1907,7 +1955,7 @@ False
 \sphinxAtStartPar
 optional
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 library
 &
@@ -1920,9 +1968,9 @@ False
 \sphinxAtStartPar
 optional
 \\
-\hline
+\sphinxbottomrule
 \end{tabulary}
-\par
+\sphinxtableafterendhook\par
 \sphinxattableend\end{savenotes}
 
 \sphinxAtStartPar
@@ -1979,9 +2027,10 @@ Removes a file that has been added to a library, e.g. after using \sphinxcode{\s
 
 
 \begin{savenotes}\sphinxattablestart
+\sphinxthistablewithglobalstyle
 \centering
-\begin{tabulary}{\linewidth}[t]{|T|T|T|}
-\hline
+\begin{tabulary}{\linewidth}[t]{TTT}
+\sphinxtoprule
 \sphinxstyletheadfamily 
 \sphinxAtStartPar
 Argument
@@ -1992,7 +2041,8 @@ Type
 \sphinxAtStartPar
 Required
 \\
-\hline
+\sphinxmidrule
+\sphinxtableatstartofbodyhook
 \sphinxAtStartPar
 filename
 &
@@ -2002,7 +2052,7 @@ string
 \sphinxAtStartPar
 \sphinxstylestrong{mandatory}
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 library\_name
 &
@@ -2012,9 +2062,9 @@ string
 \sphinxAtStartPar
 \sphinxstylestrong{mandatory}
 \\
-\hline
+\sphinxbottomrule
 \end{tabulary}
-\par
+\sphinxtableafterendhook\par
 \sphinxattableend\end{savenotes}
 
 \sphinxAtStartPar
@@ -2044,9 +2094,10 @@ to be called prior to {\hyperref[\detokenize{api:start}]{\sphinxcrossref{start()
 
 
 \begin{savenotes}\sphinxattablestart
+\sphinxthistablewithglobalstyle
 \centering
-\begin{tabulary}{\linewidth}[t]{|T|T|T|}
-\hline
+\begin{tabulary}{\linewidth}[t]{TTT}
+\sphinxtoprule
 \sphinxstyletheadfamily 
 \sphinxAtStartPar
 Argument
@@ -2057,7 +2108,8 @@ Type
 \sphinxAtStartPar
 Required
 \\
-\hline
+\sphinxmidrule
+\sphinxtableatstartofbodyhook
 \sphinxAtStartPar
 command
 &
@@ -2067,7 +2119,7 @@ string
 \sphinxAtStartPar
 \sphinxstylestrong{mandatory}
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 verbose
 &
@@ -2077,9 +2129,9 @@ boolean
 \sphinxAtStartPar
 optional
 \\
-\hline
+\sphinxbottomrule
 \end{tabulary}
-\par
+\sphinxtableafterendhook\par
 \sphinxattableend\end{savenotes}
 
 \begin{sphinxadmonition}{note}{Note:}
@@ -2115,9 +2167,10 @@ Sets the code coverage settings used when running the tests.
 
 
 \begin{savenotes}\sphinxattablestart
+\sphinxthistablewithglobalstyle
 \centering
-\begin{tabulary}{\linewidth}[t]{|T|T|T|T|}
-\hline
+\begin{tabulary}{\linewidth}[t]{TTTT}
+\sphinxtoprule
 \sphinxstyletheadfamily 
 \sphinxAtStartPar
 Argument
@@ -2131,7 +2184,8 @@ Example
 \sphinxAtStartPar
 Required
 \\
-\hline
+\sphinxmidrule
+\sphinxtableatstartofbodyhook
 \sphinxAtStartPar
 code\_coverage\_settings
 &
@@ -2144,7 +2198,7 @@ string
 \sphinxAtStartPar
 \sphinxstylestrong{mandatory}
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 code\_coverage\_file
 &
@@ -2157,7 +2211,7 @@ string
 \sphinxAtStartPar
 \sphinxstylestrong{mandatory}
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 exclude\_file
 &
@@ -2170,7 +2224,7 @@ string
 \sphinxAtStartPar
 optional
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 merge\_options
 &
@@ -2183,9 +2237,9 @@ string
 \sphinxAtStartPar
 optional
 \\
-\hline
+\sphinxbottomrule
 \end{tabulary}
-\par
+\sphinxtableafterendhook\par
 \sphinxattableend\end{savenotes}
 
 \begin{sphinxadmonition}{note}{Note:}\begin{itemize}
@@ -2242,9 +2296,10 @@ compiled after all of the libraries listed in \sphinxcode{\sphinxupquote{dep\_li
 
 
 \begin{savenotes}\sphinxattablestart
+\sphinxthistablewithglobalstyle
 \centering
-\begin{tabulary}{\linewidth}[t]{|T|T|T|}
-\hline
+\begin{tabulary}{\linewidth}[t]{TTT}
+\sphinxtoprule
 \sphinxstyletheadfamily 
 \sphinxAtStartPar
 Argument
@@ -2255,7 +2310,8 @@ Type
 \sphinxAtStartPar
 Required
 \\
-\hline
+\sphinxmidrule
+\sphinxtableatstartofbodyhook
 \sphinxAtStartPar
 library\_name
 &
@@ -2265,7 +2321,7 @@ string
 \sphinxAtStartPar
 \sphinxstylestrong{mandatory}
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 dep\_library
 &
@@ -2275,9 +2331,9 @@ list {[}string{]}
 \sphinxAtStartPar
 \sphinxstylestrong{mandatory}
 \\
-\hline
+\sphinxbottomrule
 \end{tabulary}
-\par
+\sphinxtableafterendhook\par
 \sphinxattableend\end{savenotes}
 
 \begin{sphinxadmonition}{note}{Note:}\begin{enumerate}
@@ -2307,9 +2363,10 @@ report the check string.
 
 
 \begin{savenotes}\sphinxattablestart
+\sphinxthistablewithglobalstyle
 \centering
-\begin{tabulary}{\linewidth}[t]{|T|T|T|}
-\hline
+\begin{tabulary}{\linewidth}[t]{TTT}
+\sphinxtoprule
 \sphinxstyletheadfamily 
 \sphinxAtStartPar
 Argument
@@ -2320,7 +2377,8 @@ Type
 \sphinxAtStartPar
 Required
 \\
-\hline
+\sphinxmidrule
+\sphinxtableatstartofbodyhook
 \sphinxAtStartPar
 check\_string
 &
@@ -2330,9 +2388,9 @@ string
 \sphinxAtStartPar
 \sphinxstylestrong{mandatory}
 \\
-\hline
+\sphinxbottomrule
 \end{tabulary}
-\par
+\sphinxtableafterendhook\par
 \sphinxattableend\end{savenotes}
 
 \begin{sphinxadmonition}{note}{Note:}
@@ -2399,9 +2457,10 @@ compile options and setting simulator executable path, or by using {\hyperref[\d
 
 
 \begin{savenotes}\sphinxattablestart
+\sphinxthistablewithglobalstyle
 \centering
-\begin{tabulary}{\linewidth}[t]{|T|T|T|T|}
-\hline
+\begin{tabulary}{\linewidth}[t]{TTTT}
+\sphinxtoprule
 \sphinxstyletheadfamily 
 \sphinxAtStartPar
 Argument
@@ -2415,7 +2474,8 @@ Example
 \sphinxAtStartPar
 Required
 \\
-\hline
+\sphinxmidrule
+\sphinxtableatstartofbodyhook
 \sphinxAtStartPar
 simulator
 &
@@ -2428,7 +2488,7 @@ simulator
 \sphinxAtStartPar
 \sphinxstylestrong{mandatory}
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 simulator\_path
 &
@@ -2441,7 +2501,7 @@ simulator\_path
 \sphinxAtStartPar
 optional
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 com\_options
 &
@@ -2454,9 +2514,9 @@ com\_options
 \sphinxAtStartPar
 optional
 \\
-\hline
+\sphinxbottomrule
 \end{tabulary}
-\par
+\sphinxtableafterendhook\par
 \sphinxattableend\end{savenotes}
 
 \sphinxAtStartPar
@@ -2506,9 +2566,10 @@ and if\sphinxhyphen{}matched strings.
 
 
 \begin{savenotes}\sphinxattablestart
+\sphinxthistablewithglobalstyle
 \centering
-\begin{tabulary}{\linewidth}[t]{|T|T|T|}
-\hline
+\begin{tabulary}{\linewidth}[t]{TTT}
+\sphinxtoprule
 \sphinxstyletheadfamily 
 \sphinxAtStartPar
 Argument
@@ -2519,7 +2580,8 @@ Type
 \sphinxAtStartPar
 Required
 \\
-\hline
+\sphinxmidrule
+\sphinxtableatstartofbodyhook
 \sphinxAtStartPar
 testcase\_id
 &
@@ -2529,9 +2591,9 @@ string
 \sphinxAtStartPar
 \sphinxstylestrong{mandatory}
 \\
-\hline
+\sphinxbottomrule
 \end{tabulary}
-\par
+\sphinxtableafterendhook\par
 \sphinxattableend\end{savenotes}
 
 \sphinxAtStartPar
@@ -2593,9 +2655,10 @@ GUI mode has to be enabled using API method or CLI option.
 
 
 \begin{savenotes}\sphinxattablestart
+\sphinxthistablewithglobalstyle
 \centering
-\begin{tabulary}{\linewidth}[t]{|T|T|T|}
-\hline
+\begin{tabulary}{\linewidth}[t]{TTT}
+\sphinxtoprule
 \sphinxstyletheadfamily 
 \sphinxAtStartPar
 Argument
@@ -2606,7 +2669,8 @@ Type
 \sphinxAtStartPar
 Required
 \\
-\hline
+\sphinxmidrule
+\sphinxtableatstartofbodyhook
 \sphinxAtStartPar
 wave\_format
 &
@@ -2616,9 +2680,9 @@ string
 \sphinxAtStartPar
 \sphinxstylestrong{mandatory}
 \\
-\hline
+\sphinxbottomrule
 \end{tabulary}
-\par
+\sphinxtableafterendhook\par
 \sphinxattableend\end{savenotes}
 
 \sphinxAtStartPar
@@ -2730,6 +2794,8 @@ This is only applicable for tests run with the UVVM verification framework.
 \PYG{n}{num\PYGZus{}passed\PYGZus{}tests\PYGZus{}with\PYGZus{}minor\PYGZus{}alerts} \PYG{o}{=} \PYG{n}{hr}\PYG{o}{.}\PYG{n}{get\PYGZus{}num\PYGZus{}pass\PYGZus{}with\PYGZus{}minor\PYGZus{}alert\PYGZus{}tests}\PYG{p}{(}\PYG{p}{)}
 \end{sphinxVerbatim}
 
+\sphinxstepscope
+
 
 \chapter{Command Line Interface (CLI)}
 \label{\detokenize{cli:command-line-interface-cli}}\label{\detokenize{cli::doc}}
@@ -2742,9 +2808,10 @@ or working with a {\hyperref[\detokenize{intro:testcase}]{\sphinxcrossref{\DUrol
 
 
 \begin{savenotes}\sphinxattablestart
+\sphinxthistablewithglobalstyle
 \centering
-\begin{tabulary}{\linewidth}[t]{|T|T|T|}
-\hline
+\begin{tabulary}{\linewidth}[t]{TTT}
+\sphinxtoprule
 \sphinxstartmulticolumn{2}%
 \begin{varwidth}[t]{\sphinxcolwidth{2}{3}}
 \sphinxstyletheadfamily \sphinxAtStartPar
@@ -2756,7 +2823,8 @@ Arguments
 \sphinxAtStartPar
 Description
 \\
-\hline
+\sphinxmidrule
+\sphinxtableatstartofbodyhook
 \sphinxAtStartPar
 \sphinxhyphen{}h
 &
@@ -2766,7 +2834,7 @@ Description
 \sphinxAtStartPar
 Help screen
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 \sphinxhyphen{}v
 &
@@ -2776,7 +2844,7 @@ Help screen
 \sphinxAtStartPar
 Enable full verbosity
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 \sphinxhyphen{}d
 &
@@ -2786,7 +2854,7 @@ Enable full verbosity
 \sphinxAtStartPar
 Enable debug mode
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 \sphinxhyphen{}g
 &
@@ -2796,7 +2864,7 @@ Enable debug mode
 \sphinxAtStartPar
 Run with simulator gui
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 \sphinxhyphen{}fr
 &
@@ -2806,7 +2874,7 @@ Run with simulator gui
 \sphinxAtStartPar
 Run all tests
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 \sphinxhyphen{}c
 &
@@ -2816,7 +2884,7 @@ Run all tests
 \sphinxAtStartPar
 Remove all before test run
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 \sphinxhyphen{}tc TB\_ENTITY {[}TB\_ARCH {[}TC{]}{]}
 &
@@ -2826,7 +2894,7 @@ Remove all before test run
 \sphinxAtStartPar
 Run selected testcase
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 \sphinxhyphen{}tg TESTGROUP
 &
@@ -2836,7 +2904,7 @@ Run selected testcase
 \sphinxAtStartPar
 Run selected test group
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 \sphinxhyphen{}ltc
 &
@@ -2846,7 +2914,7 @@ Run selected test group
 \sphinxAtStartPar
 List all discovered testcases
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 \sphinxhyphen{}ltg
 &
@@ -2856,7 +2924,7 @@ List all discovered testcases
 \sphinxAtStartPar
 List all test groups
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 \sphinxhyphen{}lco
 &
@@ -2866,7 +2934,7 @@ List all test groups
 \sphinxAtStartPar
 List libraries and files in compile order
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 \sphinxhyphen{}fc
 &
@@ -2876,7 +2944,7 @@ List libraries and files in compile order
 \sphinxAtStartPar
 Force recompile
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 \sphinxhyphen{}sof
 &
@@ -2886,7 +2954,7 @@ Force recompile
 \sphinxAtStartPar
 Stop simulations on testcase fail
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 \sphinxhyphen{}s
 &
@@ -2896,7 +2964,7 @@ Stop simulations on testcase fail
 \sphinxAtStartPar
 Set simulator (require path in env)
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 \sphinxhyphen{}t
 &
@@ -2906,7 +2974,7 @@ Set simulator (require path in env)
 \sphinxAtStartPar
 Run tasks in parallel
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 \sphinxhyphen{}ns
 &
@@ -2916,30 +2984,30 @@ Run tasks in parallel
 \sphinxAtStartPar
 No simulation, compile only
 \\
-\hline&
+\sphinxhline&
 \sphinxAtStartPar
 \textendash{}showWarnError
 &
 \sphinxAtStartPar
 Show sim error and warning messages.
 \\
-\hline&
+\sphinxhline&
 \sphinxAtStartPar
 \textendash{}noColor
 &
 \sphinxAtStartPar
 Disable terminal output colors.
 \\
-\hline&
+\sphinxhline&
 \sphinxAtStartPar
 \textendash{}waveFormat
 &
 \sphinxAtStartPar
 Wave file format {[}VCD (default) or FST{]}
 \\
-\hline
+\sphinxbottomrule
 \end{tabulary}
-\par
+\sphinxtableafterendhook\par
 \sphinxattableend\end{savenotes}
 
 
@@ -2982,9 +3050,10 @@ Use wildcards to more effectively filter searches, i.e. testcases and filenames.
 
 
 \begin{savenotes}\sphinxattablestart
+\sphinxthistablewithglobalstyle
 \centering
-\begin{tabulary}{\linewidth}[t]{|T|T|}
-\hline
+\begin{tabulary}{\linewidth}[t]{TT}
+\sphinxtoprule
 \sphinxstyletheadfamily 
 \sphinxAtStartPar
 Pattern
@@ -2992,37 +3061,38 @@ Pattern
 \sphinxAtStartPar
 Meaning
 \\
-\hline
+\sphinxmidrule
+\sphinxtableatstartofbodyhook
 \sphinxAtStartPar
 *
 &
 \sphinxAtStartPar
 match all
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 ?
 &
 \sphinxAtStartPar
 match a single charecter
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 {[}seq{]}
 &
 \sphinxAtStartPar
 match any character in seq
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 {[}!seq{]}
 &
 \sphinxAtStartPar
 match all character not in seq
 \\
-\hline
+\sphinxbottomrule
 \end{tabulary}
-\par
+\sphinxtableafterendhook\par
 \sphinxattableend\end{savenotes}
 \end{sphinxadmonition}
 
@@ -3094,9 +3164,10 @@ Use wildcards to more effectively filter searches, i.e. testcases and filenames.
 
 
 \begin{savenotes}\sphinxattablestart
+\sphinxthistablewithglobalstyle
 \centering
-\begin{tabulary}{\linewidth}[t]{|T|T|}
-\hline
+\begin{tabulary}{\linewidth}[t]{TT}
+\sphinxtoprule
 \sphinxstyletheadfamily 
 \sphinxAtStartPar
 Pattern
@@ -3104,37 +3175,38 @@ Pattern
 \sphinxAtStartPar
 Meaning
 \\
-\hline
+\sphinxmidrule
+\sphinxtableatstartofbodyhook
 \sphinxAtStartPar
 *
 &
 \sphinxAtStartPar
 match all
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 ?
 &
 \sphinxAtStartPar
 match a single charecter
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 {[}seq{]}
 &
 \sphinxAtStartPar
 match any character in seq
 \\
-\hline
+\sphinxhline
 \sphinxAtStartPar
 {[}!seq{]}
 &
 \sphinxAtStartPar
 match all character not in seq
 \\
-\hline
+\sphinxbottomrule
 \end{tabulary}
-\par
+\sphinxtableafterendhook\par
 \sphinxattableend\end{savenotes}
 \end{sphinxadmonition}
 
@@ -3186,7 +3258,7 @@ using the \sphinxcode{\sphinxupquote{\sphinxhyphen{}t}} / \sphinxcode{\sphinxupq
 Running simulations in parallel using \sphinxcode{\sphinxupquote{N}} threads may require \sphinxcode{\sphinxupquote{N}} simulator licenses.
 
 \item {} \begin{description}
-\item[{Pre\sphinxhyphen{}processing threads are scaled to:}] \leavevmode
+\sphinxlineitem{Pre\sphinxhyphen{}processing threads are scaled to:}
 \sphinxAtStartPar
 \sphinxhyphen{}\textgreater{} the number of libraries
 
@@ -3266,6 +3338,8 @@ A failing testcase will be reported as \sphinxstylestrong{FAIL} with a short sum
 
 \noindent{\hspace*{\fill}\sphinxincludegraphics[width=1000\sphinxpxdimen]{{failing_testcase}.png}\hspace*{\fill}}
 
+\sphinxstepscope
+
 
 \chapter{Graphical User Interface (GUI)}
 \label{\detokenize{gui:graphical-user-interface-gui}}\label{\detokenize{gui::doc}}
@@ -3302,6 +3376,8 @@ inside every testcase run folder. The VCD files can then be opened in a graphica
 \PYG{g+go}{\PYGZgt{} python ../test/regression.py \PYGZhy{}tc uart\PYGZus{}vvc\PYGZus{}tb.func.check\PYGZus{}simple\PYGZus{}transmit \PYGZhy{}g \PYGZhy{}s ghdl}
 \PYG{g+go}{\PYGZgt{} gtkwave ./hdlregression/test/uart\PYGZus{}vvc\PYGZus{}tb/54005228/sim.vcd \PYGZam{}}
 \end{sphinxVerbatim}
+
+\sphinxstepscope
 
 
 \chapter{Testbench}
@@ -3497,6 +3573,8 @@ the \sphinxcode{\sphinxupquote{\sphinxhyphen{}\sphinxhyphen{}hdlregression:tb}} 
 \PYG{k}{endmodule}
 \end{sphinxVerbatim}
 
+\sphinxstepscope
+
 
 \chapter{Template files}
 \label{\detokenize{templates:template-files}}\label{\detokenize{templates::doc}}
@@ -3673,7 +3751,7 @@ functionality.
 
 
 \PYG{k}{def} \PYG{n+nf}{run\PYGZus{}rtl}\PYG{p}{(}\PYG{p}{)}\PYG{p}{:}
-    \PYG{l+s+sd}{\PYGZsq{}\PYGZsq{}\PYGZsq{}}
+\PYG{+w}{    }\PYG{l+s+sd}{\PYGZsq{}\PYGZsq{}\PYGZsq{}}
 \PYG{l+s+sd}{    Setup test environment for RTL simulations.}
 \PYG{l+s+sd}{    \PYGZsq{}\PYGZsq{}\PYGZsq{}}
     \PYG{c+c1}{\PYGZsh{} Define a HDLRegression item to access the HDLRegression functionality:}
@@ -3689,7 +3767,7 @@ functionality.
 
 
 \PYG{k}{def} \PYG{n+nf}{run\PYGZus{}netlist}\PYG{p}{(}\PYG{p}{)}\PYG{p}{:}
-    \PYG{l+s+sd}{\PYGZsq{}\PYGZsq{}\PYGZsq{}}
+\PYG{+w}{    }\PYG{l+s+sd}{\PYGZsq{}\PYGZsq{}\PYGZsq{}}
 \PYG{l+s+sd}{    Setup test environment for Netlist simulations.}
 \PYG{l+s+sd}{    \PYGZsq{}\PYGZsq{}\PYGZsq{}}
     \PYG{c+c1}{\PYGZsh{} Define a HDLRegression item to access the HDLRegression functionality:}
@@ -3704,7 +3782,7 @@ functionality.
 
 
 \PYG{k}{def} \PYG{n+nf}{main}\PYG{p}{(}\PYG{p}{)}\PYG{p}{:}
-    \PYG{l+s+sd}{\PYGZsq{}\PYGZsq{}\PYGZsq{}}
+\PYG{+w}{    }\PYG{l+s+sd}{\PYGZsq{}\PYGZsq{}\PYGZsq{}}
 \PYG{l+s+sd}{    Main method, selecting RTL or Netlist simulations.}
 \PYG{l+s+sd}{    \PYGZsq{}\PYGZsq{}\PYGZsq{}}
 
@@ -3727,6 +3805,8 @@ functionality.
 \PYG{k}{if} \PYG{n+nv+vm}{\PYGZus{}\PYGZus{}name\PYGZus{}\PYGZus{}} \PYG{o}{==} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZus{}\PYGZus{}main\PYGZus{}\PYGZus{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}
     \PYG{n}{main}\PYG{p}{(}\PYG{p}{)}
 \end{sphinxVerbatim}
+
+\sphinxstepscope
 
 
 \chapter{Test Automation Server}
@@ -3756,6 +3836,8 @@ and \sphinxcode{\sphinxupquote{start()}} will return ‘\sphinxstylestrong{0}’
 \sphinxstylestrong{Example of building HDLRegression package and running test script in Jenkins:}
 
 \noindent{\hspace*{\fill}\sphinxincludegraphics[width=750\sphinxpxdimen]{{jenkins_ci}.png}\hspace*{\fill}}
+
+\sphinxstepscope
 
 
 \chapter{Generated output}
@@ -4022,6 +4104,8 @@ output folders. An example of the layout of a test mapping file is shown below:
 \PYG{g+go}{11, ./hdlregression/test/uart\PYGZus{}vvc\PYGZus{}tb/func\PYGZus{}11, bitvis\PYGZus{}uart.uart\PYGZus{}vvc\PYGZus{}tb(func):GC\PYGZus{}TESTCASE=skew\PYGZus{}sbi\PYGZus{}read\PYGZus{}over\PYGZus{}uart\PYGZus{}receive\PYGZus{}with\PYGZus{}delay\PYGZus{}functionality}
 \end{sphinxVerbatim}
 
+\sphinxstepscope
+
 
 \chapter{Tips}
 \label{\detokenize{tips:tips}}\label{\detokenize{tips::doc}}
@@ -4087,7 +4171,7 @@ argument modifications as shown in the example below.
 
 
 \PYG{k}{def} \PYG{n+nf}{run\PYGZus{}rtl}\PYG{p}{(}\PYG{p}{)}\PYG{p}{:}
-    \PYG{l+s+sd}{\PYGZsq{}\PYGZsq{}\PYGZsq{}}
+\PYG{+w}{    }\PYG{l+s+sd}{\PYGZsq{}\PYGZsq{}\PYGZsq{}}
 \PYG{l+s+sd}{    Setup test environment for RTL simulations.}
 \PYG{l+s+sd}{    \PYGZsq{}\PYGZsq{}\PYGZsq{}}
     \PYG{c+c1}{\PYGZsh{} Define a HDLRegression item to access the HDLRegression functionality:}
@@ -4103,7 +4187,7 @@ argument modifications as shown in the example below.
 
 
 \PYG{k}{def} \PYG{n+nf}{run\PYGZus{}netlist}\PYG{p}{(}\PYG{p}{)}\PYG{p}{:}
-    \PYG{l+s+sd}{\PYGZsq{}\PYGZsq{}\PYGZsq{}}
+\PYG{+w}{    }\PYG{l+s+sd}{\PYGZsq{}\PYGZsq{}\PYGZsq{}}
 \PYG{l+s+sd}{    Setup test environment for Netlist simulations.}
 \PYG{l+s+sd}{    \PYGZsq{}\PYGZsq{}\PYGZsq{}}
     \PYG{c+c1}{\PYGZsh{} Define a HDLRegression item to access the HDLRegression functionality:}
@@ -4118,7 +4202,7 @@ argument modifications as shown in the example below.
 
 
 \PYG{k}{def} \PYG{n+nf}{main}\PYG{p}{(}\PYG{p}{)}\PYG{p}{:}
-    \PYG{l+s+sd}{\PYGZsq{}\PYGZsq{}\PYGZsq{}}
+\PYG{+w}{    }\PYG{l+s+sd}{\PYGZsq{}\PYGZsq{}\PYGZsq{}}
 \PYG{l+s+sd}{    Main method, selecting RTL or Netlist simulations.}
 \PYG{l+s+sd}{    \PYGZsq{}\PYGZsq{}\PYGZsq{}}
 

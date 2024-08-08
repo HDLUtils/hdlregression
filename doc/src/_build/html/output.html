@@ -1,21 +1,24 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Generated output &mdash; hdlregression 0.53.1
+  <title>Generated output &mdash; hdlregression 0.54.0
  documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/doctools.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=d55afa0e"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -28,12 +31,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #F5F5F5" >
-            <a href="index.html">
-            <img src="_static/hdlregression_scaled.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/hdlregression_scaled.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -73,8 +80,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Generated output</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Generated output</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/output.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -85,7 +92,7 @@
            <div itemprop="articleBody">
              
   <section id="generated-output">
-<h1>Generated output<a class="headerlink" href="#generated-output" title="Permalink to this headline"></a></h1>
+<h1>Generated output<a class="headerlink" href="#generated-output" title="Link to this heading"></a></h1>
 <p>When a HDLRegression regression script is run a folder <cite>hdlregression</cite> will be created in the same folder as the script was called
 from, e.g. <cite>sim</cite>. The folder will hold important project information in <cite>.dat</cite> files, a list of all run commands inside
 a <cite>commands.do</cite> file, library compilations inside a <cite>library</cite> folder, and test run outputs and report information inside
@@ -106,12 +113,12 @@ suffix to ensure that no important test run results are overwritten.</p>
 The test folder will include one or more testcase folders and - if selected - a coverage folder.</p>
 </div>
 <section id="test-folder">
-<h2>Test folder<a class="headerlink" href="#test-folder" title="Permalink to this headline"></a></h2>
+<h2>Test folder<a class="headerlink" href="#test-folder" title="Link to this heading"></a></h2>
 <p>Inside thet <cite>/test</cite> folder there can be several sub-folders and files. Each testbench entity will have a folder of its own
 which again has sub-folders for used architecture and generics. These <cite>test run</cite> folders have unique names that are
 hash generated, thus identifying a specific test run can be done by inspecting the test mapping file, <cite>test_mapping.csv</cite>.</p>
 <div class="literal-block-wrapper docutils container" id="id1">
-<div class="code-block-caption"><span class="caption-text">HDLRegression output folder example</span><a class="headerlink" href="#id1" title="Permalink to this code"></a></div>
+<div class="code-block-caption"><span class="caption-text">HDLRegression output folder example</span><a class="headerlink" href="#id1" title="Link to this code"></a></div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="linenos">  1</span><span class="go">hdlregression</span>
 <span class="linenos">  2</span><span class="go">├── commands.do</span>
 <span class="linenos">  3</span><span class="go">├── generic.dat</span>
@@ -301,11 +308,11 @@ hash generated, thus identifying a specific test run can be done by inspecting t
 </div>
 </div>
 <section id="test-mapping">
-<h3>Test mapping<a class="headerlink" href="#test-mapping" title="Permalink to this headline"></a></h3>
+<h3>Test mapping<a class="headerlink" href="#test-mapping" title="Link to this heading"></a></h3>
 <p>A test mapping file <cite>test_mapping.csv</cite> is located in every <cite>test</cite> folder to help identify test runs with test
 output folders. An example of the layout of a test mapping file is shown below:</p>
 <div class="literal-block-wrapper docutils container" id="id2">
-<div class="code-block-caption"><span class="caption-text">test_mapping.csv example</span><a class="headerlink" href="#id2" title="Permalink to this code"></a></div>
+<div class="code-block-caption"><span class="caption-text">test_mapping.csv example</span><a class="headerlink" href="#id2" title="Link to this code"></a></div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">1, ./hdlregression/test/irqc_demo_tb/func_1, bitvis_irqc.irqc_demo_tb(func)</span>
 <span class="go">2, ./hdlregression/test/irqc_tb/func_2, bitvis_irqc.irqc_tb(func)</span>
 <span class="go">3, ./hdlregression/test/uart_vvc_demo_tb/func_3, bitvis_uart.uart_vvc_demo_tb(func)</span>

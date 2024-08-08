@@ -723,29 +723,6 @@ class SimRunner:
         except Exception as e:
             self.logger.error("An unexpected error occurred: {}".format(e))
 
-    def _prepare_test_folder(self, test):
-        test_folder = test.get_test_path()
-
-        self._create_test_folder(test_folder)
-
-        tc_id = test.get_id_number()
-        file_list = self.project.testcase_settings.get_copy_file_to_testcase_folder(
-            tc_id
-        )
-
-        try:
-            sim_path = self.project.settings.get_sim_path()
-            for filename in file_list:
-                source_path = os.path.join(sim_path, filename)
-                if os.path.exists(source_path):
-                    shutil.copy(source_path, test_folder)
-                else:
-                    self.logger.warning("File not found: {}".format(source_path))
-        except OSError as e:
-            self.logger.error("File system error: {}".format(e))
-        except Exception as e:
-            self.logger.error("An unexpected error occurred: {}".format(e))
-
     @staticmethod
     def _create_test_folder(path) -> None:
         """

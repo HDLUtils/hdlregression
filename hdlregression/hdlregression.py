@@ -527,7 +527,7 @@ class HDLRegression:
         :param wave_format: Wave format
         :type wave_format: str
         """
-        self.settings.set_wave_file_format(wave_format)
+        self.settings.set_simulator_wave_file_format(wave_format)
 
     def start(self, **kwargs) -> int:
         """
