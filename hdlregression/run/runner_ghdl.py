@@ -125,7 +125,8 @@ class GHDLRunner(SimRunner):
                     warning=False,
                 )
 
-            return_list += self.project.settings.get_sim_options()
+            for opt in self.project.settings.get_sim_options():
+                return_list.append(opt)
 
         return return_list
 

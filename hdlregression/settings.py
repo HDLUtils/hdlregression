@@ -17,6 +17,7 @@ import os
 import platform
 import datetime
 import subprocess
+from abc import ABC, abstractmethod
 
 
 class SettingsError(Exception):
@@ -30,13 +31,17 @@ class ItemExistError(SettingsError):
 class InvalidPathError(SettingsError):
     pass
 
+class UnsupportedMethodError(SettingsError):
+    pass
+
+class UnavailableSimulatorError(SettingsError):
+    pass
 
 class HDLRegressionSettings:
     SIM_WAVE_FILE_FORMAT = ["FST", "VCD"]
 
     def __init__(self):
         self.hdlregression_version = "0.0.0"
-        self.simulator_settings = SimulatorSettings(settings=self)
         self.compile_time = 0
         self.os_platform = platform.system().lower()
         self.verbosity = False
@@ -85,6 +90,12 @@ class HDLRegressionSettings:
         self.gui_compile_all = False
         self.gui_compile_changes = False
         self.simulator_wave_file_format = "vcd"  # Default for GHDL and NVC.
+        
+        # Initialize a available simulator settings obj
+        self.simulator_cli_select = False
+        self.simulator_detector = SimulatorDetector()
+        self.simulator_info = self.simulator_detector.get_simulators_info()
+        self.simulator_settings = self.simulator_detector.get_simulator_settings_object(self.simulator_info.get("simulator_name"))
 
         self.libraries = []
 
@@ -402,12 +413,13 @@ class HDLRegressionSettings:
         return self.simulator_settings
 
     def get_simulators_info(self) -> dict:
-        return self.simulator_settings.get_simulators_info()
+        return self.simulator_info
 
-    def set_simulator_name(self, simulator_name, cli=False, api=False, init=False):
-        self.simulator_settings.set_simulator_name(
-            simulator_name, cli=cli, api=api, init=init
-        )
+    def set_simulator_name(self, simulator_name, cli=False):
+        if cli is True or self.simulator_cli_select is False:
+            self.simulator_settings = self.simulator_detector.get_simulator_settings_object(simulator_name)
+            if cli is True:
+                self.simulator_cli_select = True
 
     def get_simulator_name(self) -> str:
         return self.simulator_settings.get_simulator_name()
@@ -504,23 +516,8 @@ class HDLRegressionSettings:
     def get_keep_code_coverage(self) -> bool:
         return self.keep_code_coverage
 
+class SimulatorDetector:
 
-class TestcaseSettings:
-    def __init__(self):
-        self.copy_file = {}
-
-    def copy_file_to_testcase_folder(self, filename: str, testcase: str) -> None:
-        testcase = testcase.lower()
-        if testcase in self.copy_file:
-            self.copy_file[testcase].append(filename)
-        else:
-            self.copy_file[testcase] = [filename]
-
-    def get_copy_file_to_testcase_folder(self, testcase: str) -> list:
-        return self.copy_file.get(str(testcase), [])
-
-
-class SimulatorSettings:
     ID_MODELSIM_SIMULATOR = ["modelsim", "MODELSIM", "mentor", "MENTOR"]
     ID_RIVIERA_SIMULATOR = [
         "riviera",
@@ -533,59 +530,9 @@ class SimulatorSettings:
     ID_NVC_SIMULATOR = ["nvc", "NVC"]
     ID_VIVADO_SIMULATOR = ["vivado", "VIVADO"]
 
-    DEF_COM_OPTIONS_MODELSIM_VHDL = ["-suppress", "1346,1236,1090", "-2008"]
-    DEF_COM_OPTIONS_VIVADO_VHDL = ["--2008"]
 
-    DEF_COM_OPTIONS_ALDEC_VHDL = [
-        "-2008",
-        "-nowarn",
-        "COMP96_0564",
-        "-nowarn",
-        "COMP96_0048",
-        "-nowarn",
-        "DAGGEN_0001",
-        "-dbg",
-    ]
-
-    DEF_COM_OPTIONS_RIVIERA_VHDL = [
-        "-2008",
-        "-nowarn",
-        "COMP96_0564",
-        "-nowarn",
-        "COMP96_0048",
-        "-nowarn",
-        "DAGGEN_0001",
-        "-dbg",
-    ]
-
-    DEF_COM_OPTIONS_GHDL_VHDL = [
-        "--std=08",
-        "--ieee=standard",
-        "-frelaxed-rules",
-        "--warn-no-shared",
-        "--warn-no-hide",
-    ]
-    DEF_COM_OPTIONS_NVC_VHDL = ["--relaxed"]
-
-    DEF_COM_OPTIONS_MODELSIM_VERILOG = ["-vlog01compat"]
-    DEF_COM_OPTIONS_VIVADO_VERILOG = []
-    DEF_COM_OPTIONS_ALDEC_VERILOG = []
-    DEF_COM_OPTIONS_RIVIERA_VERILOG = []
-    DEF_COM_OPTIONS_GHDL_VERILOG = []
-    DEF_COM_OPTIONS_NVC_VERILOG = []
-
-    def __init__(self, settings):
-        self.settings = settings
-        self.com_options_verilog = []
-        self.com_options_vhdl = []
-        self.vhdl_com_options_updated = False
-        self.verilog_com_options_updated = False
-        self.sim_options = []
-        self.cli_selected_simulator = False
-        self.simulator_path = None
-        self.modelsim_ini = "modelsim.ini"
-        self.simulator_name = None
-        self.simulator_select = {"api": False, "cli": False, "init": False}
+    def __init__(self):
+        self.simulator_info = self.get_simulators_info()
 
     @staticmethod
     def is_simulator_installed(
@@ -649,18 +596,70 @@ class SimulatorSettings:
             "GHDL": ghdl_installed,
             "RIVIERA_PRO": riviera_pro_installed,
             "VIVADO": vivado_installed,
-            "simulator": simulator,
+            "simulator_name": simulator,
         }
 
-    def set_simulator_name(self, simulator_name, cli=False, api=False, init=False):
-        if simulator_name:
-            simulator_name = simulator_name.upper()
-        simulator_info = self.get_simulators_info()
-        valid_simulator = simulator_info.get(simulator_name)
+    def _validate_simulator_name(self, simulator_name) -> str:
+        if simulator_name in self.ID_MODELSIM_SIMULATOR:
+            return "MODELSIM"
+        elif simulator_name in self.ID_RIVIERA_SIMULATOR:
+            return "RIVIERA_PRO"
+        elif simulator_name in self.ID_ALDEC_SIMULATOR:
+            return "ALDEC"
+        elif simulator_name in self.ID_GHDL_SIMULATOR:
+            return "GHDL"
+        elif simulator_name in self.ID_NVC_SIMULATOR:
+            return "NVC"
+        elif simulator_name in self.ID_VIVADO_SIMULATOR:
+            return "VIVADO"
+        else:
+            raise UnavailableSimulatorError("Simulator {} unsupported.".format(simulator_name))
+        
+    def _validate_simulator_installed(self, simulator_name) -> None:
+        """Check with simulator info dict if the simulator name is found/installed"""
+        if self.simulator_info.get(simulator_name) is False:
+            raise UnavailableSimulatorError("Simulator {} not found.".format(simulator_name))
+    
+    def get_simulator_settings_object(self, simulator_name) -> "SimulatorSettings":
+        """Detects available simulator and returns a simulator settings obj."""
 
-        if valid_simulator:
-            if self.simulator_name is None or api is True or cli is True:
-                self.simulator_name = simulator_name
+        sim_name = self._validate_simulator_name(simulator_name.upper())
+
+        self._validate_simulator_installed(sim_name)
+
+        if sim_name == "MODELSIM": return ModelsimSettings()
+        elif sim_name == "RIVIERA_PRO": return RivieraProSettings()
+        elif sim_name == "NVC": return NVCSettings()
+        elif sim_name == "GHDL": return GHDLSettings()
+        elif sim_name == "VIVADO": return VivadoSettings()
+        elif sim_name == "ALDEC": return AldecSettings()
+        else: raise UnavailableSimulatorError("Simulator {} not found.".format(sim_name))
+
+
+class TestcaseSettings:
+    def __init__(self):
+        self.copy_file = {}
+
+    def copy_file_to_testcase_folder(self, filename: str, testcase: str) -> None:
+        testcase = testcase.lower()
+        if testcase in self.copy_file:
+            self.copy_file[testcase].append(filename)
+        else:
+            self.copy_file[testcase] = [filename]
+
+    def get_copy_file_to_testcase_folder(self, testcase: str) -> list:
+        return self.copy_file.get(str(testcase), [])
+
+
+class SimulatorSettings(ABC):
+
+    def __init__(self):
+        self.cli_selected_simulator = False
+        self.simulator_path = None
+        self.modelsim_ini = "modelsim.ini"
+        self.simulator_name = self.SIMULATOR_NAME
+        self.sim_options = self.DEF_SIM_OPTIONS
+
 
     def get_simulator_name(self) -> str:
         if self.simulator_name:
@@ -671,71 +670,26 @@ class SimulatorSettings:
 
     def set_com_options(self, com_options=None, hdl_lang=None):
         if hdl_lang == "vhdl":
-            self.vhdl_com_options_updated = True
             self.com_options_vhdl = com_options
         elif hdl_lang == "verilog":
-            self.verilog_com_options_updated = True
             self.com_options_verilog = com_options
         else:
-            self.vhdl_com_options_updated = True
-            self.verilog_com_options_updated = True
             self.com_options_vhdl = com_options
             self.com_options_verilog = com_options
 
     def get_com_options(self, hdl_lang="vhdl"):
         if hdl_lang == "vhdl":
-            return self._get_vhdl_com_options()
-        elif hdl_lang == "verilog":
-            return self._get_verilog_com_options()
-
-    def _get_vhdl_com_options(self):
-        if self.vhdl_com_options_updated is True:
             return self.com_options_vhdl
-        else:
-            if self.get_simulator_name() == "MODELSIM":
-                return self.DEF_COM_OPTIONS_MODELSIM_VHDL
-            elif self.get_simulator_name() == "ALDEC":
-                return self.DEF_COM_OPTIONS_ALDEC_VHDL
-            elif self.get_simulator_name() == "GHDL":
-                return self.DEF_COM_OPTIONS_GHDL_VHDL
-            elif self.get_simulator_name() == "NVC":
-                return self.DEF_COM_OPTIONS_NVC_VHDL
-            elif self.get_simulator_name() == "RIVIERA_PRO":
-                return self.DEF_COM_OPTIONS_RIVIERA_VHDL
-            elif self.get_simulator_name() == "VIVADO":
-                return self.DEF_COM_OPTIONS_VIVADO_VHDL
-            else:
-                return self.DEF_COM_OPTIONS_MODELSIM_VHDL
-
-    def _get_verilog_com_options(self):
-        if self.verilog_com_options_updated is True:
+        elif hdl_lang == "verilog":
             return self.com_options_verilog
-        else:
-            if self.get_simulator_name() == "MODELSIM":
-                return self.DEF_COM_OPTIONS_MODELSIM_VERILOG
-            elif self.get_simulator_name() == "ALDEC":
-                return self.DEF_COM_OPTIONS_ALDEC_VERILOG
-            elif self.get_simulator_name() == "GHDL":
-                return self.DEF_COM_OPTIONS_GHDL_VERILOG
-            elif self.get_simulator_name() == "NVC":
-                return self.DEF_COM_OPTIONS_NVC_VERILOG
-            elif self.get_simulator_name() == "RIVIERA_PRO":
-                return self.DEF_COM_OPTIONS_RIVIERA_VERILOG
-            elif self.get_simulator_name() == "VIVADO":
-                return self.DEF_COM_OPTIONS_VIVADO_VERILOG
-            else:
-                return self.DEF_COM_OPTIONS_MODELSIM_VERILOG
 
     def remove_com_options(self):
         self.com_options_vhdl = []
         self.com_options_verilog = []
-        self.vhdl_com_options_updated = True
-        self.verilog_com_options_updated = True
 
+    @abstractmethod
     def get_is_default_com_options(self) -> bool:
-        vhdl_default = self.vhdl_com_options_updated is False
-        verilog_default = self.verilog_com_options_updated is False
-        return (vhdl_default is True) and (verilog_default is True)
+        pass
 
     def set_sim_options(self, options) -> None:
         if isinstance(options, str):
@@ -776,23 +730,152 @@ class SimulatorSettings:
             return sim_exec
 
     def set_modelsim_ini(self, modelsim_ini):
+        raise UnsupportedMethodError("Method not supported by simulator '{}'.".format(self.simulator_name))
+
+    def get_modelsim_ini(self) -> str:
+        raise UnsupportedMethodError("Method not supported by simulator '{}'.".format(self.simulator_name))
+
+
+class ModelsimSettings(SimulatorSettings):
+    SIMULATOR_NAME = "MODELSIM"
+    DEF_COM_OPTIONS_VHDL = ["-suppress", "1346,1236,1090", "-2008"]
+    DEF_COM_OPTIONS_VERILOG = ["-vlog01compat"]
+    DEF_SIM_OPTIONS = []
+
+    def __init__(self):
+        super().__init__()
+        self.com_options_verilog = self.DEF_COM_OPTIONS_VERILOG
+        self.com_options_vhdl = self.DEF_COM_OPTIONS_VHDL
+        self.sim_options = self.DEF_SIM_OPTIONS
+
+    def get_is_default_com_options(self) -> bool:
+        vhdl_default = self.com_options_verilog == self.DEF_COM_OPTIONS_VERILOG
+        verilog_default = self.com_options_vhdl == self.DEF_COM_OPTIONS_VHDL
+        return (vhdl_default is True) and (verilog_default is True)
+
+    def set_modelsim_ini(self, modelsim_ini):
         self.modelsim_ini = modelsim_ini
 
     def get_modelsim_ini(self) -> str:
         return self.modelsim_ini
 
-    def _validate_simulator_name(self, simulator_name):
-        if simulator_name in self.ID_MODELSIM_SIMULATOR:
-            return "MODELSIM"
-        elif simulator_name in self.ID_RIVIERA_SIMULATOR:
-            return "RIVIERA_PRO"
-        elif simulator_name in self.ID_ALDEC_SIMULATOR:
-            return "ALDEC"
-        elif simulator_name in self.ID_GHDL_SIMULATOR:
-            return "GHDL"
-        elif simulator_name in self.ID_NVC_SIMULATOR:
-            return "NVC"
-        elif simulator_name in self.ID_VIVADO_SIMULATOR:
-            return "VIVADO"
+
+class NVCSettings(SimulatorSettings):
+    SIMULATOR_NAME = "NVC"
+    DEF_COM_OPTIONS_VHDL = ["--relaxed"]
+    DEF_COM_OPTIONS_VERILOG = []
+    DEF_SIM_OPTIONS = ["-M64m", "-H64m"]
+
+    def __init__(self):
+        super().__init__()
+        self.com_options_verilog = self.DEF_COM_OPTIONS_VERILOG
+        self.com_options_vhdl = self.DEF_COM_OPTIONS_VHDL
+        self.sim_options = self.DEF_SIM_OPTIONS
+
+    def get_is_default_com_options(self) -> bool:
+        vhdl_default = self.com_options_verilog == self.DEF_COM_OPTIONS_VERILOG
+        verilog_default = self.com_options_vhdl == self.DEF_COM_OPTIONS_VHDL
+        return (vhdl_default is True) and (verilog_default is True)
+    
+    def set_sim_options(self, options) -> None:
+        if not isinstance(options, list):
+            ValueError("Wrong paramteter type {} for 'set_sim_options([list])'".format(type(options)))
         else:
-            ValueError("Simulator {} unsupported.".format(simulator_name))
+            if self.sim_options == self.DEF_SIM_OPTIONS:
+                self.sim_options = options
+
+class GHDLSettings(SimulatorSettings):
+    SIMULATOR_NAME = "GHDL"
+    DEF_COM_OPTIONS_VHDL = [
+        "--std=08",
+        "--ieee=standard",
+        "-frelaxed-rules",
+        "--warn-no-shared",
+        "--warn-no-hide",
+    ]
+    DEF_COM_OPTIONS_VERILOG = []
+    DEF_SIM_OPTIONS = []
+
+    def __init__(self):
+        super().__init__()
+        self.com_options_verilog = self.DEF_COM_OPTIONS_VERILOG
+        self.com_options_vhdl = self.DEF_COM_OPTIONS_VHDL
+        self.sim_options = self.DEF_SIM_OPTIONS
+
+    def get_is_default_com_options(self) -> bool:
+        vhdl_default = self.com_options_verilog == self.DEF_COM_OPTIONS_VERILOG
+        verilog_default = self.com_options_vhdl == self.DEF_COM_OPTIONS_VHDL
+        return (vhdl_default is True) and (verilog_default is True)
+
+class RivieraProSettings(SimulatorSettings):
+    SIMULATOR_NAME = "RIVIERA_PRO"
+    DEF_COM_OPTIONS_VHDL = [
+        "-2008",
+        "-nowarn",
+        "COMP96_0564",
+        "-nowarn",
+        "COMP96_0048",
+        "-nowarn",
+        "DAGGEN_0001",
+        "-dbg",
+    ]
+    DEF_COM_OPTIONS_VERILOG = []
+    DEF_SIM_OPTIONS = []
+
+    def __init__(self):
+        super().__init__()
+        self.com_options_verilog = self.DEF_COM_OPTIONS_VERILOG
+        self.com_options_vhdl = self.DEF_COM_OPTIONS_VHDL
+        self.sim_options = self.DEF_SIM_OPTIONS
+
+    def get_is_default_com_options(self) -> bool:
+        vhdl_default = self.com_options_verilog == self.DEF_COM_OPTIONS_VERILOG
+        verilog_default = self.com_options_vhdl == self.DEF_COM_OPTIONS_VHDL
+        return (vhdl_default is True) and (verilog_default is True)
+
+
+
+class VivadoSettings(SimulatorSettings):
+    SIMULATOR_NAME = "VIVADO"
+    DEF_COM_OPTIONS_VHDL = ["--2008"]
+    DEF_COM_OPTIONS_VERILOG = []
+    DEF_SIM_OPTIONS = []
+
+    def __init__(self):
+        super().__init__()
+        self.com_options_verilog = self.DEF_COM_OPTIONS_VERILOG
+        self.com_options_vhdl = self.DEF_COM_OPTIONS_VHDL
+        self.sim_options = self.DEF_SIM_OPTIONS
+
+    def get_is_default_com_options(self) -> bool:
+        vhdl_default = self.com_options_verilog == self.DEF_COM_OPTIONS_VERILOG
+        verilog_default = self.com_options_vhdl == self.DEF_COM_OPTIONS_VHDL
+        return (vhdl_default is True) and (verilog_default is True)
+
+    
+class AldecSettings(SimulatorSettings):
+    SIMULATOR_NAME = "ALDEC"
+    DEF_COM_OPTIONS_VHDL = [
+        "-2008",
+        "-nowarn",
+        "COMP96_0564",
+        "-nowarn",
+        "COMP96_0048",
+        "-nowarn",
+        "DAGGEN_0001",
+        "-dbg",
+    ]
+    DEF_COM_OPTIONS_VERILOG = []
+    DEF_SIM_OPTIONS = []
+
+    def __init__(self):
+        super().__init__()
+        self.com_options_verilog = self.DEF_COM_OPTIONS_VERILOG
+        self.com_options_vhdl = self.DEF_COM_OPTIONS_VHDL
+        self.sim_options = self.DEF_SIM_OPTIONS
+
+    def get_is_default_com_options(self) -> bool:
+        vhdl_default = self.com_options_verilog == self.DEF_COM_OPTIONS_VERILOG
+        verilog_default = self.com_options_vhdl == self.DEF_COM_OPTIONS_VHDL
+        return (vhdl_default is True) and (verilog_default is True)
+    

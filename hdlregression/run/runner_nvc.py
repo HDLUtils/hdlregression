@@ -88,10 +88,12 @@ class NVCRunner(SimRunner):
             "-L{}".format(output_path),
             "--work={}:{}".format(library_name, library_compile_path),
             "--std={}".format(hdl_version),
-            "-M64m",
             "--messages=compact",
             "--stderr=error",
         ]
+
+        for opt in self.project.settings.get_sim_options():
+            return_list.append(opt)
 
         if elab_run:
             return_list += ["-e", "--no-save", "--jit"]
@@ -111,7 +113,6 @@ class NVCRunner(SimRunner):
                     "--wave=sim.{}".format(wave_file_format),
                 ]
 
-            return_list += self.project.settings.get_sim_options()
         else:
             return_list += ["-a", hdlfile.get_filename_with_path()]
 
@@ -154,6 +155,7 @@ class NVCRunner(SimRunner):
         self.logger.debug("Running simulations.")
         # Define a transcript file and location for simulator output
         transcript_file = os.path.join(test.get_test_path(), "transcript")
+
         # Get simulator call for elaboration and run
         cmd = self._get_simulator_call(
             module=test.get_tb(),

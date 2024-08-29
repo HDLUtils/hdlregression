@@ -213,42 +213,6 @@ class HDLRegression:
         """
         self.testcase_settings.copy_file_to_testcase_folder(filename, tc_id)
 
-    def add_file_to_run_folder(self, filename: str, tc_id: str):
-        """
-        Copies a file to the folder where a testcase is run from.
-
-        :param: filename : filename with full or relative path
-        :type filename : str
-        :param: tc_id : testcase id number that use included file
-        :type tc_id : str
-
-        """
-        self.testcase_settings.copy_file_to_testcase_folder(filename, tc_id)
-
-    def add_file_to_run_folder(self, filename: str, tc_id: str):
-        """
-        Copies a file to the folder where a testcase is run from.
-
-        :param: filename : filename with full or relative path
-        :type filename : str
-        :param: tc_id : testcase id number that use included file
-        :type tc_id : str
-
-        """
-        self.testcase_settings.copy_file_to_testcase_folder(filename, tc_id)
-
-    def add_file_to_run_folder(self, filename: str, tc_id: str):
-        """
-        Copies a file to the folder where a testcase is run from.
-
-        :param: filename : filename with full or relative path
-        :type filename : str
-        :param: tc_id : testcase id number that use included file
-        :type tc_id : str
-
-        """
-        self.testcase_settings.copy_file_to_testcase_folder(filename, tc_id)
-
     def remove_file(self, filename, library_name):
         """
         Remove a file that has been added to a library object
@@ -406,7 +370,7 @@ class HDLRegression:
             self.logger.warning("Missing argument: set_simulator(simulator=?).")
             return
 
-        self.settings.set_simulator_name(simulator, api=True)
+        self.settings.set_simulator_name(simulator)
         self.settings.set_simulator_path(path)
         if com_options is not None:
             self.settings.set_com_options(com_options)
