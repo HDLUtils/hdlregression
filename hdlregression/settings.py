@@ -453,7 +453,25 @@ class HDLRegressionSettings:
 
     def get_sim_options(self) -> list:
         return self.simulator_settings.get_sim_options()
+    
+    def set_runtime_options(self, options) -> None:
+        self.simulator_settings.set_runtime_options(options)
 
+    def get_runtime_options(self) -> list:
+        return self.simulator_settings.get_runtime_options()
+    
+    def set_global_options(self, options) -> None:
+        self.simulator_settings.set_global_options(options)
+
+    def get_global_options(self) -> list:
+        return self.simulator_settings.get_global_options()
+
+    def set_elaboration_options(self, options) -> None:
+        self.simulator_settings.set_elaboration_options(options)
+
+    def get_elaboration_options(self) -> list:
+        return self.simulator_settings.get_elaboration_options()
+ 
     def add_sim_options(self, options, warning=True):
         self.simulator_settings.add_sim_options(options, warning)
 
@@ -653,13 +671,25 @@ class TestcaseSettings:
 
 class SimulatorSettings(ABC):
 
+    SIMULATOR_NAME = None
+    DEF_COM_OPTIONS_VHDL = []
+    DEF_COM_OPTIONS_VERILOG = []
+    DEF_SIM_OPTIONS = []
+    DEF_RUNTIME_OPTIONS = []
+    DEF_GLOBAL_OPTIONS = []
+    DEF_ELABORATION_OPTIONS = []
+
     def __init__(self):
         self.cli_selected_simulator = False
         self.simulator_path = None
         self.modelsim_ini = "modelsim.ini"
         self.simulator_name = self.SIMULATOR_NAME
         self.sim_options = self.DEF_SIM_OPTIONS
-
+        self.runtime_options = self.DEF_RUNTIME_OPTIONS
+        self.global_options = self.DEF_GLOBAL_OPTIONS
+        self.com_options_vhdl = self.DEF_COM_OPTIONS_VHDL
+        self.com_options_verilog = self.DEF_COM_OPTIONS_VERILOG
+        self.elaboration_options = self.DEF_ELABORATION_OPTIONS
 
     def get_simulator_name(self) -> str:
         if self.simulator_name:
@@ -702,6 +732,24 @@ class SimulatorSettings(ABC):
                     "sim_options parameter needs to be given as a list or a string"
                 )
 
+    def set_runtime_options(self, options) -> None:
+        pass
+
+    def get_runtime_options(self) -> list:
+        pass
+
+    def set_global_options(self, options) -> None:
+        pass
+
+    def get_global_options(self) -> list:
+        pass
+
+    def set_elaboration_options(self, options) -> None:
+        pass
+
+    def get_elaboration_options(self) -> list:
+        pass
+
     def add_sim_options(self, options, warning=True):
         for item in self.sim_options:
             if options in item:
@@ -740,7 +788,6 @@ class ModelsimSettings(SimulatorSettings):
     SIMULATOR_NAME = "MODELSIM"
     DEF_COM_OPTIONS_VHDL = ["-suppress", "1346,1236,1090", "-2008"]
     DEF_COM_OPTIONS_VERILOG = ["-vlog01compat"]
-    DEF_SIM_OPTIONS = []
 
     def __init__(self):
         super().__init__()
@@ -763,14 +810,16 @@ class ModelsimSettings(SimulatorSettings):
 class NVCSettings(SimulatorSettings):
     SIMULATOR_NAME = "NVC"
     DEF_COM_OPTIONS_VHDL = ["--relaxed"]
-    DEF_COM_OPTIONS_VERILOG = []
-    DEF_SIM_OPTIONS = ["-M64m", "-H64m"]
+    DEF_GLOBAL_OPTIONS = ["--stderr=error", "--messages=compact", "-M64m", "-H64m"]
+    DEF_RUNTIME_OPTIONS = []
+    DEF_ELABORATION_OPTIONS = ["-e", "--no-save", "--jit"]
 
     def __init__(self):
         super().__init__()
         self.com_options_verilog = self.DEF_COM_OPTIONS_VERILOG
         self.com_options_vhdl = self.DEF_COM_OPTIONS_VHDL
         self.sim_options = self.DEF_SIM_OPTIONS
+        self.runtime_options = self.DEF_RUNTIME_OPTIONS
 
     def get_is_default_com_options(self) -> bool:
         vhdl_default = self.com_options_verilog == self.DEF_COM_OPTIONS_VERILOG
@@ -784,6 +833,37 @@ class NVCSettings(SimulatorSettings):
             if self.sim_options == self.DEF_SIM_OPTIONS:
                 self.sim_options = options
 
+    def set_runtime_options(self, options) -> None:
+        if not isinstance(options, list):
+            ValueError("Wrong paramteter type {} for 'set_runtime_options([list])'".format(type(options)))
+        else:
+            if self.runtime_options == self.DEF_RUNTIME_OPTIONS:        
+                self.runtime_options = options
+
+    def get_runtime_options(self) -> list:
+        return self.runtime_options
+    
+    def set_global_options(self, options) -> None:
+        if not isinstance(options, list):
+            ValueError("Wrong paramteter type {} for 'set_global_options([list])'".format(type(options)))
+        else:
+            if self.global_options == self.DEF_GLOBAL_OPTIONS:        
+                self.global_options = options
+
+    def get_global_options(self) -> list:
+        return self.global_options
+    
+    def set_elaboration_options(self, options) -> None:
+        if not isinstance(options, list):
+            ValueError("Wrong paramteter type {} for 'set_elab_options([list])'".format(type(options)))
+        else:
+            if self.elaboration_options == self.DEF_ELABORATION_OPTIONS:
+                self.elaboration_options = options
+
+    def get_elaboration_options(self) -> list:
+        return self.elaboration_options
+
+
 class GHDLSettings(SimulatorSettings):
     SIMULATOR_NAME = "GHDL"
     DEF_COM_OPTIONS_VHDL = [
@@ -793,8 +873,6 @@ class GHDLSettings(SimulatorSettings):
         "--warn-no-shared",
         "--warn-no-hide",
     ]
-    DEF_COM_OPTIONS_VERILOG = []
-    DEF_SIM_OPTIONS = []
 
     def __init__(self):
         super().__init__()
@@ -819,8 +897,6 @@ class RivieraProSettings(SimulatorSettings):
         "DAGGEN_0001",
         "-dbg",
     ]
-    DEF_COM_OPTIONS_VERILOG = []
-    DEF_SIM_OPTIONS = []
 
     def __init__(self):
         super().__init__()
@@ -838,8 +914,6 @@ class RivieraProSettings(SimulatorSettings):
 class VivadoSettings(SimulatorSettings):
     SIMULATOR_NAME = "VIVADO"
     DEF_COM_OPTIONS_VHDL = ["--2008"]
-    DEF_COM_OPTIONS_VERILOG = []
-    DEF_SIM_OPTIONS = []
 
     def __init__(self):
         super().__init__()
@@ -865,8 +939,6 @@ class AldecSettings(SimulatorSettings):
         "DAGGEN_0001",
         "-dbg",
     ]
-    DEF_COM_OPTIONS_VERILOG = []
-    DEF_SIM_OPTIONS = []
 
     def __init__(self):
         super().__init__()

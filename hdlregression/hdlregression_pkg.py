@@ -426,8 +426,18 @@ def update_settings_from_arguments(project, kwargs: dict):
     # Simulation options
     if "sim_options" in kwargs:
         project.settings.set_sim_options(kwargs.get("sim_options"))
+    if "global_options" in kwargs:
+        project.settings.set_global_options(kwargs.get("global_options"))
+    if "elab_options" in kwargs:
+        project.settings.set_elaboration_options(kwargs.get("elab_options"))
     if "netlist_timing" in kwargs:
         project.settings.set_netlist_timing(kwargs.get("netlist_timing"))
+    if "runtime_options" in kwargs:
+        project.settings.set_runtime_options(kwargs.get("runtime_options"))
+    if "global_options" in kwargs:
+        project.settings.set_global_options(kwargs.get("global_options"))
+    if "elaboration_options" in kwargs:
+        project.settings.set_elaboration_options(kwargs.get("elaboration_options"))
 
     # Coverage options
     if "keep_code_coverage" in kwargs:

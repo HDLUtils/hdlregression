@@ -20,64 +20,64 @@
 \contentsline {subsection}{\numberline {4.2.1}add\_files()}{10}{subsection.4.2.1}%
 \contentsline {subsection}{\numberline {4.2.2}set\_library()}{12}{subsection.4.2.2}%
 \contentsline {subsection}{\numberline {4.2.3}start()}{13}{subsection.4.2.3}%
-\contentsline {section}{\numberline {4.3}Advanced methods}{14}{section.4.3}%
-\contentsline {subsection}{\numberline {4.3.1}add\_file\_to\_run\_folder()}{14}{subsection.4.3.1}%
-\contentsline {subsection}{\numberline {4.3.2}add\_generics()}{15}{subsection.4.3.2}%
-\contentsline {subsection}{\numberline {4.3.3}add\_precompiled\_library()}{15}{subsection.4.3.3}%
-\contentsline {subsection}{\numberline {4.3.4}add\_testcase()}{16}{subsection.4.3.4}%
-\contentsline {subsection}{\numberline {4.3.5}add\_to\_testgroup()}{17}{subsection.4.3.5}%
-\contentsline {subsection}{\numberline {4.3.6}compile\_uvvm()}{17}{subsection.4.3.6}%
-\contentsline {subsection}{\numberline {4.3.7}compile\_osvvm()}{18}{subsection.4.3.7}%
-\contentsline {subsection}{\numberline {4.3.8}configure\_library()}{18}{subsection.4.3.8}%
-\contentsline {subsection}{\numberline {4.3.9}gen\_report()}{19}{subsection.4.3.9}%
-\contentsline {subsection}{\numberline {4.3.10}get\_args()}{19}{subsection.4.3.10}%
-\contentsline {subsection}{\numberline {4.3.11}get\_file\_list()}{19}{subsection.4.3.11}%
-\contentsline {subsection}{\numberline {4.3.12}remove\_file()}{19}{subsection.4.3.12}%
-\contentsline {subsection}{\numberline {4.3.13}run\_command()}{20}{subsection.4.3.13}%
-\contentsline {subsection}{\numberline {4.3.14}set\_code\_coverage()}{20}{subsection.4.3.14}%
-\contentsline {subsection}{\numberline {4.3.15}set\_dependency()}{21}{subsection.4.3.15}%
-\contentsline {subsection}{\numberline {4.3.16}set\_result\_check\_string()}{22}{subsection.4.3.16}%
-\contentsline {subsection}{\numberline {4.3.17}set\_simulator()}{22}{subsection.4.3.17}%
-\contentsline {subsection}{\numberline {4.3.18}set\_testcase\_identifier\_name()}{23}{subsection.4.3.18}%
-\contentsline {subsection}{\numberline {4.3.19}set\_simulator\_wave\_file\_format()}{24}{subsection.4.3.19}%
-\contentsline {section}{\numberline {4.4}Statistical methods}{25}{section.4.4}%
-\contentsline {subsection}{\numberline {4.4.1}get\_results()}{25}{subsection.4.4.1}%
-\contentsline {subsection}{\numberline {4.4.2}get\_num\_tests\_run()}{25}{subsection.4.4.2}%
-\contentsline {subsection}{\numberline {4.4.3}get\_num\_pass\_tests()}{25}{subsection.4.4.3}%
-\contentsline {subsection}{\numberline {4.4.4}get\_num\_fail\_tests()}{25}{subsection.4.4.4}%
-\contentsline {subsection}{\numberline {4.4.5}get\_num\_pass\_with\_minor\_alert\_tests()}{26}{subsection.4.4.5}%
-\contentsline {chapter}{\numberline {5}Command Line Interface (CLI)}{27}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Examples}{28}{section.5.1}%
-\contentsline {subsection}{\numberline {5.1.1}Full regression}{28}{subsection.5.1.1}%
-\contentsline {subsection}{\numberline {5.1.2}Testcases}{30}{subsection.5.1.2}%
-\contentsline {subsection}{\numberline {5.1.3}Test groups}{32}{subsection.5.1.3}%
-\contentsline {subsubsection}{Defining test groups}{32}{subsubsection*.3}%
-\contentsline {subsubsection}{Listing test groups}{32}{subsubsection*.4}%
-\contentsline {subsubsection}{Running test groups}{33}{subsubsection*.5}%
-\contentsline {section}{\numberline {5.2}Threading}{34}{section.5.2}%
-\contentsline {subsection}{\numberline {5.2.1}Sequential}{35}{subsection.5.2.1}%
-\contentsline {subsection}{\numberline {5.2.2}Pre\sphinxhyphen {}processing in parallel, simulations sequentially}{36}{subsection.5.2.2}%
-\contentsline {subsection}{\numberline {5.2.3}Pre\sphinxhyphen {}processing and simulations in parallel using 10 threads}{37}{subsection.5.2.3}%
-\contentsline {section}{\numberline {5.3}Simulation results}{38}{section.5.3}%
-\contentsline {subsection}{\numberline {5.3.1}Regression initial run}{39}{subsection.5.3.1}%
-\contentsline {subsection}{\numberline {5.3.2}Regression run without changes}{40}{subsection.5.3.2}%
-\contentsline {subsection}{\numberline {5.3.3}Failing testcase run}{40}{subsection.5.3.3}%
-\contentsline {chapter}{\numberline {6}Graphical User Interface (GUI)}{43}{chapter.6}%
-\contentsline {section}{\numberline {6.1}Modelsim}{43}{section.6.1}%
-\contentsline {section}{\numberline {6.2}GHDL}{44}{section.6.2}%
-\contentsline {chapter}{\numberline {7}Testbench}{45}{chapter.7}%
-\contentsline {section}{\numberline {7.1}Prerequisites}{45}{section.7.1}%
-\contentsline {section}{\numberline {7.2}Example Testbench}{46}{section.7.2}%
-\contentsline {chapter}{\numberline {8}Template files}{49}{chapter.8}%
-\contentsline {section}{\numberline {8.1}Basic usage}{49}{section.8.1}%
-\contentsline {subsection}{\numberline {8.1.1}Basic example}{49}{subsection.8.1.1}%
-\contentsline {section}{\numberline {8.2}Advanced usage}{50}{section.8.2}%
-\contentsline {subsection}{\numberline {8.2.1}Advanced example}{51}{subsection.8.2.1}%
-\contentsline {subsection}{\numberline {8.2.2}RTL and Netlist script example}{52}{subsection.8.2.2}%
-\contentsline {chapter}{\numberline {9}Test Automation Server}{55}{chapter.9}%
-\contentsline {chapter}{\numberline {10}Generated output}{57}{chapter.10}%
-\contentsline {section}{\numberline {10.1}Test folder}{57}{section.10.1}%
-\contentsline {subsection}{\numberline {10.1.1}Test mapping}{61}{subsection.10.1.1}%
-\contentsline {chapter}{\numberline {11}Tips}{63}{chapter.11}%
-\contentsline {section}{\numberline {11.1}Back annotated netlist simulations}{63}{section.11.1}%
-\contentsline {subsection}{\numberline {11.1.1}Regression script}{63}{subsection.11.1.1}%
+\contentsline {section}{\numberline {4.3}Advanced methods}{15}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}add\_file\_to\_run\_folder()}{15}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}add\_generics()}{16}{subsection.4.3.2}%
+\contentsline {subsection}{\numberline {4.3.3}add\_precompiled\_library()}{17}{subsection.4.3.3}%
+\contentsline {subsection}{\numberline {4.3.4}add\_testcase()}{17}{subsection.4.3.4}%
+\contentsline {subsection}{\numberline {4.3.5}add\_to\_testgroup()}{18}{subsection.4.3.5}%
+\contentsline {subsection}{\numberline {4.3.6}compile\_uvvm()}{19}{subsection.4.3.6}%
+\contentsline {subsection}{\numberline {4.3.7}compile\_osvvm()}{19}{subsection.4.3.7}%
+\contentsline {subsection}{\numberline {4.3.8}configure\_library()}{19}{subsection.4.3.8}%
+\contentsline {subsection}{\numberline {4.3.9}gen\_report()}{20}{subsection.4.3.9}%
+\contentsline {subsection}{\numberline {4.3.10}get\_args()}{20}{subsection.4.3.10}%
+\contentsline {subsection}{\numberline {4.3.11}get\_file\_list()}{20}{subsection.4.3.11}%
+\contentsline {subsection}{\numberline {4.3.12}remove\_file()}{21}{subsection.4.3.12}%
+\contentsline {subsection}{\numberline {4.3.13}run\_command()}{21}{subsection.4.3.13}%
+\contentsline {subsection}{\numberline {4.3.14}set\_code\_coverage()}{22}{subsection.4.3.14}%
+\contentsline {subsection}{\numberline {4.3.15}set\_dependency()}{22}{subsection.4.3.15}%
+\contentsline {subsection}{\numberline {4.3.16}set\_result\_check\_string()}{23}{subsection.4.3.16}%
+\contentsline {subsection}{\numberline {4.3.17}set\_simulator()}{24}{subsection.4.3.17}%
+\contentsline {subsection}{\numberline {4.3.18}set\_testcase\_identifier\_name()}{25}{subsection.4.3.18}%
+\contentsline {subsection}{\numberline {4.3.19}set\_simulator\_wave\_file\_format()}{26}{subsection.4.3.19}%
+\contentsline {section}{\numberline {4.4}Statistical methods}{26}{section.4.4}%
+\contentsline {subsection}{\numberline {4.4.1}get\_results()}{26}{subsection.4.4.1}%
+\contentsline {subsection}{\numberline {4.4.2}get\_num\_tests\_run()}{27}{subsection.4.4.2}%
+\contentsline {subsection}{\numberline {4.4.3}get\_num\_pass\_tests()}{27}{subsection.4.4.3}%
+\contentsline {subsection}{\numberline {4.4.4}get\_num\_fail\_tests()}{27}{subsection.4.4.4}%
+\contentsline {subsection}{\numberline {4.4.5}get\_num\_pass\_with\_minor\_alert\_tests()}{27}{subsection.4.4.5}%
+\contentsline {chapter}{\numberline {5}Command Line Interface (CLI)}{29}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Examples}{30}{section.5.1}%
+\contentsline {subsection}{\numberline {5.1.1}Full regression}{30}{subsection.5.1.1}%
+\contentsline {subsection}{\numberline {5.1.2}Testcases}{32}{subsection.5.1.2}%
+\contentsline {subsection}{\numberline {5.1.3}Test groups}{34}{subsection.5.1.3}%
+\contentsline {subsubsection}{Defining test groups}{34}{subsubsection*.8}%
+\contentsline {subsubsection}{Listing test groups}{34}{subsubsection*.9}%
+\contentsline {subsubsection}{Running test groups}{35}{subsubsection*.10}%
+\contentsline {section}{\numberline {5.2}Threading}{36}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}Sequential}{37}{subsection.5.2.1}%
+\contentsline {subsection}{\numberline {5.2.2}Pre\sphinxhyphen {}processing in parallel, simulations sequentially}{38}{subsection.5.2.2}%
+\contentsline {subsection}{\numberline {5.2.3}Pre\sphinxhyphen {}processing and simulations in parallel using 10 threads}{39}{subsection.5.2.3}%
+\contentsline {section}{\numberline {5.3}Simulation results}{40}{section.5.3}%
+\contentsline {subsection}{\numberline {5.3.1}Regression initial run}{41}{subsection.5.3.1}%
+\contentsline {subsection}{\numberline {5.3.2}Regression run without changes}{42}{subsection.5.3.2}%
+\contentsline {subsection}{\numberline {5.3.3}Failing testcase run}{42}{subsection.5.3.3}%
+\contentsline {chapter}{\numberline {6}Graphical User Interface (GUI)}{45}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Modelsim}{45}{section.6.1}%
+\contentsline {section}{\numberline {6.2}GHDL}{46}{section.6.2}%
+\contentsline {chapter}{\numberline {7}Testbench}{47}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Prerequisites}{47}{section.7.1}%
+\contentsline {section}{\numberline {7.2}Example Testbench}{48}{section.7.2}%
+\contentsline {chapter}{\numberline {8}Template files}{51}{chapter.8}%
+\contentsline {section}{\numberline {8.1}Basic usage}{51}{section.8.1}%
+\contentsline {subsection}{\numberline {8.1.1}Basic example}{51}{subsection.8.1.1}%
+\contentsline {section}{\numberline {8.2}Advanced usage}{52}{section.8.2}%
+\contentsline {subsection}{\numberline {8.2.1}Advanced example}{53}{subsection.8.2.1}%
+\contentsline {subsection}{\numberline {8.2.2}RTL and Netlist script example}{54}{subsection.8.2.2}%
+\contentsline {chapter}{\numberline {9}Test Automation Server}{57}{chapter.9}%
+\contentsline {chapter}{\numberline {10}Generated output}{59}{chapter.10}%
+\contentsline {section}{\numberline {10.1}Test folder}{59}{section.10.1}%
+\contentsline {subsection}{\numberline {10.1.1}Test mapping}{63}{subsection.10.1.1}%
+\contentsline {chapter}{\numberline {11}Tips}{65}{chapter.11}%
+\contentsline {section}{\numberline {11.1}Back annotated netlist simulations}{65}{section.11.1}%
+\contentsline {subsection}{\numberline {11.1.1}Regression script}{65}{subsection.11.1.1}%

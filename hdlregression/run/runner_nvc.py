@@ -88,15 +88,14 @@ class NVCRunner(SimRunner):
             "-L{}".format(output_path),
             "--work={}:{}".format(library_name, library_compile_path),
             "--std={}".format(hdl_version),
-            "--messages=compact",
-            "--stderr=error",
         ]
 
-        for opt in self.project.settings.get_sim_options():
-            return_list.append(opt)
+        for glob_opt in self.project.settings.get_global_options():
+            return_list.append(glob_opt)
 
         if elab_run:
-            return_list += ["-e", "--no-save", "--jit"]
+            for elab_opt in self.project.settings.get_elaboration_options():
+                return_list.append(elab_opt)
 
             if module_call:
                 return_list.append(module_call)
@@ -112,13 +111,17 @@ class NVCRunner(SimRunner):
                     "--format={}".format(wave_file_format),
                     "--wave=sim.{}".format(wave_file_format),
                 ]
+            for sim_opt in self.project.settings.get_sim_options():
+                return_list.append(sim_opt)
+
+            for run_opt in self.project.settings.get_runtime_options():
+                return_list.append(run_opt)
 
         else:
             return_list += ["-a", hdlfile.get_filename_with_path()]
 
-            com_options = hdlfile._get_com_options(simulator=self.SIMULATOR_NAME)
-            if com_options:
-                return_list += com_options
+            for com_opt in hdlfile._get_com_options(simulator=self.SIMULATOR_NAME):
+                return_list.append(com_opt)
 
         return return_list
 

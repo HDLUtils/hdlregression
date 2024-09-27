@@ -64,8 +64,8 @@
 
 
 \title{hdlregression}
-\date{Aug 29, 2024}
-\release{0.55.0
+\date{Sep 27, 2024}
+\release{0.57.0
 }
 \author{UVVM}
 \newcommand{\sphinxlogo}{\vbox{}}
@@ -944,7 +944,7 @@ The default operation is to run in {\hyperref[\detokenize{intro:what-is-regressi
 yet this can be changed using the available arguments or by using the {\hyperref[\detokenize{cli::doc}]{\sphinxcrossref{\DUrole{doc}{command line interfaces}}}}.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{n}{start}\PYG{p}{(}\PYG{o}{\PYGZlt{}}\PYG{n}{gui\PYGZus{}mode}\PYG{o}{\PYGZgt{}}\PYG{p}{,} \PYG{o}{\PYGZlt{}}\PYG{n}{stop\PYGZus{}on\PYGZus{}failure}\PYG{o}{\PYGZgt{}}\PYG{p}{,} \PYG{o}{\PYGZlt{}}\PYG{n}{regression\PYGZus{}mode}\PYG{o}{\PYGZgt{}}\PYG{p}{,} \PYG{o}{\PYGZlt{}}\PYG{n}{threading}\PYG{o}{\PYGZgt{}}\PYG{p}{,} \PYG{o}{\PYGZlt{}}\PYG{n}{sim\PYGZus{}options}\PYG{o}{\PYGZgt{}}\PYG{p}{,} \PYG{o}{\PYGZlt{}}\PYG{n}{netlist\PYGZus{}timing}\PYG{o}{\PYGZgt{}}\PYG{p}{)}
+\PYG{n}{start}\PYG{p}{(}\PYG{o}{\PYGZlt{}}\PYG{n}{gui\PYGZus{}mode}\PYG{o}{\PYGZgt{}}\PYG{p}{,} \PYG{o}{\PYGZlt{}}\PYG{n}{stop\PYGZus{}on\PYGZus{}failure}\PYG{o}{\PYGZgt{}}\PYG{p}{,} \PYG{o}{\PYGZlt{}}\PYG{n}{regression\PYGZus{}mode}\PYG{o}{\PYGZgt{}}\PYG{p}{,} \PYG{o}{\PYGZlt{}}\PYG{n}{threading}\PYG{o}{\PYGZgt{}}\PYG{p}{,} \PYG{o}{\PYGZlt{}}\PYG{n}{sim\PYGZus{}options}\PYG{o}{\PYGZgt{}}\PYG{p}{,} \PYG{o}{\PYGZlt{}}\PYG{n}{netlist\PYGZus{}timing}\PYG{o}{\PYGZgt{}}\PYG{p}{,} \PYG{o}{\PYGZlt{}}\PYG{n}{com\PYGZus{}options}\PYG{o}{\PYGZgt{}}\PYG{p}{)}
 \end{sphinxVerbatim}
 
 
@@ -964,7 +964,7 @@ Options \& Type
 Default
 &\sphinxstyletheadfamily 
 \sphinxAtStartPar
-Required
+Description
 \\
 \sphinxmidrule
 \sphinxtableatstartofbodyhook
@@ -978,7 +978,7 @@ True/False (boolean)
 False
 &
 \sphinxAtStartPar
-optional
+GUI mode control
 \\
 \sphinxhline
 \sphinxAtStartPar
@@ -991,7 +991,7 @@ True/False (boolean)
 True
 &
 \sphinxAtStartPar
-optional
+Regression mode control
 \\
 \sphinxhline
 \sphinxAtStartPar
@@ -1004,7 +1004,7 @@ True/False (boolean)
 False
 &
 \sphinxAtStartPar
-optional
+Stop on first failure
 \\
 \sphinxhline
 \sphinxAtStartPar
@@ -1017,7 +1017,20 @@ True/False (boolean)
 False
 &
 \sphinxAtStartPar
-optional
+Enable threading
+\\
+\sphinxhline
+\sphinxAtStartPar
+com\_options
+&
+\sphinxAtStartPar
+string/list of string
+&
+\sphinxAtStartPar
+{\hyperref[\detokenize{api:table1}]{\sphinxcrossref{\DUrole{std,std-ref}{See table 1}}}}
+&
+\sphinxAtStartPar
+Compilation options
 \\
 \sphinxhline
 \sphinxAtStartPar
@@ -1027,10 +1040,49 @@ sim\_options
 string/list of string
 &
 \sphinxAtStartPar
-None
+{\hyperref[\detokenize{api:table2}]{\sphinxcrossref{\DUrole{std,std-ref}{See table 2}}}}
 &
 \sphinxAtStartPar
-optional
+Simulation options
+\\
+\sphinxhline
+\sphinxAtStartPar
+runtime\_options
+&
+\sphinxAtStartPar
+list of string
+&
+\sphinxAtStartPar
+{\hyperref[\detokenize{api:table3}]{\sphinxcrossref{\DUrole{std,std-ref}{See table 3}}}}
+&
+\sphinxAtStartPar
+Runtime options
+\\
+\sphinxhline
+\sphinxAtStartPar
+global\_options
+&
+\sphinxAtStartPar
+list of string
+&
+\sphinxAtStartPar
+{\hyperref[\detokenize{api:table4}]{\sphinxcrossref{\DUrole{std,std-ref}{See table 4}}}}
+&
+\sphinxAtStartPar
+Global options
+\\
+\sphinxhline
+\sphinxAtStartPar
+elab\_options
+&
+\sphinxAtStartPar
+list of string
+&
+\sphinxAtStartPar
+{\hyperref[\detokenize{api:table5}]{\sphinxcrossref{\DUrole{std,std-ref}{See table 5}}}}
+&
+\sphinxAtStartPar
+Elaboration options
 \\
 \sphinxhline
 \sphinxAtStartPar
@@ -1043,7 +1095,7 @@ string
 None
 &
 \sphinxAtStartPar
-optional
+Netlist timing settings
 \\
 \sphinxhline
 \sphinxAtStartPar
@@ -1056,7 +1108,7 @@ True/False (boolean)
 False
 &
 \sphinxAtStartPar
-optional
+Keep code coverage data
 \\
 \sphinxhline
 \sphinxAtStartPar
@@ -1069,7 +1121,7 @@ True/False (boolean)
 False
 &
 \sphinxAtStartPar
-optional
+Disable default options
 \\
 \sphinxhline
 \sphinxAtStartPar
@@ -1082,7 +1134,7 @@ list of int
 {[}{]}
 &
 \sphinxAtStartPar
-optional
+Ignore specific exit codes
 \\
 \sphinxbottomrule
 \end{tabulary}
@@ -1099,6 +1151,298 @@ optional
 
 \PYG{n}{hr}\PYG{o}{.}\PYG{n}{start}\PYG{p}{(}\PYG{n}{sim\PYGZus{}options}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZhy{}t ps \PYGZhy{}do }\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s+s2}{quietly set NumericStdNoWarnings 1}\PYG{l+s+se}{\PYGZbs{}\PYGZdq{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
 \end{sphinxVerbatim}
+\phantomsection\label{\detokenize{api:table1}}
+\sphinxAtStartPar
+\sphinxstylestrong{Table 1: Compilation Options}
+
+
+\begin{savenotes}\sphinxattablestart
+\sphinxthistablewithglobalstyle
+\centering
+\begin{tabulary}{\linewidth}[t]{TT}
+\sphinxtoprule
+\sphinxstyletheadfamily 
+\sphinxAtStartPar
+Simulator
+&\sphinxstyletheadfamily 
+\sphinxAtStartPar
+Default
+\\
+\sphinxmidrule
+\sphinxtableatstartofbodyhook
+\sphinxAtStartPar
+ModelSim (VHDL)
+&
+\sphinxAtStartPar
+{[}“\sphinxhyphen{}suppress”, “1346,1236,1090”, “\sphinxhyphen{}2008”{]}
+\\
+\sphinxhline
+\sphinxAtStartPar
+ModelSim (Verilog)
+&
+\sphinxAtStartPar
+{[}“\sphinxhyphen{}vlog01compat”{]}
+\\
+\sphinxhline
+\sphinxAtStartPar
+NVC
+&
+\sphinxAtStartPar
+{[}”\textendash{}relaxed”{]}
+\\
+\sphinxhline
+\sphinxAtStartPar
+GHDL
+&
+\sphinxAtStartPar
+{[}”\textendash{}std=08”, “\textendash{}ieee=standard”, “\textendash{}frelaxed\sphinxhyphen{}rules”, “\textendash{}warn\sphinxhyphen{}no\sphinxhyphen{}shared”, “\textendash{}warn\sphinxhyphen{}no\sphinxhyphen{}hide”{]}
+\\
+\sphinxhline
+\sphinxAtStartPar
+Riviera Pro
+&
+\sphinxAtStartPar
+{[}“\sphinxhyphen{}2008”, “\sphinxhyphen{}nowarn”, “COMP96\_0564”, “\sphinxhyphen{}nowarn”, “COMP96\_0048”, “\sphinxhyphen{}nowarn”, “DAGGEN\_0001”, “\sphinxhyphen{}dbg”{]}
+\\
+\sphinxhline
+\sphinxAtStartPar
+Vivado
+&
+\sphinxAtStartPar
+{[}”\textendash{}2008”{]}
+\\
+\sphinxbottomrule
+\end{tabulary}
+\sphinxtableafterendhook\par
+\sphinxattableend\end{savenotes}
+\phantomsection\label{\detokenize{api:table2}}
+\sphinxAtStartPar
+\sphinxstylestrong{Table 2: Simulation Options}
+
+
+\begin{savenotes}\sphinxattablestart
+\sphinxthistablewithglobalstyle
+\centering
+\begin{tabulary}{\linewidth}[t]{TT}
+\sphinxtoprule
+\sphinxstyletheadfamily 
+\sphinxAtStartPar
+Simulator
+&\sphinxstyletheadfamily 
+\sphinxAtStartPar
+Default
+\\
+\sphinxmidrule
+\sphinxtableatstartofbodyhook
+\sphinxAtStartPar
+ModelSim
+&
+\sphinxAtStartPar
+{[}{]}
+\\
+\sphinxhline
+\sphinxAtStartPar
+NVC
+&
+\sphinxAtStartPar
+{[}{]}
+\\
+\sphinxhline
+\sphinxAtStartPar
+GHDL
+&
+\sphinxAtStartPar
+{[}{]}
+\\
+\sphinxhline
+\sphinxAtStartPar
+Riviera Pro
+&
+\sphinxAtStartPar
+{[}{]}
+\\
+\sphinxhline
+\sphinxAtStartPar
+Vivado
+&
+\sphinxAtStartPar
+{[}{]}
+\\
+\sphinxbottomrule
+\end{tabulary}
+\sphinxtableafterendhook\par
+\sphinxattableend\end{savenotes}
+\phantomsection\label{\detokenize{api:table3}}
+\sphinxAtStartPar
+\sphinxstylestrong{Table 3: Runtime Options}
+
+
+\begin{savenotes}\sphinxattablestart
+\sphinxthistablewithglobalstyle
+\centering
+\begin{tabulary}{\linewidth}[t]{TT}
+\sphinxtoprule
+\sphinxstyletheadfamily 
+\sphinxAtStartPar
+Simulator
+&\sphinxstyletheadfamily 
+\sphinxAtStartPar
+Default
+\\
+\sphinxmidrule
+\sphinxtableatstartofbodyhook
+\sphinxAtStartPar
+Modelsim
+&
+\sphinxAtStartPar
+{[}{]}
+\\
+\sphinxhline
+\sphinxAtStartPar
+NVC
+&
+\sphinxAtStartPar
+{[}{]}
+\\
+\sphinxhline
+\sphinxAtStartPar
+GHDL
+&
+\sphinxAtStartPar
+{[}{]}
+\\
+\sphinxhline
+\sphinxAtStartPar
+Riviera Pro
+&
+\sphinxAtStartPar
+{[}{]}
+\\
+\sphinxhline
+\sphinxAtStartPar
+Vivado
+&
+\sphinxAtStartPar
+{[}{]}
+\\
+\sphinxbottomrule
+\end{tabulary}
+\sphinxtableafterendhook\par
+\sphinxattableend\end{savenotes}
+\phantomsection\label{\detokenize{api:table4}}
+\sphinxAtStartPar
+\sphinxstylestrong{Table 4: Global Options}
+
+
+\begin{savenotes}\sphinxattablestart
+\sphinxthistablewithglobalstyle
+\centering
+\begin{tabulary}{\linewidth}[t]{TT}
+\sphinxtoprule
+\sphinxstyletheadfamily 
+\sphinxAtStartPar
+Simulator
+&\sphinxstyletheadfamily 
+\sphinxAtStartPar
+Default
+\\
+\sphinxmidrule
+\sphinxtableatstartofbodyhook
+\sphinxAtStartPar
+Modelsim
+&
+\sphinxAtStartPar
+{[}{]}
+\\
+\sphinxhline
+\sphinxAtStartPar
+NVC
+&
+\sphinxAtStartPar
+{[}”\textendash{}stderr=error”, “\textendash{}messages=compact”, “\sphinxhyphen{}M64m”, “\sphinxhyphen{}H64m”{]}
+\\
+\sphinxhline
+\sphinxAtStartPar
+GHDL
+&
+\sphinxAtStartPar
+{[}{]}
+\\
+\sphinxhline
+\sphinxAtStartPar
+Riviera Pro
+&
+\sphinxAtStartPar
+{[}{]}
+\\
+\sphinxhline
+\sphinxAtStartPar
+Vivado
+&
+\sphinxAtStartPar
+{[}{]}
+\\
+\sphinxbottomrule
+\end{tabulary}
+\sphinxtableafterendhook\par
+\sphinxattableend\end{savenotes}
+\phantomsection\label{\detokenize{api:table5}}
+\sphinxAtStartPar
+\sphinxstylestrong{Table 5: Elaboration Options}
+
+
+\begin{savenotes}\sphinxattablestart
+\sphinxthistablewithglobalstyle
+\centering
+\begin{tabulary}{\linewidth}[t]{TT}
+\sphinxtoprule
+\sphinxstyletheadfamily 
+\sphinxAtStartPar
+Simulator
+&\sphinxstyletheadfamily 
+\sphinxAtStartPar
+Default
+\\
+\sphinxmidrule
+\sphinxtableatstartofbodyhook
+\sphinxAtStartPar
+Modelsim
+&
+\sphinxAtStartPar
+{[}{]}
+\\
+\sphinxhline
+\sphinxAtStartPar
+NVC
+&
+\sphinxAtStartPar
+{[}“\sphinxhyphen{}e”, “\textendash{}no\sphinxhyphen{}save”, “\textendash{}jit”{]}
+\\
+\sphinxhline
+\sphinxAtStartPar
+GHDL
+&
+\sphinxAtStartPar
+{[}{]}
+\\
+\sphinxhline
+\sphinxAtStartPar
+Riviera Pro
+&
+\sphinxAtStartPar
+{[}{]}
+\\
+\sphinxhline
+\sphinxAtStartPar
+Vivado
+&
+\sphinxAtStartPar
+{[}{]}
+\\
+\sphinxbottomrule
+\end{tabulary}
+\sphinxtableafterendhook\par
+\sphinxattableend\end{savenotes}
 
 \begin{sphinxadmonition}{note}{Note:}\begin{itemize}
 \item {} 
