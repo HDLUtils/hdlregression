@@ -89,7 +89,7 @@ class SimRunner:
         return self.SIMULATOR_NAME
 
     def get_test_result(self) -> list:
-        pass_list = self._get_pass_test_list()
+        pass_list = self._get_pass_test_list() + self._get_pass_with_minor_alert_list()
         fail_list = self._get_fail_test_list()
         not_run_list = self._get_not_run_test_list()
         return [pass_list, fail_list, not_run_list]
@@ -108,7 +108,7 @@ class SimRunner:
         Returns the number of all passing and
         failing tests in this run.
         """
-        pass_list = self._get_pass_test_list()
+        pass_list = self._get_pass_test_list() + self._get_pass_with_minor_alert_list()
         fail_list = self._get_fail_test_list()
         return len(pass_list + fail_list)
 
@@ -252,9 +252,6 @@ class SimRunner:
                 # Print test output in verbose mode
                 elif self.project.settings.get_verbose():
                     print(test.get_output())
-
-                # except Exception as e:
-                #    self.logger.error("An error occurred during test run: {}".format(e))
 
                 # finally:
                 test_queue.task_done()
@@ -834,10 +831,10 @@ class SimRunner:
 
             if test_ok is False:
                 test.set_status(TestStatus.FAIL)
+            elif not test_ok_no_minor_alerts:
+                test.set_status(TestStatus.PASS_WITH_MINOR)                
             elif test_ok:
                 test.set_status(TestStatus.PASS)
-            elif test_ok_no_minor_alerts:
-                test.set_status(TestStatus.PASS_WITH_MINOR)
             else:
                 test.set_status(TestStatus.NOT_RUN)
 

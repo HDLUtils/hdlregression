@@ -629,36 +629,56 @@ class ArchitectureParser(BaseParser):
         self._configuration_instantiation(code)
         self._alias_reference(code)
 
+                
     def _entity_instantiation(self, code):
-        # Entity instantiations
         re_entity = re.compile(r'''
-                        \b\w+                           # label
-                        \s*\:\s*entity                  # : entity keyword
-                        \s+(?P<name>[a-zA-Z_0-9\.]+)    # entity name
-                        (\s*\((?P<arch>\w+)\))?         # possible (architecture)
-                        #((\s*\((?P<arch>\w+)\)\s+)|\s*)
-                        (\s+|\s*;)                      # whitespace
-                        ''',
-                               flags=self._ALL_FLAGS)
+                            \b\w+                           # label
+                            \s*\:\s*entity                  # : entity keyword
+                            \s+(?P<name>[a-zA-Z_0-9\.]+)    # entity name
+                            (\s*\((?P<arch>\w+)\))?         # possible (architecture)
+                            (\s+|\s*;)                      # whitespace
+                            ''', flags=self._ALL_FLAGS)
+
+        re_use_entity = re.compile(r'''
+                            USE\s+ENTITY\s+                 # "USE ENTITY" keywords
+                            (?P<library>\w+)\.              # library name (e.g., "work")
+                            (?P<name>\w+)\s*                # entity name (e.g., "hdlc_LPF_DF_shift_adders")
+                            \((?P<arch>\w+)\)               # architecture (e.g., "rtl")
+                            ''', flags=self._ALL_FLAGS)
 
         for match in re.finditer(re_entity, code):
-            inst_name = match.group('name')
+            self._process_match(match)
 
-            # With library
-            if '.' in inst_name:
-                inst_name = inst_name.split('.')
-                library = inst_name[0]
-                module = inst_name[1]
+        for match in re.finditer(re_use_entity, code):
+            library = match.group('library')
+            entity_name = match.group('name')
+            arch = match.group('arch')
 
-                # Module in same library
-                if self._lib_match(library):
-                    self.module.add_int_dep(module)
-                # Different library
-                else:
-                    self.module.add_ext_dep(library)
-            # Without library
+            # Handling internal or external dependencies
+            if self._lib_match(library):
+                self.module.add_int_dep(entity_name)
             else:
-                self.module.add_int_dep(inst_name)
+                self.module.add_ext_dep(library)
+    
+    def _process_match(self, match):
+        inst_name = match.group('name')
+
+        # With library
+        if '.' in inst_name:
+            inst_name = inst_name.split('.')
+            library = inst_name[0]
+            module = inst_name[1]
+
+            # Module in same library
+            if self._lib_match(library):
+                self.module.add_int_dep(module)
+            # Different library
+            else:
+                self.module.add_ext_dep(library)
+        # Without library
+        else:
+            self.module.add_int_dep(inst_name)
+
 
     def _configuration_instantiation(self, code):
         # Configuration instantiations
