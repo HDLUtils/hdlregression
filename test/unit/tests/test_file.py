@@ -178,11 +178,22 @@ def test_readback_file_list_one_library(sim_env, tb_path):
 
     assert len(file_list) == len(test_files), "Check number of files added"
 
-    for test_file in test_files:
-        file_list_files = "\t".join(file_list)
-        file = os.path.realpath(test_file)
-        assert file in file_list_files, "check file present"
+    def get_path_tail(path):
+        # Get the real path
+        path = os.path.realpath(path)
+        # Split the drive or mount point
+        drive, tail = os.path.splitdrive(path)
+        # Normalize the tail for consistent formatting
+        tail = os.path.normcase(os.path.normpath(tail))
+        return tail
 
+    for test_file in test_files:
+        file_tail = get_path_tail(test_file)
+        file_list_tails = [get_path_tail(f) for f in file_list]
+        assert file_tail in file_list_tails, "check file present"
+
+
+from pathlib import Path
 
 def test_readback_file_list_multiple_libraries(sim_env, tb_path):
     """
@@ -221,7 +232,15 @@ def test_readback_file_list_multiple_libraries(sim_env, tb_path):
 
     assert len(file_list) == len(test_files), "Check number of files added"
 
+    def get_normalized_path_tail(path):
+        # Resolve the absolute path
+        path = Path(path).resolve()
+        # Remove the drive or mount point
+        tail = path.relative_to(path.anchor)
+        # Normalize the path for consistent formatting
+        return tail.as_posix().lower()
+
     for test_file in test_files:
-        file_list_files = "\t".join(file_list)
-        file = os.path.realpath(test_file)
-        assert file in file_list_files, "check file present"
+        file_tail = get_normalized_path_tail(test_file)
+        file_list_tails = [get_normalized_path_tail(f) for f in file_list]
+        assert file_tail in file_list_tails, f"File '{file_tail}' not found in file list"

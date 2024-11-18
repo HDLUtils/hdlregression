@@ -93,9 +93,8 @@ def test_init_only():
     num_pass = hdlregression.get_num_pass_tests()
     num_fail = hdlregression.get_num_fail_tests()
 
-    assert (num_pass == 0) and (
-        num_fail == 0
-    ), "Checking initialization without test run"
+    assert num_pass == 0, "Checking num passing tests in init without test run."
+    assert num_fail == 0, "Checking num failing tests in init without test run."
 
 
 def test_init_default_simulator(sim_env):
@@ -182,13 +181,9 @@ def test_add_precompiled_library(sim_env, precompiled_path):
     hr.add_precompiled_library(compile_path=precompiled_path, library_name=lib_name)
     lib = hr._get_library_object(library_name=lib_name)
 
-    assert (
-        lib.get_is_precompiled() is True
-    ), "checking library is precompiled class (%s)" % (lib.get_name())
+    assert (lib.get_is_precompiled() is True), "checking library is precompiled class (%s)" % (lib.get_name())
     assert lib.get_name() == lib_name, "checking precompiled library name"
-    assert (
-        lib.get_compile_path() == precompiled_path
-    ), "checking precompiled library path setting"
+    assert (lib.get_compile_path() == precompiled_path.replace('\\', '/')), "checking precompiled library path setting"
 
 
 def test_start_dry_run_parameter():
@@ -198,26 +193,26 @@ def test_start_dry_run_parameter():
     assert return_code == 1, "checking dry_run return code - exp 1 for no testcases run"
 
 
-def test_default_library_with_add_files(sim_env, tb_path, uvvm_path):
+def test_default_library_with_add_files(sim_env, tb_path):
     clear_output()
     hr = HDLRegression()
     filename = get_file_path(tb_path + "/tb_simple.vhd")
     hr.add_files(filename=filename)
-    filename = get_file_path(uvvm_path + "/uvvm_util/src/*.vhd")
-    hr.add_files(filename=filename, library_name="uvvm_util")
+
+    filename = get_file_path(tb_path + "/dut_adder_tb.vhd")
+    hr.add_files(filename=filename, library_name="other_lib")
     hr.start(dry_run=True)
     lib = hr._get_library_object(library_name="my_work_lib")
     assert lib.get_name() == "my_work_lib", "checking default library name"
 
 
-def test_set_library_with_add_files(sim_env, tb_path, uvvm_path):
+def test_set_library_with_add_files(sim_env, tb_path):
     clear_output()
     hr = HDLRegression()
     filename = get_file_path(tb_path + "/tb_simple.vhd")
     hr.add_files(filename=filename, library_name="new_library_name")
-
-    filename = get_file_path(uvvm_path + "/uvvm_util/src/*.vhd")
-    hr.add_files(filename=filename, library_name="uvvm_util")
+    filename = get_file_path(tb_path + "/dut_adder_tb.vhd")
+    hr.add_files(filename=filename, library_name="other_lib")
     hr.start(dry_run=True)
     lib = hr._get_library_object(library_name="new_library_name")
     assert lib.get_name() == "new_library_name", "checking default library name"

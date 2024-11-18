@@ -38,7 +38,7 @@ class UnavailableSimulatorError(SettingsError):
     pass
 
 class HDLRegressionSettings:
-    SIM_WAVE_FILE_FORMAT = ["FST", "VCD"]
+    SIM_WAVE_FILE_FORMAT = ["FST", "VCD", "GHW"]
 
     def __init__(self):
         self.hdlregression_version = "0.0.0"

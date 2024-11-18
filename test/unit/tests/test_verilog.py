@@ -99,127 +99,150 @@ def sim_env():
         "simulator": simulator,
     }
 
-
+@pytest.mark.modelsim
 def test_verilog_modules(sim_env, tb_path):
     """
     Note! This test does not run any test cases.
     """
-    clear_output()
-    hr = HDLRegression(simulator=sim_env["simulator"])
+    if not sim_env["modelsim"]:
+        pytest.skip("Modelsim not installed")
+    else:
+        clear_output()
+        hr = HDLRegression(simulator=sim_env["simulator"])
+    
+        filename = tb_path + "/verilog/half_adder*.v"
+        filename = get_file_path(filename)
+        hr.add_files(filename, "verilog_lib")
+    
+        hr.start()
+    
+        library = hr._get_library_object("verilog_lib")
+        file_list = library.get_hdlfile_list()
+    
+        assert len(file_list) == 2, "check verilog files in project"
 
-    filename = tb_path + "/verilog/half_adder*.v"
-    filename = get_file_path(filename)
-    hr.add_files(filename, "verilog_lib")
 
-    hr.start()
-
-    library = hr._get_library_object("verilog_lib")
-    file_list = library.get_hdlfile_list()
-
-    assert len(file_list) == 2, "check verilog files in project"
-
-
+@pytest.mark.modelsim
 def test_compile_order(sim_env, tb_path):
     """
     Note! This test does not run any test cases.
     """
-    clear_output()
-    hr = HDLRegression(simulator=sim_env["simulator"])
+    if not sim_env["modelsim"]:
+        pytest.skip("Modelsim not installed")
+    else:
+        clear_output()
+        hr = HDLRegression(simulator=sim_env["simulator"])
 
-    filename = tb_path + "/verilog/half_adder*.v"
-    filename = get_file_path(filename)
-    hr.add_files(filename, "verilog_lib")
+        filename = tb_path + "/verilog/half_adder*.v"
+        filename = get_file_path(filename)
+        hr.add_files(filename, "verilog_lib")
 
-    hr.start()
+        hr.start()
 
-    library = hr._get_library_object("verilog_lib")
-    file_list = library.get_hdlfile_list()
+        library = hr._get_library_object("verilog_lib")
+        file_list = library.get_hdlfile_list()
 
-    assert (
-        "half_adder.v" in file_list[0].get_filename_with_path()
-    ), "check compile order"
-    assert (
-        "half_adder_tb.v" in file_list[1].get_filename_with_path()
-    ), "check compile order"
+        assert (
+            "half_adder.v" in file_list[0].get_filename_with_path()
+        ), "check compile order"
+        assert (
+            "half_adder_tb.v" in file_list[1].get_filename_with_path()
+        ), "check compile order"
 
 
+@pytest.mark.modelsim
 def test_module_name(sim_env, tb_path):
     """
     Note! This test does not run any test cases.
     """
-    clear_output()
-    hr = HDLRegression(simulator=sim_env["simulator"])
+    if not sim_env["modelsim"]:
+        pytest.skip("Modelsim not installed")
+    else:
+        clear_output()
+        hr = HDLRegression(simulator=sim_env["simulator"])
 
-    filename = tb_path + "/verilog/half_adder*.v"
-    filename = get_file_path(filename)
-    hr.add_files(filename, "verilog_lib")
+        filename = tb_path + "/verilog/half_adder*.v"
+        filename = get_file_path(filename)
+        hr.add_files(filename, "verilog_lib")
 
-    hr.start()
+        hr.start()
 
-    library = hr._get_library_object("verilog_lib")
-    file_list = library.get_hdlfile_list()
+        library = hr._get_library_object("verilog_lib")
+        file_list = library.get_hdlfile_list()
 
-    assert "half_adder" in file_list[0].get_name(), "check module name"
-    assert "half_adder_tb" in file_list[1].get_name(), "check module name"
+        assert "half_adder" in file_list[0].get_name(), "check module name"
+        assert "half_adder_tb" in file_list[1].get_name(), "check module name"
 
 
+@pytest.mark.modelsim
 def test_testbench_pragma(sim_env, tb_path):
-    clear_output()
-    hr = HDLRegression(simulator=sim_env["simulator"])
+    if not sim_env["modelsim"]:
+        pytest.skip("Modelsim not installed")
+    else:
+        clear_output()
+        hr = HDLRegression(simulator=sim_env["simulator"])
 
-    filename = tb_path + "/verilog/half_adder*.v"
-    filename = get_file_path(filename)
-    hr.add_files(filename, "verilog_lib")
+        filename = tb_path + "/verilog/half_adder*.v"
+        filename = get_file_path(filename)
+        hr.add_files(filename, "verilog_lib")
 
-    hr.start()
+        hr.start()
 
-    library = hr._get_library_object("verilog_lib")
-    file_list = library.get_hdlfile_list()
+        library = hr._get_library_object("verilog_lib")
+        file_list = library.get_hdlfile_list()
 
-    assert file_list[1].get_is_tb() == True, "check testbench pragma %s" % (file_list)
+        assert file_list[1].get_is_tb() == True, "check testbench pragma %s" % (file_list)
 
 
+@pytest.mark.modelsim
 def test_number_of_module_detected(sim_env, tb_path):
-    clear_output()
-    hr = HDLRegression(simulator=sim_env["simulator"])
+    if not sim_env["modelsim"]:
+        pytest.skip("Modelsim not installed")
+    else:
+        clear_output()
+        hr = HDLRegression(simulator=sim_env["simulator"])
 
-    filename = tb_path + "/verilog/*.v"
-    filename = get_file_path(filename)
-    hr.add_files(filename, "verilog_lib")
-    hr.set_result_check_string("Simulation end")
+        filename = tb_path + "/verilog/*.v"
+        filename = get_file_path(filename)
+        hr.add_files(filename, "verilog_lib")
+        hr.set_result_check_string("Simulation end")
 
-    hr.start()
+        hr.start()
 
-    library = hr._get_library_object("verilog_lib")
+        library = hr._get_library_object("verilog_lib")
 
-    modules = library._get_list_of_lib_modules()
+        modules = library._get_list_of_lib_modules()
 
-    names = [module.get_name() for module in modules]
+        names = [module.get_name() for module in modules]
 
-    assert len(modules) == len(
-        exp_modules
-    ), "check number of detected verilog modules %s" % (names)
+        assert len(modules) == len(
+            exp_modules
+        ), "check number of detected verilog modules %s" % (names)
 
 
+@pytest.mark.modelsim
 def test_modules_detected(sim_env, tb_path):
-    clear_output()
-    hr = HDLRegression(simulator=sim_env["simulator"])
+    if not sim_env["modelsim"]:
+        pytest.skip("Modelsim not installed")
+    else:
+        clear_output()
+        hr = HDLRegression(simulator=sim_env["simulator"])
 
-    filename = tb_path + "/verilog/*.v"
-    filename = get_file_path(filename)
-    hr.add_files(filename, "verilog_lib")
-    hr.set_result_check_string("Simulation end")
+        filename = tb_path + "/verilog/*.v"
+        filename = get_file_path(filename)
+        hr.add_files(filename, "verilog_lib")
+        hr.set_result_check_string("Simulation end")
 
-    hr.start()
+        hr.start()
 
-    library = hr._get_library_object("verilog_lib")
+        library = hr._get_library_object("verilog_lib")
 
-    modules = library._get_list_of_lib_modules()
+        modules = library._get_list_of_lib_modules()
 
-    act_modules = [module.get_name() for module in modules]
+        act_modules = [module.get_name() for module in modules]
 
-    for act_module in act_modules:
-        assert act_module in exp_modules, "check %s module" % (act_module)
+        for act_module in act_modules:
+            assert act_module in exp_modules, "check %s module" % (act_module)
 
 
 @pytest.mark.modelsim

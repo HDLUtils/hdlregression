@@ -1063,6 +1063,7 @@ Sets the wave dump format for GHDL and NVC wave files. Options are FST and VCD.
 .. note::
   * VCD file format is default if no other is selected.
   * GUI mode has to be enabled using API method or CLI option.
+  * Options : VCD, FST, GHW (GHDL).
 
 
 .. code-block:: python
