@@ -15,6 +15,7 @@
 
 import subprocess
 import os
+import time
 import sys
 from threading import Thread
 from queue import Queue, Empty
@@ -125,6 +126,8 @@ class CommandRunner:
                             break
 
                 if transcript_line is None:
+                    # Yield thread when there's no line to process to limit CPU usage
+                    time.sleep(0.05)
                     return_code = popen.poll()
                     if return_code is not None:
                         # Subprocess finished, wait for the threads to complete
