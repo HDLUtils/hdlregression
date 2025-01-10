@@ -414,6 +414,9 @@ class HDLLibrary(Library):
         # Connect modules by dependency and architectures with entities
         self._connect_dep_modules()
 
+        #self._present_modules() TODO! REMOVE
+
+
         if self.compile_req:
             # Arrange files by dependency
             self._create_list_of_files_in_compile_order()
@@ -423,6 +426,11 @@ class HDLLibrary(Library):
 
         if self.project.settings.get_debug_mode():
             print(self._present_library())
+
+    def _present_modules(self) -> None:
+        for module in self.module_list:
+            print("{} ({}) -> ".format(module.get_name(), module.get_type()), end="")
+        print("\n")
 
     def _create_module_from_name(self) -> None:
         """
@@ -537,53 +545,95 @@ class HDLLibrary(Library):
         Note! Each file is only listed one time.
         Note! The modules have to be arranged in compile order.
         """
+        
         file_list = self.get_hdlfile_list()
-        num_files = len(file_list)
-        swapped = True
-        while swapped:
-            swapped = False
+        self.logger.debug("Numb files in '{}': {}".format(self.get_name(), len(file_list)))
 
-            for i in range(num_files):
-                # Assume that the first item of the unsorted segment
-                # has no dependencies.
-                lowest_value_index = i
+        adjacency = {}
+        in_degree = {}
 
-                self.logger.debug(
-                    "Check dep on {}".format(file_list[lowest_value_index].get_name())
-                )
-                # This loop iterates over the unsorted items
-                for j in range(i + 1, num_files):
-                    check_file = file_list[j]
-                    with_file = file_list[lowest_value_index]
+        for f in file_list:
+            adjacency[f] = []
+            in_degree[f] = 0
 
-                    if check_file in with_file.get_hdlfile_this_dep_on():
-                        if with_file in check_file.get_hdlfile_this_dep_on():
-                            if (
-                                not check_file.get_filename_with_path()
-                                == with_file.get_filename_with_path()
-                            ):
-                                self.logger.warning(
-                                    "{} : recursing dependency {} <-> {}.".format(
-                                        self.get_name(),
-                                        check_file.get_name(),
-                                        with_file.get_name(),
-                                    )
-                                )
-                                continue
-                        else:
-                            lowest_value_index = j
+        # Create the graph
+        for f in file_list:
+            deps = f.get_hdlfile_this_dep_on() or []
+            for dep in deps:
 
-                # Swap values of the lowest unsorted element with
-                # the first unsorted element.
-                if i != lowest_value_index:
-                    file_list[i], file_list[lowest_value_index] = (
-                        file_list[lowest_value_index],
-                        file_list[i],
+                # Self-dependency -> ignore
+                if dep is f:
+                    self.logger.debug(
+                        f"File '{f.get_name()}' is listed as dep on itself. Ignoring self-dep."
                     )
-                    swapped = True
+                    continue
 
-        # Update
-        self.lib_hdlfile_compile_order_list = file_list
+                # Check if dependency is in the same library (fil_list)
+                if dep not in adjacency:
+                    self.logger.debug(
+                        "File '{}' depend on external file '{}', skipping in this sorting."
+                        .format(f.get_name(), dep.get_name())
+                    )
+                    continue
+
+                # Check if this is the same file
+                if dep.get_filename_with_path() == f.get_filename_with_path():
+                    self.logger.debug(
+                        "File '{}' and '{}' are in the same file '{}'. "
+                        "Ignoring local dependency."
+                        .format(f.get_name(), dep.get_name(), f.get_filename_with_path())
+                    )
+                    continue
+
+                # Add edge depenency
+                adjacency[dep].append(f)
+                in_degree[f] += 1
+                self.logger.debug(
+                    "File '{}' depends on '{}'. (Edge {} -> {})"
+                    .format(f.get_name(), dep.get_name(), dep.get_name(), f.get_name())
+                )
+
+        # Locate all files with indegree=0
+        queue = [f for f in file_list if in_degree[f] == 0]
+        self.logger.debug("The following files have in_degree=0: {}".format(
+            [x.get_name() for x in queue])
+        )
+
+        sorted_files = []
+
+        # Run Kahn’s algorithm
+        while queue:
+            current = queue.pop(0)
+            sorted_files.append(current)
+
+            # Lower the indegree for those dependent of current
+            for neighbor in adjacency[current]:
+                in_degree[neighbor] -= 1
+                if in_degree[neighbor] == 0:
+                    queue.append(neighbor)
+
+        # Check if all files are present
+        if len(sorted_files) != len(file_list):
+            cycle_files = [f for f in file_list if in_degree[f] > 0]
+            names = [cf.get_name() for cf in cycle_files]
+            self.logger.error(
+                "Cycle dependency (or mismatch) in library '{}'. "
+                "The following files were not sorted: {}"
+                .format(self.get_name(), names)
+            )
+            raise ValueError(
+                "Cycle/mismatch detected in library '{}'. Files: {}".format(self.get_name(), names)
+            )
+
+        self.lib_hdlfile_compile_order_list = sorted_files
+
+        self.logger.debug(
+            "Compile order for '{}': [{}]".format(
+                self.get_name(),
+                ", ".join(f.get_name() for f in sorted_files)
+            )
+        )
+
 
     def _get_lib_deps_from_modules(self) -> None:
         """

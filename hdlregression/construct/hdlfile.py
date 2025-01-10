@@ -246,6 +246,12 @@ class VHDLFile(HDLFile):
             parse_file,
             code_coverage,
         )
+        self.scanner = VHDLScanner(
+            project=self.project,
+            library=self.get_library(),
+            filename=self.get_filename_with_path(),
+            hdlfile=self,
+        )        
 
     def parse_file_if_needed(self) -> bool:
         """
@@ -262,20 +268,8 @@ class VHDLFile(HDLFile):
         # return True to caller - caller does not care if file is parsed.
         if self.parse_file is False:
             return True
-
-        file_content_list = self._get_file_content_as_list()
-
-        # Create an Inspector() object for tokenizing and parsing
-        self.scanner = VHDLScanner(
-            project=self.project,
-            library=self.get_library(),
-            filename=self.get_filename_with_path(),
-            hdlfile=self,
-        )
-
-        if self.scanner is None:
-            return False
         else:
+            file_content_list = self._get_file_content_as_list()
             # Extract relevant content from source file
             self.scanner.scan(file_content_list)
             return True
@@ -340,7 +334,8 @@ class VHDLFile(HDLFile):
     def check_file_type(self, filetype) -> bool:
         if filetype.lower() == "vhdl":
             return True
-        return False
+        else:
+            return False
 
     def get_is_vhdl(self) -> bool:
         return True
@@ -414,6 +409,12 @@ class VerilogFile(HDLFile):
             parse_file,
             code_coverage,
         )
+        self.scanner = VerilogScanner(
+            project=self.project,
+            library=self.get_library(),
+            filename=self.get_filename_with_path(),
+            hdlfile=self,
+        )
 
     def parse_file_if_needed(self) -> bool:
         """
@@ -425,18 +426,8 @@ class VerilogFile(HDLFile):
         # Check if file should be parsed
         if self.parse_file is False:
             return True
-
-        file_content_list = self._get_file_content_as_list()
-        self.scanner = VerilogScanner(
-            project=self.project,
-            library=self.get_library(),
-            filename=self.get_filename_with_path(),
-            hdlfile=self,
-        )
-
-        if self.scanner is None:
-            return False
         else:
+            file_content_list = self._get_file_content_as_list()
             # Extract relevant content from source file
             self.scanner.scan(file_content_list)
             return True
@@ -460,7 +451,8 @@ class VerilogFile(HDLFile):
     def check_file_type(self, filetype) -> bool:
         if filetype.lower() == "verilog":
             return True
-        return False
+        else:
+            return False
 
     def get_is_verilog(self) -> bool:
         return True
@@ -504,7 +496,8 @@ class SVFile(HDLFile):
     def check_file_type(self, filetype) -> bool:
         if filetype.lower() == "systemverilog":
             return True
-        return False
+        else:
+            return False
 
 
 class UnknownFile(HDLFile):

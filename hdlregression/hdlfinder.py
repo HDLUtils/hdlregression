@@ -16,6 +16,7 @@
 
 import os
 import fnmatch
+from pathlib import Path
 from .report.logger import Logger
 
 
@@ -37,7 +38,8 @@ class HDLFinder:
 
     def find_files(self, filename, recursive=False) -> None:
         """
-        Find all files and add to list in a case-insensitive manner.
+        Find all files matching 'filename' (case-insensitive).
+        Adds matched file paths to self.file_list if not already present.
         """
         script_path = (
             self.project.settings.get_script_path()
@@ -48,20 +50,33 @@ class HDLFinder:
         search_path = os.path.normpath(search_path)
         search_dir = os.path.dirname(search_path) or "."
         search_pattern = os.path.basename(search_path)
-
-        if recursive:
-            for root, dirs, files in os.walk(search_dir):
-                for name in files:
-                    if fnmatch.fnmatch(name.lower(), search_pattern.lower()):
-                        full_path = os.path.join(root, name)
-                        if full_path not in self.file_list:
-                            self.file_list.append(full_path)
-        else:
-            for item in os.listdir(search_dir):
-                if fnmatch.fnmatch(item.lower(), search_pattern.lower()):
-                    full_path = os.path.join(search_dir, item)
-                    if full_path not in self.file_list:
-                        self.file_list.append(full_path)
+    
+        # Check if the directory exists
+        if not Path(search_dir).is_dir():
+            return
+    
+        def gather_candidate_paths(directory: str, recurse: bool):
+            """
+            Gathers potential (root, filename) pairs either from a single directory 
+            or by walking the directory tree, depending on 'recurse'.
+            """
+            items = []
+            if recurse:
+                for root, _, files in os.walk(directory):
+                    for f in files:
+                        items.append((root, f))
+            else:
+                for f in os.listdir(directory):
+                    items.append((directory, f))
+            return items
+    
+        candidates = gather_candidate_paths(search_dir, recursive)
+    
+        for root, name in candidates:
+            if fnmatch.fnmatch(name.lower(), search_pattern.lower()):
+                full_path = os.path.join(root, name)
+                if full_path not in self.file_list:
+                    self.file_list.append(full_path)
 
     def get_file_list(self) -> list:
         """

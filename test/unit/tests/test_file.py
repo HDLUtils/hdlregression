@@ -152,6 +152,60 @@ def test_add_files_name(sim_env, tb_path):
 
     assert len(file_list) == 4, "Check number of files added"
 
+def test_add_file_invalid_file_name(sim_env, tb_path):
+    """
+    Test adding files using full name.
+    """
+    clear_output()
+    hr = HDLRegression(simulator=sim_env["simulator"])
+    test_files = get_file_path(tb_path + "/my_tb_ent.vhd")
+    hr.add_files(test_files, "test_lib")
+
+    test_files = [
+        tb_path + "/my_tb_arch_1.vhd",
+        tb_path + "/invalid.vhd",
+    ]
+
+    for test_file in test_files:
+        test_file = get_file_path(test_file)
+        hr.add_files(test_file, "test_lib")
+
+    hr.set_result_check_string(" : sim done")
+    hr.start()
+
+    library = hr._get_library_object("test_lib")
+    file_list = library.get_hdlfile_list()
+
+    assert len(file_list) == 2, "Check number of files added"
+
+def test_add_file_invalid_file_path(sim_env, tb_path):
+    """
+    Test adding files using full name.
+    """
+    clear_output()
+    hr = HDLRegression(simulator=sim_env["simulator"])
+    test_files = get_file_path(tb_path + "/my_tb_ent.vhd")
+    hr.add_files(test_files, "test_lib")
+
+    test_files = [
+        tb_path + "/my_tb_arch_1.vhd",
+        "../foo/" + "/invalid.vhd",
+    ]
+
+    for test_file in test_files:
+        test_file = get_file_path(test_file)
+        hr.add_files(test_file, "test_lib")
+
+    hr.set_result_check_string(" : sim done")
+    hr.start()
+
+    library = hr._get_library_object("test_lib")
+    file_list = library.get_hdlfile_list()
+
+    assert len(file_list) == 2, "Check number of files added"
+
+
+
 
 def test_readback_file_list_one_library(sim_env, tb_path):
     """
