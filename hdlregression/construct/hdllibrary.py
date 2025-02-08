@@ -245,15 +245,39 @@ class HDLLibrary(Library):
             self.temp_hdlfile_container.add(hdlfile_obj)
 
     def remove_file(self, filename) -> bool:
+        """
+        Remove a file from the HDL containers by matching only the file's basename.
+
+        This method extracts the basename from the given `filename` (i.e., strips
+        away any directory path) and removes all matching HDLFile objects from both
+        the main and temporary HDL file containers. If at least one file is removed,
+        an informational log message is recorded; otherwise, a warning is logged.
+
+        Args:
+            filename (str): The filename to remove (can include path, which will be ignored).
+
+        Returns:
+            bool: True if at least one matching file was removed, otherwise False.
+        """
         file_found = False
+
+        filename_only = os.path.basename(filename)
+
         for obj in self.hdlfile_container.get():
-            if obj.get_filename() == filename:
+            if os.path.basename(obj.get_filename()) == filename_only:
                 self.hdlfile_container.remove(obj)
+
         for obj in self.temp_hdlfile_container.get():
-            if obj.get_filename() == filename:
+            if os.path.basename(obj.get_filename()) == filename_only:
                 self.temp_hdlfile_container.remove(obj)
                 file_found = True
+
+        if file_found:
+            self.logger.info(f"Removed file: {filename_only}")
+        else:
+            self.logger.warning(f"Remove file not found: {filename_only}")
         return file_found
+    
 
     def get_hdlfile_obj(self, filename) -> "HDLFile":
         """

@@ -16,6 +16,7 @@ import os
 import platform
 import shutil
 import subprocess
+from pathlib import Path
 
 from hdlregression import HDLRegression
 
@@ -247,8 +248,6 @@ def test_readback_file_list_one_library(sim_env, tb_path):
         assert file_tail in file_list_tails, "check file present"
 
 
-from pathlib import Path
-
 def test_readback_file_list_multiple_libraries(sim_env, tb_path):
     """
     Test readback of added files
@@ -298,3 +297,62 @@ def test_readback_file_list_multiple_libraries(sim_env, tb_path):
         file_tail = get_normalized_path_tail(test_file)
         file_list_tails = [get_normalized_path_tail(f) for f in file_list]
         assert file_tail in file_list_tails, f"File '{file_tail}' not found in file list"
+
+
+def test_remove_file(sim_env, tb_path):
+    """
+    Test readback of added files
+    """
+    clear_output()
+    hr = HDLRegression(simulator=sim_env["simulator"])
+
+    test_files_1 = [
+        tb_path + "/my_tb_ent.vhd",
+        tb_path + "/my_tb_arch_1.vhd",
+        tb_path + "/my_tb_arch_2.vhd",
+        tb_path + "/my_tb_arch_3_4.vhd",
+    ]
+
+    for test_file in test_files_1:
+        test_file = get_file_path(test_file)
+        hr.add_files(test_file, "test_lib")
+
+    #remove_file = get_file_path(tb_path + "/my_tb_arch_2.vhd")
+    remove_file = "my_tb_arch_2.vhd"
+    hr.remove_file(remove_file, "test_lib")
+
+    hr.set_result_check_string(" : sim done")
+    hr.start()
+
+    file_list = hr.get_file_list()
+
+    assert "my_tb_arch_2.vhd" not in file_list, "Found in list: {}".format(file_list)
+
+def test_remove_file_with_path(sim_env, tb_path):
+    """
+    Test readback of added files
+    """
+    clear_output()
+    hr = HDLRegression(simulator=sim_env["simulator"])
+
+    test_files_1 = [
+        tb_path + "/my_tb_ent.vhd",
+        tb_path + "/my_tb_arch_1.vhd",
+        tb_path + "/my_tb_arch_2.vhd",
+        tb_path + "/my_tb_arch_3_4.vhd",
+    ]
+
+    for test_file in test_files_1:
+        test_file = get_file_path(test_file)
+        hr.add_files(test_file, "test_lib")
+
+    remove_file = get_file_path(tb_path + "/my_tb_arch_2.vhd")
+    hr.remove_file(remove_file, "test_lib")
+
+    hr.set_result_check_string(" : sim done")
+    hr.start()
+
+    file_list = hr.get_file_list()
+
+    assert "my_tb_arch_2.vhd" not in file_list, "Found in list: {}".format(file_list)
+    

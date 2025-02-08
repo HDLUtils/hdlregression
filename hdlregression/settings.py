@@ -721,17 +721,6 @@ class SimulatorSettings(ABC):
     def get_is_default_com_options(self) -> bool:
         pass
 
-    def set_sim_options(self, options) -> None:
-        if isinstance(options, str):
-            self.sim_options = list(options.strip().split(" "))
-        elif isinstance(options, list):
-            self.sim_options = options
-        else:
-            if options:
-                raise TypeError(
-                    "sim_options parameter needs to be given as a list or a string"
-                )
-
     def set_runtime_options(self, options) -> None:
         pass
 
@@ -749,6 +738,17 @@ class SimulatorSettings(ABC):
 
     def get_elaboration_options(self) -> list:
         pass
+
+    def set_sim_options(self, options) -> None:
+        if isinstance(options, str):
+            self.sim_options = list(options.strip().split(" "))
+        elif isinstance(options, list):
+            self.sim_options = options
+        else:
+            if options:
+                raise TypeError(
+                    "sim_options parameter needs to be given as a list or a string"
+                )
 
     def add_sim_options(self, options, warning=True):
         for item in self.sim_options:
@@ -826,13 +826,6 @@ class NVCSettings(SimulatorSettings):
         verilog_default = self.com_options_vhdl == self.DEF_COM_OPTIONS_VHDL
         return (vhdl_default is True) and (verilog_default is True)
     
-    def set_sim_options(self, options) -> None:
-        if not isinstance(options, list):
-            ValueError("Wrong paramteter type {} for 'set_sim_options([list])'".format(type(options)))
-        else:
-            if self.sim_options == self.DEF_SIM_OPTIONS:
-                self.sim_options = options
-
     def set_runtime_options(self, options) -> None:
         if not isinstance(options, list):
             ValueError("Wrong paramteter type {} for 'set_runtime_options([list])'".format(type(options)))

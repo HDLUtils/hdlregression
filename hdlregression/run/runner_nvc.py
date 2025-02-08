@@ -111,6 +111,7 @@ class NVCRunner(SimRunner):
                     "--format={}".format(wave_file_format),
                     "--wave=sim.{}".format(wave_file_format),
                 ]
+
             for sim_opt in self.project.settings.get_sim_options():
                 return_list.append(sim_opt)
 

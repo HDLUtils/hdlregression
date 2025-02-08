@@ -647,7 +647,7 @@ class SimRunner:
                 test.add_output(line)
 
             if self.project.settings.get_verbose() and single_sim_thread:
-                print(line)
+                print(line, flush=True)
 
     # ---------------------------------------------------------
     # Testbench and simulations
