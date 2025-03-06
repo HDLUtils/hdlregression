@@ -20,7 +20,7 @@
 # DEALINGS IN HDLRegression.
 #
 
-
+from . import __version__
 from .hdlcodecoverage import *
 from .arg_parser import arg_parser_reader
 from .hdlregression_pkg import *
@@ -1064,16 +1064,13 @@ class HDLRegression:
         """
         :rtype: str
         :return: The HDLRegression install version number
-                 as read from 'version.txt'.
+                 as set in __init__.py'.
         """
-        version = "0.0.0"
-        path = os.path.join(src_path, "../version.txt")
         try:
-            with open(path, "r") as read_file:
-                version = read_file.readlines()[0].strip()
+            return __version__
         except:
-            self.logger.warning("Unable to read version.txt")
-        return version
+            self.logger.warning("Unable to read version number.")
+        return "0.0.0"
 
     def _get_install_path(self) -> str:
         """

@@ -213,8 +213,11 @@ class RivieraRunner(SimRunner):
         netlist_call = self._get_netlist_call()
 
         # Command should not include path
+        library_ref = ["amap", "-link", "./hdlregression/library"]
         return " ".join(
-            [
+            [   "amap",
+                "-link",
+                "../../../library\n",
                 "vsim",
                 generic_call,
                 module_call,

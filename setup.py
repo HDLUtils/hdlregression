@@ -12,31 +12,42 @@
 # OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH UVVM OR THE USE OR OTHER DEALINGS IN HDLRegression.
 #
-
 import os
-import sys
-from setuptools import setup
+import re
+from setuptools import setup, find_packages
 
+def get_version(init_file):
+    with open(init_file, encoding="utf-8") as f:
+        for line in f:
+            if line.startswith('__version__'):
+                # forventer __version__ = "x.y.z"
+                m = re.search(r'__version__\s*=\s*["\']([^"\']+)["\']', line)
+                if m:
+                    return m.group(1)
+    raise RuntimeError("Kunne ikke finne __version__ i __init__.py")
+
+here = os.path.abspath(os.path.dirname(__file__))
+init_file = os.path.join(here, "hdlregression", "__init__.py")
+version = get_version(init_file)
 
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
-
-version = read('version.txt').strip()
 description = read('./doc/src/description.rst')
 
 setup(name="hdlregression",
       version=version,
+      packages=find_packages(),
+      include_package_data=True,      
       description=(description),
       license="MIT",
-      keywords="regression vhdl",
+      keywords="regression vhdl verilog",
       url="https://github.com/hdlutils/hdlregression",
-      include_package_data=True,
-      packages=['hdlregression',
-                'hdlregression.report',
-                'hdlregression.run',
-                'hdlregression.scan',
-                'hdlregression.construct'],
-      data_files=[('.', ['version.txt'])],
+      # packages=['hdlregression',
+      #           'hdlregression.report',
+      #           'hdlregression.run',
+      #           'hdlregression.scan',
+      #           'hdlregression.construct'],
       long_description=read('README.rst'),
-      )
+      long_description_content_type="text/x-rst",
+     )
