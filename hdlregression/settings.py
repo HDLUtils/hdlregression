@@ -888,7 +888,6 @@ class RivieraProSettings(SimulatorSettings):
         "COMP96_0048",
         "-nowarn",
         "DAGGEN_0001",
-        "-dbg",
     ]
 
     def __init__(self):
@@ -930,7 +929,6 @@ class AldecSettings(SimulatorSettings):
         "COMP96_0048",
         "-nowarn",
         "DAGGEN_0001",
-        "-dbg",
     ]
 
     def __init__(self):
