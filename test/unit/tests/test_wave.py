@@ -169,3 +169,27 @@ def test_set_wave_file_ghw_ghdl(sim_env, tb_path):
 # 
 #         assert len(matches) == 2, "checking sim_options for wave/vcd_file.tst exists."
 #         assert result == 0, "check return code"
+
+
+@pytest.mark.modelsim
+def test_dump_wave_file(sim_env, tb_path):
+    if not sim_env["modelsim"]:
+        pytest.skip("Modelsim not installed")
+    else:
+        clear_output()
+        hr = HDLRegression(simulator="Modelsim")
+
+        filename = tb_path + "/tb_passing.vhd"
+        filename = get_file_path(filename)
+        hr.add_files(filename, "test_lib")
+        hr.set_result_check_string("passing testcase")
+
+        result = hr.start() #sim_options=["-wlf", "./tb_eir_debug.wlf"])
+
+        matches = []
+        for root, dirnames, filenames in os.walk("./hdlregression/test/"):
+            for filename in fnmatch.filter(filenames, "tb_eir_debug.wlf"):
+                matches.append(os.path.join(root, filename))
+
+        assert len(matches) == 1, "checking sim_options for tb_eir_debug.wlf exists."
+        assert result == 0, "check return code"

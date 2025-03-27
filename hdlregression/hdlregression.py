@@ -112,6 +112,7 @@ class HDLRegression:
         self._setup_logger()
         self.reporter = None
         self.testcase_settings = TestcaseSettings()
+        self.settings.detect_python_exec()
 
     def add_precompiled_library(self, compile_path: str, library_name: str):
         """

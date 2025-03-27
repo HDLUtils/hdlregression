@@ -59,6 +59,8 @@ class HDLRegressionSettings:
         self.show_err_warn_output = False
         self.use_log_color = True
 
+        self.python_exec = None
+
         self.netlist_timing = None
 
         self.sim_path = None
@@ -78,6 +80,7 @@ class HDLRegressionSettings:
         self.testgroup = None
         self.logger_level = "info"
         self.testcase_identifier_name = "gc_testcase"
+        self.wlf_dunmp_enable = False
 
         self.list_testcase = False
         self.list_compile_order = False
@@ -100,6 +103,23 @@ class HDLRegressionSettings:
         self.libraries = []
 
         self.ignored_simulator_exit_codes = []
+
+    def detect_python_exec(self):
+        """ Detects the python executable to use """
+        python_executables = ["python3", "python", "Python3", "Python"]
+    
+        for executable in python_executables:
+            try:
+                output = (subprocess.check_output([executable, "--version"], stderr=subprocess.STDOUT).decode().strip())
+                if "Python 3" in output:
+                    self.python_exec = executable
+            except (subprocess.CalledProcessError, FileNotFoundError):
+                self.python_exec = "python"
+
+    def get_python_exec(self) -> str:
+        if self.python_exec is None:
+            self.python_exec = self.detect_python_exec()
+        return self.python_exec
 
     def set_return_code(self, return_code: int):
         self.return_code = return_code
@@ -181,6 +201,11 @@ class HDLRegressionSettings:
     def get_use_log_color(self) -> bool:
         return self.use_log_color
 
+    def set_wlf_dump_enable(self, enable):
+        self.wlf_dunmp_enable = enable
+
+    def get_wlf_dump_enable(self) -> bool:
+        return self.wlf_dunmp_enable
     # ----------------------------------
     # Threading
     # ----------------------------------
@@ -324,6 +349,12 @@ class HDLRegressionSettings:
     def get_show_err_warn_output(self) -> bool:
         return self.show_err_warn_output
 
+    def set_wlf_dunmp_enable(self, enable):
+        self.wlf_dunmp_enable = enable
+
+    def get_wlf_dump_enable(self) -> bool:
+        return self.wlf_dunmp_enable
+    
     # ----------------------------------
     # Test group
     # ----------------------------------

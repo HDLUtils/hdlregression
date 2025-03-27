@@ -256,10 +256,18 @@ class ModelsimRunner(SimRunner):
 
         netlist_call = self._get_netlist_call()
 
+        if self.project.settings.get_wlf_dump_enable() is True:
+            wlf_logging = "log -r /{}/*;".format(test.get_tb().get_name())
+            wlf_save_call = "-wlf test.wlf"
+        else:
+            wlf_logging = ""
+            wlf_save_call = ""
+
         # Command should not include path
         return " ".join(
             [
                 "vsim",
+                wlf_save_call,
                 generic_call,
                 module_call,
                 sim_options,
@@ -268,6 +276,7 @@ class ModelsimRunner(SimRunner):
                 "-modelsimini {" + modelsim_ini + "};",
                 "onerror {quit -code 1};",
                 "onbreak {resume};",
+                wlf_logging,
                 "run",
                 "-all;",
                 code_coverage_call_save,

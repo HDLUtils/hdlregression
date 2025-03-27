@@ -141,6 +141,10 @@ def arg_parser_reader(arg_parser=None):
             "--noColor", action="store_true", help="Disable terminal output colors."
         )
 
+        arg_parser.add_argument(
+            "--wlf", action="store_true", help="Dumps wave file in WLF format (Questa/Modelsim)."
+        )
+
         args = arg_parser.parse_args(sys.argv[1:])
 
         return args
@@ -188,6 +192,9 @@ def arg_parser_update_settings(settings, args) -> "HDLRegressionSettings":
 
     if args.waveFormat:
         settings.set_simulator_wave_file_format(args.waveFormat[0])
+
+    if args.wlf:
+        settings.set_wlf_dump_enable(True)
 
     settings.set_gui_compile_changes(args.compileChanges)
     settings.set_gui_compile_all(args.compileAll)
