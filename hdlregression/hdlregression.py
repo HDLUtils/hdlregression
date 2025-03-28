@@ -42,6 +42,7 @@ from .run.runner_aldec import AldecRunner
 from .construct.hdllibrary import HDLLibrary, PrecompiledLibrary
 from .configurator import SettingsConfigurator
 from .run.hdltests import TestStatus
+import copy
 import sys
 import os
 import pickle
@@ -1239,29 +1240,30 @@ class HDLRegression:
             pickle.dump(container, dump_file, pickle.HIGHEST_PROTOCOL)
             dump_file.close()
 
-        simulator_settings = self.settings.get_simulator_settings()
+        settings_copy = copy.deepcopy(self.settings)
+        simulator_settings = settings_copy.get_simulator_settings()
         if reset:
             # Do not save argument settings, i.e. this will make next run
             # behave as selected with previous run arguments.
-            self.settings = self.settings_config.unset_argument_settings(self.settings)
+            settings_copy = self.settings_config.unset_argument_settings(settings_copy)
 
-        _dump(self.library_container, "library.dat", self.settings.get_output_path())
-        _dump(self.generic_container, "generic.dat", self.settings.get_output_path())
+        _dump(self.library_container, "library.dat", settings_copy.get_output_path())
+        _dump(self.generic_container, "generic.dat", settings_copy.get_output_path())
         _dump(
-            self.testgroup_container, "testgroup.dat", self.settings.get_output_path()
+            self.testgroup_container, "testgroup.dat", settings_copy.get_output_path()
         )
         _dump(
             self.testgroup_collection_container,
             "testgroup_collection.dat",
-            self.settings.get_output_path(),
+            settings_copy.get_output_path(),
         )
-        _dump(self.settings, "settings.dat", self.settings.get_output_path())
+        _dump(settings_copy, "settings.dat", settings_copy.get_output_path())
         _dump(
             self.runner.get_re_run_test_obj_list(),
             "testcase.dat",
-            self.settings.get_output_path(),
+            settings_copy.get_output_path(),
         )
-        _dump(simulator_settings, "simulator.dat", self.settings.get_output_path())
+        _dump(simulator_settings, "simulator.dat", settings_copy.get_output_path())
 
     def _load_project_from_disk(self, output_path: str) -> None:
         """
