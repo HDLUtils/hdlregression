@@ -39,6 +39,7 @@ class TclRunner(ModelsimRunner):
         self.project = project
         self.test_folder = None
         self.gui_do_file = None
+        self.python_exec = self.project.settings.get_python_exec()
 
         self.runner = None
         # Build test list
@@ -180,7 +181,8 @@ proc s {} {
         return txt
 
     def _recompile_changed(self) -> str:
-        cmd = "{*}python -c \"import sys; sys.path.append('%s'); " % (
+        cmd = "{{*}}{} -c \"import sys; sys.path.append('{}'); ".format(
+            self.python_exec,
             self.project._get_install_path()
         )
         cmd += 'from hdlregression import HDLRegression; hu = HDLRegression(init_from_gui=True); hu._start_gui()" --compileChanges'
@@ -212,7 +214,8 @@ proc r {} {
         return txt
 
     def _recompile_all(self) -> str:
-        cmd = "{*}python -c \"import sys; sys.path.append('%s'); " % (
+        cmd = "{{*}}{} -c \"import sys; sys.path.append('{}'); ".format(
+            self.python_exec,
             self.project._get_install_path()
         )
         cmd += 'from hdlregression import HDLRegression; hu = HDLRegression(init_from_gui=True); hu._start_gui()" --compileAll'
@@ -245,7 +248,8 @@ proc ra {} {
         return txt
 
     def _recompile_all_only(self) -> str:
-        cmd = "{*}python -c \"import sys; sys.path.append('%s'); " % (
+        cmd = "{{*}}{} -c \"import sys; sys.path.append('{}'); ".format(
+            self.python_exec,
             self.project._get_install_path()
         )
         cmd += 'from hdlregression import HDLRegression; hu = HDLRegression(init_from_gui=True); hu._start_gui()" --compileAll'
