@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2022.1.21)  2 APR 2025 11:22
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2022.1.21)  5 APR 2025 19:43
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -952,12 +952,12 @@ Underfull \hbox (badness 5403) in paragraph at lines 2861--2861
 ]
 Chapter 5.
 
-Underfull \hbox (badness 10000) in paragraph at lines 3363--3363
+Underfull \hbox (badness 5231) in paragraph at lines 3373--3373
 []\T1/qtm/m/n/10 -tc TB_ENTITY [TB_ARCH
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 3363--3363
+Underfull \hbox (badness 10000) in paragraph at lines 3373--3373
 []\T1/qtm/m/n/10 Save wlf file af-ter sim
  []
 
@@ -965,53 +965,53 @@ Underfull \hbox (badness 10000) in paragraph at lines 3363--3363
 <full_regression.png, id=600, 642.90187pt x 922.19531pt>
 File: full_regression.png Graphic file (type png)
 <use full_regression.png>
-Package pdftex.def Info: full_regression.png  used on input line 3381.
+Package pdftex.def Info: full_regression.png  used on input line 3391.
 (pdftex.def)             Requested size: 453.44208pt x 650.42923pt.
  [30] [31 <./full_regression.png>]
 <testcase_listing.png, id=610, 558.58687pt x 419.31656pt>
 File: testcase_listing.png Graphic file (type png)
 <use testcase_listing.png>
-Package pdftex.def Info: testcase_listing.png  used on input line 3395.
+Package pdftex.def Info: testcase_listing.png  used on input line 3405.
 (pdftex.def)             Requested size: 469.77231pt x 352.64578pt.
  [32 <./testcase_listing.png>]
 <testcase_running.png, id=616, 524.71031pt x 319.94531pt>
 File: testcase_running.png Graphic file (type png)
 <use testcase_running.png>
-Package pdftex.def Info: testcase_running.png  used on input line 3464.
+Package pdftex.def Info: testcase_running.png  used on input line 3474.
 (pdftex.def)             Requested size: 469.76892pt x 286.44934pt.
  [33 <./testcase_running.png>]
 <testgroup_listing.png, id=626, 484.81125pt x 305.64188pt>
 File: testgroup_listing.png Graphic file (type png)
 <use testgroup_listing.png>
-Package pdftex.def Info: testgroup_listing.png  used on input line 3574.
+Package pdftex.def Info: testgroup_listing.png  used on input line 3584.
 (pdftex.def)             Requested size: 469.77809pt x 296.19708pt.
  [34]
 <testgroup_running.png, id=631, 642.14906pt x 572.1375pt>
 File: testgroup_running.png Graphic file (type png)
 <use testgroup_running.png>
-Package pdftex.def Info: testgroup_running.png  used on input line 3600.
+Package pdftex.def Info: testgroup_running.png  used on input line 3610.
 (pdftex.def)             Requested size: 469.76436pt x 418.55609pt.
  [35 <./testgroup_listing.png>] [36 <./testgroup_running.png>]
 File: testgroup_running.png Graphic file (type png)
 <use testgroup_running.png>
-Package pdftex.def Info: testgroup_running.png  used on input line 3640.
+Package pdftex.def Info: testgroup_running.png  used on input line 3650.
 (pdftex.def)             Requested size: 469.76436pt x 418.55609pt.
 <testgroup_threading_1.png, id=642, 643.6547pt x 572.89032pt>
 File: testgroup_threading_1.png Graphic file (type png)
 <use testgroup_threading_1.png>
-Package pdftex.def Info: testgroup_threading_1.png  used on input line 3652.
+Package pdftex.def Info: testgroup_threading_1.png  used on input line 3662.
 (pdftex.def)             Requested size: 469.76581pt x 418.12778pt.
  [37]
 <testgroup_threading_10.png, id=647, 639.89063pt x 574.39594pt>
 File: testgroup_threading_10.png Graphic file (type png)
 <use testgroup_threading_10.png>
-Package pdftex.def Info: testgroup_threading_10.png  used on input line 3664.
+Package pdftex.def Info: testgroup_threading_10.png  used on input line 3674.
 (pdftex.def)             Requested size: 469.7623pt x 421.6895pt.
  [38 <./testgroup_threading_1.png>] [39 <./testgroup_threading_10.png>]
 <regression_run_1.png, id=659, 640.64343pt x 921.4425pt>
 File: regression_run_1.png Graphic file (type png)
 <use regression_run_1.png>
-Package pdftex.def Info: regression_run_1.png  used on input line 3676.
+Package pdftex.def Info: regression_run_1.png  used on input line 3686.
 (pdftex.def)             Requested size: 452.21088pt x 650.41849pt.
  [40]
 Overfull \vbox (27.6568pt too high) has occurred while \output is active []
@@ -1021,12 +1021,12 @@ Overfull \vbox (27.6568pt too high) has occurred while \output is active []
 <regression_run_2.png, id=671, 491.58656pt x 255.20343pt>
 File: regression_run_2.png Graphic file (type png)
 <use regression_run_2.png>
-Package pdftex.def Info: regression_run_2.png  used on input line 3685.
+Package pdftex.def Info: regression_run_2.png  used on input line 3695.
 (pdftex.def)             Requested size: 469.77245pt x 243.89438pt.
 <failing_testcase.png, id=672, 807.015pt x 909.3975pt>
 File: failing_testcase.png Graphic file (type png)
 <use failing_testcase.png>
-Package pdftex.def Info: failing_testcase.png  used on input line 3693.
+Package pdftex.def Info: failing_testcase.png  used on input line 3703.
 (pdftex.def)             Requested size: 469.75606pt x 529.36586pt.
  [42 <./regression_run_2.png>] [43 <./failing_testcase.png>] [44
 
@@ -1035,12 +1035,12 @@ Chapter 6.
 <gui_menu.png, id=687, 248.42813pt x 234.8775pt>
 File: gui_menu.png Graphic file (type png)
 <use gui_menu.png>
-Package pdftex.def Info: gui_menu.png  used on input line 3716.
+Package pdftex.def Info: gui_menu.png  used on input line 3726.
 (pdftex.def)             Requested size: 414.04419pt x 391.4914pt.
 [45] [46 <./gui_menu.png>]
 Chapter 7.
 
-Underfull \hbox (badness 10000) in paragraph at lines 3810--3813
+Underfull \hbox (badness 10000) in paragraph at lines 3820--3823
 []\T1/qtm/m/n/10 Note that the \T1/txtt/m/n/10 GC_TESTCASE \T1/qtm/m/n/10 gener
 ic or \T1/txtt/m/n/10 TESTCASE \T1/qtm/m/n/10 pa-ram-e-ter name can be changed 
 us-ing the
@@ -1049,7 +1049,7 @@ us-ing the
 [47
 
 ] [48]
-Underfull \vbox (badness 10000) detected at line 3928
+Underfull \vbox (badness 10000) detected at line 3938
  []
 
 [49] [50]
@@ -1063,34 +1063,34 @@ Chapter 9.
 <jenkins_ci.png, id=744, 947.54pt x 403.5075pt>
 File: jenkins_ci.png Graphic file (type png)
 <use jenkins_ci.png>
-Package pdftex.def Info: jenkins_ci.png  used on input line 4192.
+Package pdftex.def Info: jenkins_ci.png  used on input line 4202.
 (pdftex.def)             Requested size: 469.74944pt x 200.05391pt.
 [57 <./jenkins_ci.png>] [58
 
 ]
 Chapter 10.
 [59]
-Underfull \vbox (badness 10000) detected at line 4437
+Underfull \vbox (badness 10000) detected at line 4447
  []
 
 
-Underfull \vbox (badness 10000) detected at line 4437
+Underfull \vbox (badness 10000) detected at line 4447
  []
 
 [60]
-Underfull \vbox (badness 10000) detected at line 4437
+Underfull \vbox (badness 10000) detected at line 4447
  []
 
 
-Underfull \vbox (badness 10000) detected at line 4437
+Underfull \vbox (badness 10000) detected at line 4447
  []
 
 [61]
-Underfull \vbox (badness 10000) detected at line 4437
+Underfull \vbox (badness 10000) detected at line 4447
  []
 
 
-Underfull \vbox (badness 10000) detected at line 4437
+Underfull \vbox (badness 10000) detected at line 4447
  []
 
 [62] [63] [64
@@ -1098,22 +1098,22 @@ Underfull \vbox (badness 10000) detected at line 4437
 ]
 Chapter 11.
 
-Overfull \vbox (1.14003pt too high) detected at line 4581
+Overfull \vbox (1.14003pt too high) detected at line 4591
  []
 
 [65]
-Underfull \vbox (badness 10000) detected at line 4581
+Underfull \vbox (badness 10000) detected at line 4591
  []
 
 
-Underfull \vbox (badness 10000) detected at line 4581
+Underfull \vbox (badness 10000) detected at line 4591
  []
 
 [66]
 <hdlregression_scaled.png, id=790, 314.67563pt x 174.6525pt>
 File: hdlregression_scaled.png Graphic file (type png)
 <use hdlregression_scaled.png>
-Package pdftex.def Info: hdlregression_scaled.png  used on input line 4583.
+Package pdftex.def Info: hdlregression_scaled.png  used on input line 4593.
 (pdftex.def)             Requested size: 414.04419pt x 229.81712pt.
  (./hdlregression.ind) [67 <./hdlregression_scaled.png>]
 (./hdlregression.aux)
@@ -1143,7 +1143,7 @@ t.pfb></usr/local/texlive/2021/texmf-dist/fonts/type1/public/txfonts/t1xtt.pfb>
 </usr/local/texlive/2021/texmf-dist/fonts/type1/public/txfonts/t1xtt.pfb></usr/
 local/texlive/2021/texmf-dist/fonts/type1/public/txfonts/tcxtt.pfb></usr/local/
 texlive/2021/texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
-Output written on hdlregression.pdf (71 pages, 3987448 bytes).
+Output written on hdlregression.pdf (71 pages, 3987562 bytes).
 PDF statistics:
  887 PDF objects out of 1000 (max. 8388607)
  755 compressed objects within 8 object streams
