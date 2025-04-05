@@ -531,6 +531,9 @@ class HDLRegression:
         if self.settings.get_list_testcase():
             print(list_testcases(self.runner))
 
+        elif self.settings.get_export_testcases_json_path():
+            print(export_testcases_to_json(self.runner,self.settings.get_export_testcases_json_path()))
+
         elif self.settings.get_list_dependencies():
             for library in self.library_container.get():
                 print(library._present_library())

@@ -83,6 +83,7 @@ class HDLRegressionSettings:
         self.wlf_dunmp_enable = False
 
         self.list_testcase = False
+        self.export_testcases_json_path = None
         self.list_compile_order = False
         self.list_testgroup = False
         self.list_dependencies = False
@@ -390,6 +391,13 @@ class HDLRegressionSettings:
 
     def get_list_testcase(self) -> bool:
         return self.list_testcase
+    
+    def get_export_testcases_json_path(self) -> str:
+        return self.export_testcases_json_path
+    
+    def set_export_testcases_json_path(self, json_path):
+        if isinstance(json_path, str):
+            self.export_testcases_json_path = json_path.lower()
 
     def set_testcase(self, testcase):
         """
