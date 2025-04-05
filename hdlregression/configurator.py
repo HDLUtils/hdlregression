@@ -47,6 +47,7 @@ class SettingsConfigurator:
         settings.set_testcase(default_settings.get_testcase())
         settings.set_testgroup(default_settings.get_testgroup())
         settings.set_list_testcase(default_settings.get_list_testcase())
+        settings.set_export_testcases_json_path(default_settings.get_export_testcases_json_path())
         settings.set_list_compile_order(default_settings.get_list_compile_order())
         settings.set_list_testgroup(default_settings.get_list_testgroup())
         settings.set_stop_on_failure(default_settings.get_stop_on_failure())

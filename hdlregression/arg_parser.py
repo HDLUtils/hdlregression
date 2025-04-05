@@ -72,6 +72,9 @@ def arg_parser_reader(arg_parser=None):
             "-ltc", "--listTestcase", action="store_true", help="list testcases"
         )
         arg_parser.add_argument(
+            "-etj", "--exportTestcaseJson", action="store", type=str, nargs=1, help="export testcases to JSON file with the given path. Example: --exportTestcaseJson testcases.json"
+        )
+        arg_parser.add_argument(
             "-ltg", "--listTestgroup", action="store_true", help="list testgroups"
         )
         arg_parser.add_argument(
@@ -170,6 +173,9 @@ def arg_parser_update_settings(settings, args) -> "HDLRegressionSettings":
     settings.set_list_compile_order(args.listCompileOrder)
     settings.set_list_testgroup(args.listTestgroup)
     settings.set_force_recompile(args.forceCompile)
+
+    if args.exportTestcaseJson:
+        settings.set_export_testcases_json_path(args.exportTestcaseJson[0])
 
     if args.threading:
         settings.set_threading(True)
