@@ -150,13 +150,19 @@ def export_testcases_to_json(runner, filename) -> str:
     for test in run_tests:
         language = "VHDL" if test.get_is_vhdl() else "VERILOG" if test.get_is_verilog() else "UNKNOWN"
 
+        # generics are internally stored as list where odd elements are names and even elements are values
+        # convert to dict for easier access
+        generics = test.get_gc()
+        if generics:
+            generics = dict(zip(generics[::2], generics[1::2]))
+
         testcase_info = {
             "testcase_id": test.get_id_number(),
             "testcase_name": test.get_testcase_name(),
             "name": test.get_name(),
             "architecture": test.get_arch().get_name() if language is test.get_is_vhdl() else "",
             "testcase": test.get_tc(),
-            "generics": test.get_gc(),
+            "generics": generics,
             "hdl_file_name": test.get_hdlfile().get_name(),
             "hdl_file_path" : test.get_hdlfile().get_filename_with_path(),
             "hdl_file_lib":test.get_hdlfile().get_library().get_name(),
