@@ -114,8 +114,11 @@ class HDLRegressionSettings:
                 output = (subprocess.check_output([executable, "--version"], stderr=subprocess.STDOUT).decode().strip())
                 if "Python 3" in output:
                     self.python_exec = executable
+                    return
             except (subprocess.CalledProcessError, FileNotFoundError):
-                self.python_exec = "python"
+                continue        
+
+        self.python_exec = "python"
 
     def get_python_exec(self) -> str:
         if self.python_exec is None:
