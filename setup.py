@@ -20,7 +20,7 @@ def get_version(init_file):
     with open(init_file, encoding="utf-8") as f:
         for line in f:
             if line.startswith('__version__'):
-                # forventer __version__ = "x.y.z"
+                # Note, expecting __version__ = "x.y.z"
                 m = re.search(r'__version__\s*=\s*["\']([^"\']+)["\']', line)
                 if m:
                     return m.group(1)
@@ -31,7 +31,8 @@ init_file = os.path.join(here, "hdlregression", "__init__.py")
 version = get_version(init_file)
 
 def read(fname):
-    return open(os.path.join(os.path.dirname(__file__), fname)).read()
+    with open(os.path.join(os.path.dirname(__file__), fname), encoding="utf-8") as f:
+        return f.read()
 
 description = read('./doc/src/description.rst')
 
