@@ -160,7 +160,7 @@ def export_testcases_to_json(runner, filename) -> str:
             "testcase_id": test.get_id_number(),
             "testcase_name": test.get_testcase_name(),
             "name": test.get_name(),
-            "architecture": test.get_arch().get_name() if language is test.get_is_vhdl() else "",
+            "architecture": test.get_arch().get_name() if test.get_is_vhdl() else "",
             "testcase": test.get_tc(),
             "generics": generics,
             "hdl_file_name": test.get_hdlfile().get_name(),
