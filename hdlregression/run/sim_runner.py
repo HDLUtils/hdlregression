@@ -55,11 +55,12 @@ class TestOutputPathError(HDLRunnerError):
 class SimRunner:
     """
     Super class for simulation running:
-    - MentorRunner
+    - ModelsimRunner
     - GHDLRunner
     - NVCRunner
     - TclRunner
     - RivieraRunner
+    - AldecRunner
     """
 
     SIMULATOR_NAME = ""
@@ -145,8 +146,8 @@ class SimRunner:
             if test.get_status() in ["FAIL", "NOT_RUN", "RE_RUN"]:
                 test.set_status(TestStatus.RE_RUN)
 
-    def _setup_ini(self):
-        pass
+    def _setup_ini(self) -> str:
+        return None
 
     def prepare_test_modules_and_objects(self, re_run_tc_list):
         """
@@ -226,7 +227,6 @@ class SimRunner:
         """
         Collects test objects to run and executes test simulations.
         """
-
         def run_test(test_queue) -> bool:
             """
             Executes tests from the queue in a separate thread.

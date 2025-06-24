@@ -32,11 +32,11 @@ RE_RIVIERA_ERROR = re.compile(ID_RIVIERA_ERROR, flags=re.IGNORECASE)
 ID_RIVIERA_WARNING = r"# \*\* Warning: .*"
 RE_RIVIERA_WARNING = re.compile(ID_RIVIERA_WARNING, flags=re.IGNORECASE)
 
-ID_ALDEC_ERROR = r"# \*\* Error: .*"
-RE_ALDEC_ERROR = re.compile(ID_ALDEC_ERROR, flags=re.IGNORECASE)
+ID_ACTIVE_HDL_ERROR = r"# \*\* Error: .*"
+RE_ACTIVE_HDL_ERROR = re.compile(ID_ACTIVE_HDL_ERROR, flags=re.IGNORECASE)
 
-ID_ALDEC_WARNING = r"# \*\* Warning: .*"
-RE_ALDEC_WARNING = re.compile(ID_ALDEC_WARNING, flags=re.IGNORECASE)
+ID_ACTIVE_HDL_WARNING = r"# \*\* Warning: .*"
+RE_ACTIVE_HDL_WARNING = re.compile(ID_ACTIVE_HDL_WARNING, flags=re.IGNORECASE)
 
 
 ID_MODELSIM_ERROR = r"[\r\n\s]?\*\*\s*(error|fatal)[\s+]?[:]?"

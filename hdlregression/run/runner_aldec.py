@@ -20,12 +20,12 @@ import os
 from .sim_runner import SimRunner, OutputFileError
 from ..report.logger import Logger
 from ..hdlregression_pkg import os_adjust_path
-from ..scan.hdl_regex_pkg import RE_ALDEC_WARNING, RE_ALDEC_ERROR
+from ..scan.hdl_regex_pkg import RE_RIVIERA_WARNING, RE_RIVIERA_ERROR, RE_ACTIVE_HDL_ERROR, RE_ACTIVE_HDL_WARNING
 
 
-class AldecRunner(SimRunner):
+class RivieraRunner(SimRunner):
 
-    SIMULATOR_NAME = "ALDEC"
+    SIMULATOR_NAME = "RIVIERA-PRO"
 
     def __init__(self, project):
         super().__init__(project)
@@ -155,10 +155,10 @@ class AldecRunner(SimRunner):
     #
     # =========================================================================
     def _get_simulator_error_regex(self):
-        return RE_ALDEC_ERROR
+        return RE_RIVIERA_ERROR
 
     def _get_simulator_warning_regex(self):
-        return RE_ALDEC_WARNING
+        return RE_RIVIERA_WARNING
 
     def _get_netlist_call(self) -> str:
         """
@@ -187,9 +187,9 @@ class AldecRunner(SimRunner):
 
     def _get_simulator_do_cmd(self, test, generic_call, module_call) -> str:
         """
-        Returns a Modelsim simulate command (vsim) with parameters for use in run.do.
+        Returns a Riviera-PRO simulate command (vsim) with parameters for use in run.do.
         This command does NOT include the path to vsim, since vsim is a command
-        recognized by Modelsim while executing do files.
+        recognized by Riviera-PRO while executing do files.
 
         Called from: _write_run_do_file()
         """
@@ -212,16 +212,17 @@ class AldecRunner(SimRunner):
 
         netlist_call = self._get_netlist_call()
 
-        # Command should not include path
         return " ".join(
-            [
+            [   "amap",
+                "-link",
+                "../../../library\n",
                 "vsim",
                 generic_call,
                 module_call,
                 sim_options,
                 netlist_call,
                 code_coverage_call_enable,
-                "onerror {quit -code 1};",
+                "; onerror {quit -code 1};",
                 "onbreak {resume};",
                 "run",
                 "-all;",
@@ -254,10 +255,34 @@ class AldecRunner(SimRunner):
 
     def _get_module_call(self, test, architecture_name):
         lib_name = test.get_library().get_name()
-        return "-lib {}.{}({})".format(lib_name, test.get_name(), architecture_name)
+        return "-lib {} {} {}".format(lib_name, test.get_name(), architecture_name)
 
     def _get_descriptive_test_name(self, test, architecture_name, module_call):
         return module_call
 
     def _get_ignored_error_detection_str(self) -> str:
         return r"^\/\/  (Reconnected|Lost connection) to license server"
+
+
+
+class ActiveHDLRunner(RivieraRunner, SimRunner):
+    """
+    This class is used to run Active-HDL simulations.
+    It inherits from RivieraRunner since Active-HDL is a part of the Riviera-PRO suite.
+    """
+
+    SIMULATOR_NAME = "ACTIVE-HDL"
+
+    @classmethod
+    def _is_simulator(cls, simulator) -> bool:
+        return simulator.upper() == cls.SIMULATOR_NAME
+    
+    def _get_simulator_error_regex(self):
+        return RE_ACTIVE_HDL_ERROR
+
+    def _get_simulator_warning_regex(self):
+        return RE_ACTIVE_HDL_WARNING
+
+#    def _get_module_call(self, test, architecture_name):
+#        lib_name = test.get_library().get_name()
+#        return "-lib {} {} {}".format(lib_name, test.get_name(), architecture_name)

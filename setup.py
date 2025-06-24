@@ -24,7 +24,7 @@ def get_version(init_file):
                 m = re.search(r'__version__\s*=\s*["\']([^"\']+)["\']', line)
                 if m:
                     return m.group(1)
-    raise RuntimeError("Kunne ikke finne __version__ i __init__.py")
+    raise RuntimeError("Unable to locate __version__ in __init__.py")
 
 here = os.path.abspath(os.path.dirname(__file__))
 init_file = os.path.join(here, "hdlregression", "__init__.py")
@@ -44,11 +44,9 @@ setup(name="hdlregression",
       license="MIT",
       keywords="regression vhdl verilog",
       url="https://github.com/hdlutils/hdlregression",
-      # packages=['hdlregression',
-      #           'hdlregression.report',
-      #           'hdlregression.run',
-      #           'hdlregression.scan',
-      #           'hdlregression.construct'],
+      author="HDLRegression Authors",
+      author_email="info@uvvm.com",
+      python_requires=">=3.0",
       long_description=read('README.rst'),
       long_description_content_type="text/x-rst",
      )

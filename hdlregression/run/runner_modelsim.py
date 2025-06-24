@@ -43,22 +43,21 @@ class ModelsimRunner(SimRunner):
         Returns:
             modelsim_ini_file(str): full path of modelsim.ini file.
         """
-        if not self._is_simulator("GHDL"):
-            libraries_path = os.path.join(
-                self.project.settings.get_sim_path(),
-                self.project.settings.get_output_path(),
-                "library",
-            )
-            libraries_path = os_adjust_path(libraries_path)
+        libraries_path = os.path.join(
+            self.project.settings.get_sim_path(),
+            self.project.settings.get_output_path(),
+            "library",
+        )
+        libraries_path = os_adjust_path(libraries_path)
 
-            modelsim_ini_file = os.path.join(libraries_path, "modelsim.ini")
-            if not os.path.isfile(modelsim_ini_file):
-                self.logger.info("Setting up: %s." % (str(modelsim_ini_file)))
-                # Call Modelsim to create modelsim.ini file in library folder.
-                vmap_exec = self._get_simulator_executable("vmap")
-                self._run_cmd(command=[vmap_exec, "-c"], path=libraries_path)
+        modelsim_ini_file = os.path.join(libraries_path, "modelsim.ini")
+        if not os.path.isfile(modelsim_ini_file):
+            self.logger.info("Setting up: %s." % (str(modelsim_ini_file)))
+            # Call Modelsim to create modelsim.ini file in library folder.
+            vmap_exec = self._get_simulator_executable("vmap")
+            self._run_cmd(command=[vmap_exec, "-c"], path=libraries_path)
 
-                return modelsim_ini_file.replace("\\", "/")
+            return modelsim_ini_file.replace("\\", "/")
         return None
 
     @classmethod

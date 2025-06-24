@@ -30,10 +30,6 @@ class VivadoRunner(SimRunner):
         self.logger = Logger(name=__name__, project=project)
         self.project = project
 
-    def _setup_ini(self) -> str:
-        # XSIM does not use a .ini file like ModelSim, so we can adapt or remove this function.
-        return None
-
     @classmethod
     def _is_simulator(cls, simulator) -> bool:
         return (simulator.upper() == cls.SIMULATOR_NAME)

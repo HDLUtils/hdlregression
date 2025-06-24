@@ -13,24 +13,21 @@
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH UVVM OR THE USE OR OTHER DEALINGS IN HDLRegression.
 #
 
-import os
+import os, re
 
 from .cmd_runner import CommandRunner
 from .runner_modelsim import ModelsimRunner
+from .runner_aldec import RivieraRunner, ActiveHDLRunner
 from .testbuilder import TestBuilder
 from ..report.logger import Logger
 from ..hdlregression_pkg import os_adjust_path
 
 
-class TclRunner(ModelsimRunner):
+class TclRunnerBase():
     """
-    The TclRunner object creates a tcl file that is sourced
-    when a simulator is opened in gui mode. The tcl file
-    provides a project menu for compiling and running
-    simulations.
+    Base class for TclRunner functionality.
+    Contains shared logic for all TclRunner implementations.
     """
-
-    simulator_name = "MODELSIM"
 
     def __init__(self, project=None):
         super().__init__(project)
@@ -48,52 +45,15 @@ class TclRunner(ModelsimRunner):
         self.test_name = None
 
     def _set_test_specifics(self, test):
-        """
-        Sets the current test name (entity.architecture.testcase) and
-        the current vsim testcase call, i.e. entity(architecture) -gGC_TESTCASE=<testcase>
-        """
-        self.test_name = test.get_testcase_name()
+        pass
 
-        self.test_call = test.get_library().get_name() + "." + test.get_name()
-        # VHDL architecture
-        self.test_call += (
-            "(" + test.get_arch().get_name() + ") "
-            if test.get_is_vhdl() is True
-            else " "
-        )
-        # Sequencer built-in testcase
-        self.test_call += test.get_gc_str() + " "
-
-        self.test_call += " ".join(self.project.settings.get_sim_options())
-
-        self.test_call += self._get_netlist_call()
-
-    def simulate(self) -> None:
-
-        # # Locate testbench modules
-        # self.testbuilder.build_tb_module_list()
-
-        # Get tests to run
-        tests = self.testbuilder.get_list_of_tests_to_run()
-
-        # Run tests
-        for test in tests:
-            # Create unique test output folder
-            self._create_test_folder(test.get_test_path())
-
-            self._set_test_specifics(test)
-            self._create_gui_do_file(test)
-
-            # Start simulator
-            rc = self._load_simulator(test)
-            if rc == 2:
-                self.logger.info("Test run aborted by user.")
-                return None
-            elif rc == 1:
-                self.logger.warning("Failure running test, aborting.")
+    def simulate_gui(self) -> None:
+        raise NotImplementedError(
+            "TclRunnerBase.simulate_gui must be overridden in subclasses.")
 
     def _is_simulator(self, simulator) -> bool:
-        return simulator.upper() == self.simulator_name
+        raise NotImplementedError(
+            "TclRunnerBase._is_simulator must be overridden in subclasses.")
 
     def _create_gui_do_file(self, test) -> None:
         """
@@ -104,30 +64,35 @@ class TclRunner(ModelsimRunner):
         # with open(self.tcl_file, 'w') as cf:
         with open(gui_do_file, "w") as cf:
             cf.write(self._get_proc(test))
-            cf.write(self._init())
+            cf.write(self._init(test))
+
+    def _get_modelsim_ini_path(self) -> str:
+        return None
+
+    def _set_os_environment(self):
+        ini_path = self._get_modelsim_ini_path()
+        if ini_path:
+            os.environ[self.get_simulator_name()] = ini_path
 
     def _load_simulator(self, test) -> int:
-        os.environ["MODELSIM"] = self._get_modelsim_ini_path()
-
-        gui_do_file = self._get_test_path(filename="gui.do", test=test)
-
-        sim_exe = self._get_simulator_executable("vsim")
-        command = [sim_exe]
-        command += ["-gui"]
-        command += ["-do"]
-        command += [gui_do_file]
-        self.runner = CommandRunner(project=self.project)
-        rc = self.runner.gui_run(command=command)
-        return int(rc[2])
+        """
+        This method should be overridden in subclasses to implement
+        simulator-specific loading logic.
+        """
+        raise NotImplementedError(
+            "TclRunnerBase._load_simulator must be overridden in subclasses.")
 
     def _get_test_path(self, filename="", test=None) -> str:
         sim_path = self.project.settings.get_sim_path()
         test_path = test.get_test_path()
         return_path = os.path.join(sim_path, test_path, filename)
         return os_adjust_path(return_path)
+    
+    def get_sim_path(self) -> str:
+        pass
 
     def _cd_sim(self) -> str:
-        sim_path = os_adjust_path(self.project.settings.get_sim_path())
+        sim_path = self.get_sim_path().replace("\\", "//")
         txt = """
 proc _cd_sim {} {
     eval {cd %s}
@@ -167,18 +132,9 @@ proc h {} {
         )
         return txt
 
+
     def _simulate(self, test) -> str:
-        transcript_file = self._get_test_path(filename="transcript", test=test)
-        txt = """
-proc s {} {
-    puts "Running test: %s"
-    restart -f; run -all; transcript file %s
-}
-""" % (
-            self.test_name,
-            transcript_file,
-        )
-        return txt
+        pass
 
     def _recompile_changed(self) -> str:
         cmd = "{{*}}{} -c \"import sys; sys.path.append('{}'); ".format(
@@ -282,21 +238,11 @@ proc ro {} {
 
     @staticmethod
     def _restart_and_run() -> str:
-        txt = """
-proc rr {} {
-    restart -f; run -all
-}
-"""
-        return txt
+        pass
 
     @staticmethod
     def _restart() -> str:
-        txt = """
-proc rs {} {
-    restart -f
-}
-"""
-        return txt
+        pass
 
     @staticmethod
     def _quit_complete() -> str:
@@ -321,11 +267,12 @@ proc qc {} {
         txt += self._get_quietly()
         return txt
 
-    def _init(self) -> str:
+    def _init(self, test=None) -> str:
         modelsim_ini = self._get_modelsim_ini_path()
         test_call = "vsim "
         test_call += self.test_call
-        test_call += " -modelsimini {" + modelsim_ini + "};"
+        if modelsim_ini:
+            test_call += " -modelsimini {" + modelsim_ini + "};"
 
         txt = """
 # Define exit codes
@@ -365,8 +312,273 @@ proc return_checker {return_line} {
     if [regexp -nocase {[\\s+]?hdlregression:success} $return_line matchresult] then {
         return true
     } else {
-        return fasle
+        return false
     }
 }
 """
         return txt
+
+
+
+class TclRunnerModelsim(TclRunnerBase, ModelsimRunner):
+    """
+    A TclRunner specifically for Modelsim.
+    """
+
+    def __init__(self, project=None):
+        super().__init__(project)
+
+    def _set_test_specifics(self, test):
+        """
+        Sets the current test name (entity.architecture.testcase) and
+        the current vsim testcase call, i.e. entity(architecture) -gGC_TESTCASE=<testcase>
+        """
+        self.test_name = test.get_testcase_name()
+
+        self.test_call = test.get_library().get_name() + "." + test.get_name()
+        # VHDL architecture
+        self.test_call += (
+            "(" + test.get_arch().get_name() + ") "
+            if test.get_is_vhdl() is True
+            else " "
+        )
+        # Sequencer built-in testcase
+        self.test_call += test.get_gc_str() + " "
+
+        self.test_call += " ".join(self.project.settings.get_sim_options())
+
+        self.test_call += self._get_netlist_call()
+
+    def _load_simulator(self, test) -> int:
+        """
+        This method should be overridden in subclasses to implement
+        simulator-specific loading logic.
+        """
+        self._set_os_environment()
+        gui_do_file = self._get_test_path(filename="gui.do", test=test)
+        sim_exe = self._get_simulator_executable("vsim")
+        command = [sim_exe]
+        command += ["-gui"]
+        command += ["-do"]
+        command += [gui_do_file]
+        self.runner = CommandRunner(project=self.project)
+        rc = self.runner.gui_run(command=command)
+        return int(rc[2])
+    
+    def get_sim_path(self) -> str:
+        return os_adjust_path(self.project.settings.get_sim_path())
+
+    @staticmethod
+    def _restart_and_run() -> str:
+        txt = """
+proc rr {} {
+    restart -f; run -all
+}
+"""
+        return txt
+
+    @staticmethod
+    def _restart() -> str:
+        txt = """
+proc rs {} {
+    restart -f
+}
+"""
+        return txt
+
+    def _is_simulator(self, simulator) -> bool:
+        return simulator.upper() == self.get_simulator_name()
+
+    def _simulate(self, test) -> str:
+        transcript_file = self._get_test_path(filename="transcript", test=test)
+        txt = """
+proc s {} {
+    puts "Running test: %s"
+    restart -f; run -all; transcript file %s
+}
+""" % (
+            self.test_name,
+            transcript_file,
+        )
+        return txt
+
+    def simulate_gui(self) -> None:
+        # Get tests to run
+        tests = self.testbuilder.get_list_of_tests_to_run()
+
+        # Run tests
+        for test in tests:
+            # Create unique test output folder
+            self._create_test_folder(test.get_test_path())
+
+            self._set_test_specifics(test)
+            self._create_gui_do_file(test)
+
+            # Start simulator
+            rc = self._load_simulator(test)
+            if rc == 2:
+                self.logger.info("Test run aborted by user.")
+                return None
+            elif rc == 1:
+                self.logger.warning("Failure running test, aborting.")
+
+class TclRunnerRiviera(TclRunnerBase, RivieraRunner):
+    """
+    A TclRunner specifically for Riviera-Pro.
+    """
+
+    def __init__(self, project=None):
+        super().__init__(project)
+
+    def _get_library_setup(self, _test) -> str:
+        cfg = os.path.join(
+            self.project.settings.get_sim_path(),
+            "hdlregression", "library", "library.cfg"
+        )
+        lines = []
+        with open(cfg) as fh:
+            for ln in fh:
+                if ln.startswith("$") or not ln.strip():
+                    continue
+                name, libfile = re.match(r"(\w+)\s*=\s*\"(.+?\.lib)\"", ln).groups()
+                phys = os.path.join(
+                    self.project.settings.get_sim_path(),
+                    "hdlregression", "library",
+                    os.path.dirname(libfile)
+                ).replace("\\", "/")
+                lines.append(f"catch {{ vmap -del {name} }}")
+                lines.append(f"vmap {name} \"{phys}\"")
+        return "\n".join(lines) + "\n"
+
+    def _init(self, test) -> str:
+        modelsim_ini = self._get_modelsim_ini_path()
+        lib_setup = self._get_library_setup(test)
+        lib_setup = self._get_library_setup(test)
+    
+        test_call = f"{lib_setup}vsim {self.test_call}"
+        if modelsim_ini:
+            test_call += " -modelsimini {" + modelsim_ini + "};"
+
+        txt = """
+    # Define exit codes
+    quietly set quit_normal 0
+    quietly set quit_error 1
+    quietly set quit_force 2
+    # Create library and map it
+    %s
+    # Load
+    eval {%s}
+    # Display information header and menu options
+    h
+    """ % (
+            lib_setup,
+            test_call
+        )
+        return txt
+
+    def _set_test_specifics(self, test):
+        """
+        Sets the current test name (entity.architecture.testcase) and
+        the current vsim testcase call, i.e. entity(architecture) -gGC_TESTCASE=<testcase>
+        """
+        self.test_name = test.get_testcase_name()
+
+        # Sequencer built-in testcase
+        self.test_call = test.get_gc_str() + " "
+
+        self.test_call += "-lib {} {} ".format(
+            test.get_library().get_name(),
+            test.get_name(),
+        )
+        # VHDL architecture
+        self.test_call += (
+            test.get_arch().get_name() + " "
+            if test.get_is_vhdl() is True
+            else " "
+        )
+
+        self.test_call += " ".join(self.project.settings.get_sim_options())
+
+        self.test_call += self._get_netlist_call()
+
+    def _load_simulator(self, test) -> int:
+        """
+        This method should be overridden in subclasses to implement
+        simulator-specific loading logic.
+        """
+        self._set_os_environment()
+        gui_do_file = self._get_test_path(filename="gui.do", test=test)
+        sim_exe = self._get_simulator_executable("vsim")
+        command = [sim_exe]
+        command += ["-gui"]
+        command += ["-do"]
+        command += [gui_do_file]
+        self.runner = CommandRunner(project=self.project)
+        rc = self.runner.gui_run(command=command)
+        return int(rc[2])
+
+    @staticmethod
+    def _restart_and_run() -> str:
+        txt = """
+proc rr {} {
+    restart; run -all
+}
+"""
+        return txt
+
+    @staticmethod
+    def _restart() -> str:
+        txt = """
+proc rs {} {
+    restart
+}
+"""
+        return txt
+
+    def get_sim_path(self) -> str:
+        return os.path.join(os_adjust_path(self.project.settings.get_sim_path()), "hdlregression", "library")
+    
+    def _is_simulator(self, simulator) -> bool:
+        return simulator.upper() == self.get_simulator_name()
+
+    def _simulate(self, test) -> str:
+        transcript_file = self._get_test_path(filename="transcript", test=test)
+        txt = """
+proc s {} {
+    puts "Running test: %s"
+    restart; run -all; transcript file %s
+}
+""" % (
+            self.test_name,
+            transcript_file,
+        )
+        return txt
+
+    def simulate_gui(self) -> None:
+        # Get tests to run
+        tests = self.testbuilder.get_list_of_tests_to_run()
+
+        # Run tests
+        for test in tests:
+            # Create unique test output folder
+            self._create_test_folder(test.get_test_path())
+
+            self._set_test_specifics(test)
+            self._create_gui_do_file(test)
+
+            # Start simulator
+            rc = self._load_simulator(test)
+            if rc == 2:
+                self.logger.info("Test run aborted by user.")
+                return None
+            elif rc == 1:
+                self.logger.warning("Failure running test, aborting.")    
+
+
+class TclRunnerActiveHDL(TclRunnerRiviera, TclRunnerBase, ActiveHDLRunner):
+    """
+    A TclRunner specifically for Active-HDL.
+    """
+
+    def __init__(self, project=None):
+        super().__init__(project)

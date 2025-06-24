@@ -64,7 +64,7 @@
 \contentsline {subsection}{\numberline {5.3.3}Failing testcase run}{42}{subsection.5.3.3}%
 \contentsline {chapter}{\numberline {6}Graphical User Interface (GUI)}{45}{chapter.6}%
 \contentsline {section}{\numberline {6.1}Modelsim}{45}{section.6.1}%
-\contentsline {section}{\numberline {6.2}GHDL}{46}{section.6.2}%
+\contentsline {section}{\numberline {6.2}GHDL / NVC}{46}{section.6.2}%
 \contentsline {chapter}{\numberline {7}Testbench}{47}{chapter.7}%
 \contentsline {section}{\numberline {7.1}Prerequisites}{47}{section.7.1}%
 \contentsline {section}{\numberline {7.2}Example Testbench}{48}{section.7.2}%

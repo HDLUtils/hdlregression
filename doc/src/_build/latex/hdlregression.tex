@@ -64,8 +64,8 @@
 
 
 \title{hdlregression}
-\date{Apr 05, 2025}
-\release{0.61.0}
+\date{Jun 24, 2025}
+\release{0.62.0}
 \author{UVVM}
 \newcommand{\sphinxlogo}{\vbox{}}
 \renewcommand{\releasename}{Release}
@@ -3713,7 +3713,7 @@ A failing testcase will be reported as \sphinxstylestrong{FAIL} with a short sum
 \sphinxAtStartPar
 Sometimes debugging a design or test require the use of GUI (graphical user interface)
 and HDLRegression can run tests in GUI when called with the \sphinxcode{\sphinxupquote{\sphinxhyphen{}g}} or \sphinxcode{\sphinxupquote{\sphinxhyphen{}\sphinxhyphen{}gui}} arugument.
-When enabled, the regression script will open inside Modelsim GUI with a loaded testcase ready to run.
+When enabled, the regression script will open inside ModelSim/QuestaSim/Rivier\sphinxhyphen{}PRO GUI with a loaded testcase ready to run.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{g+go}{\PYGZgt{} python ../test/regression.py \PYGZhy{}tc uart\PYGZus{}vvc\PYGZus{}tb.func.check\PYGZus{}simple\PYGZus{}transmit \PYGZhy{}g}
@@ -3726,14 +3726,14 @@ test:
 \noindent{\hspace*{\fill}\sphinxincludegraphics[width=550\sphinxpxdimen]{{gui_menu}.png}\hspace*{\fill}}
 
 
-\section{GHDL}
-\label{\detokenize{gui:ghdl}}
+\section{GHDL / NVC}
+\label{\detokenize{gui:ghdl-nvc}}
 \sphinxAtStartPar
-GHDL does not have a GUI, but can create simulation waveform files that can be opened to have a graphical representation
+GHDL and NVC does not have a GUI, but can create simulation waveform files that can be opened to have a graphical representation
 of the signals in a VCD format (Value Change Dump).
 
 \sphinxAtStartPar
-When HDLRegression is called with GUI arguments and runnning with GHDL simulator it will create \sphinxcode{\sphinxupquote{sim.vcd}} files
+When HDLRegression is called with GUI arguments and runnning with GHDL/NVC simulator it will create \sphinxcode{\sphinxupquote{sim.vcd}} files
 inside every testcase run folder. The VCD files can then be opened in a graphical wavefarm viewer such as GTKWave.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]

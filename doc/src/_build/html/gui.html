@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Graphical User Interface (GUI) &mdash; hdlregression 0.61.0 documentation</title>
+  <title>Graphical User Interface (GUI) &mdash; hdlregression 0.62.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
 
@@ -15,7 +15,7 @@
   
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=8fe1db5c"></script>
+        <script src="_static/documentation_options.js?v=1d9e05b7"></script>
         <script src="_static/doctools.js?v=9a2dae69"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
@@ -54,7 +54,7 @@
 <li class="toctree-l1"><a class="reference internal" href="cli.html">Command Line Interface (CLI)</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Graphical User Interface (GUI)</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#modelsim">Modelsim</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#ghdl">GHDL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ghdl-nvc">GHDL / NVC</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="testbench.html">Testbench</a></li>
@@ -94,7 +94,7 @@
 <h2>Modelsim<a class="headerlink" href="#modelsim" title="Link to this heading"></a></h2>
 <p>Sometimes debugging a design or test require the use of GUI (graphical user interface)
 and HDLRegression can run tests in GUI when called with the <code class="docutils literal notranslate"><span class="pre">-g</span></code> or <code class="docutils literal notranslate"><span class="pre">--gui</span></code> arugument.
-When enabled, the regression script will open inside Modelsim GUI with a loaded testcase ready to run.</p>
+When enabled, the regression script will open inside ModelSim/QuestaSim/Rivier-PRO GUI with a loaded testcase ready to run.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; python ../test/regression.py -tc uart_vvc_tb.func.check_simple_transmit -g</span>
 </pre></div>
 </div>
@@ -102,11 +102,11 @@ When enabled, the regression script will open inside Modelsim GUI with a loaded 
 test:</p>
 <a class="reference internal image-reference" href="_images/gui_menu.png" id="gui-menu"><img alt="_images/gui_menu.png" class="align-center" id="gui-menu" src="_images/gui_menu.png" style="width: 550px;" /></a>
 </section>
-<section id="ghdl">
-<h2>GHDL<a class="headerlink" href="#ghdl" title="Link to this heading"></a></h2>
-<p>GHDL does not have a GUI, but can create simulation waveform files that can be opened to have a graphical representation
+<section id="ghdl-nvc">
+<h2>GHDL / NVC<a class="headerlink" href="#ghdl-nvc" title="Link to this heading"></a></h2>
+<p>GHDL and NVC does not have a GUI, but can create simulation waveform files that can be opened to have a graphical representation
 of the signals in a VCD format (Value Change Dump).</p>
-<p>When HDLRegression is called with GUI arguments and runnning with GHDL simulator it will create <code class="docutils literal notranslate"><span class="pre">sim.vcd</span></code> files
+<p>When HDLRegression is called with GUI arguments and runnning with GHDL/NVC simulator it will create <code class="docutils literal notranslate"><span class="pre">sim.vcd</span></code> files
 inside every testcase run folder. The VCD files can then be opened in a graphical wavefarm viewer such as GTKWave.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; python ../test/regression.py -tc uart_vvc_tb.func.check_simple_transmit -g -s ghdl</span>
 <span class="go">&gt; gtkwave ./hdlregression/test/uart_vvc_tb/54005228/sim.vcd &amp;</span>

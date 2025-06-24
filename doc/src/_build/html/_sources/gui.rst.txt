@@ -8,7 +8,7 @@ Modelsim
 
 Sometimes debugging a design or test require the use of GUI (graphical user interface) 
 and HDLRegression can run tests in GUI when called with the ``-g`` or ``--gui`` arugument.
-When enabled, the regression script will open inside Modelsim GUI with a loaded testcase ready to run.
+When enabled, the regression script will open inside ModelSim/QuestaSim/Rivier-PRO GUI with a loaded testcase ready to run.
 
 
 .. code-block:: console
@@ -25,13 +25,13 @@ test:
   :align: center
   
 
-GHDL
-----
+GHDL / NVC
+----------
 
-GHDL does not have a GUI, but can create simulation waveform files that can be opened to have a graphical representation
+GHDL and NVC does not have a GUI, but can create simulation waveform files that can be opened to have a graphical representation
 of the signals in a VCD format (Value Change Dump).
 
-When HDLRegression is called with GUI arguments and runnning with GHDL simulator it will create ``sim.vcd`` files
+When HDLRegression is called with GUI arguments and runnning with GHDL/NVC simulator it will create ``sim.vcd`` files
 inside every testcase run folder. The VCD files can then be opened in a graphical wavefarm viewer such as GTKWave.
 
 

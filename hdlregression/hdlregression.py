@@ -32,13 +32,13 @@ from .report.jsonreporter import JSONReporter
 from .report.csvreporter import CSVReporter
 from .report.txtreporter import TXTReporter
 from .report.xmlreporter import XMLReporter
-from .run.tcl_runner import TclRunner
+from .run.tcl_runner import TclRunnerModelsim, TclRunnerRiviera, TclRunnerActiveHDL
 from .run.cmd_runner import CommandRunner
 from .run.runner_modelsim import ModelsimRunner
 from .run.runner_nvc import NVCRunner
 from .run.runner_ghdl import GHDLRunner
-from .run.runner_riviera import RivieraRunner
-from .run.runner_aldec import AldecRunner
+from .run.runner_aldec import RivieraRunner, ActiveHDLRunner
+from .run.vivado_runner import VivadoRunner
 from .construct.hdllibrary import HDLLibrary, PrecompiledLibrary
 from .configurator import SettingsConfigurator
 from .run.hdltests import TestStatus
@@ -47,7 +47,6 @@ import sys
 import os
 import pickle
 from signal import signal, SIGINT
-from hdlregression.run.vivado_runner import VivadoRunner
 
 # Enable terminal colors on windows OS
 if os.name == "nt":
@@ -552,7 +551,14 @@ class HDLRegression:
             No tests are run in this mode, but testcases are manually started
             from Modelsim GUI using the "s" command (simulate).
             """
-            self.runner = TclRunner(project=self)
+            self.logger.info("Simulator: {}".format(self.runner.get_simulator_name()))
+
+            if self.settings.get_simulator_name() == "MODELSIM":
+                self.runner = TclRunnerModelsim(project=self)
+            elif self.settings.get_simulator_name() == "RIVIERA-PRO":
+                self.runner = TclRunnerRiviera(project=self)
+            elif self.settings.get_simulator_name() == "ACTIVE-HDL":
+                self.runner = TclRunnerActiveHDL(project=self)
 
             # Prepare modelsim.ini file
             modelsim_ini_file = self.runner._setup_ini()
@@ -570,7 +576,7 @@ class HDLRegression:
                 self._save_project_to_disk(reset=False)
 
                 # create tcl file and start GUI mode.
-                self.runner.simulate()
+                self.runner.simulate_gui()
 
                 print_info_msg_when_no_test_has_run(project=self, runner=self.runner)
 
@@ -1099,8 +1105,10 @@ class HDLRegression:
         """
         if simulator == "MODELSIM":
             runner_obj = ModelsimRunner(project=self)
-        elif simulator == "RIVIERA_PRO":
+        elif simulator == "RIVIERA-PRO":
             runner_obj = RivieraRunner(project=self)
+        elif simulator == "ACTIVE-HDL":
+            runner_obj = ActiveHDLRunner(project=self)
         elif simulator == "GHDL":
             runner_obj = GHDLRunner(project=self)
         elif simulator == "NVC":

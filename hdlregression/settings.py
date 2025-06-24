@@ -578,14 +578,14 @@ class HDLRegressionSettings:
 
 class SimulatorDetector:
 
-    ID_MODELSIM_SIMULATOR = ["modelsim", "MODELSIM", "mentor", "MENTOR"]
+    ID_MODELSIM_SIMULATOR = ["modelsim", "MODELSIM", "mentor", "MENTOR", "questa", "QUESTA"]
     ID_RIVIERA_SIMULATOR = [
         "riviera",
         "RIVIERA",
-        "riviera_pro",
-        "RIVIERA_PRO",
+        "riviera-pro",
+        "RIVIERA-PRO",
     ]
-    ID_ALDEC_SIMULATOR = ["aldec", "ALDEC"]
+    ID_ACTIVE_HDL_SIMULATOR = ["active-hdl", "ACTIVE-HDL", "active", "ACTIVE"]
     ID_GHDL_SIMULATOR = ["ghdl", "GHDL"]
     ID_NVC_SIMULATOR = ["nvc", "NVC"]
     ID_VIVADO_SIMULATOR = ["vivado", "VIVADO"]
@@ -632,6 +632,8 @@ class SimulatorDetector:
         riviera_pro_installed = self.is_simulator_installed(
             simulator_call="vsimsa", version_call="-version", simulator_name="riviera"
         )
+        active_hdl_installed = self.is_simulator_installed(
+            simulator_call="vsim", version_call="-version", simulator_name="active-hdl")
         vivado_installed = self.is_simulator_installed(
             simulator_call="xsim", version_call="--version", simulator_name="vivado"
         )
@@ -645,7 +647,9 @@ class SimulatorDetector:
         elif ghdl_installed:
             simulator = "GHDL"
         elif riviera_pro_installed:
-            simulator = "RIVIERA_PRO"
+            simulator = "RIVIERA-PRO"
+        elif active_hdl_installed:
+            simulator = "ACTIVE-HDL"
         elif vivado_installed:
             simulator = "VIVADO"
 
@@ -654,7 +658,8 @@ class SimulatorDetector:
             "MODELSIM": modelsim_installed,
             "NVC": nvc_installed,
             "GHDL": ghdl_installed,
-            "RIVIERA_PRO": riviera_pro_installed,
+            "RIVIERA-PRO": riviera_pro_installed,
+            "ACTIVE-HDL": active_hdl_installed,
             "VIVADO": vivado_installed,
             "simulator_name": simulator,
         }
@@ -663,9 +668,9 @@ class SimulatorDetector:
         if simulator_name in self.ID_MODELSIM_SIMULATOR:
             return "MODELSIM"
         elif simulator_name in self.ID_RIVIERA_SIMULATOR:
-            return "RIVIERA_PRO"
-        elif simulator_name in self.ID_ALDEC_SIMULATOR:
-            return "ALDEC"
+            return "RIVIERA-PRO"
+        elif simulator_name in self.ID_ACTIVE_HDL_SIMULATOR:
+            return "ACTIVE-HDL"
         elif simulator_name in self.ID_GHDL_SIMULATOR:
             return "GHDL"
         elif simulator_name in self.ID_NVC_SIMULATOR:
@@ -688,11 +693,12 @@ class SimulatorDetector:
         self._validate_simulator_installed(sim_name)
 
         if sim_name == "MODELSIM": return ModelsimSettings()
-        elif sim_name == "RIVIERA_PRO": return RivieraProSettings()
+        elif sim_name == "RIVIERA-PRO": return RivieraProSettings()
+        elif sim_name == "ACTIVE-HDL": return ActiveHDLSettings()
         elif sim_name == "NVC": return NVCSettings()
         elif sim_name == "GHDL": return GHDLSettings()
         elif sim_name == "VIVADO": return VivadoSettings()
-        elif sim_name == "ALDEC": return AldecSettings()
+        elif sim_name == "ACTIVE-HDL": return ActiveHDLSettings()
         else: raise UnavailableSimulatorError("Simulator {} not found.".format(sim_name))
 
 
@@ -921,7 +927,7 @@ class GHDLSettings(SimulatorSettings):
         return (vhdl_default is True) and (verilog_default is True)
 
 class RivieraProSettings(SimulatorSettings):
-    SIMULATOR_NAME = "RIVIERA_PRO"
+    SIMULATOR_NAME = "RIVIERA-PRO"
     DEF_COM_OPTIONS_VHDL = [
         "-2008",
         "-nowarn",
@@ -931,6 +937,8 @@ class RivieraProSettings(SimulatorSettings):
         "-nowarn",
         "DAGGEN_0001",
     ]
+
+    DEF_COM_OPTIONS_VERILOG = ["-vlog01compat"]
 
     def __init__(self):
         super().__init__()
@@ -943,7 +951,29 @@ class RivieraProSettings(SimulatorSettings):
         verilog_default = self.com_options_vhdl == self.DEF_COM_OPTIONS_VHDL
         return (vhdl_default is True) and (verilog_default is True)
 
+class ActiveHDLSettings(RivieraProSettings):
+    SIMULATOR_NAME = "ACTIVE-HDL"
+    DEF_COM_OPTIONS_VHDL = [
+        "-2008",
+        "-nowarn",
+        "COMP96_0564",
+        "-nowarn",
+        "COMP96_0048",
+        "-nowarn",
+        "DAGGEN_0001",
+    ]
+    DEF_COM_OPTIONS_VERILOG = ["-vlog01compat"]
 
+    def __init__(self):
+        super().__init__()
+        self.com_options_verilog = self.DEF_COM_OPTIONS_VERILOG
+        self.com_options_vhdl = self.DEF_COM_OPTIONS_VHDL
+        self.sim_options = self.DEF_SIM_OPTIONS
+
+    def get_is_default_com_options(self) -> bool:
+        vhdl_default = self.com_options_verilog == self.DEF_COM_OPTIONS_VERILOG
+        verilog_default = self.com_options_vhdl == self.DEF_COM_OPTIONS_VHDL
+        return (vhdl_default is True) and (verilog_default is True)
 
 class VivadoSettings(SimulatorSettings):
     SIMULATOR_NAME = "VIVADO"
@@ -959,28 +989,3 @@ class VivadoSettings(SimulatorSettings):
         vhdl_default = self.com_options_verilog == self.DEF_COM_OPTIONS_VERILOG
         verilog_default = self.com_options_vhdl == self.DEF_COM_OPTIONS_VHDL
         return (vhdl_default is True) and (verilog_default is True)
-
-    
-class AldecSettings(SimulatorSettings):
-    SIMULATOR_NAME = "ALDEC"
-    DEF_COM_OPTIONS_VHDL = [
-        "-2008",
-        "-nowarn",
-        "COMP96_0564",
-        "-nowarn",
-        "COMP96_0048",
-        "-nowarn",
-        "DAGGEN_0001",
-    ]
-
-    def __init__(self):
-        super().__init__()
-        self.com_options_verilog = self.DEF_COM_OPTIONS_VERILOG
-        self.com_options_vhdl = self.DEF_COM_OPTIONS_VHDL
-        self.sim_options = self.DEF_SIM_OPTIONS
-
-    def get_is_default_com_options(self) -> bool:
-        vhdl_default = self.com_options_verilog == self.DEF_COM_OPTIONS_VERILOG
-        verilog_default = self.com_options_vhdl == self.DEF_COM_OPTIONS_VHDL
-        return (vhdl_default is True) and (verilog_default is True)
-    

@@ -203,7 +203,7 @@ def os_adjust_path(path) -> str:
         return path.replace("\\", "\\\\")
 
 
-SIMULATORS = ["GHDL", "MODELSIM", "NVC", "RIVIERA_PRO"]
+SIMULATORS = ["GHDL", "MODELSIM", "NVC", "RIVIERA-PRO", "ACTIVE-HDL"]
 
 
 def simulator_detector() -> list:
@@ -216,12 +216,12 @@ def simulator_detector() -> list:
         detected_simulators.append("GHDL")
     if "nvc" in path_env.lower():
         detected_simulators.append("NVC")
-    if "modelsim" in path_env.lower():
+    if "modelsim" in path_env.lower() or "questasim" in path_env.lower():
         detected_simulators.append("MODELSIM")
-    if "aldec" in path_env.lower():
-        detected_simulators.append("ALDEC")
+    if "active_hdl" in path_env.lower() or "active-hdl" in path_env.lower():
+        detected_simulators.append("ACTIVE-HDL")
     if "riviera" in path_env.lower():
-        detected_simulators.append("RIVIERA_PRO")
+        detected_simulators.append("RIVIERA-PRO")
 
     return detected_simulators
 
@@ -424,10 +424,9 @@ def disable_threading(project):
 
 
 def run_from_gui(project) -> bool:
-    if project.settings.get_gui_mode():
-        return project.settings.get_simulator_name() == "MODELSIM"
-    else:
-        return False
+    """Check if the simulation should run from GUI mode."""
+    supported_gui_simulators = {"RIVIERA-PRO", "MODELSIM", "ACTIVE-HDL"}
+    return project.settings.get_gui_mode() and project.settings.get_simulator_name() in supported_gui_simulators
 
 
 def update_settings_from_arguments(project, kwargs: dict):

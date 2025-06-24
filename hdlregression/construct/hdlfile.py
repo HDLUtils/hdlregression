@@ -263,22 +263,19 @@ class VHDLFile(HDLFile):
         :rtype: bool
         :return: True if file has been parsed, else False
         """
-
         # Files that should not be parsed are set to False, i.e.
         # return True to caller - caller does not care if file is parsed.
-        if self.parse_file is False:
-            return True
-        else:
+        if self.parse_file is True:
             file_content_list = self._get_file_content_as_list()
             # Extract relevant content from source file
             self.scanner.scan(file_content_list)
-            return True
+        return True
 
     def _get_com_options(self, simulator) -> str:
         """
         Return a list of compile options for this file.
             Params:
-              simulator(str): simulator type name (GHDL, MODELSIM, ALDEC)
+              simulator(str): simulator type name (GHDL, MODELSIM, NVC, ACTICE-HDL, RIVIERA-PRO)
 
             Returns:
               com_options(str): simulator options for file.
@@ -301,7 +298,7 @@ class VHDLFile(HDLFile):
                     for directive in default_com_options
                 ]
 
-        elif simulator.upper() == "ALDEC":
+        elif simulator.upper() in ["ACTIVE-HDL", "RIVIERA-PRO"]:
             if not hdl_version:
                 hdl_version = "2008"
             if self.com_options:
@@ -424,19 +421,17 @@ class VerilogFile(HDLFile):
         objects+++.
         """
         # Check if file should be parsed
-        if self.parse_file is False:
-            return True
-        else:
+        if self.parse_file is True:
             file_content_list = self._get_file_content_as_list()
             # Extract relevant content from source file
             self.scanner.scan(file_content_list)
-            return True
+        return True
 
     def _get_com_options(self, simulator) -> str:
         """
         Return a list of compile options for this file.
             Params:
-              simulator(str): simulator type name (MODELSIM, ALDEC)
+              simulator(str): simulator type name (MODELSIM, ACTIVE-HDL, RIVIERA-PRO)
 
             Returns:
               com_options(str): simulator options for file.

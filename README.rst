@@ -92,3 +92,9 @@ Contributing
 
 🤝 HDLRegression is open-source and welcomes contributions. Submit your ideas, bug reports,
 or improvements via GitHub issues or pull requests.
+
+
+License
+=======
+
+This project is licensed under the MIT License - see the LICENSE file for details.
