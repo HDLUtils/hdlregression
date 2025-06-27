@@ -158,9 +158,13 @@ proc r {} {
     }
 
     if {$hdlregression_success == true} {
-        puts "Re-compilation success."
+        puts "-----------------------------------"
+        puts "     Re-compilation success!"
+        puts "-----------------------------------"
     } else {
-        puts "Re-compilation FAILED!"
+        puts "-----------------------------------"
+        puts "     Re-compilation FAILED!"
+        puts "-----------------------------------"
     }
 }
 """ % (
@@ -191,10 +195,14 @@ proc ra {} {
     }
 
     if {$hdlregression_success == true} {
-        puts "Re-compilation success."
+        puts "-----------------------------------"
+        puts "     Re-compilation success!"
+        puts "-----------------------------------"
         rs
     } else {
-        puts "Re-compilation FAILED!"
+        puts "-----------------------------------"
+        puts "     Re-compilation FAILED!"
+        puts "-----------------------------------"
     }
 }
 """ % (
@@ -225,9 +233,13 @@ proc ro {} {
     }
 
     if {$hdlregression_success == true} {
-        puts "Re-compilation success."
+        puts "-----------------------------------"
+        puts "     Re-compilation success!"
+        puts "-----------------------------------"
     } else {
-        puts "Re-compilation FAILED!"
+        puts "-----------------------------------"
+        puts "     Re-compilation FAILED!"
+        puts "-----------------------------------"
     }
 }
 """ % (
@@ -253,6 +265,15 @@ proc qc {} {
 """
         return txt
 
+    @staticmethod
+    def _quit() -> str:
+        txt = """
+proc q {} {
+    quit
+}
+"""
+        return txt
+
     def _get_proc(self, test) -> str:
         txt = self._get_menu()
         txt += self._cd_sim()
@@ -263,6 +284,7 @@ proc qc {} {
         txt += self._get_checker_proc()
         txt += self._restart()
         txt += self._restart_and_run()
+        txt += self._quit()
         txt += self._quit_complete()
         txt += self._get_quietly()
         return txt

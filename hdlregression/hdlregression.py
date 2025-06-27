@@ -32,6 +32,7 @@ from .report.jsonreporter import JSONReporter
 from .report.csvreporter import CSVReporter
 from .report.txtreporter import TXTReporter
 from .report.xmlreporter import XMLReporter
+from .report.htmlreporter import HTMLReporter
 from .run.tcl_runner import TclRunnerModelsim, TclRunnerRiviera, TclRunnerActiveHDL
 from .run.cmd_runner import CommandRunner
 from .run.runner_modelsim import ModelsimRunner
@@ -332,6 +333,8 @@ class HDLRegression:
             self.reporter = JSONReporter(filename=report_file, project=self)
         elif report_file.lower().endswith(".xml"):
             self.reporter = XMLReporter(filename=report_file, project=self)
+        elif report_file.lower().endswith(".html") or report_file.lower().endswith(".htm"):
+            self.reporter = HTMLReporter(filename=report_file, project=self)
         else:
             self.logger.warning(
                 "Unsupported report file type: %s. Using: report_file.txt"

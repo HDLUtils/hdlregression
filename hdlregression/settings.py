@@ -678,7 +678,10 @@ class SimulatorDetector:
         elif simulator_name in self.ID_VIVADO_SIMULATOR:
             return "VIVADO"
         else:
-            raise UnavailableSimulatorError("Simulator {} unsupported.".format(simulator_name))
+            if simulator_name is None or simulator_name == "":
+                raise UnavailableSimulatorError("Simulator name missing: '{}'.".format(simulator_name))
+            else:
+                raise UnavailableSimulatorError("Simulator '{}' unsupported.".format(simulator_name))
         
     def _validate_simulator_installed(self, simulator_name) -> None:
         """Check with simulator info dict if the simulator name is found/installed"""

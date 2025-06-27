@@ -258,7 +258,8 @@ class RivieraRunner(SimRunner):
         return "-lib {} {} {}".format(lib_name, test.get_name(), architecture_name)
 
     def _get_descriptive_test_name(self, test, architecture_name, module_call):
-        return module_call
+        test_name = module_call.replace("-lib ", "").replace(" ", ".")
+        return test_name
 
     def _get_ignored_error_detection_str(self) -> str:
         return r"^\/\/  (Reconnected|Lost connection) to license server"
@@ -282,6 +283,11 @@ class ActiveHDLRunner(RivieraRunner, SimRunner):
 
     def _get_simulator_warning_regex(self):
         return RE_ACTIVE_HDL_WARNING
+
+    def _get_descriptive_test_name(self, test, architecture_name, module_call):
+        test_name = module_call.replace("-lib ", "").replace(" ", ".")
+        return test_name
+
 
 #    def _get_module_call(self, test, architecture_name):
 #        lib_name = test.get_library().get_name()

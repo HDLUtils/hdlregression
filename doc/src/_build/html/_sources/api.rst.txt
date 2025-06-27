@@ -743,12 +743,12 @@ should be given to the report name.
 .. code-block:: python
 
   hr.gen_report(report_file="sim_report.csv", compile_order=True)
-  hr.gen_report(report_file="sim_report.csv", compile_order=True, library=True)
+  hr.gen_report(report_file="sim_report.html", compile_order=True, library=True)
 
 
 .. important::
 
-  Supported file types are ``.txt``, ``.csv``, ``.xml`` and ``.json`` and the file type is extracted from the file name.
+  Supported file types are ``.txt``, ``.csv``, ``.html``, ``.xml`` and ``.json`` and the file type is extracted from the file name.
 
 
 
