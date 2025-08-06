@@ -6,7 +6,7 @@ Command Line Interface (CLI)
 
 | The configuration of a regression run can be set directly from the command line using command line interface. 
   This can be useful when debugging the behaviour of a design, e.g. by running in :doc:`GUI mode <gui>`, 
-  or working with a :ref:`testcase <Testcase>` or :ref:`test group <Test group>`. 
+  or working with a :ref:`testcase <test case>` or :ref:`test group <test group>`. 
 | The command line interface are processed at startup and will override any scripted configurations that are in conflict.
 
 
@@ -25,11 +25,11 @@ Command Line Interface (CLI)
 +-------------------------------------+----------------------------------------------+--------------------------------------------+
 |     -c                              |    --clean                                   | Remove all before test run                 |
 +-------------------------------------+----------------------------------------------+--------------------------------------------+
-|     -tc TB_ENTITY [TB_ARCH [TC]]    |    --testCase TB_ENTITY [TB_ARCH [TC]]       | Run selected testcase                      |
+|     -tc TB_ENTITY [TB_ARCH [TC]]    |    --testCase TB_ENTITY [TB_ARCH [TC]]       | Run selected test case                     |
 +-------------------------------------+----------------------------------------------+--------------------------------------------+
 |     -tg TESTGROUP                   |    --testGroup TESTGROUP                     | Run selected test group                    |
 +-------------------------------------+----------------------------------------------+--------------------------------------------+
-|     -ltc                            |    --listTestcase                            | List all discovered testcases              |
+|     -ltc                            |    --listTestcase                            | List all discovered test cases             |
 +-------------------------------------+----------------------------------------------+--------------------------------------------+
 |     -ltg                            |    --listTestgroup                           | List all test groups                       |
 +-------------------------------------+----------------------------------------------+--------------------------------------------+
@@ -37,7 +37,7 @@ Command Line Interface (CLI)
 +-------------------------------------+----------------------------------------------+--------------------------------------------+
 |     -fc                             |    --forceCompile                            | Force recompile                            |
 +-------------------------------------+----------------------------------------------+--------------------------------------------+
-|     -sof                            |    --stopOnFailure                           | Stop simulations on testcase fail          |
+|     -sof                            |    --stopOnFailure                           | Stop simulations on test case fail         |
 +-------------------------------------+----------------------------------------------+--------------------------------------------+
 |     -s                              |    --simulator                               | Set simulator (require path in env)        |
 +-------------------------------------+----------------------------------------------+--------------------------------------------+
@@ -60,12 +60,24 @@ Command Line Interface (CLI)
 Examples
 ***********************************************************************************************************************	     
 
+Selecting simulator
+=======================================================================================================================
+
+HDLRegression will try to auto-detect the simulator to use, but this can be overridden using the ``-s``
+or ``--simulator`` argument.
+
+.. code-block:: console
+
+  > python ../test/regression.py -s NVC
+  > python ../test/regression.py -s RIVIERA-PRO
+  > python ../test/regression.py -s GHDL
+  > python ../test/regression.py -s MODELSIM
 
 
 Full regression
 =======================================================================================================================
 
-Enabling the :ref:`full regression mode <What is regression testing>` ensures that all testcases are run, regardless
+Enabling the :ref:`full regression mode <What is regression testing>` ensures that all test cases are run, regardless
 of any previous runs, i.e. re-running the complete test suite.
 
 .. code-block:: console
@@ -79,12 +91,12 @@ of any previous runs, i.e. re-running the complete test suite.
   :align:   center
   
 
-Testcases
+Test cases
 =======================================================================================================================
 
 All tests that are discovered by HDLRegression can be listed using the ``-ltc`` or ``--listTestcase`` argument, and 
-are listed as ``<testbench entity>.<testbench architecture>.<sequencer built-in testcase>`` or just 
-``<testbench entity>.<testbench architecture>`` if no sequencer built-in testcases are used.
+are listed as ``<testbench entity>.<testbench architecture>.<sequencer built-in test case>`` or just 
+``<testbench entity>.<testbench architecture>`` if no sequencer built-in test cases are used.
 
 .. code-block:: console
 
@@ -93,12 +105,12 @@ are listed as ``<testbench entity>.<testbench architecture>.<sequencer built-in 
 
 .. image:: images/testcase_listing.png
   :width: 750
-  :name: testcase listing in terminal
+  :name: test case listing in terminal
   :align:   center
 
 
-Running a selected test is done using the ``-tc <testbench.architecture.testcase>`` or 
-``--testCase <testbench.architecture.testcase>`` argument
+Running a selected test is done using the ``-tc <testbench.architecture.test case>`` or 
+``--testCase <testbench.architecture.test case>`` argument
 
 .. include:: wildcards_reference_tip.rst
   
@@ -107,14 +119,14 @@ Running a selected test is done using the ``-tc <testbench.architecture.testcase
   > python ../test/regression.py -tc uart_vvc_tb.func.check_simple_receive
 
 
-A testcase can also be selected using the testcase number from the ``-ltc`` or ``--listTestcase`` argument
+A test case can also be selected using the test case number from the ``-ltc`` or ``--listTestcase`` argument
 
 .. code-block:: console
 
   > python ../test/regression.py -tc 5
 
 
-.. image:: images/testcase_running.png
+.. image:: images/test case_running.png
   :width: 750
   :name: running in terminal
   :align:   center
@@ -122,15 +134,15 @@ A testcase can also be selected using the testcase number from the ``-ltc`` or `
 
 
 .. tip::
-  Testcases are identified by:
+  Test cases are identified by:
 
   #. <entity_name>
   #. <entity_name>.<architecture_name>
-  #. <entity_name>.<architecture_name>.<sequencer_testcase>
+  #. <entity_name>.<architecture_name>.<sequencer_test case>
 
-  | When selecting testcases to run, you can utilize wildcards to simplify the process. However, it's important to
+  | When selecting test cases to run, you can utilize wildcards to simplify the process. However, it's important to
     note that the test case identifier must follow a specific naming convention.
-  | For example, if you want to run all sequencer testcases that contain the word "write," you would need to specify
+  | For example, if you want to run all sequencer test cases that contain the word "write," you would need to specify
     the identifier as <entity_name>.<architecture_name>.write.
   | Note that you can also use wildcards for <entity_name> and/or <architecture_name> to further
     refine your filter.
@@ -140,9 +152,9 @@ Test groups
 =======================================================================================================================
 
 Listing of test groups that have been defined in the regression script. In the code snippet below there are defined
-two test groups, `transmit_tests` and `receive_tests`, that will run all testcases that have `transmit` and `receive`
-in the testcase name, and is defined in testbench `uart_vvc_tb` architecture `func`. 
-There is also a test group `selection_tests` that will run all testcases that are part of the `uart_vvc_demo_tb` and 
+two test groups, `transmit_tests` and `receive_tests`, that will run all test cases that have `transmit` and `receive`
+in the test case name, and is defined in testbench `uart_vvc_tb` architecture `func`. 
+There is also a test group `selection_tests` that will run all test cases that are part of the `uart_vvc_demo_tb` and 
 `uart_simple_bfm_tb` entities.
 
 
@@ -181,7 +193,7 @@ Running one of the test groups, e.g. `receive_tests`, will run all tests with na
 
 * testbench entity with ``uart_vvc_tb``
 * testbench architecture with ``func``
-* sequencer built-in testcase with ``receive``
+* sequencer built-in test case with ``receive``
 
 .. code-block:: console
 
@@ -199,7 +211,7 @@ Running one of the test groups, e.g. `receive_tests`, will run all tests with na
 Threading
 ***********************************************************************************************************************	     
 
-HDLRegression will run all tasks (pre-processing and testcase simulations) in a sequential order, but this can be changed
+HDLRegression will run all tasks (pre-processing and test case simulations) in a sequential order, but this can be changed
 using the ``-t`` / ``--threading`` option, and optioinally with a number of threads.
 
 
@@ -217,7 +229,7 @@ using the ``-t`` / ``--threading`` option, and optioinally with a number of thre
 Sequential
 =======================================================================================================================
 
-All pre-processing steps and testcase running are performed sequentially.
+All pre-processing steps and test case running are performed sequentially.
 
 .. code-block:: console
 
@@ -233,7 +245,7 @@ All pre-processing steps and testcase running are performed sequentially.
 Pre-processing in parallel, simulations sequentially
 =======================================================================================================================
 
-All pre-processing steps are performed in parallel and testcase running is performed sequentially.
+All pre-processing steps are performed in parallel and test case running is performed sequentially.
 
 .. code-block:: console
 
@@ -249,7 +261,7 @@ All pre-processing steps are performed in parallel and testcase running is perfo
 Pre-processing and simulations in parallel using 10 threads
 =======================================================================================================================
 
-All pre-processing steps and testcase running is performed in parallel.
+All pre-processing steps and test case running is performed in parallel.
 
 .. code-block:: console
 
@@ -267,7 +279,7 @@ All pre-processing steps and testcase running is performed in parallel.
 Simulation results
 ***********************************************************************************************************************	     
 
-Running simulations in terminal will output the necessary information, such as the testcase name, generics used,
+Running simulations in terminal will output the necessary information, such as the test case name, generics used,
 simulation run time and result.
 
 
@@ -284,7 +296,7 @@ Regression initial run
 Regression run without changes
 =======================================================================================================================
 
-No tests are run when no changes are detected in the DUT or testcase files, unless full regression is enabled using
+No tests are run when no changes are detected in the DUT or test case files, unless full regression is enabled using
 the :doc:`cli` ``-fr`` or using the :doc:`api` in the regression script ``hr.start(full_regression=True)``.
 
 .. image:: images/regression_run_2.png
@@ -294,10 +306,10 @@ the :doc:`cli` ``-fr`` or using the :doc:`api` in the regression script ``hr.sta
 
 
 
-Failing testcase run
+Failing test case run
 =======================================================================================================================
 
-A failing testcase will be reported as **FAIL** with a short summary from the test log:
+A failing test case will be reported as **FAIL** with a short summary from the test log:
 
 
 .. image:: images/failing_testcase.png

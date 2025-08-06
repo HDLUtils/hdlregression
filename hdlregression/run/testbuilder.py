@@ -416,7 +416,6 @@ class TestBuilder:
                 (entity, architecture, testcase, generics) = test_run
 
                 # Check for match with test container (base tests)
-                # for test in self.tests_to_run_container.get():
                 for test in self.base_tests_container.get():
                     # Match entity
                     if self._unix_match(search_string=test.get_name(), pattern=entity):
@@ -461,6 +460,10 @@ class TestBuilder:
                 filtered_tests.append(test)
             elif not self.project.settings.get_run_success():
                 filtered_tests.append(test)
+            elif test.get_hdlfile().get_library().get_need_compile() is True:
+                filtered_tests.append(test)
+            elif test.get_hdlfile().get_library().get_dependencies_need_compile() is True:
+                filtered_tests.append(test)
 
         self._copy_filtered_tests_to_tests_to_run_container(filtered_tests)
 
@@ -474,7 +477,9 @@ class TestBuilder:
             test = VHDLTest(
                 tb=tb, arch=arch, tc=tc, gc=gc, settings=self.project.settings
             )
+            lib = hdlfile.get_library()
             test.set_hdlfile(hdlfile)
+            test.set_library(lib)
             self.test_id_count += 1
             test.set_id_number(self.test_id_count)
             return test

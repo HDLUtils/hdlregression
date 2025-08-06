@@ -20,7 +20,7 @@ suffix to ensure that no important test run results are overwritten.
 .. note::
     
     The library folder will include one or more folders for the compiled libraries.
-    The test folder will include one or more testcase folders and - if selected - a coverage folder.
+    The test folder will include one or more test case folders and - if selected - a coverage folder.
 
 
 ***********************************************************************************************************************	     

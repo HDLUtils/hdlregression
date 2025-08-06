@@ -170,7 +170,7 @@ can be called several times in the regressions script, addressing the same or a 
 .. note::
 
   A back annotated timing file (SDF) require the ``netlist_inst`` arguments and a back annotated timing file (VHD)
-  require the ``parse_file`` argument set to ``True``.
+  require the ``parse_file`` argument set to ``False``.
 
   #. The ``netlist_inst`` argument is a string that has to be set to design instantiation path in the design.
   #. Any number of back-annotated timing files can be added.
@@ -236,17 +236,17 @@ start()
 
 The return code from the start() method is either 0 or 1, based on whether the success criteria listed below are met:
 
-+------------------------------------------------------------------+-------------+
-| Criteria                                                         | Return code |
-+==================================================================+=============+
-| No compilation error and testcase(s) has been run without errors | 0           |
-+------------------------------------------------------------------+-------------+
-| No compilation error and no testcase run                         | 1           |
-+------------------------------------------------------------------+-------------+
-| No compilation error and testcase run with one or more errors    | 1           |
-+------------------------------------------------------------------+-------------+
-| Compilation error (no testcases will be run)                     | 1           |
-+------------------------------------------------------------------+-------------+
++-------------------------------------------------------------------+-------------+
+| Criteria                                                          | Return code |
++===================================================================+=============+
+| No compilation error and test case(s) has been run without errors | 0           |
++-------------------------------------------------------------------+-------------+
+| No compilation error and no test case run                         | 1           |
++-------------------------------------------------------------------+-------------+
+| No compilation error and test case run with one or more errors    | 1           |
++-------------------------------------------------------------------+-------------+
+| Compilation error (no test cases will be run)                     | 1           |
++-------------------------------------------------------------------+-------------+
 
 **Arguments**
 
@@ -428,13 +428,13 @@ yet this can be changed using the available arguments or by using the :doc:`comm
 
 .. warning::
 
-  **gui_mode** will run testcases in one of these modes:
+  **gui_mode** will run test cases in one of these modes:
   
-  #. testcases added by the `add_testcase()`_ method or using the :doc:`command line interfaces <cli>`.
+  #. test cases added by the `add_testcase()`_ method or using the :doc:`command line interfaces <cli>`.
  
   #. regression mode.
 
-  starting with bullet point 1, and if no testcases have been added, moving on to bullet point 2. 
+  starting with bullet point 1, and if no test cases have been added, moving on to bullet point 2. 
 
 
 ***********************************************************************************************************************	     
@@ -446,7 +446,7 @@ Advanced methods
 add_file_to_run_folder()
 =======================================================================================================================
 
-Copies a single file to the testcase run folder.
+Copies a single file to the test case run folder.
 
 .. code-block:: python
 
@@ -477,8 +477,8 @@ Copies a single file to the testcase run folder.
 add_generics()
 =======================================================================================================================
 
-Selects the generics to be used when running a testcase.
-A test run is created when generics are added to a testcase, thus calling `add_generics()`_ two times will create
+Selects the generics to be used when running a test case.
+A test run is created when generics are added to a test case, thus calling `add_generics()`_ two times will create
 two test runs. 
 
 .. code-block:: python
@@ -543,20 +543,20 @@ Specifies the name and path of a precompiled library.
 add_testcase()
 =======================================================================================================================
 
-Adding testcase(s) will configure HDLRegression to only run these testcases. 
-All testcases are run if no testcases are added using this command.
-Selecting testcase can also be done by using :doc:`command line interfaces <cli>`, and testcases selected from CLI will 
-override any scripted testcase selecition.
+Adding test case(s) will configure HDLRegression to only run these test cases. 
+All test cases are run if no test cases are added using this command.
+Selecting test case can also be done by using :doc:`command line interfaces <cli>`, and test cases selected from CLI will 
+override any scripted test case selecition.
 
 
 .. important::
-  A testcase name is a string that consists of 
+  A test case name is a string that consists of 
   
   #. testbench entity name
   #. testbench architecture name
   #. test name (optional)
 
-  And where the three testcase name elements are separated by a dot (``.``): ``<testbench_name>.<architecture_name>.<test_name>``.
+  And where the three test case name elements are separated by a dot (``.``): ``<testbench_name>.<architecture_name>.<test_name>``.
 
 
 .. include:: wildcards_reference_tip.rst
@@ -564,13 +564,13 @@ override any scripted testcase selecition.
 
 .. code-block:: python
 
-  add_testcase(<testcase>)
+  add_testcase(<test case>)
 
 
 +-------------------+---------------------------+---------------+
 | Argument          | Type                      | Required      |
 +===================+===========================+===============+
-| *testcase*        | string / list of strings  | **mandatory** |
+| *test case*       | string / list of strings  | **mandatory** |
 +-------------------+---------------------------+---------------+
 
 
@@ -580,16 +580,16 @@ override any scripted testcase selecition.
 
   add_testcase("interface_tb.test_arch.read_test") # this test only
 
-  add_testcase("interface_tb.*.read_*") # all architectures and all sequencer testcases starting with 'read'
+  add_testcase("interface_tb.*.read_*") # all architectures and all sequencer test cases starting with 'read'
 
-  add_testcase("interface_tb.test_arch.????_test") # all sequencer testcases mathing any 4 character start, followed by '_test'
+  add_testcase("interface_tb.test_arch.????_test") # all sequencer test cases mathing any 4 character start, followed by '_test'
 
   add_testcase(interface_tests_list) # a list of selected tests
 
 
 .. note::
 
-  The `start()`_ method will return error code 1 if no testcases matched the ``testcase`` keyword.
+  The `start()`_ method will return error code 1 if no test cases matched the ``test case`` keyword.
   
 
 
@@ -617,7 +617,7 @@ add_to_testgroup()
 +-------------------+--------------------------------+---------------+
 | architecture      | string                         | optional      |
 +-------------------+--------------------------------+---------------+
-| testcase          | string                         | optional      |
+| test case         | string                         | optional      |
 +-------------------+--------------------------------+---------------+
 | generic           | list [string, int/string/bool] | optional      |
 +-------------------+--------------------------------+---------------+
@@ -626,8 +626,8 @@ add_to_testgroup()
 .. note::
 
   * ``add_to_testgroup()`` adds existing tests to a collection, i.e. no new tests are created.
-  * The ``testcase`` argument is for selecting sequencer built-in testcases.
-  * The `start()`_ method will return error code 1 if no test group or testcase were found.
+  * The ``test case`` argument is for selecting sequencer built-in test cases.
+  * The `start()`_ method will return error code 1 if no test group or test case were found.
 
 
 .. include:: wildcards_reference_tip.rst
@@ -698,7 +698,7 @@ Set special settings for a library that differs significantly from the regular s
   hr.configure_library(<library>, <never_recompile>, <set_lib_dep>)
 
 +-------------------+---------------------------------------+-----------------------------------+---------------+
-| Argument          | Options                               | Example                           | Required      |
+| Argument          | Options                               | Example                           | Required      |
 +===================+=======================================+===================================+===============+
 | library           | *library name* (string)               | "can_ip_library"                  | **mandatory** |
 +-------------------+---------------------------------------+-----------------------------------+---------------+
@@ -963,7 +963,7 @@ report the check string.
 
 
 .. literalinclude:: examples/example_tb_result.vhd
-  :caption: Example TB with testcase result string
+  :caption: Example TB with test case result string
   :linenos:
   :language: vhdl
 
@@ -990,7 +990,7 @@ HDLRegression is configured to run using Modelsim and VHDL version 2008 as defau
   set_simulator(<simulator>, <simulator_path>, <com_options>)
 
 +-------------------+---------------------------------------------+---------------------------------------+---------------+
-| Argument          | Options                                     | Example                               | Required      |
+| Argument          | Options                                     | Example                               | Required      |
 +===================+=============================================+=======================================+===============+
 | simulator         | *simulator name* (string)                   | "MODELSIM"/"GHDL"/"NVC"/"RIVIERA_PRO" | **mandatory** |
 +-------------------+---------------------------------------------+---------------------------------------+---------------+
@@ -1021,13 +1021,13 @@ HDLRegression is configured to run using Modelsim and VHDL version 2008 as defau
 set_testcase_identifier_name()
 =======================================================================================================================
 
-Sets the name of the testcase generic used when defining several testcases 
-inside a single testbench architecture. The default testcase generic is ``GC_TESTCASE``,
+Sets the name of the test case generic used when defining several test cases 
+inside a single testbench architecture. The default test case generic is ``GC_TESTCASE``,
 but any name can be given.
 
 .. note::
-  * The sequencer built-in testcase if-structure will need to match this generic.
-  * HDLRegression extracts all the sequencer built-in testcases based on the combined usage of this generic 
+  * The sequencer built-in test case if-structure will need to match this generic.
+  * HDLRegression extracts all the sequencer built-in test cases based on the combined usage of this generic 
     and if-matched strings.
 
 .. code-block:: python
@@ -1050,7 +1050,7 @@ but any name can be given.
 
 
 .. literalinclude:: examples/example_tb_generic.vhd
-  :caption: Example TB with testcase ID generic
+  :caption: Example TB with test case ID generic
   :linenos:
   :language: vhdl
 

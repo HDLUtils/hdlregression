@@ -7,7 +7,7 @@
 \contentsline {subsection}{\numberline {1.3.2}Test sequencer}{2}{subsection.1.3.2}%
 \contentsline {subsection}{\numberline {1.3.3}Test\sphinxhyphen {}harness}{2}{subsection.1.3.3}%
 \contentsline {subsection}{\numberline {1.3.4}Test suite}{2}{subsection.1.3.4}%
-\contentsline {subsection}{\numberline {1.3.5}Testcase}{2}{subsection.1.3.5}%
+\contentsline {subsection}{\numberline {1.3.5}Test case}{2}{subsection.1.3.5}%
 \contentsline {subsection}{\numberline {1.3.6}Test group}{3}{subsection.1.3.6}%
 \contentsline {chapter}{\numberline {2}Usage}{5}{chapter.2}%
 \contentsline {chapter}{\numberline {3}Installation}{7}{chapter.3}%
@@ -48,9 +48,10 @@
 \contentsline {subsection}{\numberline {4.4.5}get\_num\_pass\_with\_minor\_alert\_tests()}{27}{subsection.4.4.5}%
 \contentsline {chapter}{\numberline {5}Command Line Interface (CLI)}{29}{chapter.5}%
 \contentsline {section}{\numberline {5.1}Examples}{30}{section.5.1}%
-\contentsline {subsection}{\numberline {5.1.1}Full regression}{30}{subsection.5.1.1}%
-\contentsline {subsection}{\numberline {5.1.2}Testcases}{32}{subsection.5.1.2}%
-\contentsline {subsection}{\numberline {5.1.3}Test groups}{34}{subsection.5.1.3}%
+\contentsline {subsection}{\numberline {5.1.1}Selecting simulator}{30}{subsection.5.1.1}%
+\contentsline {subsection}{\numberline {5.1.2}Full regression}{30}{subsection.5.1.2}%
+\contentsline {subsection}{\numberline {5.1.3}Test cases}{32}{subsection.5.1.3}%
+\contentsline {subsection}{\numberline {5.1.4}Test groups}{34}{subsection.5.1.4}%
 \contentsline {subsubsection}{Defining test groups}{34}{subsubsection*.8}%
 \contentsline {subsubsection}{Listing test groups}{34}{subsubsection*.9}%
 \contentsline {subsubsection}{Running test groups}{35}{subsubsection*.10}%
@@ -61,7 +62,7 @@
 \contentsline {section}{\numberline {5.3}Simulation results}{40}{section.5.3}%
 \contentsline {subsection}{\numberline {5.3.1}Regression initial run}{41}{subsection.5.3.1}%
 \contentsline {subsection}{\numberline {5.3.2}Regression run without changes}{42}{subsection.5.3.2}%
-\contentsline {subsection}{\numberline {5.3.3}Failing testcase run}{42}{subsection.5.3.3}%
+\contentsline {subsection}{\numberline {5.3.3}Failing test case run}{42}{subsection.5.3.3}%
 \contentsline {chapter}{\numberline {6}Graphical User Interface (GUI)}{45}{chapter.6}%
 \contentsline {section}{\numberline {6.1}Modelsim}{45}{section.6.1}%
 \contentsline {section}{\numberline {6.2}GHDL / NVC}{46}{section.6.2}%

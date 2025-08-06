@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Introduction &mdash; hdlregression 1.0.0 documentation</title>
+  <title>Introduction &mdash; hdlregression 1.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
 
@@ -15,7 +15,7 @@
   
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=8d563738"></script>
+        <script src="_static/documentation_options.js?v=fc837d61"></script>
         <script src="_static/doctools.js?v=9a2dae69"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
@@ -55,7 +55,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#test-sequencer">Test sequencer</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#test-harness">Test-harness</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#test-suite">Test suite</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#testcase">Testcase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#test-case">Test case</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#test-group">Test group</a></li>
 </ul>
 </li>
@@ -169,9 +169,9 @@ including concurrent procedures.</p>
 <h3>Test suite<a class="headerlink" href="#test-suite" title="Link to this heading"></a></h3>
 <p>A test suite is the complete set of testbenches required for a given DUT, or for a complete FPGA including modules.</p>
 </section>
-<section id="testcase">
-<h3>Testcase<a class="headerlink" href="#testcase" title="Link to this heading"></a></h3>
-<p>A testcase is</p>
+<section id="test-case">
+<h3>Test case<a class="headerlink" href="#test-case" title="Link to this heading"></a></h3>
+<p>A test case is</p>
 <ul class="simple">
 <li><p>A scenario or sequence of actions that are controlled by the test sequencer.</p></li>
 <li><p>May test one or multiple features/requirements.</p></li>
@@ -179,21 +179,21 @@ including concurrent procedures.</p>
 of events.</p></li>
 <li><p>The minimum sequence of events possible to run in a single simulation execution. Thus, if there is an option to
 run of multiple test sequences (A, B or C), a set of test sequences (A and B) or all sequences (A+B+C), then all
-of A, B and C are defined as individual testcases.</p></li>
+of A, B and C are defined as individual test cases.</p></li>
 </ul>
 </section>
 <section id="test-group">
 <h3>Test group<a class="headerlink" href="#test-group" title="Link to this heading"></a></h3>
-<p>A test group is a collection of testcases that typically verifies the same modules or features of a DUT.
-There are several ways of structuring testbenches and testcases, and HDLRegression support many of these.</p>
+<p>A test group is a collection of test cases that typically verifies the same modules or features of a DUT.
+There are several ways of structuring testbenches and test cases, and HDLRegression support many of these.</p>
 <p>A test group can be:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>A single testbench or a collection of testbenches</p></li>
-<li><p>A single testcase or a collection of testcases</p></li>
+<li><p>A single test case or a collection of test cases</p></li>
 </ul>
 </div></blockquote>
-<p>Typically a test group contains testbenches and/or testcases that verifies a set of features or functionality,
+<p>Typically a test group contains testbenches and/or test cases that verifies a set of features or functionality,
 e.g. error injection, interface functionality or any other sub-set of DUT functionality.</p>
 <a class="reference internal image-reference" href="_images/test_group.png" id="test-group-listing"><img alt="_images/test_group.png" class="align-center" id="test-group-listing" src="_images/test_group.png" style="width: 400px;" /></a>
 </section>
@@ -208,7 +208,7 @@ i.e. with the <code class="docutils literal notranslate"><span class="pre">--HDL
 <blockquote>
 <div><ul class="simple">
 <li><p>Organize files and libraries by dependencies</p></li>
-<li><p>Scan for defined testcases in the testbench (a testcase generic is required for this feature)</p></li>
+<li><p>Scan for defined test cases in the testbench (a test case generic is required for this feature)</p></li>
 <li><p>Compile to the default or a specified library</p></li>
 <li><p>Run all testbenches</p></li>
 <li><p>Report simulation results to terminal</p></li>

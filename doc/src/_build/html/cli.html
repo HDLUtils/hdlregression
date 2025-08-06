@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Command Line Interface (CLI) &mdash; hdlregression 1.0.0 documentation</title>
+  <title>Command Line Interface (CLI) &mdash; hdlregression 1.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
 
@@ -15,7 +15,7 @@
   
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=8d563738"></script>
+        <script src="_static/documentation_options.js?v=fc837d61"></script>
         <script src="_static/doctools.js?v=9a2dae69"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
@@ -53,8 +53,9 @@
 <li class="toctree-l1"><a class="reference internal" href="api.html">Application Programming Interface (API)</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Command Line Interface (CLI)</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#selecting-simulator">Selecting simulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#full-regression">Full regression</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#testcases">Testcases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#test-cases">Test cases</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#test-groups">Test groups</a></li>
 </ul>
 </li>
@@ -67,7 +68,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#simulation-results">Simulation results</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#regression-initial-run">Regression initial run</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#regression-run-without-changes">Regression run without changes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#failing-testcase-run">Failing testcase run</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#failing-test-case-run">Failing test case run</a></li>
 </ul>
 </li>
 </ul>
@@ -109,7 +110,7 @@
 <div class="line-block">
 <div class="line">The configuration of a regression run can be set directly from the command line using command line interface.
 This can be useful when debugging the behaviour of a design, e.g. by running in <a class="reference internal" href="gui.html"><span class="doc">GUI mode</span></a>,
-or working with a <a class="reference internal" href="intro.html#testcase"><span class="std std-ref">testcase</span></a> or <a class="reference internal" href="intro.html#test-group"><span class="std std-ref">test group</span></a>.</div>
+or working with a <a class="reference internal" href="intro.html#test-case"><span class="std std-ref">testcase</span></a> or <a class="reference internal" href="intro.html#test-group"><span class="std std-ref">test group</span></a>.</div>
 <div class="line">The command line interface are processed at startup and will override any scripted configurations that are in conflict.</div>
 </div>
 <table class="docutils align-default">
@@ -145,7 +146,7 @@ or working with a <a class="reference internal" href="intro.html#testcase"><span
 </tr>
 <tr class="row-even"><td><p>-tc TB_ENTITY [TB_ARCH [TC]]</p></td>
 <td><p>–testCase TB_ENTITY [TB_ARCH [TC]]</p></td>
-<td><p>Run selected testcase</p></td>
+<td><p>Run selected test case</p></td>
 </tr>
 <tr class="row-odd"><td><p>-tg TESTGROUP</p></td>
 <td><p>–testGroup TESTGROUP</p></td>
@@ -153,7 +154,7 @@ or working with a <a class="reference internal" href="intro.html#testcase"><span
 </tr>
 <tr class="row-even"><td><p>-ltc</p></td>
 <td><p>–listTestcase</p></td>
-<td><p>List all discovered testcases</p></td>
+<td><p>List all discovered test cases</p></td>
 </tr>
 <tr class="row-odd"><td><p>-ltg</p></td>
 <td><p>–listTestgroup</p></td>
@@ -169,7 +170,7 @@ or working with a <a class="reference internal" href="intro.html#testcase"><span
 </tr>
 <tr class="row-even"><td><p>-sof</p></td>
 <td><p>–stopOnFailure</p></td>
-<td><p>Stop simulations on testcase fail</p></td>
+<td><p>Stop simulations on test case fail</p></td>
 </tr>
 <tr class="row-odd"><td><p>-s</p></td>
 <td><p>–simulator</p></td>
@@ -207,29 +208,40 @@ or working with a <a class="reference internal" href="intro.html#testcase"><span
 </table>
 <section id="examples">
 <h2>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
+<section id="selecting-simulator">
+<h3>Selecting simulator<a class="headerlink" href="#selecting-simulator" title="Link to this heading"></a></h3>
+<p>HDLRegression will try to auto-detect the simulator to use, but this can be overridden using the <code class="docutils literal notranslate"><span class="pre">-s</span></code>
+or <code class="docutils literal notranslate"><span class="pre">--simulator</span></code> argument.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; python ../test/regression.py -s NVC</span>
+<span class="go">&gt; python ../test/regression.py -s RIVIERA-PRO</span>
+<span class="go">&gt; python ../test/regression.py -s GHDL</span>
+<span class="go">&gt; python ../test/regression.py -s MODELSIM</span>
+</pre></div>
+</div>
+</section>
 <section id="full-regression">
 <h3>Full regression<a class="headerlink" href="#full-regression" title="Link to this heading"></a></h3>
-<p>Enabling the <a class="reference internal" href="intro.html#what-is-regression-testing"><span class="std std-ref">full regression mode</span></a> ensures that all testcases are run, regardless
+<p>Enabling the <a class="reference internal" href="intro.html#what-is-regression-testing"><span class="std std-ref">full regression mode</span></a> ensures that all test cases are run, regardless
 of any previous runs, i.e. re-running the complete test suite.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; python ../test/regression.py -fr</span>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="_images/full_regression.png" id="running-full-regression"><img alt="_images/full_regression.png" class="align-center" id="running-full-regression" src="_images/full_regression.png" style="width: 750px;" /></a>
 </section>
-<section id="testcases">
-<h3>Testcases<a class="headerlink" href="#testcases" title="Link to this heading"></a></h3>
+<section id="test-cases">
+<h3>Test cases<a class="headerlink" href="#test-cases" title="Link to this heading"></a></h3>
 <p>All tests that are discovered by HDLRegression can be listed using the <code class="docutils literal notranslate"><span class="pre">-ltc</span></code> or <code class="docutils literal notranslate"><span class="pre">--listTestcase</span></code> argument, and
-are listed as <code class="docutils literal notranslate"><span class="pre">&lt;testbench</span> <span class="pre">entity&gt;.&lt;testbench</span> <span class="pre">architecture&gt;.&lt;sequencer</span> <span class="pre">built-in</span> <span class="pre">testcase&gt;</span></code> or just
-<code class="docutils literal notranslate"><span class="pre">&lt;testbench</span> <span class="pre">entity&gt;.&lt;testbench</span> <span class="pre">architecture&gt;</span></code> if no sequencer built-in testcases are used.</p>
+are listed as <code class="docutils literal notranslate"><span class="pre">&lt;testbench</span> <span class="pre">entity&gt;.&lt;testbench</span> <span class="pre">architecture&gt;.&lt;sequencer</span> <span class="pre">built-in</span> <span class="pre">test</span> <span class="pre">case&gt;</span></code> or just
+<code class="docutils literal notranslate"><span class="pre">&lt;testbench</span> <span class="pre">entity&gt;.&lt;testbench</span> <span class="pre">architecture&gt;</span></code> if no sequencer built-in test cases are used.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; python ../test/regression.py -ltc</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/testcase_listing.png" id="testcase-listing-in-terminal"><img alt="_images/testcase_listing.png" class="align-center" id="testcase-listing-in-terminal" src="_images/testcase_listing.png" style="width: 750px;" /></a>
-<p>Running a selected test is done using the <code class="docutils literal notranslate"><span class="pre">-tc</span> <span class="pre">&lt;testbench.architecture.testcase&gt;</span></code> or
-<code class="docutils literal notranslate"><span class="pre">--testCase</span> <span class="pre">&lt;testbench.architecture.testcase&gt;</span></code> argument</p>
+<a class="reference internal image-reference" href="_images/testcase_listing.png" id="test-case-listing-in-terminal"><img alt="_images/testcase_listing.png" class="align-center" id="test-case-listing-in-terminal" src="_images/testcase_listing.png" style="width: 750px;" /></a>
+<p>Running a selected test is done using the <code class="docutils literal notranslate"><span class="pre">-tc</span> <span class="pre">&lt;testbench.architecture.test</span> <span class="pre">case&gt;</span></code> or
+<code class="docutils literal notranslate"><span class="pre">--testCase</span> <span class="pre">&lt;testbench.architecture.test</span> <span class="pre">case&gt;</span></code> argument</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>Use wildcards to more effectively filter searches, i.e. testcases and filenames.</p>
+<p>Use wildcards to more effectively filter searches, i.e. test cases and filenames.</p>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Pattern</p></th>
@@ -255,23 +267,23 @@ are listed as <code class="docutils literal notranslate"><span class="pre">&lt;t
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; python ../test/regression.py -tc uart_vvc_tb.func.check_simple_receive</span>
 </pre></div>
 </div>
-<p>A testcase can also be selected using the testcase number from the <code class="docutils literal notranslate"><span class="pre">-ltc</span></code> or <code class="docutils literal notranslate"><span class="pre">--listTestcase</span></code> argument</p>
+<p>A test case can also be selected using the test case number from the <code class="docutils literal notranslate"><span class="pre">-ltc</span></code> or <code class="docutils literal notranslate"><span class="pre">--listTestcase</span></code> argument</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; python ../test/regression.py -tc 5</span>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="_images/testcase_running.png" id="running-in-terminal"><img alt="_images/testcase_running.png" class="align-center" id="running-in-terminal" src="_images/testcase_running.png" style="width: 750px;" /></a>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>Testcases are identified by:</p>
+<p>Test cases are identified by:</p>
 <ol class="arabic simple">
 <li><p>&lt;entity_name&gt;</p></li>
 <li><p>&lt;entity_name&gt;.&lt;architecture_name&gt;</p></li>
-<li><p>&lt;entity_name&gt;.&lt;architecture_name&gt;.&lt;sequencer_testcase&gt;</p></li>
+<li><p>&lt;entity_name&gt;.&lt;architecture_name&gt;.&lt;sequencer_test case&gt;</p></li>
 </ol>
 <div class="line-block">
-<div class="line">When selecting testcases to run, you can utilize wildcards to simplify the process. However, it’s important to
+<div class="line">When selecting test cases to run, you can utilize wildcards to simplify the process. However, it’s important to
 note that the test case identifier must follow a specific naming convention.</div>
-<div class="line">For example, if you want to run all sequencer testcases that contain the word “write,” you would need to specify
+<div class="line">For example, if you want to run all sequencer test cases that contain the word “write,” you would need to specify
 the identifier as &lt;entity_name&gt;.&lt;architecture_name&gt;.write.</div>
 <div class="line">Note that you can also use wildcards for &lt;entity_name&gt; and/or &lt;architecture_name&gt; to further
 refine your filter.</div>
@@ -281,9 +293,9 @@ refine your filter.</div>
 <section id="test-groups">
 <h3>Test groups<a class="headerlink" href="#test-groups" title="Link to this heading"></a></h3>
 <p>Listing of test groups that have been defined in the regression script. In the code snippet below there are defined
-two test groups, <cite>transmit_tests</cite> and <cite>receive_tests</cite>, that will run all testcases that have <cite>transmit</cite> and <cite>receive</cite>
-in the testcase name, and is defined in testbench <cite>uart_vvc_tb</cite> architecture <cite>func</cite>.
-There is also a test group <cite>selection_tests</cite> that will run all testcases that are part of the <cite>uart_vvc_demo_tb</cite> and
+two test groups, <cite>transmit_tests</cite> and <cite>receive_tests</cite>, that will run all test cases that have <cite>transmit</cite> and <cite>receive</cite>
+in the test case name, and is defined in testbench <cite>uart_vvc_tb</cite> architecture <cite>func</cite>.
+There is also a test group <cite>selection_tests</cite> that will run all test cases that are part of the <cite>uart_vvc_demo_tb</cite> and
 <cite>uart_simple_bfm_tb</cite> entities.</p>
 <section id="defining-test-groups">
 <h4>Defining test groups<a class="headerlink" href="#defining-test-groups" title="Link to this heading"></a></h4>
@@ -295,7 +307,7 @@ There is also a test group <cite>selection_tests</cite> that will run all testca
 </div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>Use wildcards to more effectively filter searches, i.e. testcases and filenames.</p>
+<p>Use wildcards to more effectively filter searches, i.e. test cases and filenames.</p>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Pattern</p></th>
@@ -332,7 +344,7 @@ There is also a test group <cite>selection_tests</cite> that will run all testca
 <ul class="simple">
 <li><p>testbench entity with <code class="docutils literal notranslate"><span class="pre">uart_vvc_tb</span></code></p></li>
 <li><p>testbench architecture with <code class="docutils literal notranslate"><span class="pre">func</span></code></p></li>
-<li><p>sequencer built-in testcase with <code class="docutils literal notranslate"><span class="pre">receive</span></code></p></li>
+<li><p>sequencer built-in test case with <code class="docutils literal notranslate"><span class="pre">receive</span></code></p></li>
 </ul>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; python ../test/regression.py --testGroup receive_tests</span>
 </pre></div>
@@ -343,7 +355,7 @@ There is also a test group <cite>selection_tests</cite> that will run all testca
 </section>
 <section id="threading">
 <h2>Threading<a class="headerlink" href="#threading" title="Link to this heading"></a></h2>
-<p>HDLRegression will run all tasks (pre-processing and testcase simulations) in a sequential order, but this can be changed
+<p>HDLRegression will run all tasks (pre-processing and test case simulations) in a sequential order, but this can be changed
 using the <code class="docutils literal notranslate"><span class="pre">-t</span></code> / <code class="docutils literal notranslate"><span class="pre">--threading</span></code> option, and optioinally with a number of threads.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -360,7 +372,7 @@ using the <code class="docutils literal notranslate"><span class="pre">-t</span>
 </div>
 <section id="sequential">
 <h3>Sequential<a class="headerlink" href="#sequential" title="Link to this heading"></a></h3>
-<p>All pre-processing steps and testcase running are performed sequentially.</p>
+<p>All pre-processing steps and test case running are performed sequentially.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; python ../test/regression.py -tg receive_tests</span>
 </pre></div>
 </div>
@@ -368,7 +380,7 @@ using the <code class="docutils literal notranslate"><span class="pre">-t</span>
 </section>
 <section id="pre-processing-in-parallel-simulations-sequentially">
 <h3>Pre-processing in parallel, simulations sequentially<a class="headerlink" href="#pre-processing-in-parallel-simulations-sequentially" title="Link to this heading"></a></h3>
-<p>All pre-processing steps are performed in parallel and testcase running is performed sequentially.</p>
+<p>All pre-processing steps are performed in parallel and test case running is performed sequentially.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; python ../test/regression.py -tg receive_tests -t</span>
 </pre></div>
 </div>
@@ -376,7 +388,7 @@ using the <code class="docutils literal notranslate"><span class="pre">-t</span>
 </section>
 <section id="pre-processing-and-simulations-in-parallel-using-10-threads">
 <h3>Pre-processing and simulations in parallel using 10 threads<a class="headerlink" href="#pre-processing-and-simulations-in-parallel-using-10-threads" title="Link to this heading"></a></h3>
-<p>All pre-processing steps and testcase running is performed in parallel.</p>
+<p>All pre-processing steps and test case running is performed in parallel.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; python ../test/regression.py -tg receive_tests -t 10</span>
 </pre></div>
 </div>
@@ -385,7 +397,7 @@ using the <code class="docutils literal notranslate"><span class="pre">-t</span>
 </section>
 <section id="simulation-results">
 <h2>Simulation results<a class="headerlink" href="#simulation-results" title="Link to this heading"></a></h2>
-<p>Running simulations in terminal will output the necessary information, such as the testcase name, generics used,
+<p>Running simulations in terminal will output the necessary information, such as the test case name, generics used,
 simulation run time and result.</p>
 <section id="regression-initial-run">
 <h3>Regression initial run<a class="headerlink" href="#regression-initial-run" title="Link to this heading"></a></h3>
@@ -393,13 +405,13 @@ simulation run time and result.</p>
 </section>
 <section id="regression-run-without-changes">
 <h3>Regression run without changes<a class="headerlink" href="#regression-run-without-changes" title="Link to this heading"></a></h3>
-<p>No tests are run when no changes are detected in the DUT or testcase files, unless full regression is enabled using
+<p>No tests are run when no changes are detected in the DUT or test case files, unless full regression is enabled using
 the <a class="reference internal" href="#"><span class="doc">Command Line Interface (CLI)</span></a> <code class="docutils literal notranslate"><span class="pre">-fr</span></code> or using the <a class="reference internal" href="api.html"><span class="doc">Application Programming Interface (API)</span></a> in the regression script <code class="docutils literal notranslate"><span class="pre">hr.start(full_regression=True)</span></code>.</p>
 <a class="reference internal image-reference" href="_images/regression_run_2.png" id="regression-re-run-no-new-test-runs"><img alt="_images/regression_run_2.png" class="align-center" id="regression-re-run-no-new-test-runs" src="_images/regression_run_2.png" style="width: 750px;" /></a>
 </section>
-<section id="failing-testcase-run">
-<h3>Failing testcase run<a class="headerlink" href="#failing-testcase-run" title="Link to this heading"></a></h3>
-<p>A failing testcase will be reported as <strong>FAIL</strong> with a short summary from the test log:</p>
+<section id="failing-test-case-run">
+<h3>Failing test case run<a class="headerlink" href="#failing-test-case-run" title="Link to this heading"></a></h3>
+<p>A failing test case will be reported as <strong>FAIL</strong> with a short summary from the test log:</p>
 <a class="reference internal image-reference" href="_images/failing_testcase.png" id="failing-testcase"><img alt="_images/failing_testcase.png" class="align-center" id="failing-testcase" src="_images/failing_testcase.png" style="width: 1000px;" /></a>
 </section>
 </section>

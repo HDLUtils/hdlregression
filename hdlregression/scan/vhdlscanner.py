@@ -326,54 +326,95 @@ class LibraryParser(BaseParser):
         self._parse_context(code)
 
     def _parse_use(self, code):
-        # Match use clauses
-        re_use = re.compile(r'\buse\s+(?P<use>[a-zA-Z_\.0-9]+);',
-                            flags=self._ALL_FLAGS)
+        # Match use <lib>.<pkg>[.<suffix>];
+        re_use = re.compile(
+            r'\buse\s+(?P<lib>\w+)\.(?P<pkg>\w+)(?:\.\w+)?\s*;',
+            flags=re.IGNORECASE)
+    
+        for match in re_use.finditer(code):
+            lib = match.group('lib')
+            pkg = match.group('pkg')
+    
+            if lib.lower() in (self.library_name.lower(), 'work'):
+                self.master.add_int_dep(pkg)
 
-        matches = re.finditer(re_use, code)
-        for match in matches:
-            use_clause = str(match.group('use'))
+    # def _parse_use(self, code):
+    #     # Match use clauses
+    #     re_use = re.compile(r'\buse\s+(?P<use>[a-zA-Z_\.0-9]+);',
+    #                         flags=self._ALL_FLAGS)
 
-            library = re.search(r'\b\w+\.', use_clause)
-            library = library.group().replace('.', '')
-            # Check with current library
-            library_match = re.match(r'%s|work' % self.library_name,
-                                     library,
-                                     flags=re.IGNORECASE)
-            if library_match:
-                use = re.sub(r'\b(work|%s)' % self.library_name, '', use_clause,
-                             count=1, flags=re.IGNORECASE)
-                use_list = use.split('.')
-                use = list(filter(None, use_list))[0]
-                self.master.add_int_dep(use)
+    #     matches = re.finditer(re_use, code)
+    #     for match in matches:
+    #         use_clause = str(match.group('use'))
+
+    #         library = re.search(r'\b\w+\.', use_clause)
+    #         library = library.group().replace('.', '')
+    #         # Check with current library
+    #         library_match = re.match(r'%s|work' % self.library_name,
+    #                                  library,
+    #                                  flags=re.IGNORECASE)
+    #         if library_match:
+    #             use = re.sub(r'\b(work|%s)' % self.library_name, '', use_clause,
+    #                          count=1, flags=re.IGNORECASE)
+    #             use_list = use.split('.')
+    #             use = list(filter(None, use_list))[0]
+    #             self.master.add_int_dep(use)
 
     def _parse_context(self, code):
-        # Match context clause from beginning of line
-        re_context = re.compile(r'\b\s*(?P<pre>[a-zA-Z_\.0-9]+\s+)?context\s+(?P<use>[a-zA-Z_\.0-9]+);',
-                                flags=self._ALL_FLAGS)
+        re_context = re.compile(r'''
+            ^\s*                                   # optional leading spaces
+            (?P<pre>end\s+)?                       # optional "end"
+            context\s+
+            (?P<use>[a-zA-Z_][a-zA-Z_0-9]*\.[a-zA-Z_0-9\.]+)  # lib.pkg[.suffix]
+            \s*;
+            ''', flags=re.IGNORECASE | re.MULTILINE | re.VERBOSE)
 
-        matches = re.finditer(re_context, code)
-        for match in matches:
-            pre_match = str(match.group('pre'))
-            use_clause = str(match.group('use'))
+        for match in re_context.finditer(code):
+            if match.group('pre'):
+                continue  # skip "end context ..."
 
-            # catch any actual context file            
-            if pre_match:
-                if re.match(r'end', pre_match, flags=re.IGNORECASE):
-                    continue
+            use_clause = match.group('use').strip()
+            parts = [p.strip() for p in use_clause.split('.') if p.strip()]
 
-            library = re.search(r'\b\w+\.', use_clause)
-            library = library.group().replace('.', '')
-            # Check with current library
-            library_match = re.match(r'%s|work' % self.library_name,
-                                     library,
-                                     flags=re.IGNORECASE)
-            if library_match:
-                use = re.sub(r'\b(work|%s)' % self.library_name, '', use_clause,
-                             count=1, flags=re.IGNORECASE)
-                use_list = use.split('.')
-                use = list(filter(None, use_list))[0]
-                self.master.add_int_dep(use)
+            if len(parts) < 2:
+                continue  # malformed
+
+            lib = parts[0]
+            name = parts[1]  # this is typically the context/package name
+
+            if lib.lower() in (self.library_name.lower(), 'work'):
+                self.master.add_int_dep(name)
+            else:
+                pass  # optionally: self.master.add_ext_dep(name)
+
+
+    # def _parse_context(self, code):
+    #     # Match context clause from beginning of line
+    #     re_context = re.compile(r'\b\s*(?P<pre>[a-zA-Z_\.0-9]+\s+)?context\s+(?P<use>[a-zA-Z_\.0-9]+);',
+    #                             flags=self._ALL_FLAGS)
+
+    #     matches = re.finditer(re_context, code)
+    #     for match in matches:
+    #         pre_match = str(match.group('pre'))
+    #         use_clause = str(match.group('use'))
+
+    #         # catch any actual context file            
+    #         if pre_match:
+    #             if re.match(r'end', pre_match, flags=re.IGNORECASE):
+    #                 continue
+
+    #         library = re.search(r'\b\w+\.', use_clause)
+    #         library = library.group().replace('.', '')
+    #         # Check with current library
+    #         library_match = re.match(r'%s|work' % self.library_name,
+    #                                  library,
+    #                                  flags=re.IGNORECASE)
+    #         if library_match:
+    #             use = re.sub(r'\b(work|%s)' % self.library_name, '', use_clause,
+    #                          count=1, flags=re.IGNORECASE)
+    #             use_list = use.split('.')
+    #             use = list(filter(None, use_list))[0]
+    #             self.master.add_int_dep(use)
 
 
 class ContextParser(BaseParser):
@@ -405,40 +446,59 @@ class ContextParser(BaseParser):
             if end_match:
                 self._parse_dependencies(code[start_match.end():end_match.start()])
             else:
-                print('Unable to detect context end.')
+                self.logger.warning('Unable to detect context end.')
 
     def _parse_dependencies(self, code):
-        re_dep = re.compile(r'''
-            (\blibrary\s+(?P<library>\w+);)
-            |
-            (\buse\s+(?P<use>[a-zA-Z_\.0-9]+);)
-            ''',
-                            flags=self._ALL_FLAGS)
+        # Match all `library <name>;` lines
+        re_lib = re.compile(r'\blibrary\s+(?P<library>\w+)\s*;', flags=re.IGNORECASE)
+        for match in re_lib.finditer(code):
+            lib = match.group('library')
+            if not self._lib_match(lib):
+                self.module.add_ext_dep(lib)
 
-        matches = re.finditer(re_dep, code)
-        for match in matches:
-            library = match.group('library')
-            use_clause = match.group('use')
-            if library:
-                # Check with current library
-                library_match = self._lib_match(library)
+        # Match all `use <library>.<package>[.<suffix>];` lines
+        re_use = re.compile(r'\buse\s+(?P<lib>\w+)\.(?P<name>\w+)(?:\.\w+)?\s*;', flags=re.IGNORECASE)
+        for match in re_use.finditer(code):
+            lib = match.group('lib')
+            name = match.group('name')
 
-                # Different library
-                if not library_match:
-                    self.module.add_ext_dep(library)
+            if self._lib_match(lib):
+                self.module.add_int_dep(name)
+            else:
+                self.module.add_ext_dep(name)
 
-            if use_clause:
-                library = re.search(r'\b\w+\.', use_clause)
-                library = library.group().replace('.', '')
+    # def _parse_dependencies(self, code):
+    #     re_dep = re.compile(r'''
+    #         (\blibrary\s+(?P<library>\w+);)
+    #         |
+    #         (\buse\s+(?P<use>[a-zA-Z_\.0-9]+);)
+    #         ''',
+    #                         flags=self._ALL_FLAGS)
 
-                # Check with current library - only add modules from own library
-                library_match = self._lib_match(library)
-                if library_match:
-                    use = re.sub(r'\b(work|%s)\.' % self.library_name, '', use_clause,
-                                 count=1, flags=re.IGNORECASE)
-                    use_list = use.split('.')
-                    use = list(filter(None, use_list))[0]
-                    self.module.add_int_dep(use)
+    #     matches = re.finditer(re_dep, code)
+    #     for match in matches:
+    #         library = match.group('library')
+    #         use_clause = match.group('use')
+    #         if library:
+    #             # Check with current library
+    #             library_match = self._lib_match(library)
+
+    #             # Different library
+    #             if not library_match:
+    #                 self.module.add_ext_dep(library)
+
+    #         if use_clause:
+    #             library = re.search(r'\b\w+\.', use_clause)
+    #             library = library.group().replace('.', '')
+
+    #             # Check with current library - only add modules from own library
+    #             library_match = self._lib_match(library)
+    #             if library_match:
+    #                 use = re.sub(r'\b(work|%s)\.' % self.library_name, '', use_clause,
+    #                              count=1, flags=re.IGNORECASE)
+    #                 use_list = use.split('.')
+    #                 use = list(filter(None, use_list))[0]
+    #                 self.module.add_int_dep(use)
 
 
 class ConfigurationParser(BaseParser):

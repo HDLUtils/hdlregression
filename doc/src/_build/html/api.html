@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Application Programming Interface (API) &mdash; hdlregression 1.0.0 documentation</title>
+  <title>Application Programming Interface (API) &mdash; hdlregression 1.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
 
@@ -15,7 +15,7 @@
   
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=8d563738"></script>
+        <script src="_static/documentation_options.js?v=fc837d61"></script>
         <script src="_static/doctools.js?v=9a2dae69"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
@@ -324,7 +324,7 @@ and not where the regression script is called from.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>A back annotated timing file (SDF) require the <code class="docutils literal notranslate"><span class="pre">netlist_inst</span></code> arguments and a back annotated timing file (VHD)
-require the <code class="docutils literal notranslate"><span class="pre">parse_file</span></code> argument set to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+require the <code class="docutils literal notranslate"><span class="pre">parse_file</span></code> argument set to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 <ol class="arabic simple">
 <li><p>The <code class="docutils literal notranslate"><span class="pre">netlist_inst</span></code> argument is a string that has to be set to design instantiation path in the design.</p></li>
 <li><p>Any number of back-annotated timing files can be added.</p></li>
@@ -343,7 +343,7 @@ compilation order and not compile the file.</p>
 </div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>Use wildcards to more effectively filter searches, i.e. testcases and filenames.</p>
+<p>Use wildcards to more effectively filter searches, i.e. test cases and filenames.</p>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Pattern</p></th>
@@ -413,16 +413,16 @@ compilation order and not compile the file.</p>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>No compilation error and testcase(s) has been run without errors</p></td>
+<tr class="row-even"><td><p>No compilation error and test case(s) has been run without errors</p></td>
 <td><p>0</p></td>
 </tr>
-<tr class="row-odd"><td><p>No compilation error and no testcase run</p></td>
+<tr class="row-odd"><td><p>No compilation error and no test case run</p></td>
 <td><p>1</p></td>
 </tr>
-<tr class="row-even"><td><p>No compilation error and testcase run with one or more errors</p></td>
+<tr class="row-even"><td><p>No compilation error and test case run with one or more errors</p></td>
 <td><p>1</p></td>
 </tr>
-<tr class="row-odd"><td><p>Compilation error (no testcases will be run)</p></td>
+<tr class="row-odd"><td><p>Compilation error (no test cases will be run)</p></td>
 <td><p>1</p></td>
 </tr>
 </tbody>
@@ -678,12 +678,12 @@ a subset of tests needs to be rerun to achieve wanted code coverage.</p></li>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p><strong>gui_mode</strong> will run testcases in one of these modes:</p>
+<p><strong>gui_mode</strong> will run test cases in one of these modes:</p>
 <ol class="arabic simple">
-<li><p>testcases added by the <a class="reference internal" href="#add-testcase">add_testcase()</a> method or using the <a class="reference internal" href="cli.html"><span class="doc">command line interfaces</span></a>.</p></li>
+<li><p>test cases added by the <a class="reference internal" href="#add-testcase">add_testcase()</a> method or using the <a class="reference internal" href="cli.html"><span class="doc">command line interfaces</span></a>.</p></li>
 <li><p>regression mode.</p></li>
 </ol>
-<p>starting with bullet point 1, and if no testcases have been added, moving on to bullet point 2.</p>
+<p>starting with bullet point 1, and if no test cases have been added, moving on to bullet point 2.</p>
 </div>
 </section>
 </section>
@@ -691,7 +691,7 @@ a subset of tests needs to be rerun to achieve wanted code coverage.</p></li>
 <h2>Advanced methods<a class="headerlink" href="#advanced-methods" title="Link to this heading"></a></h2>
 <section id="add-file-to-run-folder">
 <h3>add_file_to_run_folder()<a class="headerlink" href="#add-file-to-run-folder" title="Link to this heading"></a></h3>
-<p>Copies a single file to the testcase run folder.</p>
+<p>Copies a single file to the test case run folder.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">add_file_to_run_folder</span><span class="p">(</span><span class="o">&lt;</span><span class="n">filename</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">tc_id</span><span class="o">&gt;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -727,8 +727,8 @@ and not where the regression script is called from.</p>
 </section>
 <section id="add-generics">
 <h3>add_generics()<a class="headerlink" href="#add-generics" title="Link to this heading"></a></h3>
-<p>Selects the generics to be used when running a testcase.
-A test run is created when generics are added to a testcase, thus calling <a class="reference internal" href="#add-generics">add_generics()</a> two times will create
+<p>Selects the generics to be used when running a test case.
+A test run is created when generics are added to a test case, thus calling <a class="reference internal" href="#add-generics">add_generics()</a> two times will create
 two test runs.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">add_generics</span><span class="p">(</span><span class="o">&lt;</span><span class="n">entity</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">architecture</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">generics</span><span class="o">&gt;</span><span class="p">)</span>
 </pre></div>
@@ -813,23 +813,23 @@ Any number of precompiled libraries can be added.</p>
 </section>
 <section id="add-testcase">
 <h3>add_testcase()<a class="headerlink" href="#add-testcase" title="Link to this heading"></a></h3>
-<p>Adding testcase(s) will configure HDLRegression to only run these testcases.
-All testcases are run if no testcases are added using this command.
-Selecting testcase can also be done by using <a class="reference internal" href="cli.html"><span class="doc">command line interfaces</span></a>, and testcases selected from CLI will
-override any scripted testcase selecition.</p>
+<p>Adding test case(s) will configure HDLRegression to only run these test cases.
+All test cases are run if no test cases are added using this command.
+Selecting test case can also be done by using <a class="reference internal" href="cli.html"><span class="doc">command line interfaces</span></a>, and test cases selected from CLI will
+override any scripted test case selecition.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>A testcase name is a string that consists of</p>
+<p>A test case name is a string that consists of</p>
 <ol class="arabic simple">
 <li><p>testbench entity name</p></li>
 <li><p>testbench architecture name</p></li>
 <li><p>test name (optional)</p></li>
 </ol>
-<p>And where the three testcase name elements are separated by a dot (<code class="docutils literal notranslate"><span class="pre">.</span></code>): <code class="docutils literal notranslate"><span class="pre">&lt;testbench_name&gt;.&lt;architecture_name&gt;.&lt;test_name&gt;</span></code>.</p>
+<p>And where the three test case name elements are separated by a dot (<code class="docutils literal notranslate"><span class="pre">.</span></code>): <code class="docutils literal notranslate"><span class="pre">&lt;testbench_name&gt;.&lt;architecture_name&gt;.&lt;test_name&gt;</span></code>.</p>
 </div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>Use wildcards to more effectively filter searches, i.e. testcases and filenames.</p>
+<p>Use wildcards to more effectively filter searches, i.e. test cases and filenames.</p>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Pattern</p></th>
@@ -852,7 +852,7 @@ override any scripted testcase selecition.</p>
 </tbody>
 </table>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">add_testcase</span><span class="p">(</span><span class="o">&lt;</span><span class="n">testcase</span><span class="o">&gt;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">add_testcase</span><span class="p">(</span><span class="o">&lt;</span><span class="n">test</span> <span class="n">case</span><span class="o">&gt;</span><span class="p">)</span>
 </pre></div>
 </div>
 <table class="docutils align-default">
@@ -863,7 +863,7 @@ override any scripted testcase selecition.</p>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><em>testcase</em></p></td>
+<tr class="row-even"><td><p><em>test case</em></p></td>
 <td><p>string / list of strings</p></td>
 <td><p><strong>mandatory</strong></p></td>
 </tr>
@@ -872,16 +872,16 @@ override any scripted testcase selecition.</p>
 <p><strong>Example:</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">add_testcase</span><span class="p">(</span><span class="s2">&quot;interface_tb.test_arch.read_test&quot;</span><span class="p">)</span> <span class="c1"># this test only</span>
 
-<span class="n">add_testcase</span><span class="p">(</span><span class="s2">&quot;interface_tb.*.read_*&quot;</span><span class="p">)</span> <span class="c1"># all architectures and all sequencer testcases starting with &#39;read&#39;</span>
+<span class="n">add_testcase</span><span class="p">(</span><span class="s2">&quot;interface_tb.*.read_*&quot;</span><span class="p">)</span> <span class="c1"># all architectures and all sequencer test cases starting with &#39;read&#39;</span>
 
-<span class="n">add_testcase</span><span class="p">(</span><span class="s2">&quot;interface_tb.test_arch.????_test&quot;</span><span class="p">)</span> <span class="c1"># all sequencer testcases mathing any 4 character start, followed by &#39;_test&#39;</span>
+<span class="n">add_testcase</span><span class="p">(</span><span class="s2">&quot;interface_tb.test_arch.????_test&quot;</span><span class="p">)</span> <span class="c1"># all sequencer test cases mathing any 4 character start, followed by &#39;_test&#39;</span>
 
 <span class="n">add_testcase</span><span class="p">(</span><span class="n">interface_tests_list</span><span class="p">)</span> <span class="c1"># a list of selected tests</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The <a class="reference internal" href="#start">start()</a> method will return error code 1 if no testcases matched the <code class="docutils literal notranslate"><span class="pre">testcase</span></code> keyword.</p>
+<p>The <a class="reference internal" href="#start">start()</a> method will return error code 1 if no test cases matched the <code class="docutils literal notranslate"><span class="pre">test</span> <span class="pre">case</span></code> keyword.</p>
 </div>
 </section>
 <section id="add-to-testgroup">
@@ -915,7 +915,7 @@ The test group is given a name that is used for addressing the test collection.<
 <td><p>string</p></td>
 <td><p>optional</p></td>
 </tr>
-<tr class="row-odd"><td><p>testcase</p></td>
+<tr class="row-odd"><td><p>test case</p></td>
 <td><p>string</p></td>
 <td><p>optional</p></td>
 </tr>
@@ -929,13 +929,13 @@ The test group is given a name that is used for addressing the test collection.<
 <p class="admonition-title">Note</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">add_to_testgroup()</span></code> adds existing tests to a collection, i.e. no new tests are created.</p></li>
-<li><p>The <code class="docutils literal notranslate"><span class="pre">testcase</span></code> argument is for selecting sequencer built-in testcases.</p></li>
-<li><p>The <a class="reference internal" href="#start">start()</a> method will return error code 1 if no test group or testcase were found.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">test</span> <span class="pre">case</span></code> argument is for selecting sequencer built-in test cases.</p></li>
+<li><p>The <a class="reference internal" href="#start">start()</a> method will return error code 1 if no test group or test case were found.</p></li>
 </ul>
 </div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>Use wildcards to more effectively filter searches, i.e. testcases and filenames.</p>
+<p>Use wildcards to more effectively filter searches, i.e. test cases and filenames.</p>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Pattern</p></th>
@@ -1322,7 +1322,7 @@ criteria for a passing test.</p>
 </pre></div>
 </div>
 <div class="literal-block-wrapper docutils container" id="id1">
-<div class="code-block-caption"><span class="caption-text">Example TB with testcase result string</span><a class="headerlink" href="#id1" title="Link to this code"></a></div>
+<div class="code-block-caption"><span class="caption-text">Example TB with test case result string</span><a class="headerlink" href="#id1" title="Link to this code"></a></div>
 <div class="highlight-vhdl notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="n">p_seq</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">process</span>
 <span class="linenos"> 2</span><span class="w">    </span><span class="k">variable</span><span class="w"> </span><span class="n">v_check_ok</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">false</span><span class="p">;</span>
 <span class="linenos"> 3</span><span class="k">begin</span>
@@ -1402,14 +1402,14 @@ and not where the regression script is called from.</p>
 </section>
 <section id="set-testcase-identifier-name">
 <h3>set_testcase_identifier_name()<a class="headerlink" href="#set-testcase-identifier-name" title="Link to this heading"></a></h3>
-<p>Sets the name of the testcase generic used when defining several testcases
-inside a single testbench architecture. The default testcase generic is <code class="docutils literal notranslate"><span class="pre">GC_TESTCASE</span></code>,
+<p>Sets the name of the test case generic used when defining several test cases
+inside a single testbench architecture. The default test case generic is <code class="docutils literal notranslate"><span class="pre">GC_TESTCASE</span></code>,
 but any name can be given.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <ul class="simple">
-<li><p>The sequencer built-in testcase if-structure will need to match this generic.</p></li>
-<li><p>HDLRegression extracts all the sequencer built-in testcases based on the combined usage of this generic
+<li><p>The sequencer built-in test case if-structure will need to match this generic.</p></li>
+<li><p>HDLRegression extracts all the sequencer built-in test cases based on the combined usage of this generic
 and if-matched strings.</p></li>
 </ul>
 </div>
@@ -1435,7 +1435,7 @@ and if-matched strings.</p></li>
 </pre></div>
 </div>
 <div class="literal-block-wrapper docutils container" id="id2">
-<div class="code-block-caption"><span class="caption-text">Example TB with testcase ID generic</span><a class="headerlink" href="#id2" title="Link to this code"></a></div>
+<div class="code-block-caption"><span class="caption-text">Example TB with test case ID generic</span><a class="headerlink" href="#id2" title="Link to this code"></a></div>
 <div class="highlight-vhdl notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">--hdlregression:tb</span>
 <span class="linenos"> 2</span><span class="k">entity</span><span class="w"> </span><span class="nc">tb_top</span><span class="w"> </span><span class="k">is</span>
 <span class="linenos"> 3</span><span class="w">    </span><span class="k">generic</span><span class="w"> </span><span class="p">(</span>

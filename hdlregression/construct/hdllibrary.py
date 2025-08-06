@@ -395,6 +395,7 @@ class HDLLibrary(Library):
         """
         self.compile_req = compile
 
+
     def get_need_compile(self) -> bool:
         """
         Returns the recompile status of this library.
@@ -437,8 +438,6 @@ class HDLLibrary(Library):
         self._remove_non_existing_modules()
         # Connect modules by dependency and architectures with entities
         self._connect_dep_modules()
-
-        #self._present_modules() TODO! REMOVE
 
 
         if self.compile_req:
@@ -740,3 +739,12 @@ class HDLLibrary(Library):
             txt += "(%d) %s %s\n" % (idx + 1, hdlfile.get_filename_with_path(), tb_str)
 
         return txt
+    
+    def get_dependencies_need_compile(self) -> bool:
+        """
+        Check if any of the dependencies need to be compiled.
+        """
+        for dep_lib in self.lib_obj_dep_list:
+            if dep_lib.get_need_compile():
+                return True
+        return False

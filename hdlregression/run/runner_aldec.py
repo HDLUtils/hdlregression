@@ -84,8 +84,9 @@ class RivieraRunner(SimRunner):
         code_coverage_settings = (
             self.project.hdlcodecoverage.get_code_coverage_settings()
         )
+
         if hdlfile.get_code_coverage() and code_coverage_settings:
-            return_list += ["+cover=%s" % (code_coverage_settings)]
+            return_list += ["-coverage", code_coverage_settings]
 
         return_list += ["-work", compile_path]
         return_list += [hdlfile_path]
@@ -118,15 +119,11 @@ class RivieraRunner(SimRunner):
         vmap_exec = self._get_simulator_executable("vmap")
         vlib_exec = self._get_simulator_executable("vlib")
 
-        # Create library
+        # Make library mapping if it does not exist.
         if not os.path.isdir(library_compile_path):
-            self._run_cmd(command=[vlib_exec, library.get_name()], path=libraries_path)
-
-        # Map library
-        self._run_cmd(
-            command=[vmap_exec, library.get_name(), library_compile_path],
-            path=libraries_path,
-        )
+            os.makedirs(library_compile_path, exist_ok=True)
+            self._run_cmd(command=[vlib_exec, library_compile_path], path=libraries_path)
+        self._run_cmd(command=[vmap_exec, library.get_name(), library_compile_path], path=libraries_path)
 
         # Loop every file object in the library and compile it.
         for hdlfile in library.get_compile_order_list():
@@ -134,7 +131,7 @@ class RivieraRunner(SimRunner):
                 continue
 
             if hdlfile.get_need_compile() or force_compile:
-                self.logger.debug("Recompiling file: %s" % (hdlfile.get_name()))
+                self.logger.debug("Recompiling file: {}".format(hdlfile.get_name()))
 
                 success = self._run_cmd(
                     command=self._get_compile_call(hdlfile), path=libraries_path
@@ -187,49 +184,38 @@ class RivieraRunner(SimRunner):
 
     def _get_simulator_do_cmd(self, test, generic_call, module_call) -> str:
         """
-        Returns a Riviera-PRO simulate command (vsim) with parameters for use in run.do.
-        This command does NOT include the path to vsim, since vsim is a command
-        recognized by Riviera-PRO while executing do files.
-
-        Called from: _write_run_do_file()
+        Returns Riviera-PRO simulate commands for use in run.do,
+        with each command on its own line.
         """
 
-        code_coverage_file = self.project.hdlcodecoverage.get_code_coverage_file()
-
-        if code_coverage_file:
-            # Extract the filename from path (test/coverage/<coverage_file>)
-            code_coverage_file = os.path.basename(code_coverage_file)
-            code_coverage_file = "./" + code_coverage_file
-            code_coverage_file = code_coverage_file.replace("\\", "/")
-            # Construct code_coverage save call
-            code_coverage_call_save = "coverage save -onexit %s;" % (code_coverage_file)
-            code_coverage_call_enable = "-coverage"
-        else:
-            code_coverage_call_save = ""
-            code_coverage_call_enable = ""
-
+        code_coverage_settings = self.project.hdlcodecoverage.get_code_coverage_settings()
         sim_options = " ".join(self.project.settings.get_sim_options())
-
         netlist_call = self._get_netlist_call()
 
-        return " ".join(
-            [   "amap",
-                "-link",
-                "../../../library\n",
-                "vsim",
-                generic_call,
-                module_call,
-                sim_options,
-                netlist_call,
-                code_coverage_call_enable,
-                "; onerror {quit -code 1};",
-                "onbreak {resume};",
-                "run",
-                "-all;",
-                code_coverage_call_save,
-                "exit",
-            ]
-        )
+        # --- RIVIERA COVERAGE FLAGS ---
+        coverage_flags = ""
+        if code_coverage_settings:
+            # E.g., "-acdb -acdb_cov sbm -cc_all"
+            coverage_flags = "-acdb -acdb_cov {} -cc_all".format(code_coverage_settings)
+
+        vsim_call = "vsim {} {} {} {} {} {}".format(
+            coverage_flags,
+            generic_call,
+            module_call,
+            sim_options,
+            netlist_call,
+            ""
+        ).strip()
+
+        lines = [
+            "amap -link ../../../library",
+            vsim_call,
+            "onerror {quit -code 1}",
+            "onbreak {resume}",
+            "run -all",
+            "exit"
+        ]
+        return "\n".join(lines)
 
     def _write_run_do_file(self, test, generic_call, module_call):
         """

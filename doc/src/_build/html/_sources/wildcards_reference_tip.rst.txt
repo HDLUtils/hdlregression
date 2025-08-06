@@ -1,6 +1,6 @@
 .. tip::
 
-  Use wildcards to more effectively filter searches, i.e. testcases and filenames.
+  Use wildcards to more effectively filter searches, i.e. test cases and filenames.
 
   +-----------+--------------------------------+
   | Pattern   | Meaning                        |

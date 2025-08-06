@@ -204,6 +204,7 @@ class SimRunner:
                 compiled_library = self._compile_library(
                     library=library, force_compile=force_compile
                 )
+
                 if not compiled_library:
                     self.logger.info(" - FAIL - ", end="\n", color="red")
                     success = False

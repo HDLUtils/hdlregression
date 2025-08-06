@@ -46,6 +46,7 @@ class HdlRegressionTest:
         self.test_status = TestStatus.NOT_RUN
 
         self.hdlfile = None
+        self.library = None
         self.test_output = []
 
         self.set_tb(tb)
@@ -130,6 +131,12 @@ class HdlRegressionTest:
 
     def get_hdlfile(self):
         return self.hdlfile
+
+    def get_library(self):
+        return self.library
+
+    def set_library(self, library):
+        self.library = library
 
     # ----------- test status ---------------
     def set_status(self, status: TestStatus):

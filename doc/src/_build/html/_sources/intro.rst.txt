@@ -82,10 +82,10 @@ Test suite
 A test suite is the complete set of testbenches required for a given DUT, or for a complete FPGA including modules.
 
 
-Testcase
+Test case
 ------------------------------------------------------------------------------------------------------------------------
 
-A testcase is
+A test case is
 
 * A scenario or sequence of actions that are controlled by the test sequencer.
 * May test one or multiple features/requirements.
@@ -93,21 +93,21 @@ A testcase is
   of events.
 * The minimum sequence of events possible to run in a single simulation execution. Thus, if there is an option to 
   run of multiple test sequences (A, B or C), a set of test sequences (A and B) or all sequences (A+B+C), then all 
-  of A, B and C are defined as individual testcases.
+  of A, B and C are defined as individual test cases.
 
 
 Test group
 ------------------------------------------------------------------------------------------------------------------------
 
-A test group is a collection of testcases that typically verifies the same modules or features of a DUT.
-There are several ways of structuring testbenches and testcases, and HDLRegression support many of these.
+A test group is a collection of test cases that typically verifies the same modules or features of a DUT.
+There are several ways of structuring testbenches and test cases, and HDLRegression support many of these.
 
 A test group can be:
 
   - A single testbench or a collection of testbenches
-  - A single testcase or a collection of testcases
+  - A single test case or a collection of test cases
 
-Typically a test group contains testbenches and/or testcases that verifies a set of features or functionality, 
+Typically a test group contains testbenches and/or test cases that verifies a set of features or functionality, 
 e.g. error injection, interface functionality or any other sub-set of DUT functionality.
 
 .. image:: images/test_group.png
@@ -127,7 +127,7 @@ When HDLRegression is run it will perform several tasks in the background, and i
 i.e. with the ``--HDLREGRESSION:TB`` *(VHDL)* or ``//HDLREGRESSION:TB`` *(Verilog)* pragma set, HDLRegression will:
 
   - Organize files and libraries by dependencies
-  - Scan for defined testcases in the testbench (a testcase generic is required for this feature)
+  - Scan for defined test cases in the testbench (a test case generic is required for this feature)
   - Compile to the default or a specified library
   - Run all testbenches
   - Report simulation results to terminal
