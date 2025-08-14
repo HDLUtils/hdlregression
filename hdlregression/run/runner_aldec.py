@@ -157,6 +157,9 @@ class RivieraRunner(SimRunner):
     def _get_simulator_warning_regex(self):
         return RE_RIVIERA_WARNING
 
+    def _get_modelsim_ini_path(self) -> str:
+        return None
+
     def _get_netlist_call(self) -> str:
         """
         Creates the netlist/back-annotated call used in
@@ -273,6 +276,9 @@ class ActiveHDLRunner(RivieraRunner, SimRunner):
     def _get_descriptive_test_name(self, test, architecture_name, module_call):
         test_name = module_call.replace("-lib ", "").replace(" ", ".")
         return test_name
+
+    def _get_modelsim_ini_path(self) -> str:
+        return None
 
 
 #    def _get_module_call(self, test, architecture_name):

@@ -66,9 +66,6 @@ class TclRunnerBase():
             cf.write(self._get_proc(test))
             cf.write(self._init(test))
 
-    def _get_modelsim_ini_path(self) -> str:
-        return None
-
     def _set_os_environment(self):
         ini_path = self._get_modelsim_ini_path()
         if ini_path:
