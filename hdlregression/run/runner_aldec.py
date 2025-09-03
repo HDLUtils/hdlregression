@@ -211,7 +211,7 @@ class RivieraRunner(SimRunner):
         ).strip()
 
         lines = [
-            "amap -link ../../../library",
+            "vmap -link ../../../library",
             vsim_call,
             "onerror {quit -code 1}",
             "onbreak {resume}",
