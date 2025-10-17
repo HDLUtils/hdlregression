@@ -741,6 +741,7 @@ class SimulatorSettings(ABC):
         self.com_options_vhdl = self.DEF_COM_OPTIONS_VHDL
         self.com_options_verilog = self.DEF_COM_OPTIONS_VERILOG
         self.elaboration_options = self.DEF_ELABORATION_OPTIONS
+        self.pre_sim_tcl_command = ""
 
     def get_simulator_name(self) -> str:
         if self.simulator_name:
@@ -833,7 +834,13 @@ class SimulatorSettings(ABC):
 
     def get_modelsim_ini(self) -> str:
         raise UnsupportedMethodError("Method not supported by simulator '{}'.".format(self.simulator_name))
-
+    
+    def set_pre_sim_tcl_command(self, tcl_command):
+        self.pre_sim_tcl_command = tcl_command
+    
+    def get_pre_sim_tcl_command(self) -> str:
+        return self.pre_sim_tcl_command
+    
 
 class ModelsimSettings(SimulatorSettings):
     SIMULATOR_NAME = "MODELSIM"

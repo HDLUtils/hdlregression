@@ -497,6 +497,14 @@ class HDLRegression:
         """
         self.settings.set_simulator_wave_file_format(wave_format)
 
+    def set_pre_sim_tcl_command(self, tcl_command):
+        """
+        Set TCL command the wile be run before the test is started.
+
+        :param tcl_command: TCL command the wile be run before the test is started.
+        """
+        self.settings.simulator_settings.set_pre_sim_tcl_command(tcl_command)
+
     def start(self, **kwargs) -> int:
         """
         Run HDLRegression with the loaded settings.

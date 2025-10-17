@@ -292,7 +292,7 @@ proc q {} {
         test_call += self.test_call
         if modelsim_ini:
             test_call += " -modelsimini {" + modelsim_ini + "};"
-
+        pre_sim_tcl_command = self.project.settings.simulator_settings.get_pre_sim_tcl_command()
         txt = """
 # Define exit codes
 quietly set quit_normal 0
@@ -300,10 +300,13 @@ quietly set quit_error 1
 quietly set quit_force 2
 # Load
 eval {%s}
+# Run pre sim command 
+%s
 # Display information header and menu options
 h
 """ % (
-            test_call
+            test_call,
+            pre_sim_tcl_command,
         )
         return txt
 
@@ -477,7 +480,7 @@ class TclRunnerRiviera(TclRunnerBase, RivieraRunner):
         test_call = f"{lib_setup}vsim {self.test_call}"
         if modelsim_ini:
             test_call += " -modelsimini {" + modelsim_ini + "};"
-
+        pre_sim_tcl_command = self.project.settings.simulator_settings.get_pre_sim_tcl_command()
         txt = """
     # Define exit codes
     quietly set quit_normal 0
@@ -487,11 +490,14 @@ class TclRunnerRiviera(TclRunnerBase, RivieraRunner):
     %s
     # Load
     eval {%s}
+    # Run pre sim command 
+    %s
     # Display information header and menu options
     h
     """ % (
             lib_setup,
-            test_call
+            test_call,
+            pre_sim_tcl_command,
         )
         return txt
 
