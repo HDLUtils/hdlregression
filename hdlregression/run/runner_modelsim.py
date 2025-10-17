@@ -254,6 +254,8 @@ class ModelsimRunner(SimRunner):
         sim_options = " ".join(self.project.settings.get_sim_options())
 
         netlist_call = self._get_netlist_call()
+        
+        pre_sim_tcl_command = self.project.settings.simulator_settings.get_pre_sim_tcl_command()
 
         if self.project.settings.get_wlf_dump_enable() is True:
             wlf_logging = "log -r /{}/*;".format(test.get_tb().get_name())
@@ -276,6 +278,7 @@ class ModelsimRunner(SimRunner):
                 "onerror {quit -code 1};",
                 "onbreak {resume};",
                 wlf_logging,
+                pre_sim_tcl_command + ";",
                 "run",
                 "-all;",
                 code_coverage_call_save,
