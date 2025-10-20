@@ -499,9 +499,9 @@ class HDLRegression:
 
     def set_pre_sim_tcl_command(self, tcl_command):
         """
-        Set TCL command the wile be run before the test is started.
+        Set TCL command which is to be run before the test is started.
 
-        :param tcl_command: TCL command the wile be run before the test is started.
+        :param tcl_command: TCL command which is to be run before the test is started.
         """
         self.settings.simulator_settings.set_pre_sim_tcl_command(tcl_command)
 
