@@ -835,10 +835,10 @@ class SimulatorSettings(ABC):
     def get_modelsim_ini(self) -> str:
         raise UnsupportedMethodError("Method not supported by simulator '{}'.".format(self.simulator_name))
     
-    def set_pre_sim_tcl_command(self, tcl_command):
+    def set_pre_sim_tcl_cmd(self, tcl_command):
         self.pre_sim_tcl_command = tcl_command
     
-    def get_pre_sim_tcl_command(self) -> str:
+    def get_pre_sim_tcl_cmd(self) -> str:
         return self.pre_sim_tcl_command
     
 

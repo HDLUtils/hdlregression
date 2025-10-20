@@ -255,7 +255,7 @@ class ModelsimRunner(SimRunner):
 
         netlist_call = self._get_netlist_call()
         
-        pre_sim_tcl_command = self.project.settings.simulator_settings.get_pre_sim_tcl_command()
+        pre_sim_tcl_command = self.project.settings.simulator_settings.get_pre_sim_tcl_cmd()
 
         if self.project.settings.get_wlf_dump_enable() is True:
             wlf_logging = "log -r /{}/*;".format(test.get_tb().get_name())
