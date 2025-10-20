@@ -498,12 +498,16 @@ class HDLRegression:
         self.settings.set_simulator_wave_file_format(wave_format)
 
     def set_pre_sim_tcl_command(self, tcl_command):
-        """
-        Set TCL command the wile be run before the test is started.
+        self.logger.warning("set_pre_sim_tcl_command() is deprecated, use set_pre_sim_tcl_cmd() instead.")
+        self.set_pre_sim_tcl_cmd(tcl_command)
 
-        :param tcl_command: TCL command the wile be run before the test is started.
+    def set_pre_sim_tcl_cmd(self, tcl_command):
         """
-        self.settings.simulator_settings.set_pre_sim_tcl_command(tcl_command)
+        Set TCL command which is to be run before the test is started.
+
+        :param tcl_command: TCL command which is to be run before the test is started.
+        """
+        self.settings.simulator_settings.set_pre_sim_tcl_cmd(tcl_command)
 
     def start(self, **kwargs) -> int:
         """

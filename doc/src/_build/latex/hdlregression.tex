@@ -64,8 +64,8 @@
 
 
 \title{hdlregression}
-\date{Aug 14, 2025}
-\release{1.2.0}
+\date{Oct 20, 2025}
+\release{1.2.1}
 \author{UVVM}
 \newcommand{\sphinxlogo}{\vbox{}}
 \renewcommand{\releasename}{Release}
@@ -349,7 +349,7 @@ Or use the Python package\sphinxhyphen{}management system
 HDLRegression can be imported directly in the regression script as any standard Python module
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{k+kn}{from} \PYG{n+nn}{hdlregression} \PYG{k+kn}{import} \PYG{n}{HDLRegression}
+\PYG{k+kn}{from}\PYG{+w}{ }\PYG{n+nn}{hdlregression}\PYG{+w}{ }\PYG{k+kn}{import} \PYG{n}{HDLRegression}
 \end{sphinxVerbatim}
 
 
@@ -377,10 +377,10 @@ The HDLRegression module can be used without package installation by adding the 
 Python PATH variable at the beginning of the regression script:
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{k+kn}{import} \PYG{n+nn}{sys}
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{sys}
 \PYG{n}{sys}\PYG{o}{.}\PYG{n}{path}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{o}{\PYGZlt{}}\PYG{n}{path\PYGZus{}to\PYGZus{}hdlregression\PYGZus{}folder}\PYG{o}{\PYGZgt{}}\PYG{p}{)}
 
-\PYG{k+kn}{from} \PYG{n+nn}{hdlregression} \PYG{k+kn}{import} \PYG{n}{HDLRegression}
+\PYG{k+kn}{from}\PYG{+w}{ }\PYG{n+nn}{hdlregression}\PYG{+w}{ }\PYG{k+kn}{import} \PYG{n}{HDLRegression}
 \end{sphinxVerbatim}
 
 \begin{sphinxadmonition}{note}{Note:}
@@ -409,7 +409,7 @@ There are two template script files in the \sphinxcode{\sphinxupquote{%
 }} folder to help new users get started.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
-\PYG{k+kn}{import} \PYG{n+nn}{sys}
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{sys}
 \PYG{c+c1}{\PYGZsh{} \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{} USER HDLRegression PATH \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
 \PYG{c+c1}{\PYGZsh{} If HDLRegression is not installed as a Python package (see doc)}
 \PYG{c+c1}{\PYGZsh{} then uncomment the following line and set the path for}
@@ -417,7 +417,7 @@ There are two template script files in the \sphinxcode{\sphinxupquote{%
 \PYG{c+c1}{\PYGZsh{}sys.path.append(\PYGZlt{}full\PYGZus{}or\PYGZus{}relative\PYGZus{}path\PYGZus{}to\PYGZus{}hdlregression\PYGZus{}install\PYGZgt{})}
 
 \PYG{c+c1}{\PYGZsh{} Import the HDLRegression module to the Python script:}
-\PYG{k+kn}{from} \PYG{n+nn}{hdlregression} \PYG{k+kn}{import} \PYG{n}{HDLRegression}
+\PYG{k+kn}{from}\PYG{+w}{ }\PYG{n+nn}{hdlregression}\PYG{+w}{ }\PYG{k+kn}{import} \PYG{n}{HDLRegression}
 
 \PYG{c+c1}{\PYGZsh{} Define a HDLRegression item to access the HDLRegression functionality:}
 \PYG{n}{hr} \PYG{o}{=} \PYG{n}{HDLRegression}\PYG{p}{(}\PYG{p}{)}
@@ -541,8 +541,8 @@ in example 2.
 \sphinxstylestrong{Example 2:}
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{k+kn}{import} \PYG{n+nn}{argparse}
-\PYG{k+kn}{from} \PYG{n+nn}{hdlregression} \PYG{k+kn}{import} \PYG{n}{HDLRegression}
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{argparse}
+\PYG{k+kn}{from}\PYG{+w}{ }\PYG{n+nn}{hdlregression}\PYG{+w}{ }\PYG{k+kn}{import} \PYG{n}{HDLRegression}
 
 \PYG{n}{arg\PYGZus{}parser} \PYG{o}{=} \PYG{n}{argparse}\PYG{o}{.}\PYG{n}{ArgumentParser}\PYG{p}{(}\PYG{n}{description}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{Regression script parser}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}
 \PYG{n}{arg\PYGZus{}parser}\PYG{o}{.}\PYG{n}{add\PYGZus{}argument}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{\PYGZhy{}\PYGZhy{}rtl}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{n}{action}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{store\PYGZus{}true}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{n}{help}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{run RTL simulations}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}
@@ -2693,6 +2693,77 @@ Specifying the library dependency is usually not necessary as HDLRegression is c
 \end{sphinxadmonition}
 
 
+\subsection{set\_pre\_sim\_tcl\_cmd()}
+\label{\detokenize{api:set-pre-sim-tcl-cmd}}
+\sphinxAtStartPar
+Sets a single Tcl command that will be executed by the simulator \sphinxstylestrong{before} a test starts.
+
+\sphinxAtStartPar
+This is useful for preparing the simulator session (e.g., setting variables, loading packages, or running a small
+start\sphinxhyphen{}up script) without modifying the testbench.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{n}{hr}\PYG{o}{.}\PYG{n}{set\PYGZus{}pre\PYGZus{}sim\PYGZus{}tcl\PYGZus{}cmd}\PYG{p}{(}\PYG{o}{\PYGZlt{}}\PYG{n}{tcl\PYGZus{}command}\PYG{o}{\PYGZgt{}}\PYG{p}{)}
+\end{sphinxVerbatim}
+
+
+\begin{savenotes}\sphinxattablestart
+\sphinxthistablewithglobalstyle
+\centering
+\begin{tabulary}{\linewidth}[t]{TTT}
+\sphinxtoprule
+\sphinxstyletheadfamily 
+\sphinxAtStartPar
+Argument
+&\sphinxstyletheadfamily 
+\sphinxAtStartPar
+Type
+&\sphinxstyletheadfamily 
+\sphinxAtStartPar
+Required
+\\
+\sphinxmidrule
+\sphinxtableatstartofbodyhook
+\sphinxAtStartPar
+tcl\_command
+&
+\sphinxAtStartPar
+string
+&
+\sphinxAtStartPar
+\sphinxstylestrong{mandatory}
+\\
+\sphinxbottomrule
+\end{tabulary}
+\sphinxtableafterendhook\par
+\sphinxattableend\end{savenotes}
+
+\begin{sphinxadmonition}{note}{Note:}\begin{itemize}
+\item {} 
+\sphinxAtStartPar
+The command must be set \sphinxstylestrong{before} calling \sphinxcode{\sphinxupquote{start()}}.
+
+\item {} 
+\sphinxAtStartPar
+The setting applies to simulators with a Tcl front\sphinxhyphen{}end (e.g., ModelSim/Questa, Riviera\sphinxhyphen{}PRO). Other simulators
+may ignore this setting.
+
+\item {} 
+\sphinxAtStartPar
+Calling this method multiple times will overwrite the previously set command.
+
+\end{itemize}
+\end{sphinxadmonition}
+
+\sphinxAtStartPar
+\sphinxstylestrong{Example:}
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{n}{hr}\PYG{o}{.}\PYG{n}{set\PYGZus{}pre\PYGZus{}sim\PYGZus{}tcl\PYGZus{}cmd}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{do ../scripts/pre\PYGZus{}sim.do}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{hr}\PYG{o}{.}\PYG{n}{start}\PYG{p}{(}\PYG{p}{)}
+\end{sphinxVerbatim}
+
+
 \subsection{set\_result\_check\_string()}
 \label{\detokenize{api:set-result-check-string}}
 \sphinxAtStartPar
@@ -3963,7 +4034,7 @@ the \sphinxcode{\sphinxupquote{\sphinxhyphen{}\sphinxhyphen{}hdlregression:tb}} 
 The HDLRegression package comes with a basic template file to ease the process of getting started for new users.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
-\PYG{k+kn}{import} \PYG{n+nn}{sys}
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{sys}
 \PYG{c+c1}{\PYGZsh{} \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{} USER HDLRegression PATH \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
 \PYG{c+c1}{\PYGZsh{} If HDLRegression is not installed as a Python package (see doc)}
 \PYG{c+c1}{\PYGZsh{} then uncomment the following line and set the path for}
@@ -3971,7 +4042,7 @@ The HDLRegression package comes with a basic template file to ease the process o
 \PYG{c+c1}{\PYGZsh{}sys.path.append(\PYGZlt{}full\PYGZus{}or\PYGZus{}relative\PYGZus{}path\PYGZus{}to\PYGZus{}hdlregression\PYGZus{}install\PYGZgt{})}
 
 \PYG{c+c1}{\PYGZsh{} Import the HDLRegression module to the Python script:}
-\PYG{k+kn}{from} \PYG{n+nn}{hdlregression} \PYG{k+kn}{import} \PYG{n}{HDLRegression}
+\PYG{k+kn}{from}\PYG{+w}{ }\PYG{n+nn}{hdlregression}\PYG{+w}{ }\PYG{k+kn}{import} \PYG{n}{HDLRegression}
 
 \PYG{c+c1}{\PYGZsh{} Define a HDLRegression item to access the HDLRegression functionality:}
 \PYG{n}{hr} \PYG{o}{=} \PYG{n}{HDLRegression}\PYG{p}{(}\PYG{p}{)}
@@ -3988,12 +4059,12 @@ The HDLRegression package comes with a basic template file to ease the process o
 \subsection{Basic example}
 \label{\detokenize{templates:basic-example}}
 \begin{sphinxVerbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
-\PYG{k+kn}{import} \PYG{n+nn}{sys}
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{sys}
 \PYG{c+c1}{\PYGZsh{} User specify HDLRegression install path:}
 \PYG{n}{sys}\PYG{o}{.}\PYG{n}{path}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{c:/tools/hdlregression/}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}
 
 \PYG{c+c1}{\PYGZsh{} Import the HDLRegression module to the Python script:}
-\PYG{k+kn}{from} \PYG{n+nn}{hdlregression} \PYG{k+kn}{import} \PYG{n}{HDLRegression}
+\PYG{k+kn}{from}\PYG{+w}{ }\PYG{n+nn}{hdlregression}\PYG{+w}{ }\PYG{k+kn}{import} \PYG{n}{HDLRegression}
 
 \PYG{c+c1}{\PYGZsh{} Define a HDLRegression item to access the HDLRegression functionality:}
 \PYG{n}{hr} \PYG{o}{=} \PYG{n}{HDLRegression}\PYG{p}{(}\PYG{p}{)}
@@ -4018,7 +4089,7 @@ The HDLRegression package comes with an advanced template file for advanced user
 functionality.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
-\PYG{k+kn}{import} \PYG{n+nn}{sys}
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{sys}
 \PYG{c+c1}{\PYGZsh{} \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{} USER HDLRegression PATH \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
 \PYG{c+c1}{\PYGZsh{} If HDLRegression is not installed as a Python package (see doc)}
 \PYG{c+c1}{\PYGZsh{} then uncomment the following line and set the path for}
@@ -4026,7 +4097,7 @@ functionality.
 \PYG{c+c1}{\PYGZsh{}sys.path.append(\PYGZlt{}full\PYGZus{}or\PYGZus{}relative\PYGZus{}path\PYGZus{}to\PYGZus{}hdlregression\PYGZus{}install\PYGZgt{})}
 
 \PYG{c+c1}{\PYGZsh{} Import the HDLRegression module to the Python script:}
-\PYG{k+kn}{from} \PYG{n+nn}{hdlregression} \PYG{k+kn}{import} \PYG{n}{HDLRegression}
+\PYG{k+kn}{from}\PYG{+w}{ }\PYG{n+nn}{hdlregression}\PYG{+w}{ }\PYG{k+kn}{import} \PYG{n}{HDLRegression}
 
 \PYG{c+c1}{\PYGZsh{} \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{} USER IMPORT \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
 \PYG{c+c1}{\PYGZsh{} Import other Python package(s):}
@@ -4059,9 +4130,9 @@ functionality.
 \subsection{Advanced example}
 \label{\detokenize{templates:advanced-example}}
 \begin{sphinxVerbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
-\PYG{k+kn}{from} \PYG{n+nn}{itertools} \PYG{k+kn}{import} \PYG{n}{product}
-\PYG{k+kn}{from} \PYG{n+nn}{hdlregression} \PYG{k+kn}{import} \PYG{n}{HDLRegression}
-\PYG{k+kn}{import} \PYG{n+nn}{sys}
+\PYG{k+kn}{from}\PYG{+w}{ }\PYG{n+nn}{itertools}\PYG{+w}{ }\PYG{k+kn}{import} \PYG{n}{product}
+\PYG{k+kn}{from}\PYG{+w}{ }\PYG{n+nn}{hdlregression}\PYG{+w}{ }\PYG{k+kn}{import} \PYG{n}{HDLRegression}
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{sys}
 \PYG{c+c1}{\PYGZsh{} User specify HDLRegression install path:}
 \PYG{n}{sys}\PYG{o}{.}\PYG{n}{path}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{c:/tools/hdlregression/}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}
 
@@ -4080,7 +4151,7 @@ functionality.
 \PYG{c+c1}{\PYGZsh{} Return a list with the product of the generics}
 
 
-\PYG{k}{def} \PYG{n+nf}{create\PYGZus{}generics}\PYG{p}{(}\PYG{n}{bus\PYGZus{}width}\PYG{p}{,} \PYG{n}{master\PYGZus{}mode}\PYG{p}{,} \PYG{n}{input\PYGZus{}file}\PYG{p}{,} \PYG{n}{output\PYGZus{}file}\PYG{p}{)}\PYG{p}{:}
+\PYG{k}{def}\PYG{+w}{ }\PYG{n+nf}{create\PYGZus{}generics}\PYG{p}{(}\PYG{n}{bus\PYGZus{}width}\PYG{p}{,} \PYG{n}{master\PYGZus{}mode}\PYG{p}{,} \PYG{n}{input\PYGZus{}file}\PYG{p}{,} \PYG{n}{output\PYGZus{}file}\PYG{p}{)}\PYG{p}{:}
     \PYG{n}{generics} \PYG{o}{=} \PYG{p}{[}\PYG{p}{]}
     \PYG{k}{for} \PYG{n}{bus\PYGZus{}width}\PYG{p}{,} \PYG{n}{master\PYGZus{}mode}\PYG{p}{,} \PYG{n}{input\PYGZus{}file}\PYG{p}{,} \PYG{n}{output\PYGZus{}file} \PYG{o+ow}{in} \PYG{n}{product}\PYG{p}{(}\PYG{n}{bus\PYGZus{}width}\PYG{p}{,} \PYG{n}{master\PYGZus{}mode}\PYG{p}{,} \PYG{n}{input\PYGZus{}file}\PYG{p}{,} \PYG{n}{output\PYGZus{}file}\PYG{p}{)}\PYG{p}{:}
         \PYG{n}{generics}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{GC\PYGZus{}BUS\PYGZus{}WIDTH}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{n}{bus\PYGZus{}width}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{GC\PYGZus{}MASTER\PYGZus{}MODE}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{n}{master\PYGZus{}mode}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{GC\PYGZus{}INPUT\PYGZus{}FILE}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{n}{input\PYGZus{}file}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{GC\PYGZus{}OUTPUT\PYGZus{}FILE}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{n}{output\PYGZus{}file}\PYG{p}{]}\PYG{p}{)}
@@ -4117,7 +4188,7 @@ functionality.
 \subsection{RTL and Netlist script example}
 \label{\detokenize{templates:rtl-and-netlist-script-example}}
 \begin{sphinxVerbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
-\PYG{k+kn}{import} \PYG{n+nn}{sys}
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{sys}
 \PYG{c+c1}{\PYGZsh{} \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{} USER HDLRegression PATH \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
 \PYG{c+c1}{\PYGZsh{} If HDLRegression is not installed as a Python package (see doc)}
 \PYG{c+c1}{\PYGZsh{} then uncomment the following line and set the path for}
@@ -4125,10 +4196,10 @@ functionality.
 \PYG{c+c1}{\PYGZsh{}sys.path.append(\PYGZlt{}full\PYGZus{}or\PYGZus{}relative\PYGZus{}path\PYGZus{}to\PYGZus{}HDLRegression\PYGZus{}install\PYGZgt{})}
 
 \PYG{c+c1}{\PYGZsh{} Import the HDLRegression module to the Python script:}
-\PYG{k+kn}{from} \PYG{n+nn}{hdlregression} \PYG{k+kn}{import} \PYG{n}{HDLRegression}
+\PYG{k+kn}{from}\PYG{+w}{ }\PYG{n+nn}{hdlregression}\PYG{+w}{ }\PYG{k+kn}{import} \PYG{n}{HDLRegression}
 
 
-\PYG{k}{def} \PYG{n+nf}{run\PYGZus{}rtl}\PYG{p}{(}\PYG{p}{)}\PYG{p}{:}
+\PYG{k}{def}\PYG{+w}{ }\PYG{n+nf}{run\PYGZus{}rtl}\PYG{p}{(}\PYG{p}{)}\PYG{p}{:}
 \PYG{+w}{    }\PYG{l+s+sd}{\PYGZsq{}\PYGZsq{}\PYGZsq{}}
 \PYG{l+s+sd}{    Setup test environment for RTL simulations.}
 \PYG{l+s+sd}{    \PYGZsq{}\PYGZsq{}\PYGZsq{}}
@@ -4144,7 +4215,7 @@ functionality.
 
 
 
-\PYG{k}{def} \PYG{n+nf}{run\PYGZus{}netlist}\PYG{p}{(}\PYG{p}{)}\PYG{p}{:}
+\PYG{k}{def}\PYG{+w}{ }\PYG{n+nf}{run\PYGZus{}netlist}\PYG{p}{(}\PYG{p}{)}\PYG{p}{:}
 \PYG{+w}{    }\PYG{l+s+sd}{\PYGZsq{}\PYGZsq{}\PYGZsq{}}
 \PYG{l+s+sd}{    Setup test environment for Netlist simulations.}
 \PYG{l+s+sd}{    \PYGZsq{}\PYGZsq{}\PYGZsq{}}
@@ -4159,7 +4230,7 @@ functionality.
     \PYG{n}{hr}\PYG{o}{.}\PYG{n}{start}\PYG{p}{(}\PYG{p}{)}
 
 
-\PYG{k}{def} \PYG{n+nf}{main}\PYG{p}{(}\PYG{p}{)}\PYG{p}{:}
+\PYG{k}{def}\PYG{+w}{ }\PYG{n+nf}{main}\PYG{p}{(}\PYG{p}{)}\PYG{p}{:}
 \PYG{+w}{    }\PYG{l+s+sd}{\PYGZsq{}\PYGZsq{}\PYGZsq{}}
 \PYG{l+s+sd}{    Main method, selecting RTL or Netlist simulations.}
 \PYG{l+s+sd}{    \PYGZsq{}\PYGZsq{}\PYGZsq{}}
@@ -4537,7 +4608,7 @@ argument modifications as shown in the example below.
 \sphinxstylestrong{Example setup for running RTL and Netlist from a single runner script}
 
 \begin{sphinxVerbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
-\PYG{k+kn}{import} \PYG{n+nn}{sys}
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{sys}
 \PYG{c+c1}{\PYGZsh{} \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{} USER HDLRegression PATH \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
 \PYG{c+c1}{\PYGZsh{} If HDLRegression is not installed as a Python package (see doc)}
 \PYG{c+c1}{\PYGZsh{} then uncomment the following line and set the path for}
@@ -4545,10 +4616,10 @@ argument modifications as shown in the example below.
 \PYG{c+c1}{\PYGZsh{}sys.path.append(\PYGZlt{}full\PYGZus{}or\PYGZus{}relative\PYGZus{}path\PYGZus{}to\PYGZus{}HDLRegression\PYGZus{}install\PYGZgt{})}
 
 \PYG{c+c1}{\PYGZsh{} Import the HDLRegression module to the Python script:}
-\PYG{k+kn}{from} \PYG{n+nn}{hdlregression} \PYG{k+kn}{import} \PYG{n}{HDLRegression}
+\PYG{k+kn}{from}\PYG{+w}{ }\PYG{n+nn}{hdlregression}\PYG{+w}{ }\PYG{k+kn}{import} \PYG{n}{HDLRegression}
 
 
-\PYG{k}{def} \PYG{n+nf}{run\PYGZus{}rtl}\PYG{p}{(}\PYG{p}{)}\PYG{p}{:}
+\PYG{k}{def}\PYG{+w}{ }\PYG{n+nf}{run\PYGZus{}rtl}\PYG{p}{(}\PYG{p}{)}\PYG{p}{:}
 \PYG{+w}{    }\PYG{l+s+sd}{\PYGZsq{}\PYGZsq{}\PYGZsq{}}
 \PYG{l+s+sd}{    Setup test environment for RTL simulations.}
 \PYG{l+s+sd}{    \PYGZsq{}\PYGZsq{}\PYGZsq{}}
@@ -4564,7 +4635,7 @@ argument modifications as shown in the example below.
 
 
 
-\PYG{k}{def} \PYG{n+nf}{run\PYGZus{}netlist}\PYG{p}{(}\PYG{p}{)}\PYG{p}{:}
+\PYG{k}{def}\PYG{+w}{ }\PYG{n+nf}{run\PYGZus{}netlist}\PYG{p}{(}\PYG{p}{)}\PYG{p}{:}
 \PYG{+w}{    }\PYG{l+s+sd}{\PYGZsq{}\PYGZsq{}\PYGZsq{}}
 \PYG{l+s+sd}{    Setup test environment for Netlist simulations.}
 \PYG{l+s+sd}{    \PYGZsq{}\PYGZsq{}\PYGZsq{}}
@@ -4579,7 +4650,7 @@ argument modifications as shown in the example below.
     \PYG{n}{hr}\PYG{o}{.}\PYG{n}{start}\PYG{p}{(}\PYG{p}{)}
 
 
-\PYG{k}{def} \PYG{n+nf}{main}\PYG{p}{(}\PYG{p}{)}\PYG{p}{:}
+\PYG{k}{def}\PYG{+w}{ }\PYG{n+nf}{main}\PYG{p}{(}\PYG{p}{)}\PYG{p}{:}
 \PYG{+w}{    }\PYG{l+s+sd}{\PYGZsq{}\PYGZsq{}\PYGZsq{}}
 \PYG{l+s+sd}{    Main method, selecting RTL or Netlist simulations.}
 \PYG{l+s+sd}{    \PYGZsq{}\PYGZsq{}\PYGZsq{}}

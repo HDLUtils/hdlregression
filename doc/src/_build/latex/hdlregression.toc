@@ -1,4 +1,4 @@
-\babel@toc {english}{}
+\babel@toc {english}{}\relax 
 \contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}%
 \contentsline {section}{\numberline {1.1}What is HDLRegression}{1}{section.1.1}%
 \contentsline {section}{\numberline {1.2}What is regression testing}{1}{section.1.2}%
@@ -20,32 +20,33 @@
 \contentsline {subsection}{\numberline {4.2.1}add\_files()}{10}{subsection.4.2.1}%
 \contentsline {subsection}{\numberline {4.2.2}set\_library()}{12}{subsection.4.2.2}%
 \contentsline {subsection}{\numberline {4.2.3}start()}{13}{subsection.4.2.3}%
-\contentsline {section}{\numberline {4.3}Advanced methods}{15}{section.4.3}%
-\contentsline {subsection}{\numberline {4.3.1}add\_file\_to\_run\_folder()}{15}{subsection.4.3.1}%
+\contentsline {section}{\numberline {4.3}Advanced methods}{16}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}add\_file\_to\_run\_folder()}{16}{subsection.4.3.1}%
 \contentsline {subsection}{\numberline {4.3.2}add\_generics()}{16}{subsection.4.3.2}%
 \contentsline {subsection}{\numberline {4.3.3}add\_precompiled\_library()}{17}{subsection.4.3.3}%
 \contentsline {subsection}{\numberline {4.3.4}add\_testcase()}{17}{subsection.4.3.4}%
 \contentsline {subsection}{\numberline {4.3.5}add\_to\_testgroup()}{18}{subsection.4.3.5}%
 \contentsline {subsection}{\numberline {4.3.6}compile\_uvvm()}{19}{subsection.4.3.6}%
 \contentsline {subsection}{\numberline {4.3.7}compile\_osvvm()}{19}{subsection.4.3.7}%
-\contentsline {subsection}{\numberline {4.3.8}configure\_library()}{19}{subsection.4.3.8}%
+\contentsline {subsection}{\numberline {4.3.8}configure\_library()}{20}{subsection.4.3.8}%
 \contentsline {subsection}{\numberline {4.3.9}gen\_report()}{20}{subsection.4.3.9}%
-\contentsline {subsection}{\numberline {4.3.10}get\_args()}{20}{subsection.4.3.10}%
-\contentsline {subsection}{\numberline {4.3.11}get\_file\_list()}{20}{subsection.4.3.11}%
+\contentsline {subsection}{\numberline {4.3.10}get\_args()}{21}{subsection.4.3.10}%
+\contentsline {subsection}{\numberline {4.3.11}get\_file\_list()}{21}{subsection.4.3.11}%
 \contentsline {subsection}{\numberline {4.3.12}remove\_file()}{21}{subsection.4.3.12}%
 \contentsline {subsection}{\numberline {4.3.13}run\_command()}{21}{subsection.4.3.13}%
 \contentsline {subsection}{\numberline {4.3.14}set\_code\_coverage()}{22}{subsection.4.3.14}%
-\contentsline {subsection}{\numberline {4.3.15}set\_dependency()}{22}{subsection.4.3.15}%
-\contentsline {subsection}{\numberline {4.3.16}set\_result\_check\_string()}{23}{subsection.4.3.16}%
-\contentsline {subsection}{\numberline {4.3.17}set\_simulator()}{24}{subsection.4.3.17}%
-\contentsline {subsection}{\numberline {4.3.18}set\_testcase\_identifier\_name()}{25}{subsection.4.3.18}%
-\contentsline {subsection}{\numberline {4.3.19}set\_simulator\_wave\_file\_format()}{26}{subsection.4.3.19}%
-\contentsline {section}{\numberline {4.4}Statistical methods}{26}{section.4.4}%
-\contentsline {subsection}{\numberline {4.4.1}get\_results()}{26}{subsection.4.4.1}%
+\contentsline {subsection}{\numberline {4.3.15}set\_dependency()}{23}{subsection.4.3.15}%
+\contentsline {subsection}{\numberline {4.3.16}set\_pre\_sim\_tcl\_cmd()}{23}{subsection.4.3.16}%
+\contentsline {subsection}{\numberline {4.3.17}set\_result\_check\_string()}{24}{subsection.4.3.17}%
+\contentsline {subsection}{\numberline {4.3.18}set\_simulator()}{24}{subsection.4.3.18}%
+\contentsline {subsection}{\numberline {4.3.19}set\_testcase\_identifier\_name()}{25}{subsection.4.3.19}%
+\contentsline {subsection}{\numberline {4.3.20}set\_simulator\_wave\_file\_format()}{26}{subsection.4.3.20}%
+\contentsline {section}{\numberline {4.4}Statistical methods}{27}{section.4.4}%
+\contentsline {subsection}{\numberline {4.4.1}get\_results()}{27}{subsection.4.4.1}%
 \contentsline {subsection}{\numberline {4.4.2}get\_num\_tests\_run()}{27}{subsection.4.4.2}%
 \contentsline {subsection}{\numberline {4.4.3}get\_num\_pass\_tests()}{27}{subsection.4.4.3}%
-\contentsline {subsection}{\numberline {4.4.4}get\_num\_fail\_tests()}{27}{subsection.4.4.4}%
-\contentsline {subsection}{\numberline {4.4.5}get\_num\_pass\_with\_minor\_alert\_tests()}{27}{subsection.4.4.5}%
+\contentsline {subsection}{\numberline {4.4.4}get\_num\_fail\_tests()}{28}{subsection.4.4.4}%
+\contentsline {subsection}{\numberline {4.4.5}get\_num\_pass\_with\_minor\_alert\_tests()}{28}{subsection.4.4.5}%
 \contentsline {chapter}{\numberline {5}Command Line Interface (CLI)}{29}{chapter.5}%
 \contentsline {section}{\numberline {5.1}Examples}{30}{section.5.1}%
 \contentsline {subsection}{\numberline {5.1.1}Selecting simulator}{30}{subsection.5.1.1}%
@@ -60,9 +61,9 @@
 \contentsline {subsection}{\numberline {5.2.2}Pre\sphinxhyphen {}processing in parallel, simulations sequentially}{38}{subsection.5.2.2}%
 \contentsline {subsection}{\numberline {5.2.3}Pre\sphinxhyphen {}processing and simulations in parallel using 10 threads}{39}{subsection.5.2.3}%
 \contentsline {section}{\numberline {5.3}Simulation results}{40}{section.5.3}%
-\contentsline {subsection}{\numberline {5.3.1}Regression initial run}{41}{subsection.5.3.1}%
-\contentsline {subsection}{\numberline {5.3.2}Regression run without changes}{42}{subsection.5.3.2}%
-\contentsline {subsection}{\numberline {5.3.3}Failing test case run}{42}{subsection.5.3.3}%
+\contentsline {subsection}{\numberline {5.3.1}Regression initial run}{42}{subsection.5.3.1}%
+\contentsline {subsection}{\numberline {5.3.2}Regression run without changes}{43}{subsection.5.3.2}%
+\contentsline {subsection}{\numberline {5.3.3}Failing test case run}{43}{subsection.5.3.3}%
 \contentsline {chapter}{\numberline {6}Graphical User Interface (GUI)}{45}{chapter.6}%
 \contentsline {section}{\numberline {6.1}Modelsim}{45}{section.6.1}%
 \contentsline {section}{\numberline {6.2}GHDL / NVC}{46}{section.6.2}%

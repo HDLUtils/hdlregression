@@ -1,23 +1,21 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Command Line Interface (CLI) &mdash; hdlregression 1.2.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+  <title>Command Line Interface (CLI) &mdash; hdlregression 1.2.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="_static/jquery.js?v=5d32c60e"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=6efca38a"></script>
-        <script src="_static/doctools.js?v=9a2dae69"></script>
-        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=ca842793"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -226,7 +224,8 @@ of any previous runs, i.e. re-running the complete test suite.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; python ../test/regression.py -fr</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/full_regression.png" id="running-full-regression"><img alt="_images/full_regression.png" class="align-center" id="running-full-regression" src="_images/full_regression.png" style="width: 750px;" /></a>
+<a class="reference internal image-reference" href="_images/full_regression.png" id="running-full-regression"><img alt="_images/full_regression.png" class="align-center" id="running-full-regression" src="_images/full_regression.png" style="width: 750px;" />
+</a>
 </section>
 <section id="test-cases">
 <h3>Test cases<a class="headerlink" href="#test-cases" title="Link to this heading"></a></h3>
@@ -236,7 +235,8 @@ are listed as <code class="docutils literal notranslate"><span class="pre">&lt;t
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; python ../test/regression.py -ltc</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/testcase_listing.png" id="test-case-listing-in-terminal"><img alt="_images/testcase_listing.png" class="align-center" id="test-case-listing-in-terminal" src="_images/testcase_listing.png" style="width: 750px;" /></a>
+<a class="reference internal image-reference" href="_images/testcase_listing.png" id="test-case-listing-in-terminal"><img alt="_images/testcase_listing.png" class="align-center" id="test-case-listing-in-terminal" src="_images/testcase_listing.png" style="width: 750px;" />
+</a>
 <p>Running a selected test is done using the <code class="docutils literal notranslate"><span class="pre">-tc</span> <span class="pre">&lt;testbench.architecture.test</span> <span class="pre">case&gt;</span></code> or
 <code class="docutils literal notranslate"><span class="pre">--testCase</span> <span class="pre">&lt;testbench.architecture.test</span> <span class="pre">case&gt;</span></code> argument</p>
 <div class="admonition tip">
@@ -271,7 +271,8 @@ are listed as <code class="docutils literal notranslate"><span class="pre">&lt;t
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; python ../test/regression.py -tc 5</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/testcase_running.png" id="running-in-terminal"><img alt="_images/testcase_running.png" class="align-center" id="running-in-terminal" src="_images/testcase_running.png" style="width: 750px;" /></a>
+<a class="reference internal image-reference" href="_images/testcase_running.png" id="running-in-terminal"><img alt="_images/testcase_running.png" class="align-center" id="running-in-terminal" src="_images/testcase_running.png" style="width: 750px;" />
+</a>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>Test cases are identified by:</p>
@@ -336,7 +337,8 @@ There is also a test group <cite>selection_tests</cite> that will run all test c
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; python ../test/regression.py -ltg</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/testgroup_listing.png" id="test-group-listing-in-terminal"><img alt="_images/testgroup_listing.png" class="align-center" id="test-group-listing-in-terminal" src="_images/testgroup_listing.png" style="width: 750px;" /></a>
+<a class="reference internal image-reference" href="_images/testgroup_listing.png" id="test-group-listing-in-terminal"><img alt="_images/testgroup_listing.png" class="align-center" id="test-group-listing-in-terminal" src="_images/testgroup_listing.png" style="width: 750px;" />
+</a>
 </section>
 <section id="running-test-groups">
 <h4>Running test groups<a class="headerlink" href="#running-test-groups" title="Link to this heading"></a></h4>
@@ -349,7 +351,8 @@ There is also a test group <cite>selection_tests</cite> that will run all test c
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; python ../test/regression.py --testGroup receive_tests</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/testgroup_running.png" id="running-test-group"><img alt="_images/testgroup_running.png" class="align-center" id="running-test-group" src="_images/testgroup_running.png" style="width: 750px;" /></a>
+<a class="reference internal image-reference" href="_images/testgroup_running.png" id="running-test-group"><img alt="_images/testgroup_running.png" class="align-center" id="running-test-group" src="_images/testgroup_running.png" style="width: 750px;" />
+</a>
 </section>
 </section>
 </section>
@@ -376,7 +379,8 @@ using the <code class="docutils literal notranslate"><span class="pre">-t</span>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; python ../test/regression.py -tg receive_tests</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/testgroup_running.png" id="running-test-group-sequentially"><img alt="_images/testgroup_running.png" class="align-center" id="running-test-group-sequentially" src="_images/testgroup_running.png" style="width: 750px;" /></a>
+<a class="reference internal image-reference" href="_images/testgroup_running.png" id="running-test-group-sequentially"><img alt="_images/testgroup_running.png" class="align-center" id="running-test-group-sequentially" src="_images/testgroup_running.png" style="width: 750px;" />
+</a>
 </section>
 <section id="pre-processing-in-parallel-simulations-sequentially">
 <h3>Pre-processing in parallel, simulations sequentially<a class="headerlink" href="#pre-processing-in-parallel-simulations-sequentially" title="Link to this heading"></a></h3>
@@ -384,7 +388,8 @@ using the <code class="docutils literal notranslate"><span class="pre">-t</span>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; python ../test/regression.py -tg receive_tests -t</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/testgroup_threading_1.png" id="running-test-group-threading-1"><img alt="_images/testgroup_threading_1.png" class="align-center" id="running-test-group-threading-1" src="_images/testgroup_threading_1.png" style="width: 750px;" /></a>
+<a class="reference internal image-reference" href="_images/testgroup_threading_1.png" id="running-test-group-threading-1"><img alt="_images/testgroup_threading_1.png" class="align-center" id="running-test-group-threading-1" src="_images/testgroup_threading_1.png" style="width: 750px;" />
+</a>
 </section>
 <section id="pre-processing-and-simulations-in-parallel-using-10-threads">
 <h3>Pre-processing and simulations in parallel using 10 threads<a class="headerlink" href="#pre-processing-and-simulations-in-parallel-using-10-threads" title="Link to this heading"></a></h3>
@@ -392,7 +397,8 @@ using the <code class="docutils literal notranslate"><span class="pre">-t</span>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; python ../test/regression.py -tg receive_tests -t 10</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/testgroup_threading_10.png" id="running-test-group-threading-10"><img alt="_images/testgroup_threading_10.png" class="align-center" id="running-test-group-threading-10" src="_images/testgroup_threading_10.png" style="width: 750px;" /></a>
+<a class="reference internal image-reference" href="_images/testgroup_threading_10.png" id="running-test-group-threading-10"><img alt="_images/testgroup_threading_10.png" class="align-center" id="running-test-group-threading-10" src="_images/testgroup_threading_10.png" style="width: 750px;" />
+</a>
 </section>
 </section>
 <section id="simulation-results">
@@ -401,18 +407,21 @@ using the <code class="docutils literal notranslate"><span class="pre">-t</span>
 simulation run time and result.</p>
 <section id="regression-initial-run">
 <h3>Regression initial run<a class="headerlink" href="#regression-initial-run" title="Link to this heading"></a></h3>
-<a class="reference internal image-reference" href="_images/regression_run_1.png" id="initial-regression-run-all-tests"><img alt="_images/regression_run_1.png" class="align-center" id="initial-regression-run-all-tests" src="_images/regression_run_1.png" style="width: 750px;" /></a>
+<a class="reference internal image-reference" href="_images/regression_run_1.png" id="initial-regression-run-all-tests"><img alt="_images/regression_run_1.png" class="align-center" id="initial-regression-run-all-tests" src="_images/regression_run_1.png" style="width: 750px;" />
+</a>
 </section>
 <section id="regression-run-without-changes">
 <h3>Regression run without changes<a class="headerlink" href="#regression-run-without-changes" title="Link to this heading"></a></h3>
 <p>No tests are run when no changes are detected in the DUT or test case files, unless full regression is enabled using
 the <a class="reference internal" href="#"><span class="doc">Command Line Interface (CLI)</span></a> <code class="docutils literal notranslate"><span class="pre">-fr</span></code> or using the <a class="reference internal" href="api.html"><span class="doc">Application Programming Interface (API)</span></a> in the regression script <code class="docutils literal notranslate"><span class="pre">hr.start(full_regression=True)</span></code>.</p>
-<a class="reference internal image-reference" href="_images/regression_run_2.png" id="regression-re-run-no-new-test-runs"><img alt="_images/regression_run_2.png" class="align-center" id="regression-re-run-no-new-test-runs" src="_images/regression_run_2.png" style="width: 750px;" /></a>
+<a class="reference internal image-reference" href="_images/regression_run_2.png" id="regression-re-run-no-new-test-runs"><img alt="_images/regression_run_2.png" class="align-center" id="regression-re-run-no-new-test-runs" src="_images/regression_run_2.png" style="width: 750px;" />
+</a>
 </section>
 <section id="failing-test-case-run">
 <h3>Failing test case run<a class="headerlink" href="#failing-test-case-run" title="Link to this heading"></a></h3>
 <p>A failing test case will be reported as <strong>FAIL</strong> with a short summary from the test log:</p>
-<a class="reference internal image-reference" href="_images/failing_testcase.png" id="failing-testcase"><img alt="_images/failing_testcase.png" class="align-center" id="failing-testcase" src="_images/failing_testcase.png" style="width: 1000px;" /></a>
+<a class="reference internal image-reference" href="_images/failing_testcase.png" id="failing-testcase"><img alt="_images/failing_testcase.png" class="align-center" id="failing-testcase" src="_images/failing_testcase.png" style="width: 1000px;" />
+</a>
 </section>
 </section>
 </section>

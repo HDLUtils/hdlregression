@@ -194,7 +194,7 @@ class RivieraRunner(SimRunner):
         code_coverage_settings = self.project.hdlcodecoverage.get_code_coverage_settings()
         sim_options = " ".join(self.project.settings.get_sim_options())
         netlist_call = self._get_netlist_call()
-        pre_sim_tcl_command = self.project.settings.get_pre_sim_tcl_command()
+        pre_sim_tcl_command = self.project.settings.get_pre_sim_tcl_cmd()
 
         # --- RIVIERA COVERAGE FLAGS ---
         coverage_flags = ""
