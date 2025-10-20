@@ -1,23 +1,21 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Application Programming Interface (API) &mdash; hdlregression 1.2.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+  <title>Application Programming Interface (API) &mdash; hdlregression 1.2.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="_static/jquery.js?v=5d32c60e"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=6efca38a"></script>
-        <script src="_static/doctools.js?v=9a2dae69"></script>
-        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=ca842793"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -74,6 +72,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#run-command">run_command()</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#set-code-coverage">set_code_coverage()</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#set-dependency">set_dependency()</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#set-pre-sim-tcl-cmd">set_pre_sim_tcl_cmd()</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#set-result-check-string">set_result_check_string()</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#set-simulator">set_simulator()</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#set-testcase-identifier-name">set_testcase_identifier_name()</a></li>
@@ -129,7 +128,7 @@
 uses a set of API methods. Because HDLRegression is written in Python the test designer can
 utilize the full Python API and modules to make advanced regression scripts.
 There are two template script files in the <code class="code highlight bash docutils literal highlight-bash">/template</code> folder to help new users get started.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span> <span class="nn">sys</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 <span class="linenos"> 2</span><span class="c1"># ----------- USER HDLRegression PATH -----------------</span>
 <span class="linenos"> 3</span><span class="c1"># If HDLRegression is not installed as a Python package (see doc)</span>
 <span class="linenos"> 4</span><span class="c1"># then uncomment the following line and set the path for</span>
@@ -137,7 +136,7 @@ There are two template script files in the <code class="code highlight bash docu
 <span class="linenos"> 6</span><span class="c1">#sys.path.append(&lt;full_or_relative_path_to_hdlregression_install&gt;)</span>
 <span class="linenos"> 7</span>
 <span class="linenos"> 8</span><span class="c1"># Import the HDLRegression module to the Python script:</span>
-<span class="linenos"> 9</span><span class="kn">from</span> <span class="nn">hdlregression</span> <span class="kn">import</span> <span class="n">HDLRegression</span>
+<span class="linenos"> 9</span><span class="kn">from</span><span class="w"> </span><span class="nn">hdlregression</span><span class="w"> </span><span class="kn">import</span> <span class="n">HDLRegression</span>
 <span class="linenos">10</span>
 <span class="linenos">11</span><span class="c1"># Define a HDLRegression item to access the HDLRegression functionality:</span>
 <span class="linenos">12</span><span class="n">hr</span> <span class="o">=</span> <span class="n">HDLRegression</span><span class="p">()</span>
@@ -201,8 +200,8 @@ for having local argument parsing in the regression script. When an argparser ob
 add all its arguments to the argparser object. The parsed arguments can be collected using the <a class="reference internal" href="#get-args">get_args()</a> method as show
 in example 2.</p>
 <p><strong>Example 2:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">argparse</span>
-<span class="kn">from</span> <span class="nn">hdlregression</span> <span class="kn">import</span> <span class="n">HDLRegression</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">argparse</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">hdlregression</span><span class="w"> </span><span class="kn">import</span> <span class="n">HDLRegression</span>
 
 <span class="n">arg_parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Regression script parser&#39;</span><span class="p">)</span>
 <span class="n">arg_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--rtl&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;run RTL simulations&#39;</span><span class="p">)</span>
@@ -1288,6 +1287,43 @@ compiled after all of the libraries listed in <code class="docutils literal notr
 <li><p>Specifying the library dependency is usually not necessary as HDLRegression is capable of detecting dependencies.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">dep_library</span></code> list has to be a list of library name(s).</p></li>
 </ol>
+</div>
+</section>
+<section id="set-pre-sim-tcl-cmd">
+<h3>set_pre_sim_tcl_cmd()<a class="headerlink" href="#set-pre-sim-tcl-cmd" title="Link to this heading"></a></h3>
+<p>Sets a single Tcl command that will be executed by the simulator <strong>before</strong> a test starts.</p>
+<p>This is useful for preparing the simulator session (e.g., setting variables, loading packages, or running a small
+start-up script) without modifying the testbench.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">set_pre_sim_tcl_cmd</span><span class="p">(</span><span class="o">&lt;</span><span class="n">tcl_command</span><span class="o">&gt;</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Required</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>tcl_command</p></td>
+<td><p>string</p></td>
+<td><p><strong>mandatory</strong></p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>The command must be set <strong>before</strong> calling <code class="code docutils literal notranslate"><span class="pre">start()</span></code>.</p></li>
+<li><p>The setting applies to simulators with a Tcl front-end (e.g., ModelSim/Questa, Riviera-PRO). Other simulators
+may ignore this setting.</p></li>
+<li><p>Calling this method multiple times will overwrite the previously set command.</p></li>
+</ul>
+</div>
+<p><strong>Example:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">set_pre_sim_tcl_cmd</span><span class="p">(</span><span class="s1">&#39;do ../scripts/pre_sim.do&#39;</span><span class="p">)</span>
+<span class="n">hr</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</pre></div>
 </div>
 </section>
 <section id="set-result-check-string">

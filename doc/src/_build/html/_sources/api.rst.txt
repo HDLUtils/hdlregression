@@ -929,6 +929,40 @@ compiled after all of the libraries listed in ``dep_library``.
 
 
 
+set_pre_sim_tcl_cmd()
+=======================================================================================================================
+
+Sets a single Tcl command that will be executed by the simulator **before** a test starts.
+
+This is useful for preparing the simulator session (e.g., setting variables, loading packages, or running a small
+start-up script) without modifying the testbench.
+
+.. code-block:: python
+
+  hr.set_pre_sim_tcl_cmd(<tcl_command>)
+
+
++-------------------+---------------------------+---------------+
+| Argument          | Type                      | Required      |
++===================+===========================+===============+
+| tcl_command       | string                    | **mandatory** |
++-------------------+---------------------------+---------------+
+
+
+.. note::
+
+  * The command must be set **before** calling :code:`start()`.
+  * The setting applies to simulators with a Tcl front-end (e.g., ModelSim/Questa, Riviera-PRO). Other simulators
+    may ignore this setting.
+  * Calling this method multiple times will overwrite the previously set command.
+
+
+**Example:**
+
+.. code-block:: python
+
+  hr.set_pre_sim_tcl_cmd('do ../scripts/pre_sim.do')
+  hr.start()
 
 
 set_result_check_string() 
