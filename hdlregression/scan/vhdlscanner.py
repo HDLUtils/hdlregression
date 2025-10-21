@@ -79,7 +79,7 @@ class VHDLScanner(HDLScanner):
     def get_architecture_module(self, name, arch_of_name) -> 'ArchitectureModule':
         for module in self.container.get():
             if module.get_is_architecture():
-                if module.get_name().lower() == name.lower():
+                if module.get_name().lower() == name.lower() and module.get_arch_of().lower() == arch_of_name.lower():
                     return module
         # Not found
         module = ArchitectureModule(name=name,
@@ -602,9 +602,11 @@ class EntityParser(BaseParser):
                         \s*;''', flags=self._ALL_FLAGS)
 
         start_matches = re.finditer(re_start, code)
+        # Set previous end to start of file
+        end_match = re.match(r'^', code)
 
         for start_match in start_matches:
-            is_tb = re.search(re_tb, code[:start_match.start()])
+            is_tb = re.search(re_tb, code[end_match.end():start_match.start()])
             entity_name = start_match.group('name')
             end_match = re_end.search(code, start_match.end())
 
@@ -614,8 +616,7 @@ class EntityParser(BaseParser):
             if is_tb:
                 self.module.set_is_tb()
             if end_match:
-                code = code[start_match.end():end_match.start()]
-                self._generics(code)
+                self._generics(code[start_match.end():end_match.start()])
 
     def _generics(self, code):
         '''
