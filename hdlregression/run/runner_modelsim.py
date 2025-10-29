@@ -245,11 +245,18 @@ class ModelsimRunner(SimRunner):
             code_coverage_file = "./" + code_coverage_file
             code_coverage_file = code_coverage_file.replace("\\", "/")
             # Construct code_coverage save call
-            code_coverage_call_save = "coverage save -onexit %s;" % (code_coverage_file)
+            code_coverage_call_save = "coverage save %s;" % (code_coverage_file)
             code_coverage_call_enable = "-coverage"
+            code_coverage_set_testname = (f"coverage open {code_coverage_file}; "
+                                         f"run 1 ns; "
+                                         f"coverage attribute -name TESTNAME -value {test.get_arch().get_name()}_{test.get_id_number()}; "
+                                         f"coverage save {code_coverage_file}; " 
+            )
+
         else:
             code_coverage_call_save = ""
             code_coverage_call_enable = ""
+            code_coverage_set_testname = ""
 
         sim_options = " ".join(self.project.settings.get_sim_options())
 
@@ -273,7 +280,7 @@ class ModelsimRunner(SimRunner):
                 module_call,
                 sim_options,
                 netlist_call,
-                code_coverage_call_enable,
+                code_coverage_call_enable, 
                 "-modelsimini {" + modelsim_ini + "};",
                 "onerror {quit -code 1};",
                 "onbreak {resume};",
@@ -282,9 +289,11 @@ class ModelsimRunner(SimRunner):
                 "run",
                 "-all;",
                 code_coverage_call_save,
+                code_coverage_set_testname,
                 "exit",
             ]
         )
+
 
     def _write_run_do_file(self, test, generic_call, module_call):
         """
