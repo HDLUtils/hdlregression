@@ -294,6 +294,7 @@ class ModelsimCodeCoverage(HdlCodeCoverage):
         merge_command.append('-out')
         merge_command.append(merge_ucdb)
         self._run_command_list(merge_command)
+        return merge_ucdb
 
     def _apply_exceptions(self) -> str:
         '''

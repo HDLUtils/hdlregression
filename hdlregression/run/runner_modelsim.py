@@ -247,10 +247,10 @@ class ModelsimRunner(SimRunner):
             # Construct code_coverage save call
             code_coverage_call_save = "coverage save %s;" % (code_coverage_file)
             code_coverage_call_enable = "-coverage"
-            code_coverage_set_testname = (f"coverage open {code_coverage_file}; "
-                                         f"run 1 ns; "
-                                         f"coverage attribute -name TESTNAME -value {test.get_arch().get_name()}_{test.get_id_number()}; "
-                                         f"coverage save {code_coverage_file}; " 
+            code_coverage_set_testname = ("coverage open {}; ".format(code_coverage_file) +
+                                         "run 1 ns; "
+                                         "coverage attribute -name TESTNAME -value {}_{}; ".format(test.get_arch().get_name(), test.get_id_number()) +
+                                         "coverage save {}; ".format(code_coverage_file) 
             )
 
         else:

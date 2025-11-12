@@ -10,15 +10,27 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 
-import os
-import hdlregression
+import os, sys, pathlib
+HERE = pathlib.Path(__file__).resolve()
+ROOT = HERE.parents[2]            # repo-root (tilpass hvis struktur avviker)
+SRC  = ROOT / "src"               # hvis du har "src"-layout
+for p in (ROOT, SRC):
+    if p.exists() and str(p) not in sys.path:
+        sys.path.insert(0, str(p))
+
+try:
+    import hdlregression
+    release = hdlregression.__version__
+except Exception:
+    # Fallback: les versjon manuelt hvis import fortsatt feiler
+    release = os.environ.get("HDLREGRESSION_VERSION", "0.0.0")
 
 # -- Project information -----------------------------------------------------
 
 project = 'hdlregression'
 copyright = '2021, UVVM'
 author = 'UVVM'
-release = hdlregression.__version__
+#release = hdlregression.__version__
 
 # -- General configuration ---------------------------------------------------
 

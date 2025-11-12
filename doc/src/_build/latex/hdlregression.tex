@@ -64,8 +64,8 @@
 
 
 \title{hdlregression}
-\date{Oct 20, 2025}
-\release{1.2.1}
+\date{Nov 12, 2025}
+\release{1.3.0}
 \author{UVVM}
 \newcommand{\sphinxlogo}{\vbox{}}
 \renewcommand{\releasename}{Release}
@@ -939,7 +939,7 @@ Compilation error (no test cases will be run)
 \sphinxstylestrong{Arguments}
 
 \sphinxAtStartPar
-The default operation is to run in {\hyperref[\detokenize{intro:what-is-regression-testing}]{\sphinxcrossref{\DUrole{std,std-ref}{regression mode}}}} without {\hyperref[\detokenize{gui::doc}]{\sphinxcrossref{\DUrole{doc}{GUI}}}} enabled,
+The default operation is to run in {\hyperref[\detokenize{intro:what-is-regression-testing}]{\sphinxcrossref{\DUrole{std}{\DUrole{std-ref}{regression mode}}}}} without {\hyperref[\detokenize{gui::doc}]{\sphinxcrossref{\DUrole{doc}{GUI}}}} enabled,
 yet this can be changed using the available arguments or by using the {\hyperref[\detokenize{cli::doc}]{\sphinxcrossref{\DUrole{doc}{command line interfaces}}}}.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
@@ -1026,7 +1026,7 @@ com\_options
 string/list of string
 &
 \sphinxAtStartPar
-{\hyperref[\detokenize{api:table1}]{\sphinxcrossref{\DUrole{std,std-ref}{See table 1}}}}
+{\hyperref[\detokenize{api:table1}]{\sphinxcrossref{\DUrole{std}{\DUrole{std-ref}{See table 1}}}}}
 &
 \sphinxAtStartPar
 Compilation options
@@ -1039,7 +1039,7 @@ sim\_options
 string/list of string
 &
 \sphinxAtStartPar
-{\hyperref[\detokenize{api:table2}]{\sphinxcrossref{\DUrole{std,std-ref}{See table 2}}}}
+{\hyperref[\detokenize{api:table2}]{\sphinxcrossref{\DUrole{std}{\DUrole{std-ref}{See table 2}}}}}
 &
 \sphinxAtStartPar
 Simulation options
@@ -1052,7 +1052,7 @@ runtime\_options
 list of string
 &
 \sphinxAtStartPar
-{\hyperref[\detokenize{api:table3}]{\sphinxcrossref{\DUrole{std,std-ref}{See table 3}}}}
+{\hyperref[\detokenize{api:table3}]{\sphinxcrossref{\DUrole{std}{\DUrole{std-ref}{See table 3}}}}}
 &
 \sphinxAtStartPar
 Runtime options
@@ -1065,7 +1065,7 @@ global\_options
 list of string
 &
 \sphinxAtStartPar
-{\hyperref[\detokenize{api:table4}]{\sphinxcrossref{\DUrole{std,std-ref}{See table 4}}}}
+{\hyperref[\detokenize{api:table4}]{\sphinxcrossref{\DUrole{std}{\DUrole{std-ref}{See table 4}}}}}
 &
 \sphinxAtStartPar
 Global options
@@ -1078,7 +1078,7 @@ elab\_options
 list of string
 &
 \sphinxAtStartPar
-{\hyperref[\detokenize{api:table5}]{\sphinxcrossref{\DUrole{std,std-ref}{See table 5}}}}
+{\hyperref[\detokenize{api:table5}]{\sphinxcrossref{\DUrole{std}{\DUrole{std-ref}{See table 5}}}}}
 &
 \sphinxAtStartPar
 Elaboration options
@@ -1895,7 +1895,7 @@ The {\hyperref[\detokenize{api:start}]{\sphinxcrossref{start()}}} method will re
 \subsection{add\_to\_testgroup()}
 \label{\detokenize{api:add-to-testgroup}}
 \begin{DUlineblock}{0em}
-\item[] Will add tests to a collection of tests, i.e. {\hyperref[\detokenize{intro:test-group}]{\sphinxcrossref{\DUrole{std,std-ref}{test group}}}}, that can be run in groups.
+\item[] Will add tests to a collection of tests, i.e. {\hyperref[\detokenize{intro:test-group}]{\sphinxcrossref{\DUrole{std}{\DUrole{std-ref}{test group}}}}}, that can be run in groups.
 The test group is given a name that is used for addressing the test collection.
 \item[] There are no limit for how many tests that can be added to a test group, and no limit for the number of test groups.
 \item[] Running a test group can be done using a {\hyperref[\detokenize{cli::doc}]{\sphinxcrossref{\DUrole{doc}{command line interface}}}}.
@@ -2861,7 +2861,7 @@ Simulator com\_options
 \begin{DUlineblock}{0em}
 \item[] This can be useful when the test script should be run with a different version of Modelsim other than the
 one listed in the system path, where all that is needed is to change the path for the Modelsim executable.
-\item[] It is also possible to select simulator when initializing the {\hyperref[\detokenize{api:hdlregression}]{\sphinxcrossref{\DUrole{std,std-ref}{HDLRegression}}}} object, but without selecting
+\item[] It is also possible to select simulator when initializing the {\hyperref[\detokenize{api:hdlregression}]{\sphinxcrossref{\DUrole{std}{\DUrole{std-ref}{HDLRegression}}}}} object, but without selecting
 compile options and setting simulator executable path, or by using {\hyperref[\detokenize{cli::doc}]{\sphinxcrossref{\DUrole{doc}{command line interfaces}}}}.
 \end{DUlineblock}
 
@@ -3220,7 +3220,7 @@ This is only applicable for tests run with the UVVM verification framework.
 \begin{DUlineblock}{0em}
 \item[] The configuration of a regression run can be set directly from the command line using command line interface.
 This can be useful when debugging the behaviour of a design, e.g. by running in {\hyperref[\detokenize{gui::doc}]{\sphinxcrossref{\DUrole{doc}{GUI mode}}}},
-or working with a {\hyperref[\detokenize{intro:test-case}]{\sphinxcrossref{\DUrole{std,std-ref}{testcase}}}} or {\hyperref[\detokenize{intro:test-group}]{\sphinxcrossref{\DUrole{std,std-ref}{test group}}}}.
+or working with a {\hyperref[\detokenize{intro:test-case}]{\sphinxcrossref{\DUrole{std}{\DUrole{std-ref}{testcase}}}}} or {\hyperref[\detokenize{intro:test-group}]{\sphinxcrossref{\DUrole{std}{\DUrole{std-ref}{test group}}}}}.
 \item[] The command line interface are processed at startup and will override any scripted configurations that are in conflict.
 \end{DUlineblock}
 
@@ -3466,7 +3466,7 @@ or \sphinxcode{\sphinxupquote{\sphinxhyphen{}\sphinxhyphen{}simulator}} argument
 \subsection{Full regression}
 \label{\detokenize{cli:full-regression}}
 \sphinxAtStartPar
-Enabling the {\hyperref[\detokenize{intro:what-is-regression-testing}]{\sphinxcrossref{\DUrole{std,std-ref}{full regression mode}}}} ensures that all test cases are run, regardless
+Enabling the {\hyperref[\detokenize{intro:what-is-regression-testing}]{\sphinxcrossref{\DUrole{std}{\DUrole{std-ref}{full regression mode}}}}} ensures that all test cases are run, regardless
 of any previous runs, i.e. re\sphinxhyphen{}running the complete test suite.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
@@ -3859,7 +3859,7 @@ Each top level testbench file has to have the HDLRegression testbench pragma.
 
 \item {} 
 \sphinxAtStartPar
-A testbench simulation result report will have to match the {\hyperref[\detokenize{api:set-result-check-string}]{\sphinxcrossref{\DUrole{std,std-ref}{set\_result\_check\_string()}}}} to
+A testbench simulation result report will have to match the {\hyperref[\detokenize{api:set-result-check-string}]{\sphinxcrossref{\DUrole{std}{\DUrole{std-ref}{set\_result\_check\_string()}}}}} to
 \sphinxstylestrong{PASS}, and the test run will \sphinxstylestrong{FAIL} if this string is not found in the simulation transcript.
 
 \begin{sphinxadmonition}{note}{Note:}
@@ -3904,7 +3904,7 @@ implementation.
 
 \sphinxAtStartPar
 Note that the \sphinxcode{\sphinxupquote{GC\_TESTCASE}} generic or \sphinxcode{\sphinxupquote{TESTCASE}} parameter name can be changed using
-the {\hyperref[\detokenize{api:set-testcase-identifier-name}]{\sphinxcrossref{\DUrole{std,std-ref}{set\_testcase\_identifier\_name()}}}} method.
+the {\hyperref[\detokenize{api:set-testcase-identifier-name}]{\sphinxcrossref{\DUrole{std}{\DUrole{std-ref}{set\_testcase\_identifier\_name()}}}}} method.
 
 
 \section{Example Testbench}
