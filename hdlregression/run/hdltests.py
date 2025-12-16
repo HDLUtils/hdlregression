@@ -153,9 +153,6 @@ class HdlRegressionTest:
     def get_tb(self):
         return self.tb
 
-    def get_library(self):
-        pass
-
     def get_is_vhdl(self) -> bool:
         return False
 

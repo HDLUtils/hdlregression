@@ -10,51 +10,51 @@ Command Line Interface (CLI)
 | The command line interface are processed at startup and will override any scripted configurations that are in conflict.
 
 
-+-------------------------------------+----------------------------------------------+--------------------------------------------+
-| Arguments                                                                          | Description                                |
-+=====================================+==============================================+============================================+
-|     -h                              |    --help                                    | Help screen                                |
-+-------------------------------------+----------------------------------------------+--------------------------------------------+
-|     -v                              |    --verbose                                 | Enable full verbosity                      |
-+-------------------------------------+----------------------------------------------+--------------------------------------------+
-|     -d                              |    --debug                                   | Enable debug mode                          |
-+-------------------------------------+----------------------------------------------+--------------------------------------------+
-|     -g                              |    --gui                                     | Run with simulator gui                     |
-+-------------------------------------+----------------------------------------------+--------------------------------------------+
-|     -fr                             |    --fullRegression                          | Run all tests                              |
-+-------------------------------------+----------------------------------------------+--------------------------------------------+
-|     -c                              |    --clean                                   | Remove all before test run                 |
-+-------------------------------------+----------------------------------------------+--------------------------------------------+
-|     -tc TB_ENTITY [TB_ARCH [TC]]    |    --testCase TB_ENTITY [TB_ARCH [TC]]       | Run selected test case                     |
-+-------------------------------------+----------------------------------------------+--------------------------------------------+
-|     -tg TESTGROUP                   |    --testGroup TESTGROUP                     | Run selected test group                    |
-+-------------------------------------+----------------------------------------------+--------------------------------------------+
-|     -ltc                            |    --listTestcase                            | List all discovered test cases             |
-+-------------------------------------+----------------------------------------------+--------------------------------------------+
-|     -ltg                            |    --listTestgroup                           | List all test groups                       |
-+-------------------------------------+----------------------------------------------+--------------------------------------------+
-|     -lco                            |    --listCompileOrder                        | List libraries and files in compile order  |
-+-------------------------------------+----------------------------------------------+--------------------------------------------+
-|     -fc                             |    --forceCompile                            | Force recompile                            |
-+-------------------------------------+----------------------------------------------+--------------------------------------------+
-|     -sof                            |    --stopOnFailure                           | Stop simulations on test case fail         |
-+-------------------------------------+----------------------------------------------+--------------------------------------------+
-|     -s                              |    --simulator                               | Set simulator (require path in env)        |
-+-------------------------------------+----------------------------------------------+--------------------------------------------+
-|     -t                              |    --threading [N]                           | Run tasks in parallel                      |
-+-------------------------------------+----------------------------------------------+--------------------------------------------+
-|     -ns                             |    --no_sim                                  | No simulation, compile only                |
-+-------------------------------------+----------------------------------------------+--------------------------------------------+
-|                                     |    --showWarnError                           | Show sim error and warning messages.       |
-+-------------------------------------+----------------------------------------------+--------------------------------------------+
-|                                     |    --noColor                                 | Disable terminal output colors.            |
-+-------------------------------------+----------------------------------------------+--------------------------------------------+
-|                                     |    --waveFormat                              | Wave file format [VCD (default) or FST]    |
-+-------------------------------------+----------------------------------------------+--------------------------------------------+
-|                                     |    --wlf                                     | Save wlf file after sim (Questa/Modelsim)  |
-+-------------------------------------+----------------------------------------------+--------------------------------------------+
-|     -etj                            |    --exportTestcaseJson                      | Export TC to JSON file with the given path |
-+-------------------------------------+----------------------------------------------+--------------------------------------------+
++----------------------------------------+----------------------------------------------+--------------------------------------------+
+| Arguments                                                                             | Description                                |
++========================================+==============================================+============================================+
+|     -h                                 |    --help                                    | Help screen                                |
++----------------------------------------+----------------------------------------------+--------------------------------------------+
+|     -v                                 |    --verbose                                 | Enable full verbosity                      |
++----------------------------------------+----------------------------------------------+--------------------------------------------+
+|     -d                                 |    --debug                                   | Enable debug mode                          |
++----------------------------------------+----------------------------------------------+--------------------------------------------+
+|     -g                                 |    --gui                                     | Run with simulator gui                     |
++----------------------------------------+----------------------------------------------+--------------------------------------------+
+|     -fr                                |    --fullRegression                          | Run all tests                              |
++----------------------------------------+----------------------------------------------+--------------------------------------------+
+|     -c                                 |    --clean                                   | Remove all before test run                 |
++----------------------------------------+----------------------------------------------+--------------------------------------------+
+|     -tc [LIB] TB_ENTITY [TB_ARCH [TC]] |    --testCase [LIB] TB_ENTITY [TB_ARCH [TC]] | Run selected test case                     |
++----------------------------------------+----------------------------------------------+--------------------------------------------+
+|     -tg TESTGROUP                      |    --testGroup TESTGROUP                     | Run selected test group                    |
++----------------------------------------+----------------------------------------------+--------------------------------------------+
+|     -ltc                               |    --listTestcase                            | List all discovered test cases             |
++----------------------------------------+----------------------------------------------+--------------------------------------------+
+|     -ltg                               |    --listTestgroup                           | List all test groups                       |
++----------------------------------------+----------------------------------------------+--------------------------------------------+
+|     -lco                               |    --listCompileOrder                        | List libraries and files in compile order  |
++----------------------------------------+----------------------------------------------+--------------------------------------------+
+|     -fc                                |    --forceCompile                            | Force recompile                            |
++----------------------------------------+----------------------------------------------+--------------------------------------------+
+|     -sof                               |    --stopOnFailure                           | Stop simulations on test case fail         |
++----------------------------------------+----------------------------------------------+--------------------------------------------+
+|     -s                                 |    --simulator                               | Set simulator (require path in env)        |
++----------------------------------------+----------------------------------------------+--------------------------------------------+
+|     -t                                 |    --threading [N]                           | Run tasks in parallel                      |
++----------------------------------------+----------------------------------------------+--------------------------------------------+
+|     -ns                                |    --no_sim                                  | No simulation, compile only                |
++----------------------------------------+----------------------------------------------+--------------------------------------------+
+|                                        |    --showWarnError                           | Show sim error and warning messages.       |
++----------------------------------------+----------------------------------------------+--------------------------------------------+
+|                                        |    --noColor                                 | Disable terminal output colors.            |
++----------------------------------------+----------------------------------------------+--------------------------------------------+
+|                                        |    --waveFormat                              | Wave file format [VCD (default) or FST]    |
++----------------------------------------+----------------------------------------------+--------------------------------------------+
+|                                        |    --wlf                                     | Save wlf file after sim (Questa/Modelsim)  |
++----------------------------------------+----------------------------------------------+--------------------------------------------+
+|     -etj                               |    --exportTestcaseJson                      | Export TC to JSON file with the given path |
++----------------------------------------+----------------------------------------------+--------------------------------------------+
 
 ***********************************************************************************************************************	     
 Examples
@@ -95,22 +95,23 @@ Test cases
 =======================================================================================================================
 
 All tests that are discovered by HDLRegression can be listed using the ``-ltc`` or ``--listTestcase`` argument, and 
-are listed as ``<testbench entity>.<testbench architecture>.<sequencer built-in test case>`` or just 
-``<testbench entity>.<testbench architecture>`` if no sequencer built-in test cases are used.
+are listed as ``<library>:<testbench entity>.<testbench architecture>.<sequencer built-in test case>`` or just 
+``<library>:<testbench entity>.<testbench architecture>`` if no sequencer built-in test cases are used. Note that the library 
+name is optional and only used when multiple libraries are used in the regression script.
 
 .. code-block:: console
 
   > python ../test/regression.py -ltc
 		
 
-.. image:: images/testcase_listing.png
+.. image:: images/cli_test_case_listing.png
   :width: 750
   :name: test case listing in terminal
   :align:   center
 
 
-Running a selected test is done using the ``-tc <testbench.architecture.test case>`` or 
-``--testCase <testbench.architecture.test case>`` argument
+Running a selected test is done using the ``-tc <library>:<testbench.architecture.test case>`` or 
+``--testCase <library>:<testbench.architecture.test case>`` argument
 
 .. include:: wildcards_reference_tip.rst
   
@@ -118,6 +119,7 @@ Running a selected test is done using the ``-tc <testbench.architecture.test cas
 
   > python ../test/regression.py -tc uart_vvc_tb.func.check_simple_receive
 
+  > python ../test/regression.py -tc lib_uart:uart_vvc_tb.func.check_simple_receive
 
 A test case can also be selected using the test case number from the ``-ltc`` or ``--listTestcase`` argument
 
@@ -126,7 +128,7 @@ A test case can also be selected using the test case number from the ``-ltc`` or
   > python ../test/regression.py -tc 5
 
 
-.. image:: images/test case_running.png
+.. image:: images/cli_test_case_running.png
   :width: 750
   :name: running in terminal
   :align:   center
@@ -136,6 +138,7 @@ A test case can also be selected using the test case number from the ``-ltc`` or
 .. tip::
   Test cases are identified by:
 
+  #. <library>:<entity_name>.<architecture_name>.<sequencer_test case>
   #. <entity_name>
   #. <entity_name>.<architecture_name>
   #. <entity_name>.<architecture_name>.<sequencer_test case>

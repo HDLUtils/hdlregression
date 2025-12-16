@@ -64,8 +64,8 @@
 
 
 \title{hdlregression}
-\date{Nov 12, 2025}
-\release{1.3.0}
+\date{Dec 16, 2025}
+\release{1.4.0}
 \author{UVVM}
 \newcommand{\sphinxlogo}{\vbox{}}
 \renewcommand{\releasename}{Release}
@@ -939,7 +939,7 @@ Compilation error (no test cases will be run)
 \sphinxstylestrong{Arguments}
 
 \sphinxAtStartPar
-The default operation is to run in {\hyperref[\detokenize{intro:what-is-regression-testing}]{\sphinxcrossref{\DUrole{std}{\DUrole{std-ref}{regression mode}}}}} without {\hyperref[\detokenize{gui::doc}]{\sphinxcrossref{\DUrole{doc}{GUI}}}} enabled,
+The default operation is to run in {\hyperref[\detokenize{intro:what-is-regression-testing}]{\sphinxcrossref{\DUrole{std,std-ref}{regression mode}}}} without {\hyperref[\detokenize{gui::doc}]{\sphinxcrossref{\DUrole{doc}{GUI}}}} enabled,
 yet this can be changed using the available arguments or by using the {\hyperref[\detokenize{cli::doc}]{\sphinxcrossref{\DUrole{doc}{command line interfaces}}}}.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
@@ -1026,7 +1026,7 @@ com\_options
 string/list of string
 &
 \sphinxAtStartPar
-{\hyperref[\detokenize{api:table1}]{\sphinxcrossref{\DUrole{std}{\DUrole{std-ref}{See table 1}}}}}
+{\hyperref[\detokenize{api:table1}]{\sphinxcrossref{\DUrole{std,std-ref}{See table 1}}}}
 &
 \sphinxAtStartPar
 Compilation options
@@ -1039,7 +1039,7 @@ sim\_options
 string/list of string
 &
 \sphinxAtStartPar
-{\hyperref[\detokenize{api:table2}]{\sphinxcrossref{\DUrole{std}{\DUrole{std-ref}{See table 2}}}}}
+{\hyperref[\detokenize{api:table2}]{\sphinxcrossref{\DUrole{std,std-ref}{See table 2}}}}
 &
 \sphinxAtStartPar
 Simulation options
@@ -1052,7 +1052,7 @@ runtime\_options
 list of string
 &
 \sphinxAtStartPar
-{\hyperref[\detokenize{api:table3}]{\sphinxcrossref{\DUrole{std}{\DUrole{std-ref}{See table 3}}}}}
+{\hyperref[\detokenize{api:table3}]{\sphinxcrossref{\DUrole{std,std-ref}{See table 3}}}}
 &
 \sphinxAtStartPar
 Runtime options
@@ -1065,7 +1065,7 @@ global\_options
 list of string
 &
 \sphinxAtStartPar
-{\hyperref[\detokenize{api:table4}]{\sphinxcrossref{\DUrole{std}{\DUrole{std-ref}{See table 4}}}}}
+{\hyperref[\detokenize{api:table4}]{\sphinxcrossref{\DUrole{std,std-ref}{See table 4}}}}
 &
 \sphinxAtStartPar
 Global options
@@ -1078,7 +1078,7 @@ elab\_options
 list of string
 &
 \sphinxAtStartPar
-{\hyperref[\detokenize{api:table5}]{\sphinxcrossref{\DUrole{std}{\DUrole{std-ref}{See table 5}}}}}
+{\hyperref[\detokenize{api:table5}]{\sphinxcrossref{\DUrole{std,std-ref}{See table 5}}}}
 &
 \sphinxAtStartPar
 Elaboration options
@@ -1758,31 +1758,46 @@ string
 \label{\detokenize{api:add-testcase}}
 \sphinxAtStartPar
 Adding test case(s) will configure HDLRegression to only run these test cases.
-All test cases are run if no test cases are added using this command.
-Selecting test case can also be done by using {\hyperref[\detokenize{cli::doc}]{\sphinxcrossref{\DUrole{doc}{command line interfaces}}}}, and test cases selected from CLI will
-override any scripted test case selecition.
+If no test cases are added, all discovered tests are run.
+
+\sphinxAtStartPar
+Test case selection can also be done via the {\hyperref[\detokenize{cli::doc}]{\sphinxcrossref{\DUrole{doc}{command line interfaces}}}}.
+Any test cases selected from the CLI override scripted test case selection.
 
 \begin{sphinxadmonition}{important}{Important:}
 \sphinxAtStartPar
-A test case name is a string that consists of
+A test case identifier is a string composed of the following elements:
 \begin{enumerate}
 \sphinxsetlistlabels{\arabic}{enumi}{enumii}{}{.}%
 \item {} 
 \sphinxAtStartPar
-testbench entity name
+Testbench entity name
 
 \item {} 
 \sphinxAtStartPar
-testbench architecture name
+Testbench architecture name (optional)
 
 \item {} 
 \sphinxAtStartPar
-test name (optional)
+Sequencer / built\sphinxhyphen{}in test case name (optional)
 
 \end{enumerate}
 
 \sphinxAtStartPar
-And where the three test case name elements are separated by a dot (\sphinxcode{\sphinxupquote{.}}): \sphinxcode{\sphinxupquote{\textless{}testbench\_name\textgreater{}.\textless{}architecture\_name\textgreater{}.\textless{}test\_name\textgreater{}}}.
+The elements are separated by a dot (\sphinxcode{\sphinxupquote{.}}):
+
+\sphinxAtStartPar
+\sphinxcode{\sphinxupquote{\textless{}entity\textgreater{}{[}.\textless{}architecture\textgreater{}{[}.\textless{}testcase\textgreater{}{]}{]}}}
+
+\sphinxAtStartPar
+In addition, an optional library selector may be prepended using
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{p}{[}\PYG{o}{\PYGZlt{}}\PYG{n}{library}\PYG{o}{\PYGZgt{}}\PYG{p}{:}\PYG{p}{]}\PYG{o}{\PYGZlt{}}\PYG{n}{entity}\PYG{o}{\PYGZgt{}}\PYG{p}{[}\PYG{o}{.}\PYG{o}{\PYGZlt{}}\PYG{n}{architecture}\PYG{o}{\PYGZgt{}}\PYG{p}{[}\PYG{o}{.}\PYG{o}{\PYGZlt{}}\PYG{n}{testcase}\PYG{o}{\PYGZgt{}}\PYG{p}{]}\PYG{p}{]}
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+If the library selector is omitted, tests from all libraries are considered.
 \end{sphinxadmonition}
 
 \begin{sphinxadmonition}{tip}{Tip:}
@@ -1874,32 +1889,91 @@ string / list of strings
 \sphinxattableend\end{savenotes}
 
 \sphinxAtStartPar
+\sphinxstylestrong{Supported selector forms}
+
+
+\begin{savenotes}\sphinxattablestart
+\sphinxthistablewithglobalstyle
+\centering
+\begin{tabulary}{\linewidth}[t]{TT}
+\sphinxtoprule
+\sphinxstyletheadfamily 
+\sphinxAtStartPar
+Selector
+&\sphinxstyletheadfamily 
+\sphinxAtStartPar
+Meaning
+\\
+\sphinxmidrule
+\sphinxtableatstartofbodyhook
+\sphinxAtStartPar
+entity
+&
+\sphinxAtStartPar
+All architectures and testcases
+\\
+\sphinxhline
+\sphinxAtStartPar
+entity.arch
+&
+\sphinxAtStartPar
+All testcases in architecture
+\\
+\sphinxhline
+\sphinxAtStartPar
+entity.arch.tc
+&
+\sphinxAtStartPar
+One specific test
+\\
+\sphinxhline
+\sphinxAtStartPar
+lib:entity.arch.tc
+&
+\sphinxAtStartPar
+Same, but limited to one library
+\\
+\sphinxhline
+\sphinxAtStartPar
+lib:
+&
+\sphinxAtStartPar
+All tests in a library
+\\
+\sphinxbottomrule
+\end{tabulary}
+\sphinxtableafterendhook\par
+\sphinxattableend\end{savenotes}
+
+\sphinxAtStartPar
 \sphinxstylestrong{Example:}
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{n}{add\PYGZus{}testcase}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{interface\PYGZus{}tb.test\PYGZus{}arch.read\PYGZus{}test}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)} \PYG{c+c1}{\PYGZsh{} this test only}
+\PYG{n}{add\PYGZus{}testcase}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{interface\PYGZus{}tb.test\PYGZus{}arch.read\PYGZus{}test}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
 
-\PYG{n}{add\PYGZus{}testcase}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{interface\PYGZus{}tb.*.read\PYGZus{}*}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)} \PYG{c+c1}{\PYGZsh{} all architectures and all sequencer test cases starting with \PYGZsq{}read\PYGZsq{}}
+\PYG{n}{add\PYGZus{}testcase}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{interface\PYGZus{}tb..read\PYGZus{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
 
-\PYG{n}{add\PYGZus{}testcase}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{interface\PYGZus{}tb.test\PYGZus{}arch.????\PYGZus{}test}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)} \PYG{c+c1}{\PYGZsh{} all sequencer test cases mathing any 4 character start, followed by \PYGZsq{}\PYGZus{}test\PYGZsq{}}
+\PYG{n}{add\PYGZus{}testcase}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{lib\PYGZus{}uart:interface\PYGZus{}tb.func.*}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
 
-\PYG{n}{add\PYGZus{}testcase}\PYG{p}{(}\PYG{n}{interface\PYGZus{}tests\PYGZus{}list}\PYG{p}{)} \PYG{c+c1}{\PYGZsh{} a list of selected tests}
+\PYG{n}{add\PYGZus{}testcase}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{:interface\PYGZus{}tb.}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+
+\PYG{n}{add\PYGZus{}testcase}\PYG{p}{(}\PYG{n}{testcase\PYGZus{}list}\PYG{p}{)}
 \end{sphinxVerbatim}
 
 \begin{sphinxadmonition}{note}{Note:}
 \sphinxAtStartPar
-The {\hyperref[\detokenize{api:start}]{\sphinxcrossref{start()}}} method will return error code 1 if no test cases matched the \sphinxcode{\sphinxupquote{test case}} keyword.
+Library filtering is only supported via add\_testcase() and CLI
+The \sphinxtitleref{start()\_} method returns error code 1 if no \sphinxcode{\sphinxupquote{test cases}} matched
 \end{sphinxadmonition}
 
 
 \subsection{add\_to\_testgroup()}
 \label{\detokenize{api:add-to-testgroup}}
-\begin{DUlineblock}{0em}
-\item[] Will add tests to a collection of tests, i.e. {\hyperref[\detokenize{intro:test-group}]{\sphinxcrossref{\DUrole{std}{\DUrole{std-ref}{test group}}}}}, that can be run in groups.
-The test group is given a name that is used for addressing the test collection.
-\item[] There are no limit for how many tests that can be added to a test group, and no limit for the number of test groups.
-\item[] Running a test group can be done using a {\hyperref[\detokenize{cli::doc}]{\sphinxcrossref{\DUrole{doc}{command line interface}}}}.
-\end{DUlineblock}
+\sphinxAtStartPar
+Adds one or more existing tests to a named {\hyperref[\detokenize{intro:test-group}]{\sphinxcrossref{\DUrole{std,std-ref}{test group}}}}, allowing tests to be executed as logical groups.
+A test group is identified by a name and can contain any number of tests. There is no limit to the number of test groups or
+the number of tests within a group. Test groups are executed by selecting the group name, either from the Python API or
+via the {\hyperref[\detokenize{cli::doc}]{\sphinxcrossref{\DUrole{doc}{command line interface}}}}.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{n}{hr}\PYG{o}{.}\PYG{n}{add\PYGZus{}to\PYGZus{}testgroup}\PYG{p}{(}\PYG{n}{testgroup\PYGZus{}name}\PYG{p}{,} \PYG{n}{entity}\PYG{p}{,} \PYG{n}{architecture}\PYG{o}{=}\PYG{k+kc}{None}\PYG{p}{,} \PYG{n}{testcase}\PYG{o}{=}\PYG{k+kc}{None}\PYG{p}{,} \PYG{n}{generic}\PYG{o}{=}\PYG{p}{[}\PYG{p}{]}\PYG{p}{)}
@@ -1989,6 +2063,10 @@ The \sphinxcode{\sphinxupquote{test case}} argument is for selecting sequencer b
 \item {} 
 \sphinxAtStartPar
 The {\hyperref[\detokenize{api:start}]{\sphinxcrossref{start()}}} method will return error code 1 if no test group or test case were found.
+
+\item {} 
+\sphinxAtStartPar
+All string arguments support Unix\sphinxhyphen{}style wildcards.
 
 \end{itemize}
 \end{sphinxadmonition}
@@ -2861,7 +2939,7 @@ Simulator com\_options
 \begin{DUlineblock}{0em}
 \item[] This can be useful when the test script should be run with a different version of Modelsim other than the
 one listed in the system path, where all that is needed is to change the path for the Modelsim executable.
-\item[] It is also possible to select simulator when initializing the {\hyperref[\detokenize{api:hdlregression}]{\sphinxcrossref{\DUrole{std}{\DUrole{std-ref}{HDLRegression}}}}} object, but without selecting
+\item[] It is also possible to select simulator when initializing the {\hyperref[\detokenize{api:hdlregression}]{\sphinxcrossref{\DUrole{std,std-ref}{HDLRegression}}}} object, but without selecting
 compile options and setting simulator executable path, or by using {\hyperref[\detokenize{cli::doc}]{\sphinxcrossref{\DUrole{doc}{command line interfaces}}}}.
 \end{DUlineblock}
 
@@ -3220,7 +3298,7 @@ This is only applicable for tests run with the UVVM verification framework.
 \begin{DUlineblock}{0em}
 \item[] The configuration of a regression run can be set directly from the command line using command line interface.
 This can be useful when debugging the behaviour of a design, e.g. by running in {\hyperref[\detokenize{gui::doc}]{\sphinxcrossref{\DUrole{doc}{GUI mode}}}},
-or working with a {\hyperref[\detokenize{intro:test-case}]{\sphinxcrossref{\DUrole{std}{\DUrole{std-ref}{testcase}}}}} or {\hyperref[\detokenize{intro:test-group}]{\sphinxcrossref{\DUrole{std}{\DUrole{std-ref}{test group}}}}}.
+or working with a {\hyperref[\detokenize{intro:test-case}]{\sphinxcrossref{\DUrole{std,std-ref}{testcase}}}} or {\hyperref[\detokenize{intro:test-group}]{\sphinxcrossref{\DUrole{std,std-ref}{test group}}}}.
 \item[] The command line interface are processed at startup and will override any scripted configurations that are in conflict.
 \end{DUlineblock}
 
@@ -3304,10 +3382,10 @@ Remove all before test run
 \\
 \sphinxhline
 \sphinxAtStartPar
-\sphinxhyphen{}tc TB\_ENTITY {[}TB\_ARCH {[}TC{]}{]}
+\sphinxhyphen{}tc {[}LIB{]} TB\_ENTITY {[}TB\_ARCH {[}TC{]}{]}
 &
 \sphinxAtStartPar
-\textendash{}testCase TB\_ENTITY {[}TB\_ARCH {[}TC{]}{]}
+\textendash{}testCase {[}LIB{]} TB\_ENTITY {[}TB\_ARCH {[}TC{]}{]}
 &
 \sphinxAtStartPar
 Run selected test case
@@ -3466,7 +3544,7 @@ or \sphinxcode{\sphinxupquote{\sphinxhyphen{}\sphinxhyphen{}simulator}} argument
 \subsection{Full regression}
 \label{\detokenize{cli:full-regression}}
 \sphinxAtStartPar
-Enabling the {\hyperref[\detokenize{intro:what-is-regression-testing}]{\sphinxcrossref{\DUrole{std}{\DUrole{std-ref}{full regression mode}}}}} ensures that all test cases are run, regardless
+Enabling the {\hyperref[\detokenize{intro:what-is-regression-testing}]{\sphinxcrossref{\DUrole{std,std-ref}{full regression mode}}}} ensures that all test cases are run, regardless
 of any previous runs, i.e. re\sphinxhyphen{}running the complete test suite.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
@@ -3480,18 +3558,19 @@ of any previous runs, i.e. re\sphinxhyphen{}running the complete test suite.
 \label{\detokenize{cli:test-cases}}
 \sphinxAtStartPar
 All tests that are discovered by HDLRegression can be listed using the \sphinxcode{\sphinxupquote{\sphinxhyphen{}ltc}} or \sphinxcode{\sphinxupquote{\sphinxhyphen{}\sphinxhyphen{}listTestcase}} argument, and
-are listed as \sphinxcode{\sphinxupquote{\textless{}testbench entity\textgreater{}.\textless{}testbench architecture\textgreater{}.\textless{}sequencer built\sphinxhyphen{}in test case\textgreater{}}} or just
-\sphinxcode{\sphinxupquote{\textless{}testbench entity\textgreater{}.\textless{}testbench architecture\textgreater{}}} if no sequencer built\sphinxhyphen{}in test cases are used.
+are listed as \sphinxcode{\sphinxupquote{\textless{}library\textgreater{}:\textless{}testbench entity\textgreater{}.\textless{}testbench architecture\textgreater{}.\textless{}sequencer built\sphinxhyphen{}in test case\textgreater{}}} or just
+\sphinxcode{\sphinxupquote{\textless{}library\textgreater{}:\textless{}testbench entity\textgreater{}.\textless{}testbench architecture\textgreater{}}} if no sequencer built\sphinxhyphen{}in test cases are used. Note that the library
+name is optional and only used when multiple libraries are used in the regression script.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{g+go}{\PYGZgt{} python ../test/regression.py \PYGZhy{}ltc}
 \end{sphinxVerbatim}
 
-\noindent{\hspace*{\fill}\sphinxincludegraphics[width=750\sphinxpxdimen]{{testcase_listing}.png}\hspace*{\fill}}
+\noindent{\hspace*{\fill}\sphinxincludegraphics[width=750\sphinxpxdimen]{{cli_test_case_listing}.png}\hspace*{\fill}}
 
 \sphinxAtStartPar
-Running a selected test is done using the \sphinxcode{\sphinxupquote{\sphinxhyphen{}tc \textless{}testbench.architecture.test case\textgreater{}}} or
-\sphinxcode{\sphinxupquote{\sphinxhyphen{}\sphinxhyphen{}testCase \textless{}testbench.architecture.test case\textgreater{}}} argument
+Running a selected test is done using the \sphinxcode{\sphinxupquote{\sphinxhyphen{}tc \textless{}library\textgreater{}:\textless{}testbench.architecture.test case\textgreater{}}} or
+\sphinxcode{\sphinxupquote{\sphinxhyphen{}\sphinxhyphen{}testCase \textless{}library\textgreater{}:\textless{}testbench.architecture.test case\textgreater{}}} argument
 
 \begin{sphinxadmonition}{tip}{Tip:}
 \sphinxAtStartPar
@@ -3547,6 +3626,8 @@ match all character not in seq
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{g+go}{\PYGZgt{} python ../test/regression.py \PYGZhy{}tc uart\PYGZus{}vvc\PYGZus{}tb.func.check\PYGZus{}simple\PYGZus{}receive}
+
+\PYG{g+go}{\PYGZgt{} python ../test/regression.py \PYGZhy{}tc lib\PYGZus{}uart:uart\PYGZus{}vvc\PYGZus{}tb.func.check\PYGZus{}simple\PYGZus{}receive}
 \end{sphinxVerbatim}
 
 \sphinxAtStartPar
@@ -3556,13 +3637,17 @@ A test case can also be selected using the test case number from the \sphinxcode
 \PYG{g+go}{\PYGZgt{} python ../test/regression.py \PYGZhy{}tc 5}
 \end{sphinxVerbatim}
 
-\noindent{\hspace*{\fill}\sphinxincludegraphics[width=750\sphinxpxdimen]{{testcase_running}.png}\hspace*{\fill}}
+\noindent{\hspace*{\fill}\sphinxincludegraphics[width=750\sphinxpxdimen]{{cli_test_case_running}.png}\hspace*{\fill}}
 
 \begin{sphinxadmonition}{tip}{Tip:}
 \sphinxAtStartPar
 Test cases are identified by:
 \begin{enumerate}
 \sphinxsetlistlabels{\arabic}{enumi}{enumii}{}{.}%
+\item {} 
+\sphinxAtStartPar
+\textless{}library\textgreater{}:\textless{}entity\_name\textgreater{}.\textless{}architecture\_name\textgreater{}.\textless{}sequencer\_test case\textgreater{}
+
 \item {} 
 \sphinxAtStartPar
 \textless{}entity\_name\textgreater{}
@@ -3859,7 +3944,7 @@ Each top level testbench file has to have the HDLRegression testbench pragma.
 
 \item {} 
 \sphinxAtStartPar
-A testbench simulation result report will have to match the {\hyperref[\detokenize{api:set-result-check-string}]{\sphinxcrossref{\DUrole{std}{\DUrole{std-ref}{set\_result\_check\_string()}}}}} to
+A testbench simulation result report will have to match the {\hyperref[\detokenize{api:set-result-check-string}]{\sphinxcrossref{\DUrole{std,std-ref}{set\_result\_check\_string()}}}} to
 \sphinxstylestrong{PASS}, and the test run will \sphinxstylestrong{FAIL} if this string is not found in the simulation transcript.
 
 \begin{sphinxadmonition}{note}{Note:}
@@ -3904,7 +3989,7 @@ implementation.
 
 \sphinxAtStartPar
 Note that the \sphinxcode{\sphinxupquote{GC\_TESTCASE}} generic or \sphinxcode{\sphinxupquote{TESTCASE}} parameter name can be changed using
-the {\hyperref[\detokenize{api:set-testcase-identifier-name}]{\sphinxcrossref{\DUrole{std}{\DUrole{std-ref}{set\_testcase\_identifier\_name()}}}}} method.
+the {\hyperref[\detokenize{api:set-testcase-identifier-name}]{\sphinxcrossref{\DUrole{std,std-ref}{set\_testcase\_identifier\_name()}}}} method.
 
 
 \section{Example Testbench}

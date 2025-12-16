@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.10.20)  12 NOV 2025 20:52
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.10.20)  16 DEC 2025 13:36
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -181,7 +181,7 @@ Package: fncychap 2007/07/30 v1.34 LaTeX package (Revised chapters)
 \c@AlphaDecCnt=\count286
 )
 (./sphinx.sty
-Package: sphinx 2024/11/23 v8.2.0 Sphinx LaTeX package (sphinx-doc)
+Package: sphinx 2024/07/01 v7.4.0 Sphinx LaTeX package (sphinx-doc)
  (/usr/local/texlive/2025/texmf-dist/tex/latex/xcolor/xcolor.sty
 Package: xcolor 2024/09/29 v3.02 LaTeX color extensions (UK)
 
@@ -205,9 +205,9 @@ Package xcolor Info: Model `Gray' substituted by `gray' on input line 1371.
 Package xcolor Info: Model `wave' substituted by `hsb' on input line 1372.
 )
 (./sphinxoptionshyperref.sty
-Package: sphinxoptionshyperref 2021/01/27 hyperref
+File: sphinxoptionshyperref.sty 2021/01/27 hyperref
 ) (./sphinxoptionsgeometry.sty
-Package: sphinxoptionsgeometry 2021/01/27 geometry
+File: sphinxoptionsgeometry.sty 2021/01/27 geometry
 )
 (/usr/local/texlive/2025/texmf-dist/tex/latex/base/textcomp.sty
 Package: textcomp 2024/04/24 v2.1b Standard LaTeX package
@@ -319,7 +319,7 @@ Package graphics Info: Driver file: pdftex.def on input line 106.
 \Gin@req@width=\dimen164
 )
 (./sphinxlatexgraphics.sty
-Package: sphinxlatexgraphics 2024/08/13 v8.1.0 graphics
+File: sphinxlatexgraphics.sty 2021/01/27 graphics
 \spx@image@maxheight=\dimen165
 \spx@image@box=\box103
 ) (./sphinxpackageboxes.sty
@@ -373,7 +373,7 @@ Package: ellipse 2004/11/05 v1.0 .dtx ellipse file
 \spx@boxes@radius@bottomleft@y=\dimen192
 )
 (./sphinxlatexadmonitions.sty
-Package: sphinxlatexadmonitions 2024/10/11 v8.1.1 admonitions
+File: sphinxlatexadmonitions.sty 2024/07/01 v7.4.0 admonitions
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/framed/framed.sty
 Package: framed 2011/10/22 v 0.96: framed or shaded text with page breaks
@@ -383,26 +383,20 @@ Package: framed 2011/10/22 v 0.96: framed or shaded text with page breaks
 \FrameRule=\dimen195
 \FrameSep=\dimen196
 )
-(./sphinxpackagefootnote.sty
-Package: sphinxpackagefootnote 2024/05/17 v7.3.x Sphinx custom footnotehyper pa
-ckage (Sphinx team)
-\FNH@notes=\box106
-\FNH@toks=\toks29
-\FNH@width=\dimen197
-\c@sphinxfootnotemark=\count299
+\spx@notice@border=\dimen197
+\c@sphinxtodo=\count299
 )
-\spx@notice@border=\dimen198
-\c@sphinxtodo=\count300
-) (./sphinxlatexliterals.sty
-Package: sphinxlatexliterals 2024/07/01 v7.4.0 code-blocks and parsed literals
+(./sphinxlatexliterals.sty
+File: sphinxlatexliterals.sty 2024/07/01 v7.4.0 code-blocks and parsed literals
+
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty
 Package: fancyvrb 2024/01/20 4.5c verbatim text (tvz,hv)
-\FV@CodeLineNo=\count301
+\FV@CodeLineNo=\count300
 \FV@InFile=\read3
-\FV@TabBox=\box107
-\c@FancyVerbLine=\count302
-\FV@StepNumber=\count303
+\FV@TabBox=\box106
+\c@FancyVerbLine=\count301
+\FV@StepNumber=\count302
 \FV@OutFile=\write3
 )
 (/usr/local/texlive/2025/texmf-dist/tex/latex/base/alltt.sty
@@ -415,39 +409,39 @@ tim
 (/usr/local/texlive/2025/texmf-dist/tex/latex/needspace/needspace.sty
 Package: needspace 2010/09/12 v1.3d reserve vertical space
 )
-\sphinxcontinuationbox=\box108
-\sphinxvisiblespacebox=\box109
-\sphinxVerbatim@TitleBox=\box110
-\sphinxVerbatim@ContentsBox=\box111
+\sphinxcontinuationbox=\box107
+\sphinxvisiblespacebox=\box108
+\sphinxVerbatim@TitleBox=\box109
+\sphinxVerbatim@ContentsBox=\box110
 )
 (./sphinxlatexshadowbox.sty
-Package: sphinxlatexshadowbox 2024/07/28 v8.1.0 sphinxShadowBox
+File: sphinxlatexshadowbox.sty 2023/03/19 sphinxShadowBox
 ) (./sphinxlatexcontainers.sty
-Package: sphinxlatexcontainers 2021/05/03 containers
+File: sphinxlatexcontainers.sty 2021/05/03 containers
 )
 (./sphinxhighlight.sty
 Package: sphinxhighlight 2022/06/30 stylesheet for highlighting with pygments
 ) (./sphinxlatextables.sty
-Package: sphinxlatextables 2024/07/01 v7.4.0 tables
+File: sphinxlatextables.sty 2024/07/01 v7.4.0 tables
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/tabulary/tabulary.sty
 Package: tabulary 2024/06/04 v0.11 tabulary package (DPC)
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/tools/array.sty
 Package: array 2024/10/17 v2.6g Tabular extension package (FMi)
-\col@sep=\dimen199
-\ar@mcellbox=\box112
-\extrarowheight=\dimen256
-\NC@list=\toks30
+\col@sep=\dimen198
+\ar@mcellbox=\box111
+\extrarowheight=\dimen199
+\NC@list=\toks29
 \extratabsurround=\skip64
 \backup@length=\skip65
-\ar@cellbox=\box113
+\ar@cellbox=\box112
 )
-\TY@count=\count304
-\TY@linewidth=\dimen257
-\tymin=\dimen258
-\tymax=\dimen259
-\TY@tablewidth=\dimen260
+\TY@count=\count303
+\TY@linewidth=\dimen256
+\tymin=\dimen257
+\tymax=\dimen258
+\TY@tablewidth=\dimen259
 )
 (/usr/local/texlive/2025/texmf-dist/tex/latex/tools/longtable.sty
 Package: longtable 2024-10-27 v4.22 Multi-page Table package (DPC)
@@ -455,76 +449,83 @@ Package: longtable 2024-10-27 v4.22 Multi-page Table package (DPC)
 \LTright=\skip67
 \LTpre=\skip68
 \LTpost=\skip69
-\LTchunksize=\count305
-\LTcapwidth=\dimen261
-\LT@head=\box114
-\LT@firsthead=\box115
-\LT@foot=\box116
-\LT@lastfoot=\box117
-\LT@gbox=\box118
-\LT@cols=\count306
-\LT@rows=\count307
-\c@LT@tables=\count308
-\c@LT@chunks=\count309
-\LT@p@ftn=\toks31
+\LTchunksize=\count304
+\LTcapwidth=\dimen260
+\LT@head=\box113
+\LT@firsthead=\box114
+\LT@foot=\box115
+\LT@lastfoot=\box116
+\LT@gbox=\box117
+\LT@cols=\count305
+\LT@rows=\count306
+\c@LT@tables=\count307
+\c@LT@chunks=\count308
+\LT@p@ftn=\toks30
 )
 (/usr/local/texlive/2025/texmf-dist/tex/latex/varwidth/varwidth.sty
 Package: varwidth 2009/03/30 ver 0.92;  Variable-width minipages
-\@vwid@box=\box119
-\sift@deathcycles=\count310
-\@vwid@loff=\dimen262
-\@vwid@roff=\dimen263
+\@vwid@box=\box118
+\sift@deathcycles=\count309
+\@vwid@loff=\dimen261
+\@vwid@roff=\dimen262
 )
-\sphinx@TY@tablewidth=\dimen264
+\sphinx@TY@tablewidth=\dimen263
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/colortbl/colortbl.sty
 Package: colortbl 2024/07/06 v1.0i Color table columns (DPC)
-\everycr=\toks32
+\everycr=\toks31
 \minrowclearance=\skip70
-\rownum=\count311
+\rownum=\count310
 )
 (/usr/local/texlive/2025/texmf-dist/tex/latex/booktabs/booktabs.sty
 Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
-\heavyrulewidth=\dimen265
-\lightrulewidth=\dimen266
-\cmidrulewidth=\dimen267
-\belowrulesep=\dimen268
-\belowbottomsep=\dimen269
-\aboverulesep=\dimen270
-\abovetopsep=\dimen271
-\cmidrulesep=\dimen272
-\cmidrulekern=\dimen273
-\defaultaddspace=\dimen274
-\@cmidla=\count312
-\@cmidlb=\count313
-\@aboverulesep=\dimen275
-\@belowrulesep=\dimen276
-\@thisruleclass=\count314
-\@lastruleclass=\count315
-\@thisrulewidth=\dimen277
+\heavyrulewidth=\dimen264
+\lightrulewidth=\dimen265
+\cmidrulewidth=\dimen266
+\belowrulesep=\dimen267
+\belowbottomsep=\dimen268
+\aboverulesep=\dimen269
+\abovetopsep=\dimen270
+\cmidrulesep=\dimen271
+\cmidrulekern=\dimen272
+\defaultaddspace=\dimen273
+\@cmidla=\count311
+\@cmidlb=\count312
+\@aboverulesep=\dimen274
+\@belowrulesep=\dimen275
+\@thisruleclass=\count313
+\@lastruleclass=\count314
+\@thisrulewidth=\dimen276
 ))
 (./sphinxlatexnumfig.sty
-Package: sphinxlatexnumfig 2024/07/31 v8.1.0 numbering
+File: sphinxlatexnumfig.sty 2021/01/27 numbering
 ) (./sphinxlatexlists.sty
-Package: sphinxlatexlists 2021/12/20 lists
-\spx@lineitemlabel=\toks33
+File: sphinxlatexlists.sty 2021/12/20 lists
+\spx@lineitemlabel=\toks32
 )
-\c@sphinxscope=\count316
- (./sphinxlatexindbibtoc.sty
-Package: sphinxlatexindbibtoc 2021/01/27 index, bib., toc
+\c@sphinxscope=\count315
+ (./sphinxpackagefootnote.sty
+Package: sphinxpackagefootnote 2024/05/17 v7.3.x Sphinx custom footnotehyper pa
+ckage (Sphinx team)
+\FNH@notes=\box119
+\FNH@toks=\toks33
+\FNH@width=\dimen277
+\c@sphinxfootnotemark=\count316
+) (./sphinxlatexindbibtoc.sty
+File: sphinxlatexindbibtoc.sty 2021/01/27 index, bib., toc
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/base/makeidx.sty
 Package: makeidx 2021/10/04 v1.0m Standard LaTeX package
 ))
 (./sphinxlatexstylepage.sty
-Package: sphinxlatexstylepage 2021/01/27 page styling
+File: sphinxlatexstylepage.sty 2021/01/27 page styling
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/parskip/parskip.sty
-Package: parskip 2021-03-14 v2.0h non-zero parskip adjustments
+Rollback for package 'parskip' requested -> version 'v1'.
+         This corresponds to the release introduced on 2001-04-09.
 
-(/usr/local/texlive/2025/texmf-dist/tex/latex/etoolbox/etoolbox.sty
-Package: etoolbox 2025/02/11 v2.5l e-TeX tools for LaTeX (JAW)
-\etb@tempcnta=\count317
+(/usr/local/texlive/2025/texmf-dist/tex/latex/parskip/parskip-2001-04-09.sty
+Package: parskip 2001/04/09 non-zero parskip adjustments
 ))
 (/usr/local/texlive/2025/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
 Package: fancyhdr 2025/02/07 v5.2 Extensive control of page headers and footers
@@ -546,7 +547,7 @@ Package: fancyhdr 2025/02/07 v5.2 Extensive control of page headers and footers
 \@temptokenb=\toks34
 ))
 (./sphinxlatexstyleheadings.sty
-Package: sphinxlatexstyleheadings 2023/02/11 headings
+File: sphinxlatexstyleheadings.sty 2023/02/11 headings
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/titlesec/titlesec.sty
 Package: titlesec 2025/01/04 v2.17 Sectioning titles
@@ -561,9 +562,9 @@ Package: titlesec 2025/01/04 v2.17 Sectioning titles
 \titlewidthfirst=\dimen282
 ))
 (./sphinxlatexstyletext.sty
-Package: sphinxlatexstyletext 2024/07/28 v8.1.0 text styling
+File: sphinxlatexstyletext.sty 2024/07/01 v7.4.0 text styling
 ) (./sphinxlatexobjects.sty
-Package: sphinxlatexobjects 2025/02/11 documentation environments
+File: sphinxlatexobjects.sty 2023/07/23 documentation environments
 \sphinxsignaturesep=\skip87
 \sphinxsignaturelistskip=\skip88
 \py@argswidth=\skip89
@@ -579,9 +580,9 @@ Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
 (/usr/local/texlive/2025/texmf-dist/tex/generic/iftex/iftex.sty
 Package: iftex 2024/12/12 v1.0g TeX engine tests
 ))
-\Gm@cnth=\count318
-\Gm@cntv=\count319
-\c@Gm@tempcnt=\count320
+\Gm@cnth=\count317
+\Gm@cntv=\count318
+\c@Gm@tempcnt=\count319
 \Gm@bindingoffset=\dimen283
 \Gm@wd@mp=\dimen284
 \Gm@odd@mp=\dimen285
@@ -625,8 +626,12 @@ Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
 ty
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
-\c@section@level=\count321
-) (/usr/local/texlive/2025/texmf-dist/tex/generic/stringenc/stringenc.sty
+\c@section@level=\count320
+) (/usr/local/texlive/2025/texmf-dist/tex/latex/etoolbox/etoolbox.sty
+Package: etoolbox 2025/02/11 v2.5l e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count321
+)
+(/usr/local/texlive/2025/texmf-dist/tex/generic/stringenc/stringenc.sty
 Package: stringenc 2019/11/29 v1.12 Convert strings between diff. encodings (HO
 )
 )
@@ -901,11 +906,12 @@ nput line 123.
 
 {/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/tex-gyre/q-ts1.enc}{/usr/lo
 cal/texlive/2025/texmf-dist/fonts/enc/dvips/fontawesome5/fa5free1.enc}]
-<test_group.png, id=412, 362.10281pt x 422.32782pt>
+
+[2]
+<test_group.png, id=416, 362.10281pt x 422.32782pt>
 LaTeX Font Info:    Trying to load font information for T1+txtt on input line 2
 56.
-
-(/usr/local/texlive/2025/texmf-dist/tex/latex/txfonts/t1txtt.fd
+ (/usr/local/texlive/2025/texmf-dist/tex/latex/txfonts/t1txtt.fd
 File: t1txtt.fd 2000/12/15 v3.1
 )
 File: test_group.png Graphic file (type png)
@@ -913,8 +919,6 @@ File: test_group.png Graphic file (type png)
 Package pdftex.def Info: test_group.png  used on input line 256.
 (pdftex.def)             Requested size: 301.12305pt x 351.20863pt.
 
-
-[2]
 
 [3 <./test_group.png>]
 
@@ -986,23 +990,10 @@ Underfull \hbox (badness 10000) in paragraph at lines 1214--1214
 [15]
 
 [16]
-Underfull \hbox (badness 6675) in paragraph at lines 1784--1786
-[]\T1/qtm/m/n/10 And where the three test case name el-e-ments are sep-a-rated 
-by a dot (\T1/txtt/m/n/10 .\T1/qtm/m/n/10 ): \T1/txtt/m/n/10 <testbench_name>.
- []
-
-LaTeX Font Info:    Font shape `TS1/txtt/m/it' in size <10> not available
-(Font)              Font shape `TS1/txtt/m/sl' tried instead on input line 1882
-.
-
 
 [17]
-Underfull \vbox (badness 5954) detected at line 2046
- []
 
-
-
-[18{/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/base/8r.enc}]
+[18]
 
 [19]
 
@@ -1013,40 +1004,36 @@ Underfull \vbox (badness 5954) detected at line 2046
 [22]
 
 [23]
-Package hyperref Info: bookmark level for unknown literalblock defaults to 0 on
- input line 2824.
 
-Overfull \hbox (20.1075pt too wide) in paragraph at lines 2932--2932
+[24]
+Package hyperref Info: bookmark level for unknown literalblock defaults to 0 on
+ input line 2902.
+
+Overfull \hbox (20.1075pt too wide) in paragraph at lines 3010--3010
 []\T1/qtm/m/n/10 ^^PMOD-EL-SIM^^Q/^^QGHDL^^Q/^^QNVC^^Q/^^QRIVIERA_PRO^^Q| 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2932--2932
+Underfull \hbox (badness 10000) in paragraph at lines 3010--3010
 []\T1/qtm/b/n/10 manda-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2932--2932
+Underfull \hbox (badness 10000) in paragraph at lines 3010--3010
 []\T1/qtm/m/n/10 sim-u-la-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2932--2932
+Underfull \hbox (badness 10000) in paragraph at lines 3010--3010
 []\T1/qtm/m/it/10 sim-u-la-tor_executable_path
  []
 
 
-Underfull \hbox (badness 5403) in paragraph at lines 2932--2932
+Underfull \hbox (badness 5403) in paragraph at lines 3010--3010
 []\T1/qtm/m/it/10 com-pile op-tionss \T1/qtm/m/n/10 (string/list of
  []
 
 
-Overfull \vbox (1.41837pt too high) detected at line 2943
- []
-
-
-
-[24]
 
 [25]
 
@@ -1054,135 +1041,153 @@ Overfull \vbox (1.41837pt too high) detected at line 2943
 
 [27]
 
-[28
+[28]
+
+[29]
+
+[30
 
 ]
 Chapter 5.
 
-Underfull \hbox (badness 5231) in paragraph at lines 3444--3444
-[]\T1/qtm/m/n/10 -tc TB_ENTITY [TB_ARCH
+Underfull \hbox (badness 10000) in paragraph at lines 3522--3522
+[]\T1/qtm/m/n/10 -tc [LIB] TB_ENTITY
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 3444--3444
+Underfull \hbox (badness 10000) in paragraph at lines 3522--3522
+[]\T1/qtm/m/n/10 ^^Utest-Case [LIB] TB_ENTITY
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 3522--3522
 []\T1/qtm/m/n/10 Save wlf file af-ter sim
  []
 
 
 
-[29]
-<full_regression.png, id=611, 642.90187pt x 922.19531pt>
+[31]
+<full_regression.png, id=617, 642.90187pt x 922.19531pt>
 File: full_regression.png Graphic file (type png)
 <use full_regression.png>
-Package pdftex.def Info: full_regression.png  used on input line 3476.
+Package pdftex.def Info: full_regression.png  used on input line 3554.
 (pdftex.def)             Requested size: 453.44208pt x 650.42923pt.
 
 
-[30]
+[32]
 
-[31 <./full_regression.png>]
-<testcase_listing.png, id=621, 558.58687pt x 419.31656pt>
-File: testcase_listing.png Graphic file (type png)
-<use testcase_listing.png>
-Package pdftex.def Info: testcase_listing.png  used on input line 3490.
-(pdftex.def)             Requested size: 469.77231pt x 352.64578pt.
+[33 <./full_regression.png>]
+<cli_test_case_listing.png, id=628, 800.9925pt x 416.55624pt>
+File: cli_test_case_listing.png Graphic file (type png)
+<use cli_test_case_listing.png>
+Package pdftex.def Info: cli_test_case_listing.png  used on input line 3569.
+(pdftex.def)             Requested size: 469.75816pt x 244.3105pt.
+
+Underfull \hbox (badness 5288) in paragraph at lines 3571--3574
+[]\T1/qtm/m/n/10 Run-ning a se-lected test is done us-ing the []\T1/txtt/m/n/10
+ tc <library>:<testbench.architecture.test case> \T1/qtm/m/n/10 or
+ []
+
+<cli_test_case_running.png, id=629, 908.39375pt x 506.89375pt>
+File: cli_test_case_running.png Graphic file (type png)
+<use cli_test_case_running.png>
+Package pdftex.def Info: cli_test_case_running.png  used on input line 3640.
+(pdftex.def)             Requested size: 469.76161pt x 262.13991pt.
 
 
-[32 <./testcase_listing.png>]
-<testcase_running.png, id=627, 524.71031pt x 319.94531pt>
-File: testcase_running.png Graphic file (type png)
-<use testcase_running.png>
-Package pdftex.def Info: testcase_running.png  used on input line 3559.
-(pdftex.def)             Requested size: 469.76892pt x 286.44934pt.
+[34 <./cli_test_case_listing.png>]
 
-
-[33 <./testcase_running.png>]
-<testgroup_listing.png, id=637, 484.81125pt x 305.64188pt>
+[35 <./cli_test_case_running.png>]
+<testgroup_listing.png, id=644, 484.81125pt x 305.64188pt>
 File: testgroup_listing.png Graphic file (type png)
 <use testgroup_listing.png>
-Package pdftex.def Info: testgroup_listing.png  used on input line 3669.
+Package pdftex.def Info: testgroup_listing.png  used on input line 3754.
 (pdftex.def)             Requested size: 469.77809pt x 296.19708pt.
 
 
-[34 <./testgroup_listing.png>]
-<testgroup_running.png, id=643, 642.14906pt x 572.1375pt>
-File: testgroup_running.png Graphic file (type png)
-<use testgroup_running.png>
-Package pdftex.def Info: testgroup_running.png  used on input line 3695.
-(pdftex.def)             Requested size: 469.76436pt x 418.55609pt.
-
-
-[35 <./testgroup_running.png>]
-File: testgroup_running.png Graphic file (type png)
-<use testgroup_running.png>
-Package pdftex.def Info: testgroup_running.png  used on input line 3735.
-(pdftex.def)             Requested size: 469.76436pt x 418.55609pt.
-
-
 [36]
-<testgroup_threading_1.png, id=653, 643.6547pt x 572.89032pt>
+<testgroup_running.png, id=649, 642.14906pt x 572.1375pt>
+File: testgroup_running.png Graphic file (type png)
+<use testgroup_running.png>
+Package pdftex.def Info: testgroup_running.png  used on input line 3780.
+(pdftex.def)             Requested size: 469.76436pt x 418.55609pt.
+
+
+[37 <./testgroup_listing.png>]
+
+[38 <./testgroup_running.png>]
+File: testgroup_running.png Graphic file (type png)
+<use testgroup_running.png>
+Package pdftex.def Info: testgroup_running.png  used on input line 3820.
+(pdftex.def)             Requested size: 469.76436pt x 418.55609pt.
+<testgroup_threading_1.png, id=660, 643.6547pt x 572.89032pt>
 File: testgroup_threading_1.png Graphic file (type png)
 <use testgroup_threading_1.png>
-Package pdftex.def Info: testgroup_threading_1.png  used on input line 3747.
+Package pdftex.def Info: testgroup_threading_1.png  used on input line 3832.
 (pdftex.def)             Requested size: 469.76581pt x 418.12778pt.
-<testgroup_threading_10.png, id=654, 639.89063pt x 574.39594pt>
+
+
+[39]
+<testgroup_threading_10.png, id=666, 639.89063pt x 574.39594pt>
 File: testgroup_threading_10.png Graphic file (type png)
 <use testgroup_threading_10.png>
-Package pdftex.def Info: testgroup_threading_10.png  used on input line 3759.
+Package pdftex.def Info: testgroup_threading_10.png  used on input line 3844.
 (pdftex.def)             Requested size: 469.7623pt x 421.6895pt.
 
 
-[37 <./testgroup_threading_1.png>]
-<regression_run_1.png, id=660, 640.64343pt x 921.4425pt>
+[40 <./testgroup_threading_1.png>]
+
+[41 <./testgroup_threading_10.png>]
+<regression_run_1.png, id=677, 640.64343pt x 921.4425pt>
 File: regression_run_1.png Graphic file (type png)
 <use regression_run_1.png>
-Package pdftex.def Info: regression_run_1.png  used on input line 3771.
+Package pdftex.def Info: regression_run_1.png  used on input line 3856.
 (pdftex.def)             Requested size: 452.21088pt x 650.41849pt.
 
 
-[38 <./testgroup_threading_10.png>]
+[42]
 
-[39]
-Overfull \vbox (21.6568pt too high) has occurred while \output is active []
+[43]
+Overfull \vbox (27.6568pt too high) has occurred while \output is active []
 
 
 
-[40 <./regression_run_1.png>]
-<regression_run_2.png, id=678, 491.58656pt x 255.20343pt>
+[44 <./regression_run_1.png>]
+<regression_run_2.png, id=693, 491.58656pt x 255.20343pt>
 File: regression_run_2.png Graphic file (type png)
 <use regression_run_2.png>
-Package pdftex.def Info: regression_run_2.png  used on input line 3780.
+Package pdftex.def Info: regression_run_2.png  used on input line 3865.
 (pdftex.def)             Requested size: 469.77245pt x 243.89438pt.
-<failing_testcase.png, id=679, 807.015pt x 909.3975pt>
+<failing_testcase.png, id=694, 807.015pt x 909.3975pt>
 File: failing_testcase.png Graphic file (type png)
 <use failing_testcase.png>
-Package pdftex.def Info: failing_testcase.png  used on input line 3788.
+Package pdftex.def Info: failing_testcase.png  used on input line 3873.
 (pdftex.def)             Requested size: 469.75606pt x 529.36586pt.
 
 
-[41 <./regression_run_2.png>]
+[45 <./regression_run_2.png>]
 
-[42 <./failing_testcase.png>]
+[46 <./failing_testcase.png>]
 Chapter 6.
-<gui_menu.png, id=690, 248.42813pt x 234.8775pt>
+<gui_menu.png, id=706, 248.42813pt x 234.8775pt>
 File: gui_menu.png Graphic file (type png)
 <use gui_menu.png>
-Package pdftex.def Info: gui_menu.png  used on input line 3811.
+Package pdftex.def Info: gui_menu.png  used on input line 3896.
 (pdftex.def)             Requested size: 414.04419pt x 391.4914pt.
 
 
-[43
+[47
 
 ]
 
-[44 <./gui_menu.png>]
+[48 <./gui_menu.png>]
 Chapter 7.
 
 
-[45
+[49
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 3905--3908
+Underfull \hbox (badness 10000) in paragraph at lines 3990--3993
 []\T1/qtm/m/n/10 Note that the \T1/txtt/m/n/10 GC_TESTCASE \T1/qtm/m/n/10 gener
 ic or \T1/txtt/m/n/10 TESTCASE \T1/qtm/m/n/10 pa-ram-e-ter name can be changed 
 us-ing the
@@ -1190,24 +1195,8 @@ us-ing the
 
 
 
-[46]
-Underfull \vbox (badness 10000) detected at line 4023
- []
-
-
-
-[47]
-
-[48]
-Chapter 8.
-
-
-[49
-
-]
-
 [50]
-Underfull \vbox (badness 10000) detected at line 4185
+Underfull \vbox (badness 10000) detected at line 4108
  []
 
 
@@ -1215,87 +1204,103 @@ Underfull \vbox (badness 10000) detected at line 4185
 [51]
 
 [52]
+Chapter 8.
 
-[53]
 
-[54
+[53
+
+]
+
+[54]
+
+[55]
+LaTeX Font Info:    Font shape `TS1/txtt/m/it' in size <10> not available
+(Font)              Font shape `TS1/txtt/m/sl' tried instead on input line 4288
+.
+
+
+[56{/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/base/8r.enc}]
+
+[57]
+
+[58
 
 ]
 Chapter 9.
-<jenkins_ci.png, id=747, 947.54pt x 403.5075pt>
+<jenkins_ci.png, id=764, 947.54pt x 403.5075pt>
 File: jenkins_ci.png Graphic file (type png)
 <use jenkins_ci.png>
-Package pdftex.def Info: jenkins_ci.png  used on input line 4287.
+Package pdftex.def Info: jenkins_ci.png  used on input line 4372.
 (pdftex.def)             Requested size: 469.74944pt x 200.05391pt.
 
 
-[55 <./jenkins_ci.png>]
+[59 <./jenkins_ci.png>]
 
-[56
+[60
 
 ]
 Chapter 10.
 
 
-[57]
-Underfull \vbox (badness 10000) detected at line 4532
- []
-
-
-Underfull \vbox (badness 10000) detected at line 4532
- []
-
-
-
-[58]
-Underfull \vbox (badness 10000) detected at line 4532
- []
-
-
-Underfull \vbox (badness 10000) detected at line 4532
- []
-
-
-
-[59]
-Underfull \vbox (badness 10000) detected at line 4532
- []
-
-
-Underfull \vbox (badness 10000) detected at line 4532
- []
-
-
-
-[60]
-
 [61]
+Underfull \vbox (badness 10000) detected at line 4617
+ []
 
-[62
 
-]
-Chapter 11.
+Underfull \vbox (badness 10000) detected at line 4617
+ []
+
+
+
+[62]
+Underfull \vbox (badness 10000) detected at line 4617
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 4617
+ []
+
 
 
 [63]
-Underfull \vbox (badness 10000) detected at line 4676
+Underfull \vbox (badness 10000) detected at line 4617
  []
 
 
-Underfull \vbox (badness 10000) detected at line 4676
+Underfull \vbox (badness 10000) detected at line 4617
  []
 
 
 
 [64]
-<hdlregression_scaled.png, id=793, 314.67563pt x 174.6525pt>
+
+[65]
+
+[66
+
+]
+Chapter 11.
+
+
+[67]
+Underfull \vbox (badness 10000) detected at line 4761
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 4761
+ []
+
+
+
+[68]
+<hdlregression_scaled.png, id=809, 314.67563pt x 174.6525pt>
 File: hdlregression_scaled.png Graphic file (type png)
 <use hdlregression_scaled.png>
-Package pdftex.def Info: hdlregression_scaled.png  used on input line 4678.
+Package pdftex.def Info: hdlregression_scaled.png  used on input line 4763.
 (pdftex.def)             Requested size: 414.04419pt x 229.81712pt.
  (./hdlregression.ind)
 
-[65 <./hdlregression_scaled.png>] (./hdlregression.aux)
+[69 <./hdlregression_scaled.png>] (./hdlregression.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
@@ -1304,13 +1309,13 @@ Package rerunfilecheck Info: File `hdlregression.out' has not changed.
 (rerunfilecheck)             Checksum: 78655D688DADAADF197695CC18FCC507;12777.
  ) 
 Here is how much of TeX's memory you used:
- 20745 strings out of 473190
- 371583 string characters out of 5715799
- 928987 words of memory out of 5000000
- 43391 multiletter control sequences out of 15000+600000
+ 20430 strings out of 473190
+ 360513 string characters out of 5715799
+ 925667 words of memory out of 5000000
+ 43068 multiletter control sequences out of 15000+600000
  619974 words of font info for 87 fonts, out of 8000000 for 9000
  1142 hyphenation exceptions out of 8191
- 72i,13n,82p,1202b,712s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 72i,13n,79p,767b,706s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/fontawesome5/FontAweso
 me5Free-Regular.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/font
 awesome5/FontAwesome5Free-Solid.pfb></usr/local/texlive/2025/texmf-dist/fonts/t
@@ -1326,10 +1331,10 @@ ocal/texlive/2025/texmf-dist/fonts/type1/public/txfonts/t1xtt.pfb></usr/local/t
 exlive/2025/texmf-dist/fonts/type1/public/txfonts/t1xtt.pfb></usr/local/texlive
 /2025/texmf-dist/fonts/type1/public/txfonts/tcxtt.pfb></usr/local/texlive/2025/
 texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
-Output written on hdlregression.pdf (69 pages, 4036090 bytes).
+Output written on hdlregression.pdf (73 pages, 4217884 bytes).
 PDF statistics:
- 905 PDF objects out of 1000 (max. 8388607)
- 767 compressed objects within 8 object streams
- 188 named destinations out of 1000 (max. 500000)
+ 924 PDF objects out of 1000 (max. 8388607)
+ 782 compressed objects within 8 object streams
+ 193 named destinations out of 1000 (max. 500000)
  763 words of extra memory for PDF output out of 10000 (max. 10000000)
 

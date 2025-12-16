@@ -6,15 +6,15 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Command Line Interface (CLI) &mdash; hdlregression 1.3.0 documentation</title>
+  <title>Command Line Interface (CLI) &mdash; hdlregression 1.4.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=1f29e9d3"></script>
-      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/documentation_options.js?v=9172181d"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -142,8 +142,8 @@ or working with a <a class="reference internal" href="intro.html#test-case"><spa
 <td><p>–clean</p></td>
 <td><p>Remove all before test run</p></td>
 </tr>
-<tr class="row-even"><td><p>-tc TB_ENTITY [TB_ARCH [TC]]</p></td>
-<td><p>–testCase TB_ENTITY [TB_ARCH [TC]]</p></td>
+<tr class="row-even"><td><p>-tc [LIB] TB_ENTITY [TB_ARCH [TC]]</p></td>
+<td><p>–testCase [LIB] TB_ENTITY [TB_ARCH [TC]]</p></td>
 <td><p>Run selected test case</p></td>
 </tr>
 <tr class="row-odd"><td><p>-tg TESTGROUP</p></td>
@@ -230,15 +230,16 @@ of any previous runs, i.e. re-running the complete test suite.</p>
 <section id="test-cases">
 <h3>Test cases<a class="headerlink" href="#test-cases" title="Link to this heading"></a></h3>
 <p>All tests that are discovered by HDLRegression can be listed using the <code class="docutils literal notranslate"><span class="pre">-ltc</span></code> or <code class="docutils literal notranslate"><span class="pre">--listTestcase</span></code> argument, and
-are listed as <code class="docutils literal notranslate"><span class="pre">&lt;testbench</span> <span class="pre">entity&gt;.&lt;testbench</span> <span class="pre">architecture&gt;.&lt;sequencer</span> <span class="pre">built-in</span> <span class="pre">test</span> <span class="pre">case&gt;</span></code> or just
-<code class="docutils literal notranslate"><span class="pre">&lt;testbench</span> <span class="pre">entity&gt;.&lt;testbench</span> <span class="pre">architecture&gt;</span></code> if no sequencer built-in test cases are used.</p>
+are listed as <code class="docutils literal notranslate"><span class="pre">&lt;library&gt;:&lt;testbench</span> <span class="pre">entity&gt;.&lt;testbench</span> <span class="pre">architecture&gt;.&lt;sequencer</span> <span class="pre">built-in</span> <span class="pre">test</span> <span class="pre">case&gt;</span></code> or just
+<code class="docutils literal notranslate"><span class="pre">&lt;library&gt;:&lt;testbench</span> <span class="pre">entity&gt;.&lt;testbench</span> <span class="pre">architecture&gt;</span></code> if no sequencer built-in test cases are used. Note that the library
+name is optional and only used when multiple libraries are used in the regression script.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; python ../test/regression.py -ltc</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/testcase_listing.png" id="test-case-listing-in-terminal"><img alt="_images/testcase_listing.png" class="align-center" id="test-case-listing-in-terminal" src="_images/testcase_listing.png" style="width: 750px;" />
+<a class="reference internal image-reference" href="_images/cli_test_case_listing.png" id="test-case-listing-in-terminal"><img alt="_images/cli_test_case_listing.png" class="align-center" id="test-case-listing-in-terminal" src="_images/cli_test_case_listing.png" style="width: 750px;" />
 </a>
-<p>Running a selected test is done using the <code class="docutils literal notranslate"><span class="pre">-tc</span> <span class="pre">&lt;testbench.architecture.test</span> <span class="pre">case&gt;</span></code> or
-<code class="docutils literal notranslate"><span class="pre">--testCase</span> <span class="pre">&lt;testbench.architecture.test</span> <span class="pre">case&gt;</span></code> argument</p>
+<p>Running a selected test is done using the <code class="docutils literal notranslate"><span class="pre">-tc</span> <span class="pre">&lt;library&gt;:&lt;testbench.architecture.test</span> <span class="pre">case&gt;</span></code> or
+<code class="docutils literal notranslate"><span class="pre">--testCase</span> <span class="pre">&lt;library&gt;:&lt;testbench.architecture.test</span> <span class="pre">case&gt;</span></code> argument</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>Use wildcards to more effectively filter searches, i.e. test cases and filenames.</p>
@@ -265,18 +266,21 @@ are listed as <code class="docutils literal notranslate"><span class="pre">&lt;t
 </table>
 </div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; python ../test/regression.py -tc uart_vvc_tb.func.check_simple_receive</span>
+
+<span class="go">&gt; python ../test/regression.py -tc lib_uart:uart_vvc_tb.func.check_simple_receive</span>
 </pre></div>
 </div>
 <p>A test case can also be selected using the test case number from the <code class="docutils literal notranslate"><span class="pre">-ltc</span></code> or <code class="docutils literal notranslate"><span class="pre">--listTestcase</span></code> argument</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; python ../test/regression.py -tc 5</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/testcase_running.png" id="running-in-terminal"><img alt="_images/testcase_running.png" class="align-center" id="running-in-terminal" src="_images/testcase_running.png" style="width: 750px;" />
+<a class="reference internal image-reference" href="_images/cli_test_case_running.png" id="running-in-terminal"><img alt="_images/cli_test_case_running.png" class="align-center" id="running-in-terminal" src="_images/cli_test_case_running.png" style="width: 750px;" />
 </a>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>Test cases are identified by:</p>
 <ol class="arabic simple">
+<li><p>&lt;library&gt;:&lt;entity_name&gt;.&lt;architecture_name&gt;.&lt;sequencer_test case&gt;</p></li>
 <li><p>&lt;entity_name&gt;</p></li>
 <li><p>&lt;entity_name&gt;.&lt;architecture_name&gt;</p></li>
 <li><p>&lt;entity_name&gt;.&lt;architecture_name&gt;.&lt;sequencer_test case&gt;</p></li>

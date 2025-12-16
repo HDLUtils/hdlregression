@@ -544,23 +544,32 @@ add_testcase()
 =======================================================================================================================
 
 Adding test case(s) will configure HDLRegression to only run these test cases. 
-All test cases are run if no test cases are added using this command.
-Selecting test case can also be done by using :doc:`command line interfaces <cli>`, and test cases selected from CLI will 
-override any scripted test case selecition.
+If no test cases are added, all discovered tests are run.
+
+Test case selection can also be done via the :doc:`command line interfaces <cli>`.
+Any test cases selected from the CLI override scripted test case selection.
 
 
 .. important::
-  A test case name is a string that consists of 
-  
-  #. testbench entity name
-  #. testbench architecture name
-  #. test name (optional)
 
-  And where the three test case name elements are separated by a dot (``.``): ``<testbench_name>.<architecture_name>.<test_name>``.
+  A test case identifier is a string composed of the following elements:
+
+  #. Testbench entity name
+  #. Testbench architecture name (optional)
+  #. Sequencer / built-in test case name (optional)
+
+  The elements are separated by a dot (``.``):
+
+  ``<entity>[.<architecture>[.<testcase>]]``
+
+  In addition, an optional library selector may be prepended using ::
+
+  [<library>:]<entity>[.<architecture>[.<testcase>]]
+
+  If the library selector is omitted, tests from all libraries are considered.
 
 
 .. include:: wildcards_reference_tip.rst
-
 
 .. code-block:: python
 
@@ -574,34 +583,51 @@ override any scripted test case selecition.
 +-------------------+---------------------------+---------------+
 
 
+**Supported selector forms**
+
++----------------------+--------------------------------------------+
+| Selector             | Meaning                                    |
++======================+============================================+
+| entity               | All architectures and testcases            |
++----------------------+--------------------------------------------+
+| entity.arch          | All testcases in architecture              |
++----------------------+--------------------------------------------+
+| entity.arch.tc       | One specific test                          |
++----------------------+--------------------------------------------+
+| lib:entity.arch.tc   | Same, but limited to one library           |
++----------------------+--------------------------------------------+
+| lib:                 | All tests in a library                     |
++----------------------+--------------------------------------------+
+
+
 **Example:**
 
 .. code-block:: python
 
-  add_testcase("interface_tb.test_arch.read_test") # this test only
+  add_testcase("interface_tb.test_arch.read_test")
 
-  add_testcase("interface_tb.*.read_*") # all architectures and all sequencer test cases starting with 'read'
+  add_testcase("interface_tb..read_")
 
-  add_testcase("interface_tb.test_arch.????_test") # all sequencer test cases mathing any 4 character start, followed by '_test'
+  add_testcase("lib_uart:interface_tb.func.*")
 
-  add_testcase(interface_tests_list) # a list of selected tests
+  add_testcase(":interface_tb.")
 
+  add_testcase(testcase_list)
 
 .. note::
 
-  The `start()`_ method will return error code 1 if no test cases matched the ``test case`` keyword.
+	Library filtering is only supported via add_testcase() and CLI
+	The `start()_` method returns error code 1 if no ``test cases`` matched
   
 
 
 add_to_testgroup()
 =======================================================================================================================
 
-
-| Will add tests to a collection of tests, i.e. :ref:`test group <Test group>`, that can be run in groups. 
-  The test group is given a name that is used for addressing the test collection.
-| There are no limit for how many tests that can be added to a test group, and no limit for the number of test groups.
-| Running a test group can be done using a :doc:`command line interface <cli>`.
-
+Adds one or more existing tests to a named :ref:`test group <Test group>`, allowing tests to be executed as logical groups.
+A test group is identified by a name and can contain any number of tests. There is no limit to the number of test groups or
+the number of tests within a group. Test groups are executed by selecting the group name, either from the Python API or
+via the :doc:`command line interface <cli>`.
 
 .. code-block:: python
 
@@ -628,6 +654,7 @@ add_to_testgroup()
   * ``add_to_testgroup()`` adds existing tests to a collection, i.e. no new tests are created.
   * The ``test case`` argument is for selecting sequencer built-in test cases.
   * The `start()`_ method will return error code 1 if no test group or test case were found.
+  * All string arguments support Unix-style wildcards.
 
 
 .. include:: wildcards_reference_tip.rst

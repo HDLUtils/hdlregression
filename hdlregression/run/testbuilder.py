@@ -273,7 +273,28 @@ class TestBuilder:
     def _unix_match(search_string, pattern) -> bool:
         """
         Match search_string with pattern using Unix wild cards.
+        Robust for non-string objects (e.g. HDLLibrary), None, etc.
         """
+        import fnmatch
+
+        # Empty/None pattern => treat as match-all (used by existing logic)
+        if pattern is None or pattern == "":
+            return True
+
+        # Convert search_string to string if needed
+        if search_string is None:
+            search_string = ""
+        elif not isinstance(search_string, str):
+            # Common pattern in HDLRegression objects
+            if hasattr(search_string, "get_name"):
+                search_string = search_string.get_name()
+            else:
+                search_string = str(search_string)
+
+        # Convert pattern to string if needed
+        if not isinstance(pattern, str):
+            pattern = str(pattern)
+
         return fnmatch.fnmatch(search_string, pattern)
 
     def _get_user_testcase_list(self) -> list:
@@ -309,7 +330,7 @@ class TestBuilder:
         # Get user seleceted testcase
         testcase_list = self._get_user_testcase_list()
 
-        # Select based on user input as number og testcase name
+        # Select based on user input as number or testcase name
         if _is_testcase_an_index_number() is True:
             index = _get_testcase_index_number()
             if index not in range(1, self.test_id_count + 1):
@@ -335,61 +356,143 @@ class TestBuilder:
         self.tests_to_run_container.empty_list()
         self.tests_to_run_container.add(test)
 
+    def _parse_tc_selector(self, selector: str) -> dict:
+        """
+        Parse a testcase selector string.
+
+        Supported forms:
+          - entity[.architecture[.testcase]]
+          - library:entity[.architecture[.testcase]]
+          - library:           (only library filter => match all in that lib)
+          - :entity[...]       (explicit 'no library filter')
+
+        Returns a dict:
+          {"library": str|None, "entity": str|None, "architecture": str|None, "testcase": str|None}
+        """
+        sel = {"library": None, "entity": None, "architecture": None, "testcase": None}
+
+        selector = (selector or "").strip()
+        if not selector:
+            return sel
+
+        # Optional library prefix: "<lib>:<rest>"
+        if ":" in selector:
+            left, right = selector.split(":", 1)
+            sel["library"] = left.strip() or None
+
+            selector = right.strip()
+            if selector == "":
+                # "lib:" => only library filter
+                return sel
+
+        # Remaining: "entity[.arch[.tc]]"
+        parts = [p.strip() for p in selector.split(".")]
+
+        if len(parts) > 3:
+            raise ValueError(
+                "Invalid testcase selector '{}'. "
+                "Expected max: [lib:]entity.architecture.testcase".format(selector)
+            )
+
+        # Keep behaviour: empty fields become None
+        sel["entity"] = parts[0] or None if len(parts) >= 1 else None
+        sel["architecture"] = parts[1] or None if len(parts) >= 2 else None
+        sel["testcase"] = parts[2] or None if len(parts) >= 3 else None
+
+        return sel
+
+
+    def _selector_to_dict(self, sel):
+        """
+        Normalize selector representations into:
+          {"library": None|str, "entity": None|str, "architecture": None|str, "testcase": None|str}
+
+        Supports:
+          - dict (already in format)
+          - str  (e.g. "*:irqc_tb.*")
+          - list/tuple legacy:
+              [entity], [entity, arch], [entity, arch, tc]
+            and the broken early-split form:
+              ['*:irqc_tb', '*', None] -> rebuild '*:irqc_tb.*' and parse correctly
+        """
+        if sel is None:
+            return None
+
+        # Already dict
+        if isinstance(sel, dict):
+            return {
+                "library": sel.get("library") or None,
+                "entity": sel.get("entity") or None,
+                "architecture": sel.get("architecture") or None,
+                "testcase": sel.get("testcase") or None,
+            }
+
+        # Raw string selector
+        if isinstance(sel, str):
+            return self._parse_tc_selector(sel)
+
+        # Legacy list/tuple selector
+        if isinstance(sel, (list, tuple)):
+            parts = [p for p in sel if p not in (None, "")]
+            if not parts:
+                return None
+
+            # Ensure strings from this point
+            parts = [str(p) for p in parts]
+            first = parts[0]
+
+            # Fix: upstream split on '.' before dealing with ':'
+            if ":" in first:
+                rebuilt = ".".join(parts)
+                return self._parse_tc_selector(rebuilt)
+
+            # Normal legacy: entity.arch.tc (no library in this representation)
+            return {
+                "library": None,
+                "entity": parts[0] if len(parts) >= 1 else None,
+                "architecture": parts[1] if len(parts) >= 2 else None,
+                "testcase": parts[2] if len(parts) >= 3 else None,
+            }
+
+        return None
+
+
     def _get_testcase_from_string(self, testcase_list):
-        """User selected testcase ny entity.arch.tc"""
+        selectors = []
+        for raw in testcase_list:
+            sel = self._selector_to_dict(raw)
+            if sel is not None:
+                selectors.append(sel)
+
         filtered_tests = []
 
         for test in self.base_tests_container.get():
-            for tc in testcase_list:
-                # User selection content
-                user_testbench = tc[0]
-                user_architecture = tc[1]
-                user_testcase = tc[2]
+            # NOTE: For VHDLTest, get_library() returns an HDLLibrary object
+            lib_obj = test.get_library()
+            lib_name = lib_obj.get_name() if lib_obj is not None else ""
 
-                # Test container test content
-                container_testbench = test.get_name()
-                container_architecture = test.get_arch().get_name()
-                container_testcase = test.get_tc()
+            entity = test.get_name()
+            architecture = test.get_arch().get_name()
+            testcase = test.get_tc()
 
-                # Locate correct testbench
-                if self._unix_match(
-                    search_string=container_testbench, pattern=user_testbench
-                ):
-                    # Locate correct architecture
-                    if user_architecture:
-                        if self._unix_match(
-                            search_string=container_architecture,
-                            pattern=user_architecture,
-                        ):
-                            # Selected sequencer/built-in testcase?
-                            if container_testcase:
-                                # User selected testcase?
-                                if user_testcase:
-                                    if self._unix_match(
-                                        search_string=container_testcase,
-                                        pattern=user_testcase,
-                                    ):
-                                        filtered_tests.append(test)
-                                else:
-                                    filtered_tests.append(test)
-                            else:
-                                filtered_tests.append(test)
+            for sel in selectors:
+                # None/"" => no filter
+                if sel["library"] and not self._unix_match(lib_name, sel["library"]):
+                    continue
+                if sel["entity"] and not self._unix_match(entity, sel["entity"]):
+                    continue
+                if sel["architecture"] and not self._unix_match(architecture, sel["architecture"]):
+                    continue
 
-                    # All architectures
-                    else:
-                        # Selected sequencer/built-in testcase?
-                        if container_testcase:
-                            if user_testcase:
-                                if self._unix_match(
-                                    search_string=container_testcase,
-                                    pattern=user_testcase,
-                                ):
-                                    filtered_tests.append(test)
-                            # All sequencer/built-in testcases
-                            else:
-                                filtered_tests.append(test)
-                        else:
-                            filtered_tests.append(test)
+                # If selector requests testcase, test must have tc and it must match
+                if sel["testcase"]:
+                    if not testcase:
+                        continue
+                    if not self._unix_match(testcase, sel["testcase"]):
+                        continue
+
+                filtered_tests.append(test)
+                break  # OR between selectors
 
         self._copy_filtered_tests_to_tests_to_run_container(filtered_tests)
 
