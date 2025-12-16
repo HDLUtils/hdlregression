@@ -86,8 +86,17 @@ RE_VHDL_ENTITY = re.compile(ID_VHDL_ENTITY, flags=re.IGNORECASE)
 ID_VHDL_ENTITY_DECLARATION = r"[\s+]?entity\s+.*\s+[\s\r\n]?is"
 RE_VHDL_ENTITY_DECLARATION = re.compile(ID_VHDL_ENTITY_DECLARATION, flags=re.IGNORECASE)
 
-ID_VHDL_CONFIGURATION_INSTANTIATION = r"\s+.*:\s+configuration\s+\w+"
-RE_VHDL_CONFIGURATION_INSTANTIATION = re.compile(ID_VHDL_CONFIGURATION_INSTANTIATION, flags=re.IGNORECASE)
+ID_VHDL_CONFIGURATION_INSTANTIATION = (
+    r"\b\w+\s*:\s*configuration"       # label and 'configuration' keyword
+    r"\s+[a-zA-Z0-9_.]+"               # configuration name with optional lib.
+    r"(?:\s+generic\s+map\s*\(.*?\))?" # optional generic map
+    r"(?:\s+port\s+map\s*\(.*?\))?"    # optional port map
+    r"\s*;"                            # terminating semicolon
+)
+RE_VHDL_CONFIGURATION_INSTANTIATION = re.compile(
+    ID_VHDL_CONFIGURATION_INSTANTIATION,
+    flags=re.IGNORECASE | re.DOTALL | re.VERBOSE
+)
 
 ID_VHDL_CONFIGURATION_DECLARATION = r"[\s+]?configuration\s+.*\s+[\s\r\n]?of\s+.*\s+is"
 RE_VHDL_CONFIGURATION_DECLARATION = re.compile(ID_VHDL_CONFIGURATION_DECLARATION, flags=re.IGNORECASE)
