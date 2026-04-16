@@ -36,7 +36,8 @@ class TclRunnerBase():
         self.project = project
         self.test_folder = None
         self.gui_do_file = None
-        self.python_exec = self.project.settings.get_python_exec()
+        #self.python_exec = self.project.settings.get_python_exec()
+        self.python_exec = self.project.settings.get_gui_python_exec()
 
         self.runner = None
         # Build test list
@@ -133,22 +134,49 @@ proc h {} {
     def _simulate(self, test) -> str:
         pass
 
-    def _recompile_changed(self) -> str:
-        cmd = "{{*}}{} -c \"import sys; sys.path.append('{}'); ".format(
-            self.python_exec,
-            self.project._get_install_path()
+    def _tcl_quote(self, text: str) -> str:
+        return "{" + str(text).replace("}", "\\}") + "}"   
+
+    def _build_gui_python_cmd(self, option: str) -> str:
+        python_exec = self.python_exec.replace("\\", "/")
+        install_path = self.project._get_install_path().replace("\\", "/")
+
+        python_code = (
+            "import os, sys; "
+            f"pkg_root = {install_path!r}; "
+            "cwd = os.path.abspath(os.getcwd()); "
+            "sys.path = [p for p in sys.path if os.path.abspath(p or cwd) != cwd]; "
+            "sys.path.insert(0, pkg_root); "
+            "from hdlregression.hdlregression import HDLRegression; "
+            "hu = HDLRegression(init_from_gui=True); "
+            "hu._start_gui()"
         )
-        cmd += 'from hdlregression import HDLRegression; hu = HDLRegression(init_from_gui=True); hu._start_gui()" --compileChanges'
+
+        return "[list {} -c {} {}]".format(
+            self._tcl_quote(python_exec),
+            self._tcl_quote(python_code),
+            self._tcl_quote(option),
+        )    
+
+    def _recompile_changed(self) -> str:
+        cmd = self._build_gui_python_cmd("--compileChanges")
+
         txt = """
 proc r {} {
-    set cmd_show {%s}
+    set cmd %s
 
-    puts "Re-compiling changes using command ${cmd_show}"
+    puts "Re-compiling changes using command $cmd"
 
-    set chan [open |[list %s] r]
+    if {[catch {set output [exec {*}$cmd 2>@1]} err]} {
+        puts "-----------------------------------"
+        puts " Failed to start Python interpreter"
+        puts " $err"
+        puts "-----------------------------------"
+        return
+    }
 
     set hdlregression_success false
-    while {[gets $chan line] >= 0} {
+    foreach line [split $output "\\n"] {
         if {[return_checker $line] == true} {
             set hdlregression_success true
         }
@@ -164,28 +192,66 @@ proc r {} {
         puts "-----------------------------------"
     }
 }
-""" % (
-            cmd,
-            cmd,
-        )
+""" % (cmd)
+
         return txt
 
+#    def _recompile_changed(self) -> str:
+#        cmd = "{{*}}{} -c \"import sys; sys.path.append('{}'); ".format(
+#            self.python_exec,
+#            self.project._get_install_path()
+#        )
+#        cmd += 'from hdlregression import HDLRegression; hu = HDLRegression(init_from_gui=True); hu._start_gui()" --compileChanges'
+#        txt = """
+#proc r {} {
+#    set cmd_show {%s}
+#
+#    puts "Re-compiling changes using command ${cmd_show}"
+#
+#    set chan [open |[list %s] r]
+#
+#    set hdlregression_success false
+#    while {[gets $chan line] >= 0} {
+#        if {[return_checker $line] == true} {
+#            set hdlregression_success true
+#        }
+#    }
+#
+#    if {$hdlregression_success == true} {
+#        puts "-----------------------------------"
+#        puts "     Re-compilation success!"
+#        puts "-----------------------------------"
+#    } else {
+#        puts "-----------------------------------"
+#        puts "     Re-compilation FAILED!"
+#        puts "-----------------------------------"
+#    }
+#}
+#""" % (
+#            cmd,
+#            cmd,
+#        )
+#        return txt
+
     def _recompile_all(self) -> str:
-        cmd = "{{*}}{} -c \"import sys; sys.path.append('{}'); ".format(
-            self.python_exec,
-            self.project._get_install_path()
-        )
-        cmd += 'from hdlregression import HDLRegression; hu = HDLRegression(init_from_gui=True); hu._start_gui()" --compileAll'
+        cmd = self._build_gui_python_cmd("--compileAll")
+
         txt = """
 proc ra {} {
-    set cmd_show {%s}
+    set cmd %s
 
-    puts "Re-compiling all using command ${cmd_show}"
+    puts "Re-compiling all using command $cmd"
 
-    set chan [open |[list %s] r]
+    if {[catch {set output [exec {*}$cmd 2>@1]} err]} {
+        puts "-----------------------------------"
+        puts " Failed to start Python interpreter"
+        puts " $err"
+        puts "-----------------------------------"
+        return
+    }
 
     set hdlregression_success false
-    while {[gets $chan line] >= 0} {
+    foreach line [split $output "\\n"] {
         if {[return_checker $line] == true} {
             set hdlregression_success true
         }
@@ -202,28 +268,29 @@ proc ra {} {
         puts "-----------------------------------"
     }
 }
-""" % (
-            cmd,
-            cmd,
-        )
+""" % (cmd)
+
         return txt
 
     def _recompile_all_only(self) -> str:
-        cmd = "{{*}}{} -c \"import sys; sys.path.append('{}'); ".format(
-            self.python_exec,
-            self.project._get_install_path()
-        )
-        cmd += 'from hdlregression import HDLRegression; hu = HDLRegression(init_from_gui=True); hu._start_gui()" --compileAll'
+        cmd = self._build_gui_python_cmd("--compileAll")
+
         txt = """
 proc ro {} {
-    set cmd_show {%s}
+    set cmd %s
 
-    puts "Re-compiling all using command ${cmd_show}"
+    puts "Re-compiling all using command $cmd"
 
-    set chan [open |[list %s] r]
+    if {[catch {set output [exec {*}$cmd 2>@1]} err]} {
+        puts "-----------------------------------"
+        puts " Failed to start Python interpreter"
+        puts " $err"
+        puts "-----------------------------------"
+        return
+    }
 
     set hdlregression_success false
-    while {[gets $chan line] >= 0} {
+    foreach line [split $output "\\n"] {
         if {[return_checker $line] == true} {
             set hdlregression_success true
         }
@@ -239,10 +306,8 @@ proc ro {} {
         puts "-----------------------------------"
     }
 }
-""" % (
-            cmd,
-            cmd,
-        )
+""" % (cmd)
+
         return txt
 
     @staticmethod

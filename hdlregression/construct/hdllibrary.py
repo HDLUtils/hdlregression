@@ -677,6 +677,8 @@ class HDLLibrary(Library):
         """
         Method for manually add a library as a dependency.
         """
+        if library.lower() == self.get_name():
+            return
         if library.lower() not in self.lib_dep:
             self.lib_dep.append(library.lower())
 
@@ -746,5 +748,8 @@ class HDLLibrary(Library):
         """
         for dep_lib in self.lib_obj_dep_list:
             if dep_lib.get_need_compile():
+                self.logger.debug("Recompiling lib '{}' --> dep lib '{}' needs to be recompiled."
+                    .format(self.get_name(), dep_lib.get_name())
+                )
                 return True
         return False

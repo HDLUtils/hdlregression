@@ -17,6 +17,8 @@ import os
 import platform
 import datetime
 import subprocess
+import sys
+import shutil
 from abc import ABC, abstractmethod
 
 
@@ -105,25 +107,123 @@ class HDLRegressionSettings:
 
         self.ignored_simulator_exit_codes = []
 
-    def detect_python_exec(self):
-        """ Detects the python executable to use """
-        python_executables = ["python3", "python", "Python3", "Python"]
-    
-        for executable in python_executables:
-            try:
-                output = (subprocess.check_output([executable, "--version"], stderr=subprocess.STDOUT).decode().strip())
-                if "Python 3" in output:
-                    self.python_exec = executable
-                    return
-            except (subprocess.CalledProcessError, FileNotFoundError):
-                continue        
+    def detect_python_exec(self) -> str:
+        """Detect a usable Python 3 executable."""
 
-        self.python_exec = "python"
+        def _is_python3(executable: str) -> bool:
+            try:
+                output = subprocess.check_output(
+                    [executable, "--version"],
+                    stderr=subprocess.STDOUT
+                ).decode().strip()
+                return "Python 3" in output
+            except (subprocess.CalledProcessError, FileNotFoundError, OSError):
+                return False
+
+        # 1. First trust the interpreter currently running HDLRegression
+        current_exec = sys.executable
+        if current_exec and os.path.exists(current_exec):
+            if _is_python3(current_exec):
+                self.python_exec = current_exec
+                return current_exec
+
+        # 2. Then try common command names
+        python_executables = ["python3", "python", "py", "Python3", "Python"]
+
+        for executable in python_executables:
+            resolved = shutil.which(executable) if not os.path.isabs(executable) else executable
+            if not resolved:
+                continue
+
+            # Avoid WindowsApps aliases for fallback candidates
+            if "windowsapps" in resolved.lower():
+                continue
+
+            # py launcher needs special handling
+            if os.path.basename(resolved).lower() == "py.exe":
+                try:
+                    output = subprocess.check_output(
+                        [resolved, "-3", "--version"],
+                        stderr=subprocess.STDOUT
+                    ).decode().strip()
+                    if "Python 3" in output:
+                        self.python_exec = resolved
+                        return resolved
+                except (subprocess.CalledProcessError, FileNotFoundError, OSError):
+                    continue
+            else:
+                if _is_python3(resolved):
+                    self.python_exec = resolved
+                    return resolved
+
+        # 3. Final fallback: if sys.executable exists, use it anyway
+        if current_exec and os.path.exists(current_exec):
+            self.python_exec = current_exec
+            return current_exec
+
+        raise SettingsError("Could not detect a valid Python 3 executable.")
 
     def get_python_exec(self) -> str:
         if self.python_exec is None:
-            self.python_exec = self.detect_python_exec()
+            return self.detect_python_exec()
         return self.python_exec
+
+    def detect_gui_python_exec(self) -> str:
+        """Detect Python executable suitable for simulator GUI recompile."""
+        def _is_python3(executable: str) -> bool:
+            try:
+                output = subprocess.check_output(
+                    [executable, "--version"],
+                    stderr=subprocess.STDOUT
+                ).decode().strip()
+                return "Python 3" in output
+            except (subprocess.CalledProcessError, FileNotFoundError, OSError):
+                return False
+
+        candidates = []
+
+        current_exec = sys.executable
+        if current_exec and os.path.exists(current_exec):
+            candidates.append(current_exec)
+
+        for executable in ["python3", "python", "py", "Python3", "Python"]:
+            resolved = shutil.which(executable) if not os.path.isabs(executable) else executable
+            if resolved:
+                candidates.append(resolved)
+
+        seen = set()
+        for resolved in candidates:
+            norm = os.path.normcase(os.path.normpath(resolved))
+            if norm in seen:
+                continue
+            seen.add(norm)
+
+            # GUI should avoid WindowsApps alias python
+            if "windowsapps" in norm.lower():
+                continue
+
+            if os.path.basename(norm).lower() == "py.exe":
+                try:
+                    output = subprocess.check_output(
+                        [resolved, "-3", "--version"],
+                        stderr=subprocess.STDOUT
+                    ).decode().strip()
+                    if "Python 3" in output:
+                        return resolved
+                except (subprocess.CalledProcessError, FileNotFoundError, OSError):
+                    continue
+            else:
+                if _is_python3(resolved):
+                    return resolved
+
+        # Fallback to current executable only if nothing else was found
+        if current_exec and os.path.exists(current_exec):
+            return current_exec
+
+        raise SettingsError("Could not detect a valid Python 3 executable for GUI mode.")
+
+    def get_gui_python_exec(self) -> str:
+        return self.detect_gui_python_exec()
 
     def set_return_code(self, return_code: int):
         self.return_code = return_code

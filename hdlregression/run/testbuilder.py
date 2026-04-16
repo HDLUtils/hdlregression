@@ -35,6 +35,7 @@ class TestBuilder:
         self.tests_to_run_container = Container(name="tests_to_run_container")
         self.base_tests_container = Container(name="base_tests_container")
         self.test_id_count = 0
+        self.not_run_tests = []
 
     def build_tb_module_list(self) -> None:
         """
@@ -50,7 +51,7 @@ class TestBuilder:
                 for module in hdlfile.get_tb_modules():
                     self.testbench_container.add(module)
 
-    def build_list_of_tests_to_run(self, re_run_tc_list):
+    def build_list_of_tests_to_run(self, old_tc_list):
         """
         Builds a list of all testbenches and testcases
         that are selected to be run.
@@ -62,16 +63,7 @@ class TestBuilder:
         for test in self.base_tests_container.get():
             test.create_test_output_folder_name()
 
-        # Update status from previous failing test runs
-        for old_test in re_run_tc_list:
-            if old_test.get_status() == TestStatus.FAIL:
-                for new_test in self.base_tests_container.get():
-                    if new_test.get_test_path() == old_test.get_test_path():
-                        new_test.set_status(TestStatus.FAIL)
-            if old_test.get_status() == TestStatus.RE_RUN:
-                for new_test in self.base_tests_container.get():
-                    if new_test.get_test_path() == old_test.get_test_path():
-                        new_test.set_status(TestStatus.RE_RUN)
+        self._update_tests_with_state_from_previous_run(old_tc_list)
 
         # Run all
         if self.project.settings.get_run_all():
@@ -101,12 +93,22 @@ class TestBuilder:
         else:
             self._build_modified()
 
+        self.not_run_tests = [test for test in self.base_tests_container.get() if test.get_need_re_run() is False]
+
+
+
     def get_list_of_tests_to_run(self) -> list:
         """
         Returns list of all testbenches and testcases
         that are selected to be run.
         """
         return self.tests_to_run_container.get()
+    
+    def get_list_of_not_run_tests(self) -> list:
+        """
+        Returns list of tests that were not run due to changes, but are not detected as needing re-run.
+        """
+        return self.not_run_tests
 
     def get_num_tests(self) -> int:
         return len(self.base_tests_container.get())
@@ -114,6 +116,41 @@ class TestBuilder:
     # ====================================================================
     # Test builder methods
     # ====================================================================
+
+    def _copy_test_state(self, test, old_test, exclude=None):
+        """
+        Copy internal state of one test to another.
+        Used when loading DB and needing to update previous run tests.
+        Called from _update_tests_with_state_from_previous_run() method.
+        """
+        if exclude is None:
+            exclude = set()
+
+        for key, value in old_test.__dict__.items():
+            if key not in exclude:
+                setattr(test, key, value)
+
+    def _update_tests_with_state_from_previous_run(self, old_tc_list) -> None:
+        """
+        Copies test relevant information from previous test run to 
+        the current so that test DB can be kept for next run.
+        """
+        # Create dict of all current tests in this run - with test path as key
+        base_test_dict = {test.get_test_path(): test for test in self.base_tests_container.get()}
+
+        # Map previous run result with base tests
+        for old_test in old_tc_list:
+            test = base_test_dict.get(old_test.get_test_path())
+            if test:
+                self._copy_test_state(test, old_test, exclude={
+                    "tb",
+                    "hdlfile",
+                    "library",
+                    "settings",
+                    "arch",
+                    "tc",
+                    "gc",
+                },)
 
     def _get_num_tests_to_run(self) -> int:
         return self.tests_to_run_container.num_elements()
@@ -123,7 +160,7 @@ class TestBuilder:
 
     def _str_match(self, str1, str2) -> bool:
         return str1.upper() == str2.upper()
-
+    
     def _build_base_tests(self) -> None:
         """
         Build a list of all tests.
@@ -353,8 +390,108 @@ class TestBuilder:
         # Adjust testcase index number for array access
         index -= 1
         test = self.base_tests_container.get_index(index)
-        self.tests_to_run_container.empty_list()
-        self.tests_to_run_container.add(test)
+        self._copy_filtered_tests_to_tests_to_run_container([test])
+
+    def _parse_tc_selector(self, selector: str) -> dict:
+        """
+        Parse a testcase selector string.
+
+        Supported forms:
+          - entity[.architecture[.testcase]]
+          - library:entity[.architecture[.testcase]]
+          - library:           (only library filter => match all in that lib)
+          - :entity[...]       (explicit 'no library filter')
+
+        Returns a dict:
+          {"library": str|None, "entity": str|None, "architecture": str|None, "testcase": str|None}
+        """
+        sel = {"library": None, "entity": None, "architecture": None, "testcase": None}
+
+        selector = (selector or "").strip()
+        if not selector:
+            return sel
+
+        # Optional library prefix: "<lib>:<rest>"
+        if ":" in selector:
+            left, right = selector.split(":", 1)
+            sel["library"] = left.strip() or None
+
+            selector = right.strip()
+            if selector == "":
+                # "lib:" => only library filter
+                return sel
+
+        # Remaining: "entity[.arch[.tc]]"
+        parts = [p.strip() for p in selector.split(".")]
+
+        if len(parts) > 3:
+            raise ValueError(
+                "Invalid testcase selector '{}'. "
+                "Expected max: [lib:]entity.architecture.testcase".format(selector)
+            )
+
+        # Keep behaviour: empty fields become None
+        sel["entity"] = parts[0] or None if len(parts) >= 1 else None
+        sel["architecture"] = parts[1] or None if len(parts) >= 2 else None
+        sel["testcase"] = parts[2] or None if len(parts) >= 3 else None
+
+        return sel
+
+
+    def _selector_to_dict(self, sel):
+        """
+        Normalize selector representations into:
+          {"library": None|str, "entity": None|str, "architecture": None|str, "testcase": None|str}
+
+        Supports:
+          - dict (already in format)
+          - str  (e.g. "*:irqc_tb.*")
+          - list/tuple legacy:
+              [entity], [entity, arch], [entity, arch, tc]
+            and the broken early-split form:
+              ['*:irqc_tb', '*', None] -> rebuild '*:irqc_tb.*' and parse correctly
+        """
+        if sel is None:
+            return None
+
+        # Already dict
+        if isinstance(sel, dict):
+            return {
+                "library": sel.get("library") or None,
+                "entity": sel.get("entity") or None,
+                "architecture": sel.get("architecture") or None,
+                "testcase": sel.get("testcase") or None,
+            }
+
+        # Raw string selector
+        if isinstance(sel, str):
+            return self._parse_tc_selector(sel)
+
+        # Legacy list/tuple selector
+        if isinstance(sel, (list, tuple)):
+            parts = [p for p in sel if p not in (None, "")]
+            if not parts:
+                return None
+
+            # Ensure strings from this point
+            parts = [str(p) for p in parts]
+            first = parts[0]
+
+            # Fix: upstream split on '.' before dealing with ':'
+            if ":" in first:
+                rebuilt = ".".join(parts)
+                return self._parse_tc_selector(rebuilt)
+
+            # Normal legacy: entity.arch.tc (no library in this representation)
+            return {
+                "library": None,
+                "entity": parts[0] if len(parts) >= 1 else None,
+                "architecture": parts[1] if len(parts) >= 2 else None,
+                "testcase": parts[2] if len(parts) >= 3 else None,
+            }
+
+        return None
+
 
     def _parse_tc_selector(self, selector: str) -> dict:
         """
@@ -547,33 +684,13 @@ class TestBuilder:
             self.logger.warning("No test found for test group: %s" % (testgroup_to_run))
 
     def _build_modified(self) -> None:
-        """
-        Build a list of tests that have to
-        be re-run due to changes.
-        """
+        """ Build a list of tests that have to be re-run due to changes. """
         self.logger.debug("building tests for changed only")
-
-        filtered_tests = []
-        for test in self.base_tests_container.get():
-            if test.get_hdlfile().get_need_compile() is True:
-                filtered_tests.append(test)
-            elif test.get_status() == TestStatus.FAIL:
-                filtered_tests.append(test)
-            elif test.get_status() == TestStatus.RE_RUN:
-                filtered_tests.append(test)
-            elif not self.project.settings.get_run_success():
-                filtered_tests.append(test)
-            elif test.get_hdlfile().get_library().get_need_compile() is True:
-                filtered_tests.append(test)
-            elif test.get_hdlfile().get_library().get_dependencies_need_compile() is True:
-                filtered_tests.append(test)
-
-        self._copy_filtered_tests_to_tests_to_run_container(filtered_tests)
+        test_run_list = [test for test in self.base_tests_container.get() if test.get_need_re_run() is True]
+        self._copy_filtered_tests_to_tests_to_run_container(test_run_list)
 
     def _get_test_object(self, tb=None, arch=None, tc=None, gc=None):
-        """
-        Will return test object based on HDL file type.
-        """
+        """ Will return test object based on HDL file type. """
         hdlfile = tb.get_hdlfile()
 
         if isinstance(hdlfile, VHDLFile):

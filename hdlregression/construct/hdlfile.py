@@ -43,6 +43,7 @@ class HDLFile:
         self.compile_time = 0
         self.hdlfile_this_dep_on_list = []
         self.hdlfile_dep_on_this_list = []
+        self.is_test_file = False
 
         # Netlist file is not parsed
         self.parse_file = parse_file
@@ -74,10 +75,24 @@ class HDLFile:
     def update_compile_time(self):
         self.compile_time = time.time()
 
+    def get_file_has_changed(self) -> bool:
+        return self.get_file_change_date() > self.compile_time
+    
+    def get_library_need_compile(self) -> bool:
+        return self.get_library().get_need_compile()
+    
+    def get_dependent_file_has_changed(self) -> bool:
+        return any(hdlfile.get_file_has_changed() for hdlfile in self.get_hdlfile_this_dep_on())
+
     def get_need_compile(self) -> bool:
-        need_compile = self.get_file_change_date() > self.compile_time
-        need_compile = need_compile or self.get_library().get_need_compile()
-        return need_compile
+        if self.get_file_has_changed():
+            return True
+        if self.get_dependent_file_has_changed():
+            return True
+        if self.get_is_tb() is False:
+            return self.get_library().get_dependencies_need_compile()
+        else:
+            return False
 
     def set_need_compile(self, need_compile: bool):
         """

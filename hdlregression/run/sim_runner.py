@@ -122,24 +122,24 @@ class SimRunner:
         return 0
 
     def get_fail_test_obj_list(self) -> list:
-        return [
-            test
-            for test in self.get_test_list()
-            if test.get_status() == TestStatus.FAIL
-        ]
+        return [test for test in self.get_test_list() if test.get_status() == TestStatus.FAIL]
 
     def get_re_run_test_obj_list(self) -> list:
-        return [
-            test
-            for test in self.get_test_list()
-            if test.get_status() in ["FAIL", "NOT_RUN", "RE_RUN"]
-        ]
+        return [test for test in self.get_test_list() if test.get_status() in ["FAIL", "NOT_RUN", "RE_RUN"]]
 
     def get_test_list(self) -> list:
         """
         Returns a list of all test objects.
         """
         return self.testbuilder.get_list_of_tests_to_run()
+    
+    def get_uptdated_test_list(self) -> list:
+        """
+        Returns a list of all test objects, including filtered out.
+        """
+        ret_list = [test for test in self.testbuilder.get_list_of_tests_to_run()]
+        ret_list += self.testbuilder.get_list_of_not_run_tests()
+        return ret_list
 
     def mark_tests_for_re_run(self):
         for test in self.testbuilder.get_list_of_tests_to_run():
@@ -149,12 +149,12 @@ class SimRunner:
     def _setup_ini(self) -> str:
         return None
 
-    def prepare_test_modules_and_objects(self, re_run_tc_list):
+    def prepare_test_modules_and_objects(self, old_tc_list):
         """
         Locate testbench modules and build test objects
         """
         self.testbuilder.build_tb_module_list()
-        self.testbuilder.build_list_of_tests_to_run(re_run_tc_list)
+        self.testbuilder.build_list_of_tests_to_run(old_tc_list)
 
     @abstractmethod
     def _compile_library(self, library, force_compile=False) -> "HDLLibrary":
@@ -302,10 +302,10 @@ class SimRunner:
 
         if failing_test is True:
             self.project.settings.set_sim_success(False)
+            return False
         else:
             self.project.settings.set_sim_success(True)
-
-        return True
+            return True
 
     # ===================================================================================================
     #
@@ -832,18 +832,16 @@ class SimRunner:
 
             if test_ok is False:
                 test.set_status(TestStatus.FAIL)
-            elif not test_ok_no_minor_alerts:
+            elif test_ok_no_minor_alerts is False:
                 test.set_status(TestStatus.PASS_WITH_MINOR)                
-            elif test_ok:
+            elif test_ok is True:
                 test.set_status(TestStatus.PASS)
             else:
                 test.set_status(TestStatus.NOT_RUN)
 
         update_test_status_and_info(test)
 
-    def _create_terminal_test_info_output_string(
-        self, test, descriptive_test_name
-    ) -> str:
+    def _create_terminal_test_info_output_string(self, test, descriptive_test_name) -> str:
         """
         Create a testcase name based on entity, architecture, test, and generics.
         """

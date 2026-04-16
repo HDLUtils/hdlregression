@@ -88,6 +88,13 @@ class Container:
                          if element.get_name().lower() != element_name.get_name().lower()]
         self.storage = temp_list
 
+    def pop(self):
+        if len(self.storage) > 0:
+            element = self.storage[0]
+            self.storage = self.storage[1:]
+            return element
+        return None
+
     def num_elements(self) -> int:
         return len(self.storage)
 

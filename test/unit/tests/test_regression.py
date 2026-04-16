@@ -115,21 +115,26 @@ def test_full_regression_run_two_no_file_changes(sim_env, tb_path):
     and no tests are run the second time (no file changes)
     """
     clear_output()
-    hr = HDLRegression(simulator=sim_env["simulator"])
 
     filename = tb_path + "/tb_testcase.vhd"
     filename = get_file_path(filename)
+
+    # Run 1
+    hr = HDLRegression(simulator=sim_env["simulator"])
     hr.add_files(filename, "testcase_lib")
     hr.set_result_check_string("testcase_arch: testcase")
 
-    # Run 1
-    result = hr.start(full_regression=True)
+    result = hr.start()
     assert result == 0, "Checking return code 0 - OK"
     num_test_runs = hr.get_num_tests_run()
     assert num_test_runs == 3, "check 3 tests are run"
 
-    # Run 2
-    result = hr.start(full_regression=True)
+    # Run 2 - create a new instance to simulate a new invocation
+    hr = HDLRegression(simulator=sim_env["simulator"])
+    hr.add_files(filename, "testcase_lib")
+    hr.set_result_check_string("testcase_arch: testcase")
+
+    result = hr.start()
     assert result == 1, "Checking return code 1 - OK"
     num_test_runs = hr.get_num_tests_run()
     assert num_test_runs == 0, "check 0 tests are run"
@@ -138,31 +143,43 @@ def test_full_regression_run_two_no_file_changes(sim_env, tb_path):
 def test_full_regression_run_three_with_file_changes(sim_env, tb_path):
     """
     Check that all tests are run the first time,
-    and no tests are run the second time (no file changes)
+    no tests are run the second time when there are no file changes,
+    and all tests are run again after a file change.
     """
     clear_output()
-    hr = HDLRegression(simulator=sim_env["simulator"])
 
     filename = tb_path + "/tb_testcase.vhd"
     filename = get_file_path(filename)
+
+    # Run 1
+    hr = HDLRegression(simulator=sim_env["simulator"])
     hr.add_files(filename, "testcase_lib")
     hr.set_result_check_string("testcase_arch: testcase")
 
-    # Run 1
-    result = hr.start(full_regression=True)
+    result = hr.start()
     assert result == 0, "Checking return code 0 - OK"
     num_test_runs = hr.get_num_tests_run()
     assert num_test_runs == 3, "check 3 tests are run"
 
     # Run 2
-    hr.start(full_regression=True)
+    hr = HDLRegression(simulator=sim_env["simulator"])
+    hr.add_files(filename, "testcase_lib")
+    hr.set_result_check_string("testcase_arch: testcase")
+
+    result = hr.start()
     num_test_runs = hr.get_num_tests_run()
+    assert result == 1, "Checking return code 1 - OK"
     assert num_test_runs == 0, "check 0 tests are run"
 
     # Touch file to create changes
     Path(filename).touch()
 
     # Run 3
-    hr.start(full_regression=True)
+    hr = HDLRegression(simulator=sim_env["simulator"])
+    hr.add_files(filename, "testcase_lib")
+    hr.set_result_check_string("testcase_arch: testcase")
+
+    result = hr.start()
     num_test_runs = hr.get_num_tests_run()
+    assert result == 0, "Checking return code 0 - OK"
     assert num_test_runs == 3, "check 3 tests are run"

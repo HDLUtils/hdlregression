@@ -125,11 +125,15 @@ class HdlRegressionTest:
         used for test register, i.e. statistic methods.
         """
         return self.test_string
+    
+    def set_test_id_string_direct(self, test_string) -> None:
+        self.test_string = test_string
 
     def set_hdlfile(self, hdlfile):
         self.hdlfile = hdlfile
 
     def get_hdlfile(self):
+        """ Return top level HDL file for this test, e.g. entity or module. """
         return self.hdlfile
 
     def get_library(self):
@@ -138,6 +142,9 @@ class HdlRegressionTest:
     def set_library(self, library):
         self.library = library
 
+    def get_test_file_has_changed(self) -> bool:
+        return False
+
     # ----------- test status ---------------
     def set_status(self, status: TestStatus):
         self.test_status = status.upper()
@@ -145,7 +152,19 @@ class HdlRegressionTest:
     def get_status(self) -> TestStatus:
         return self.test_status
 
+    def get_need_re_run(self) -> bool:
+        if self.test_status in [TestStatus.FAIL, TestStatus.NOT_RUN, TestStatus.RE_RUN]:
+            return True
+        elif self.get_test_file_has_changed() is True:
+            return True
+        else:            
+            return False
+
+
     # -------- test connections ---------------
+
+    def get_dependency_files_list(self) -> list:
+        return []
 
     def set_tb(self, tb) -> None:
         self.tb = tb
@@ -330,6 +349,35 @@ class VHDLTest(HdlRegressionTest):
             testcase_name += "." + self.get_tc()
         return testcase_name
 
+    def get_dependency_files_list(self) -> list:
+        dependency_files = []
+
+        tb_file = self.get_hdlfile()
+        if tb_file:
+            dependency_files.append(tb_file)
+            for dep_file in tb_file.get_hdlfile_this_dep_on():
+                if dep_file not in dependency_files:
+                    dependency_files.append(dep_file)
+
+        arch = self.get_arch()
+        if arch:
+            arch_file = arch.get_hdlfile()
+            if arch_file and arch_file not in dependency_files:
+                dependency_files.append(arch_file)
+
+                for dep_file in arch_file.get_hdlfile_this_dep_on():
+                    if dep_file not in dependency_files:
+                        dependency_files.append(dep_file)
+
+        return dependency_files
+
+
+    def get_test_file_has_changed(self) -> bool:
+        for hdlfile in self.get_dependency_files_list():
+            if hdlfile.get_file_has_changed() is True:
+                return True
+        return False
+
 
 class VerilogTest(HdlRegressionTest):
     def __init__(self, tb=None, tc=None, gc=[], settings=None):
@@ -400,3 +448,20 @@ class VerilogTest(HdlRegressionTest):
                             gc_str += " -g" + generic_name + "=" + generic_value
 
         return gc_str
+    
+    def get_dependency_files_list(self) -> list:
+        dependency_files = []
+
+        if self.get_hdlfile():
+            dependency_files.append(self.get_hdlfile())
+            for dep_file in self.get_hdlfile().get_hdlfile_this_dep_on():
+                if dep_file not in dependency_files:
+                    dependency_files.append(dep_file)
+
+        return dependency_files
+
+    def get_test_file_has_changed(self) -> bool:
+        for hdlfile in self.get_dependency_files_list():
+            if hdlfile.get_file_has_changed() is True:
+                return True
+        return False

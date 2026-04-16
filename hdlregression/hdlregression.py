@@ -579,7 +579,7 @@ class HDLRegression:
             modelsim_ini_file = self.runner._setup_ini()
             self._add_precompiled_libraries_to_modelsim_ini(modelsim_ini_file)
 
-            self.runner.prepare_test_modules_and_objects(self.re_run_tc_list)
+            self.runner.prepare_test_modules_and_objects(self.old_tc_list)
             (compile_success, self.library_container) = self.runner.compile_libraries()
 
             if not compile_success:
@@ -614,7 +614,7 @@ class HDLRegression:
             modelsim_ini_file = self.runner._setup_ini()
             self._add_precompiled_libraries_to_modelsim_ini(modelsim_ini_file)
 
-            self.runner.prepare_test_modules_and_objects(self.re_run_tc_list)
+            self.runner.prepare_test_modules_and_objects(self.old_tc_list)
 
             # Compile libraries and files
             (compile_success, self.library_container) = self.runner.compile_libraries()
@@ -1275,20 +1275,11 @@ class HDLRegression:
 
         _dump(self.library_container, "library.dat", settings_copy.get_output_path())
         _dump(self.generic_container, "generic.dat", settings_copy.get_output_path())
-        _dump(
-            self.testgroup_container, "testgroup.dat", settings_copy.get_output_path()
-        )
-        _dump(
-            self.testgroup_collection_container,
-            "testgroup_collection.dat",
-            settings_copy.get_output_path(),
-        )
+        _dump(self.testgroup_container, "testgroup.dat", settings_copy.get_output_path())
+        _dump(self.testgroup_collection_container, "testgroup_collection.dat", settings_copy.get_output_path())
         _dump(settings_copy, "settings.dat", settings_copy.get_output_path())
-        _dump(
-            self.runner.get_re_run_test_obj_list(),
-            "testcase.dat",
-            settings_copy.get_output_path(),
-        )
+        _dump(self.runner.get_uptdated_test_list(), "testcase.dat", settings_copy.get_output_path())
+
         _dump(simulator_settings, "simulator.dat", settings_copy.get_output_path())
 
     def _load_project_from_disk(self, output_path: str) -> None:
@@ -1320,8 +1311,7 @@ class HDLRegression:
             Container("testgroup_collection"), "testgroup_collection.dat", output_path
         )
 
-        # self.failing_tc_list = _load([], "testcase.dat")
-        self.re_run_tc_list = _load([], "testcase.dat", output_path)
+        self.old_tc_list = _load([], "testcase.dat", output_path)
 
         self.cached_simulator_settings = _load(
             self.cached_simulator_settings, "simulator.dat", output_path
