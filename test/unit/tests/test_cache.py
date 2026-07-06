@@ -135,7 +135,7 @@ def test_initial_simulator_setting(sim_env, tb_path):
         hr.settings.get_simulator_name() == simulator
     ), "checking initial simulator setting"
     if simulator == "MODELSIM":
-        assert "modelsim.ini" in filenames, "check modelsim.ini exsist"
+        assert "modelsim.ini" in filenames or "questa.ini" in filenames, "check modelsim.ini or questa.ini exists"
 
 
 @pytest.mark.modelsim
@@ -162,7 +162,7 @@ def test_set_simulator_modelsim(sim_env, tb_path):
         assert sim_name == "MODELSIM", "checking initial simulator setting"
         assert num_tests == 1, "check number of tests"
         assert (
-            "modelsim.ini" in filenames
+            "modelsim.ini" in filenames or "questa.ini" in filenames
         ), "check Modelsim simulator used in test suite"
 
 
@@ -190,7 +190,7 @@ def test_set_simulator_ghdl(sim_env, tb_path):
         assert sim_name == "GHDL", "checking initial simulator setting"
         assert num_tests == 1, "check number of tests"
         assert (
-            "modelsim.ini" not in filenames
+            "modelsim.ini" not in filenames and "questa.ini" not in filenames
         ), "check GHDL simulator used in test suite"
 
 
@@ -217,4 +217,4 @@ def test_set_simulator_nvc(sim_env, tb_path):
         sim_name = hr.settings.get_simulator_name()
         assert sim_name == "NVC", "checking initial simulator setting"
         assert num_tests == 1, "check number of tests"
-        assert "modelsim.ini" not in filenames, "check NVC simulator used in test suite"
+        assert "modelsim.ini" not in filenames and "questa.ini" not in filenames, "check NVC simulator used in test suite"

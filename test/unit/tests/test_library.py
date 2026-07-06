@@ -189,12 +189,19 @@ def test_precompiled_library_modelsim(sim_env, precompiled_path):
         hr.add_precompiled_library(compile_path=precompiled_path, library_name=lib_name)
         hr.start()
 
+        ini_path = None
         modelsim_ini = get_file_path("../hdlregression/library/modelsim.ini")
+        questa_ini = get_file_path("../hdlregression/library/questa.ini")
 
-        assert os.path.isfile(modelsim_ini), "Check modelsim.ini exists"
+        if os.path.isfile(modelsim_ini):
+            ini_path = modelsim_ini
+        elif os.path.isfile(questa_ini):
+            ini_path = questa_ini
+        else:
+            raise FileNotFoundError("Neither modelsim.ini nor questa.ini was found")
 
         precompiled_exists = False
-        with open(modelsim_ini, "r") as f:
+        with open(ini_path, "r") as f:
             lines = f.readlines()
 
         for line in lines:
@@ -204,7 +211,7 @@ def test_precompiled_library_modelsim(sim_env, precompiled_path):
 
         assert (
             precompiled_exists is True
-        ), "check precompiled library and path in modelsim.ini"
+        ), "check precompiled library and path in modelsim.ini/questa.ini"
 
 
 def test_empty_library_and_library_with_files_no_threads(sim_env, tb_path):

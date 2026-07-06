@@ -118,7 +118,7 @@ class HDLRegression:
     def add_precompiled_library(self, compile_path: str, library_name: str):
         """
         Adds a precompiled library to the structure.
-        Precompiled library file reference is added to Modelsim.ini
+        Precompiled library file reference is added to Modelsim.ini or questa.ini
 
         :param compile_path: Path pointing to the precompiled library.
         :type compile_path: str
@@ -575,7 +575,7 @@ class HDLRegression:
             elif self.settings.get_simulator_name() == "ACTIVE-HDL":
                 self.runner = TclRunnerActiveHDL(project=self)
 
-            # Prepare modelsim.ini file
+            # Prepare modelsim.ini or questa.ini file
             modelsim_ini_file = self.runner._setup_ini()
             self._add_precompiled_libraries_to_modelsim_ini(modelsim_ini_file)
 
@@ -610,7 +610,7 @@ class HDLRegression:
             self.logger.info("Simulator: {}".format(self.runner.get_simulator_name()))
             self._validate_simulator_with_cached(self.runner.get_simulator_name())
 
-            # Prepare modelsim.ini file
+            # Prepare modelsim.ini or questa.ini file
             modelsim_ini_file = self.runner._setup_ini()
             self._add_precompiled_libraries_to_modelsim_ini(modelsim_ini_file)
 
@@ -999,7 +999,7 @@ class HDLRegression:
             for lib in lib_to_remove:
                 self.library_container.remove(lib.get_name())
 
-            # Write to modelsim.ini
+            # Write to modelsim.ini or questa.ini
             if lib_string:
                 with open(modelsim_ini_file, mode="r") as read_file:
                     read_lines = read_file.readlines()
@@ -1064,7 +1064,7 @@ class HDLRegression:
         # Organize the libraries by dependecy
         organize_libraries_by_dependency(project=self)
 
-        # Prepare modelsim.ini file
+        # Prepare modelsim.ini or questa.ini file
         modelsim_ini_file = self.runner._setup_ini()
         self._add_precompiled_libraries_to_modelsim_ini(modelsim_ini_file)
 

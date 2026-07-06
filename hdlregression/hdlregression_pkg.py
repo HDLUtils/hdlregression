@@ -208,7 +208,7 @@ SIMULATORS = ["GHDL", "MODELSIM", "NVC", "RIVIERA-PRO", "ACTIVE-HDL"]
 
 def simulator_detector() -> list:
     """
-    Method will be used for getting a modelsim.ini file
+    Method will be used for getting a modelsim.ini or questa.ini file
     """
     detected_simulators = []
     path_env = os.environ["PATH"]

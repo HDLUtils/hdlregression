@@ -51,13 +51,20 @@ class ModelsimRunner(SimRunner):
         libraries_path = os_adjust_path(libraries_path)
 
         modelsim_ini_file = os.path.join(libraries_path, "modelsim.ini")
-        if not os.path.isfile(modelsim_ini_file):
-            self.logger.info("Setting up: %s." % (str(modelsim_ini_file)))
+        questa_ini_file = os.path.join(libraries_path, "questa.ini")
+
+        if not os.path.isfile(modelsim_ini_file) and not os.path.isfile(questa_ini_file):
             # Call Modelsim to create modelsim.ini file in library folder.
             vmap_exec = self._get_simulator_executable("vmap")
             self._run_cmd(command=[vmap_exec, "-c"], path=libraries_path)
 
+        if os.path.isfile(modelsim_ini_file):
+            self.logger.info("Setting up: %s." % (str(modelsim_ini_file)))
             return modelsim_ini_file.replace("\\", "/")
+        else:
+            self.logger.info("Setting up: %s." % (str(questa_ini_file)))
+            return questa_ini_file.replace("\\", "/")
+
         return None
 
     @classmethod
@@ -194,13 +201,20 @@ class ModelsimRunner(SimRunner):
 
         Called from: _get_simulator_call()
         """
-        modelsim_ini = os.path.join(
-            self.project.settings.get_sim_path(),
-            self.project.settings.get_output_path(),
-            "library",
-            "modelsim.ini",
-        )
-        return os_adjust_path(modelsim_ini)
+        libraries_path = os.path.join(
+                self.project.settings.get_sim_path(),
+                self.project.settings.get_output_path(),
+                "library",
+            )
+        libraries_path = os_adjust_path(libraries_path)
+
+        if os.path.isfile(os.path.join(libraries_path, "modelsim.ini")):
+            return os.path.join(libraries_path, "modelsim.ini")
+        elif os.path.isfile(os.path.join(libraries_path, "questa.ini")):
+            return os.path.join(libraries_path, "questa.ini")
+        else:
+            raise FileNotFoundError("Neither modelsim.ini nor questa.ini was found")
+        return ""
 
     def _get_netlist_call(self) -> str:
         """
@@ -235,7 +249,15 @@ class ModelsimRunner(SimRunner):
 
         Called from: _write_run_do_file()
         """
-        modelsim_ini = self._get_modelsim_ini_path()
+
+        # Older versions of Questa used -modelsimini arg with modelsim.ini
+        # Newer versions generate a questa.ini file and a new -ini arg (-modelsimini is now deprecated)
+        # Support both options here based on the name of the .ini file that vsim created
+        ini_filename = self._get_modelsim_ini_path()
+        ini_arg = "-modelsimini {" + ini_filename + "};"
+
+        if "questa.ini" in ini_filename:
+            ini_arg = "-ini {" + ini_filename + "};"
 
         code_coverage_file = self.project.hdlcodecoverage.get_code_coverage_file()
 
@@ -281,7 +303,7 @@ class ModelsimRunner(SimRunner):
                 sim_options,
                 netlist_call,
                 code_coverage_call_enable, 
-                "-modelsimini {" + modelsim_ini + "};",
+                ini_arg,
                 "onerror {quit -code 1};",
                 "onbreak {resume};",
                 wlf_logging,
