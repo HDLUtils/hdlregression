@@ -206,7 +206,6 @@ class ModelsimRunner(SimRunner):
                 self.project.settings.get_output_path(),
                 "library",
             )
-        libraries_path = os_adjust_path(libraries_path)
 
         if os.path.isfile(os.path.join(libraries_path, "modelsim.ini")):
             return os_adjust_path(os.path.join(libraries_path, "modelsim.ini"))
