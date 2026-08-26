@@ -209,7 +209,7 @@ class ModelsimRunner(SimRunner):
         libraries_path = os_adjust_path(libraries_path)
 
         if os.path.isfile(os.path.join(libraries_path, "modelsim.ini")):
-            return os.path.join(libraries_path, "modelsim.ini")
+            return os_adjust_path(os.path.join(libraries_path, "modelsim.ini"))
         elif os.path.isfile(os.path.join(libraries_path, "questa.ini")):
             return os.path.join(libraries_path, "questa.ini")
         else:
