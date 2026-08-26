@@ -211,7 +211,7 @@ class ModelsimRunner(SimRunner):
         if os.path.isfile(os.path.join(libraries_path, "modelsim.ini")):
             return os_adjust_path(os.path.join(libraries_path, "modelsim.ini"))
         elif os.path.isfile(os.path.join(libraries_path, "questa.ini")):
-            return os.path.join(libraries_path, "questa.ini")
+            return os_adjust_path(os.path.join(libraries_path, "questa.ini"))
         else:
             raise FileNotFoundError("Neither modelsim.ini nor questa.ini was found")
         return ""
