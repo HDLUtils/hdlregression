@@ -449,7 +449,16 @@ class TclRunnerModelsim(TclRunnerBase, ModelsimRunner):
         command += ["-do"]
         command += [gui_do_file]
         self.runner = CommandRunner(project=self.project)
-        rc = self.runner.gui_run(command=command)
+        # gui_run() defaults path='./', resolved against the live process
+        # cwd - not against output_path. Pass the lab directory explicitly so
+        # vsim's own cwd is the same directory a later in-GUI recompile's
+        # HDLRegression(init_from_gui=True) falls back to (./hdlregression),
+        # instead of a stray directory alongside it.
+        lab_dir = os.path.dirname(os.path.join(
+            self.project.settings.get_sim_path(),
+            self.project.settings.get_output_path(),
+        ))
+        rc = self.runner.gui_run(command=command, path=lab_dir)
         return int(rc[2])
     
     def get_sim_path(self) -> str:
@@ -604,7 +613,16 @@ class TclRunnerRiviera(TclRunnerBase, RivieraRunner):
         command += ["-do"]
         command += [gui_do_file]
         self.runner = CommandRunner(project=self.project)
-        rc = self.runner.gui_run(command=command)
+        # gui_run() defaults path='./', resolved against the live process
+        # cwd - not against output_path. Pass the lab directory explicitly so
+        # vsim's own cwd is the same directory a later in-GUI recompile's
+        # HDLRegression(init_from_gui=True) falls back to (./hdlregression),
+        # instead of a stray directory alongside it.
+        lab_dir = os.path.dirname(os.path.join(
+            self.project.settings.get_sim_path(),
+            self.project.settings.get_output_path(),
+        ))
+        rc = self.runner.gui_run(command=command, path=lab_dir)
         return int(rc[2])
 
     @staticmethod

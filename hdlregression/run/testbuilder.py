@@ -638,6 +638,24 @@ class TestBuilder:
         Build a list of tests that are
         part of testgroup.
         """
+        def _check_generics(search_string, pattern) -> bool:
+            for idx, data in enumerate(pattern):
+                if idx % 2 == 0:
+                    pattern_name = data
+                else:
+                    pattern_data = data
+                    match = False
+                    for idx2, data in enumerate(search_string):
+                        if idx2 % 2 == 0:
+                            generic_name = data
+                        else:
+                            generic_data = data
+                            if self._unix_match(search_string=generic_name, pattern=pattern_name) and self._unix_match(search_string=generic_data, pattern=pattern_data):
+                                match = True
+                    if not match:
+                        return False
+            return True
+
         self.logger.debug("building tests for testgroup")
         filtered_tests = []
 
@@ -671,9 +689,38 @@ class TestBuilder:
                                     if self._unix_match(
                                         search_string=test.get_tc(), pattern=testcase
                                     ):
+                                        if generics:
+                                            if _check_generics(
+                                                search_string=test.get_gc(), pattern=generics
+                                            ):
+                                                filtered_tests.append(test)
+                                        else:
+                                            filtered_tests.append(test)
+                                elif generics:
+                                    if _check_generics(
+                                        search_string=test.get_gc(), pattern=generics
+                                    ):
                                         filtered_tests.append(test)
                                 else:
                                     filtered_tests.append(test)
+                        # User selected sequencer testcase?
+                        elif testcase:
+                            # Match sequencer testcase
+                            if self._unix_match(
+                                search_string=test.get_tc(), pattern=testcase
+                            ):
+                                if generics:
+                                    if _check_generics(
+                                        search_string=test.get_gc(), pattern=generics
+                                    ):
+                                        filtered_tests.append(test)
+                                else:
+                                    filtered_tests.append(test)
+                        elif generics:
+                            if _check_generics(
+                                search_string=test.get_gc(), pattern=generics
+                            ):
+                                filtered_tests.append(test)
                         else:
                             filtered_tests.append(test)
 

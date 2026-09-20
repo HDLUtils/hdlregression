@@ -523,7 +523,7 @@ Specifies the name and path of a precompiled library.
 
 .. note::
 
-  The library will never be compiled and only a reference is added to the modelsim.ini file.
+  The library will never be compiled and only a reference is added to the modelsim.ini or questa.ini file.
   Any number of precompiled libraries can be added.
 
 .. code-block:: python

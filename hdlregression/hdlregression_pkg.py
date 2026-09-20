@@ -293,9 +293,6 @@ def validate_testgroup_parameters(
     if not architecture:
         if testcase or generic:
             v_arguments_ok = False
-    if not testcase:
-        if generic:
-            v_arguments_ok = False
 
     if generic:
         if not isinstance(generic, list):

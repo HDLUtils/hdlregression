@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.12)  15 APR 2026 12:34
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.4.30)  20 SEP 2026 14:43
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -28,8 +28,6 @@ File: size10.clo 2025/01/22 v1.4n Standard LaTeX file (size option)
 )
 LaTeX Info: Redefining \and on input line 35.
 )
-\sphinxremdimen=\dimen149
-
 (/usr/local/texlive/2026/texmf-dist/tex/latex/base/inputenc.sty
 Package: inputenc 2024/02/08 v1.3d Input encoding file
 \inpenc@prehook=\toks17
@@ -59,11 +57,11 @@ Package: amstext 2024/11/17 v2.01 AMS text
 (/usr/local/texlive/2026/texmf-dist/tex/latex/amsmath/amsgen.sty
 File: amsgen.sty 1999/11/30 v2.0 generic functions
 \@emptytoks=\toks19
-\ex@=\dimen150
+\ex@=\dimen149
 ))
 (/usr/local/texlive/2026/texmf-dist/tex/latex/amsmath/amsbsy.sty
 Package: amsbsy 1999/11/29 v1.2d Bold Symbols
-\pmbraise@=\dimen151
+\pmbraise@=\dimen150
 )
 (/usr/local/texlive/2026/texmf-dist/tex/latex/amsmath/amsopn.sty
 Package: amsopn 2022/04/08 v2.04 operator names
@@ -85,7 +83,7 @@ LaTeX Info: Redefining \big on input line 721.
 LaTeX Info: Redefining \Big on input line 722.
 LaTeX Info: Redefining \bigg on input line 723.
 LaTeX Info: Redefining \Bigg on input line 724.
-\big@size=\dimen152
+\big@size=\dimen151
 LaTeX Font Info:    Redeclaring font encoding OML on input line 742.
 LaTeX Font Info:    Redeclaring font encoding OMS on input line 743.
 \macc@depth=\count289
@@ -103,12 +101,12 @@ LaTeX Info: Redefining \Relbar on input line 970.
 \column@=\count294
 \maxfields@=\count295
 \andhelp@=\toks21
-\eqnshift@=\dimen153
-\alignsep@=\dimen154
-\tagshift@=\dimen155
-\tagwidth@=\dimen156
-\totwidth@=\dimen157
-\lineht@=\dimen158
+\eqnshift@=\dimen152
+\alignsep@=\dimen153
+\tagshift@=\dimen154
+\tagwidth@=\dimen155
+\totwidth@=\dimen156
+\lineht@=\dimen157
 \@envbody=\toks22
 \multlinegap=\skip52
 \multlinetaggap=\skip53
@@ -128,7 +126,7 @@ LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
 (Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
 ))
 (/usr/local/texlive/2026/texmf-dist/tex/generic/babel/babel.sty
-Package: babel 2026/02/14 v26.3 The multilingual framework for LuaLaTeX, pdfLaT
+Package: babel 2026/03/08 v26.4 The multilingual framework for LuaLaTeX, pdfLaT
 eX and XeLaTeX
 \babel@savecnt=\count296
 LaTeX Encoding Info:    Redeclaring text command \ij (encoding OT1) on input li
@@ -145,7 +143,7 @@ LaTeX Encoding Info:    Ignoring declaration for text command \IJ (encoding ?)
 on input line 2086.
 LaTeX Encoding Info:    Ignoring declaration for text command \SS (encoding ?) 
 on input line 2111.
-\U@D=\dimen159
+\U@D=\dimen158
 \l@unhyphenated=\language91
 
 (/usr/local/texlive/2026/texmf-dist/tex/generic/babel/txtbabel.def)
@@ -196,7 +194,7 @@ Package: fncychap 2007/07/30 v1.34 LaTeX package (Revised chapters)
 \c@AlphaDecCnt=\count299
 )
 (./sphinx.sty
-Package: sphinx 2025/12/26 v9.1.0 Sphinx LaTeX package (sphinx-doc)
+Package: sphinx 2024/07/01 v7.4.0 Sphinx LaTeX package (sphinx-doc)
  (/usr/local/texlive/2026/texmf-dist/tex/latex/xcolor/xcolor.sty
 Package: xcolor 2024/09/29 v3.02 LaTeX color extensions (UK)
 
@@ -220,9 +218,9 @@ Package xcolor Info: Model `Gray' substituted by `gray' on input line 1371.
 Package xcolor Info: Model `wave' substituted by `hsb' on input line 1372.
 )
 (./sphinxoptionshyperref.sty
-Package: sphinxoptionshyperref 2021/01/27 hyperref
+File: sphinxoptionshyperref.sty 2021/01/27 hyperref
 ) (./sphinxoptionsgeometry.sty
-Package: sphinxoptionsgeometry 2021/01/27 geometry
+File: sphinxoptionsgeometry.sty 2021/01/27 geometry
 )
 (/usr/local/texlive/2026/texmf-dist/tex/latex/base/textcomp.sty
 Package: textcomp 2024/04/24 v2.1b Standard LaTeX package
@@ -236,8 +234,8 @@ Package: float 2001/11/08 v1.3d Float enhancements (AL)
 \@floatcapt=\box56
 )
 (/usr/local/texlive/2026/texmf-dist/tex/latex/wrapfig/wrapfig.sty
-\wrapoverhang=\dimen160
-\WF@size=\dimen161
+\wrapoverhang=\dimen159
+\WF@size=\dimen160
 \c@WF@wrappedlines=\count301
 \WF@box=\box57
 \WF@everypar=\toks27
@@ -250,22 +248,22 @@ Package: capt-of 2009/12/29 v0.2 standard captions outside of floats
 Package: multicol 2025/10/21 v2.0b multicolumn formatting (FMi)
 \c@tracingmulticols=\count302
 \mult@box=\box58
-\multicol@leftmargin=\dimen162
+\multicol@leftmargin=\dimen161
 \c@unbalance=\count303
 \c@collectmore=\count304
 \doublecol@number=\count305
 \multicoltolerance=\count306
 \multicolpretolerance=\count307
-\full@width=\dimen163
-\page@free=\dimen164
-\premulticols=\dimen165
-\postmulticols=\dimen166
+\full@width=\dimen162
+\page@free=\dimen163
+\premulticols=\dimen164
+\postmulticols=\dimen165
 \multicolsep=\skip61
 \multicolbaselineskip=\skip62
 \partial@page=\box59
 \last@line=\box60
 \mc@boxedresult=\box61
-\maxbalancingoverflow=\dimen167
+\maxbalancingoverflow=\dimen166
 \mult@rightbox=\box62
 \mult@grightbox=\box63
 \mult@firstbox=\box64
@@ -309,9 +307,9 @@ Package: multicol 2025/10/21 v2.0b multicolumn formatting (FMi)
 \c@minrows=\count308
 \c@columnbadness=\count309
 \c@finalcolumnbadness=\count310
-\last@try=\dimen168
-\multicolovershoot=\dimen169
-\multicolundershoot=\dimen170
+\last@try=\dimen167
+\multicolovershoot=\dimen168
+\multicolundershoot=\dimen169
 \mult@nat@firstbox=\box102
 \colbreak@box=\box103
 \mc@col@check@num=\count311
@@ -331,12 +329,12 @@ File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 )
 Package graphics Info: Driver file: pdftex.def on input line 106.
 )
-\Gin@req@height=\dimen171
-\Gin@req@width=\dimen172
+\Gin@req@height=\dimen170
+\Gin@req@width=\dimen171
 )
 (./sphinxlatexgraphics.sty
-Package: sphinxlatexgraphics 2024/08/13 v8.1.0 graphics
-\spx@image@maxheight=\dimen173
+File: sphinxlatexgraphics.sty 2021/01/27 graphics
+\spx@image@maxheight=\dimen172
 \spx@image@box=\box104
 ) (./sphinxpackageboxes.sty
 Package: sphinxpackageboxes 2024/07/01 v7.4.0 advanced colored boxes
@@ -354,74 +352,65 @@ Package pict2e Info: Driver file for pict2e: p2e-pdftex.def on input line 114.
 File: p2e-pdftex.def 2016/02/05 v0.1u Driver-dependant file (RN,HjG,JT)
 )
 \pIIe@GRAPH=\toks28
-\@arclen=\dimen174
-\@arcrad=\dimen175
-\pIIe@tempdima=\dimen176
-\pIIe@tempdimb=\dimen177
-\pIIe@tempdimc=\dimen178
-\pIIe@tempdimd=\dimen179
-\pIIe@tempdime=\dimen180
-\pIIe@tempdimf=\dimen181
+\@arclen=\dimen173
+\@arcrad=\dimen174
+\pIIe@tempdima=\dimen175
+\pIIe@tempdimb=\dimen176
+\pIIe@tempdimc=\dimen177
+\pIIe@tempdimd=\dimen178
+\pIIe@tempdime=\dimen179
+\pIIe@tempdimf=\dimen180
 )
 (/usr/local/texlive/2026/texmf-dist/tex/latex/ellipse/ellipse.sty
 Package: ellipse 2004/11/05 v1.0 .dtx ellipse file
 )
-\@tempdimd=\dimen182
+\@tempdimd=\dimen181
 \spx@tempboxa=\box105
 \spx@tempboxb=\box106
-\spx@boxes@border@top=\dimen183
-\spx@boxes@border@right=\dimen184
-\spx@boxes@border@bottom=\dimen185
-\spx@boxes@border@left=\dimen186
-\spx@boxes@padding@top=\dimen187
-\spx@boxes@padding@right=\dimen188
-\spx@boxes@padding@bottom=\dimen189
-\spx@boxes@padding@left=\dimen190
-\spx@boxes@shadow@xoffset=\dimen191
-\spx@boxes@shadow@yoffset=\dimen192
-\spx@boxes@radius@topleft@x=\dimen193
-\spx@boxes@radius@topright@x=\dimen194
-\spx@boxes@radius@bottomright@x=\dimen195
-\spx@boxes@radius@bottomleft@x=\dimen196
-\spx@boxes@radius@topleft@y=\dimen197
-\spx@boxes@radius@topright@y=\dimen198
-\spx@boxes@radius@bottomright@y=\dimen199
-\spx@boxes@radius@bottomleft@y=\dimen256
+\spx@boxes@border@top=\dimen182
+\spx@boxes@border@right=\dimen183
+\spx@boxes@border@bottom=\dimen184
+\spx@boxes@border@left=\dimen185
+\spx@boxes@padding@top=\dimen186
+\spx@boxes@padding@right=\dimen187
+\spx@boxes@padding@bottom=\dimen188
+\spx@boxes@padding@left=\dimen189
+\spx@boxes@shadow@xoffset=\dimen190
+\spx@boxes@shadow@yoffset=\dimen191
+\spx@boxes@radius@topleft@x=\dimen192
+\spx@boxes@radius@topright@x=\dimen193
+\spx@boxes@radius@bottomright@x=\dimen194
+\spx@boxes@radius@bottomleft@x=\dimen195
+\spx@boxes@radius@topleft@y=\dimen196
+\spx@boxes@radius@topright@y=\dimen197
+\spx@boxes@radius@bottomright@y=\dimen198
+\spx@boxes@radius@bottomleft@y=\dimen199
 )
 (./sphinxlatexadmonitions.sty
-Package: sphinxlatexadmonitions 2025/10/24 v9.0.0 admonitions
+File: sphinxlatexadmonitions.sty 2024/07/01 v7.4.0 admonitions
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/framed/framed.sty
 Package: framed 2011/10/22 v 0.96: framed or shaded text with page breaks
 \OuterFrameSep=\skip63
-\fb@frw=\dimen257
-\fb@frh=\dimen258
-\FrameRule=\dimen259
-\FrameSep=\dimen260
+\fb@frw=\dimen256
+\fb@frh=\dimen257
+\FrameRule=\dimen258
+\FrameSep=\dimen259
 )
-(/usr/local/texlive/2026/texmf-dist/tex/latex/needspace/needspace.sty
-Package: needspace 2025/03/13 v1.3e reserve vertical space
+\spx@notice@border=\dimen260
+\c@sphinxtodo=\count313
 )
-(./sphinxpackagefootnote.sty
-Package: sphinxpackagefootnote 2025/11/15 v9.0.0 Sphinx custom footnotehyper pa
-ckage (Sphinx team)
-\FNH@notes=\box107
-\FNH@toks=\toks29
-\FNH@width=\dimen261
-\c@sphinxfootnotemark=\count313
-)
-\spx@notice@border=\dimen262
-\c@sphinxtodo=\count314
-) (./sphinxlatexliterals.sty
-Package: sphinxlatexliterals 2025/12/26 v9.1.0 code-blocks and parsed literals
+(./sphinxlatexliterals.sty
+File: sphinxlatexliterals.sty 2024/07/01 v7.4.0 code-blocks and parsed literals
+
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty
 Package: fancyvrb 2025/07/28 4.6 verbatim text (tvz,hv)
-\FV@CodeLineNo=\count315
+\FV@CodeLineNo=\count314
 \FV@InFile=\read3
-\FV@TabBox=\box108
-\c@FancyVerbLine=\count316
-\FV@StepNumber=\count317
+\FV@TabBox=\box107
+\c@FancyVerbLine=\count315
+\FV@StepNumber=\count316
 \FV@OutFile=\write3
 )
 (/usr/local/texlive/2026/texmf-dist/tex/latex/base/alltt.sty
@@ -431,39 +420,42 @@ Package: alltt 2024/07/07 v2.0g defines alltt environment
 Package: upquote 2012/04/19 v1.3 upright-quote and grave-accent glyphs in verba
 tim
 )
-\sphinxcontinuationbox=\box109
-\sphinxvisiblespacebox=\box110
-\sphinxVerbatim@TitleBox=\box111
-\sphinxVerbatim@ContentsBox=\box112
+(/usr/local/texlive/2026/texmf-dist/tex/latex/needspace/needspace.sty
+Package: needspace 2025/03/13 v1.3e reserve vertical space
+)
+\sphinxcontinuationbox=\box108
+\sphinxvisiblespacebox=\box109
+\sphinxVerbatim@TitleBox=\box110
+\sphinxVerbatim@ContentsBox=\box111
 )
 (./sphinxlatexshadowbox.sty
-Package: sphinxlatexshadowbox 2024/07/28 v8.1.0 sphinxShadowBox
+File: sphinxlatexshadowbox.sty 2023/03/19 sphinxShadowBox
 ) (./sphinxlatexcontainers.sty
-Package: sphinxlatexcontainers 2021/05/03 containers
+File: sphinxlatexcontainers.sty 2021/05/03 containers
 )
 (./sphinxhighlight.sty
 Package: sphinxhighlight 2022/06/30 stylesheet for highlighting with pygments
 ) (./sphinxlatextables.sty
-Package: sphinxlatextables 2025/12/30 v9.1.0 tables
+File: sphinxlatextables.sty 2024/07/01 v7.4.0 tables
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/tabulary/tabulary.sty
 Package: tabulary 2024/06/04 v0.11 tabulary package (DPC)
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/tools/array.sty
 Package: array 2025/09/25 v2.6n Tabular extension package (FMi)
-\col@sep=\dimen263
-\ar@mcellbox=\box113
-\extrarowheight=\dimen264
-\NC@list=\toks30
+\col@sep=\dimen261
+\ar@mcellbox=\box112
+\extrarowheight=\dimen262
+\NC@list=\toks29
 \extratabsurround=\skip64
 \backup@length=\skip65
-\ar@cellbox=\box114
+\ar@cellbox=\box113
 )
-\TY@count=\count318
-\TY@linewidth=\dimen265
-\tymin=\dimen266
-\tymax=\dimen267
-\TY@tablewidth=\dimen268
+\TY@count=\count317
+\TY@linewidth=\dimen263
+\tymin=\dimen264
+\tymax=\dimen265
+\TY@tablewidth=\dimen266
 )
 (/usr/local/texlive/2026/texmf-dist/tex/latex/tools/longtable.sty
 Package: longtable 2025-10-13 v4.24 Multi-page Table package (DPC)
@@ -471,76 +463,83 @@ Package: longtable 2025-10-13 v4.24 Multi-page Table package (DPC)
 \LTright=\skip67
 \LTpre=\skip68
 \LTpost=\skip69
-\LTchunksize=\count319
-\LTcapwidth=\dimen269
-\LT@head=\box115
-\LT@firsthead=\box116
-\LT@foot=\box117
-\LT@lastfoot=\box118
-\LT@gbox=\box119
-\LT@cols=\count320
-\LT@rows=\count321
-\c@LT@tables=\count322
-\c@LT@chunks=\count323
-\LT@p@ftn=\toks31
+\LTchunksize=\count318
+\LTcapwidth=\dimen267
+\LT@head=\box114
+\LT@firsthead=\box115
+\LT@foot=\box116
+\LT@lastfoot=\box117
+\LT@gbox=\box118
+\LT@cols=\count319
+\LT@rows=\count320
+\c@LT@tables=\count321
+\c@LT@chunks=\count322
+\LT@p@ftn=\toks30
 )
 (/usr/local/texlive/2026/texmf-dist/tex/latex/varwidth/varwidth.sty
 Package: varwidth 2009/03/30 ver 0.92;  Variable-width minipages
-\@vwid@box=\box120
-\sift@deathcycles=\count324
-\@vwid@loff=\dimen270
-\@vwid@roff=\dimen271
+\@vwid@box=\box119
+\sift@deathcycles=\count323
+\@vwid@loff=\dimen268
+\@vwid@roff=\dimen269
 )
 ==> First Aid for varwidth.sty applied!
-\sphinx@TY@tablewidth=\dimen272
+\sphinx@TY@tablewidth=\dimen270
 (/usr/local/texlive/2026/texmf-dist/tex/latex/colortbl/colortbl.sty
 Package: colortbl 2024/10/29 v1.0k Color table columns (DPC)
-\everycr=\toks32
+\everycr=\toks31
 \minrowclearance=\skip70
-\rownum=\count325
+\rownum=\count324
 )
 (/usr/local/texlive/2026/texmf-dist/tex/latex/booktabs/booktabs.sty
 Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
-\heavyrulewidth=\dimen273
-\lightrulewidth=\dimen274
-\cmidrulewidth=\dimen275
-\belowrulesep=\dimen276
-\belowbottomsep=\dimen277
-\aboverulesep=\dimen278
-\abovetopsep=\dimen279
-\cmidrulesep=\dimen280
-\cmidrulekern=\dimen281
-\defaultaddspace=\dimen282
-\@cmidla=\count326
-\@cmidlb=\count327
-\@aboverulesep=\dimen283
-\@belowrulesep=\dimen284
-\@thisruleclass=\count328
-\@lastruleclass=\count329
-\@thisrulewidth=\dimen285
+\heavyrulewidth=\dimen271
+\lightrulewidth=\dimen272
+\cmidrulewidth=\dimen273
+\belowrulesep=\dimen274
+\belowbottomsep=\dimen275
+\aboverulesep=\dimen276
+\abovetopsep=\dimen277
+\cmidrulesep=\dimen278
+\cmidrulekern=\dimen279
+\defaultaddspace=\dimen280
+\@cmidla=\count325
+\@cmidlb=\count326
+\@aboverulesep=\dimen281
+\@belowrulesep=\dimen282
+\@thisruleclass=\count327
+\@lastruleclass=\count328
+\@thisrulewidth=\dimen283
 ))
 (./sphinxlatexnumfig.sty
-Package: sphinxlatexnumfig 2024/07/31 v8.1.0 numbering
+File: sphinxlatexnumfig.sty 2021/01/27 numbering
 ) (./sphinxlatexlists.sty
-Package: sphinxlatexlists 2021/12/20 lists
-\spx@lineitemlabel=\toks33
+File: sphinxlatexlists.sty 2021/12/20 lists
+\spx@lineitemlabel=\toks32
 )
-\c@sphinxscope=\count330
- (./sphinxlatexindbibtoc.sty
-Package: sphinxlatexindbibtoc 2021/01/27 index, bib., toc
+\c@sphinxscope=\count329
+ (./sphinxpackagefootnote.sty
+Package: sphinxpackagefootnote 2024/05/17 v7.3.x Sphinx custom footnotehyper pa
+ckage (Sphinx team)
+\FNH@notes=\box120
+\FNH@toks=\toks33
+\FNH@width=\dimen284
+\c@sphinxfootnotemark=\count330
+) (./sphinxlatexindbibtoc.sty
+File: sphinxlatexindbibtoc.sty 2021/01/27 index, bib., toc
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/base/makeidx.sty
 Package: makeidx 2021/10/04 v1.0m Standard LaTeX package
 ))
 (./sphinxlatexstylepage.sty
-Package: sphinxlatexstylepage 2021/01/27 page styling
+File: sphinxlatexstylepage.sty 2021/01/27 page styling
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/parskip/parskip.sty
-Package: parskip 2021-03-14 v2.0h non-zero parskip adjustments
+Rollback for package 'parskip' requested -> version 'v1'.
+         This corresponds to the release introduced on 2001-04-09.
 
-(/usr/local/texlive/2026/texmf-dist/tex/latex/etoolbox/etoolbox.sty
-Package: etoolbox 2025/10/02 v2.5m e-TeX tools for LaTeX (JAW)
-\etb@tempcnta=\count331
+(/usr/local/texlive/2026/texmf-dist/tex/latex/parskip/parskip-2001-04-09.sty
+Package: parskip 2001/04/09 non-zero parskip adjustments
 ))
 (/usr/local/texlive/2026/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
 Package: fancyhdr 2025/02/07 v5.2 Extensive control of page headers and footers
@@ -562,38 +561,32 @@ Package: fancyhdr 2025/02/07 v5.2 Extensive control of page headers and footers
 \@temptokenb=\toks34
 ))
 (./sphinxlatexstyleheadings.sty
-Package: sphinxlatexstyleheadings 2023/02/11 headings
+File: sphinxlatexstyleheadings.sty 2023/02/11 headings
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/titlesec/titlesec.sty
 Package: titlesec 2025/01/04 v2.17 Sectioning titles
 \ttl@box=\box121
 \beforetitleunit=\skip85
 \aftertitleunit=\skip86
-\ttl@plus=\dimen286
-\ttl@minus=\dimen287
+\ttl@plus=\dimen285
+\ttl@minus=\dimen286
 \ttl@toksa=\toks35
-\titlewidth=\dimen288
-\titlewidthlast=\dimen289
-\titlewidthfirst=\dimen290
+\titlewidth=\dimen287
+\titlewidthlast=\dimen288
+\titlewidthfirst=\dimen289
 ))
 (./sphinxlatexstyletext.sty
-Package: sphinxlatexstyletext 2025/05/24 v9.0.0 text styling
+File: sphinxlatexstyletext.sty 2024/07/01 v7.4.0 text styling
 ) (./sphinxlatexobjects.sty
-Package: sphinxlatexobjects 2025/06/06 documentation environments
+File: sphinxlatexobjects.sty 2023/07/23 documentation environments
 \sphinxsignaturesep=\skip87
 \sphinxsignaturelistskip=\skip88
 \py@argswidth=\skip89
 \lineblockindentation=\skip90
 \DUlineblockindent=\skip91
-)
-\sphinxvwdimen=\dimen291
-\sphinxvhdimen=\dimen292
-\sphinxvmindimen=\dimen293
-\sphinxvmaxdimen=\dimen294
-\sphinxQdimen=\dimen295
-)
+))
 (/usr/local/texlive/2026/texmf-dist/tex/latex/geometry/geometry.sty
-Package: geometry 2020/01/02 v5.9 Page Geometry
+Package: geometry 2026/03/07 v6.0 Page Geometry
 
 (/usr/local/texlive/2026/texmf-dist/tex/generic/iftex/ifvtex.sty
 Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
@@ -601,17 +594,17 @@ Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
 (/usr/local/texlive/2026/texmf-dist/tex/generic/iftex/iftex.sty
 Package: iftex 2024/12/12 v1.0g TeX engine tests
 ))
-\Gm@cnth=\count332
-\Gm@cntv=\count333
-\c@Gm@tempcnt=\count334
-\Gm@bindingoffset=\dimen296
-\Gm@wd@mp=\dimen297
-\Gm@odd@mp=\dimen298
-\Gm@even@mp=\dimen299
-\Gm@layoutwidth=\dimen300
-\Gm@layoutheight=\dimen301
-\Gm@layouthoffset=\dimen302
-\Gm@layoutvoffset=\dimen303
+\Gm@cnth=\count331
+\Gm@cntv=\count332
+\c@Gm@tempcnt=\count333
+\Gm@bindingoffset=\dimen290
+\Gm@wd@mp=\dimen291
+\Gm@odd@mp=\dimen292
+\Gm@even@mp=\dimen293
+\Gm@layoutwidth=\dimen294
+\Gm@layoutheight=\dimen295
+\Gm@layouthoffset=\dimen296
+\Gm@layoutvoffset=\dimen297
 \Gm@dimlist=\toks36
 )
 (/usr/local/texlive/2026/texmf-dist/tex/latex/hyperref/hyperref.sty
@@ -647,12 +640,16 @@ Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
 ty
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
-\c@section@level=\count335
-) (/usr/local/texlive/2026/texmf-dist/tex/generic/stringenc/stringenc.sty
+\c@section@level=\count334
+) (/usr/local/texlive/2026/texmf-dist/tex/latex/etoolbox/etoolbox.sty
+Package: etoolbox 2025/10/02 v2.5m e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count335
+)
+(/usr/local/texlive/2026/texmf-dist/tex/generic/stringenc/stringenc.sty
 Package: stringenc 2019/11/29 v1.12 Convert strings between diff. encodings (HO
 )
 )
-\@linkdim=\dimen304
+\@linkdim=\dimen298
 \Hy@linkcounter=\count336
 \Hy@pagecounter=\count337
 
@@ -688,7 +685,7 @@ Package hyperref Info: Bookmarks ON on input line 4468.
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
 LaTeX Info: Redefining \url on input line 4807.
-\XeTeXLinkMargin=\dimen305
+\XeTeXLinkMargin=\dimen299
 
 (/usr/local/texlive/2026/texmf-dist/tex/generic/bitset/bitset.sty
 Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
@@ -698,8 +695,8 @@ Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO
 )
 ))
 \Fld@menulength=\count340
-\Field@Width=\dimen306
-\Fld@charsize=\dimen307
+\Field@Width=\dimen300
+\Fld@charsize=\dimen301
 Package hyperref Info: Hyper figures OFF on input line 6084.
 Package hyperref Info: Link nesting OFF on input line 6089.
 Package hyperref Info: Hyper index ON on input line 6092.
@@ -742,7 +739,7 @@ Package: sphinxmessages 2019/01/04 v2.0 Localized LaTeX macros (Sphinx team)
 
 
 Writing index file hdlregression.idx
-LaTeX Font Info:    Trying to load font information for T1+qtm on input line 74
+LaTeX Font Info:    Trying to load font information for T1+qtm on input line 73
 .
 (/usr/local/texlive/2026/texmf-dist/tex/latex/tex-gyre/t1qtm.fd
 File: t1qtm.fd 2009/09/25 v1.2 font definition file for T1/qtm
@@ -754,35 +751,35 @@ File: l3backend-pdftex.def 2025-10-09 L3 backend support: PDF output (pdfTeX)
 (./hdlregression.aux)
 \openout1 = `hdlregression.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 73.
+LaTeX Font Info:    ... okay on input line 73.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 73.
+LaTeX Font Info:    ... okay on input line 73.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 73.
+LaTeX Font Info:    ... okay on input line 73.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 73.
+LaTeX Font Info:    ... okay on input line 73.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 73.
+LaTeX Font Info:    ... okay on input line 73.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 73.
+LaTeX Font Info:    ... okay on input line 73.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 73.
+LaTeX Font Info:    ... okay on input line 73.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 73.
+LaTeX Font Info:    ... okay on input line 73.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 73.
+LaTeX Font Info:    ... okay on input line 73.
 
 (/usr/local/texlive/2026/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count347
-\scratchdimen=\dimen308
+\scratchdimen=\dimen302
 \scratchbox=\box122
 \nofMPsegments=\count348
 \nofMParguments=\count349
 \everyMPshowfont=\toks37
 \MPscratchCnt=\count350
-\MPscratchDim=\dimen309
+\MPscratchDim=\dimen303
 \MPnumerator=\count351
 \makeMPintoPDFobject=\count352
 \everyMPtoPDFconversion=\toks38
@@ -795,23 +792,23 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-(/usr/local/texlive/2026/texmf-dist/tex/latex/fontawesome7/fontawesome7.sty
+(/usr/local/texlive/2026/texmf-dist/tex/latex/fontawesome5/fontawesome5.sty
 (/usr/local/texlive/2026/texmf-dist/tex/latex/l3kernel/expl3.sty
 Package: expl3 2026-01-19 L3 programming layer (loader) 
 )
-Package: fontawesome7 2025/11/02 v7.1.0-1 Font Awesome 7
+Package: fontawesome5 2022/05/02 v5.15.4 Font Awesome 5
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/l3packages/l3keys2e/l3keys2e.sty
 Package: l3keys2e 2025-10-09 LaTeX2e option processing using LaTeX3 keys
 ) (/usr/local/texlive/2026/texmf-dist/tex/latex/l3packages/xparse/xparse.sty
 Package: xparse 2025-10-09 L3 Experimental document command parser
 )
-(/usr/local/texlive/2026/texmf-dist/tex/latex/fontawesome7/fontawesome7-generic
+(/usr/local/texlive/2026/texmf-dist/tex/latex/fontawesome5/fontawesome5-generic
 -helper.sty
-Package: fontawesome7-generic-helper 2025/11/02 v7.1.0-1 non-uTeX helper for fo
-ntawesome7
+Package: fontawesome5-generic-helper 2022/05/02 v5.15.4 non-uTeX helper for fon
+tawesome5
 
-(/usr/local/texlive/2026/texmf-dist/tex/latex/fontawesome7/fontawesome7-mapping
+(/usr/local/texlive/2026/texmf-dist/tex/latex/fontawesome5/fontawesome5-mapping
 .def)))
 \c@literalblock=\count353
 
@@ -849,25 +846,25 @@ ntawesome7
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-Package hyperref Info: Link coloring ON on input line 74.
+Package hyperref Info: Link coloring ON on input line 73.
 (./hdlregression.out) (./hdlregression.out)
 \@outlinefile=\write5
 \openout5 = `hdlregression.out'.
 
-Package hyperref Info: Option `pageanchor' set `false' on input line 82.
-LaTeX Font Info:    Trying to load font information for T1+qhv on input line 82
+Package hyperref Info: Option `pageanchor' set `false' on input line 81.
+LaTeX Font Info:    Trying to load font information for T1+qhv on input line 81
 .
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/tex-gyre/t1qhv.fd
 File: t1qhv.fd 2009/09/25 v1.2 font definition file for T1/qhv
 )<<ot1.cmap>><<oml.cmap>><<oms.cmap>><<omx.cmap>>
-LaTeX Font Info:    Trying to load font information for U+msa on input line 82.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 81.
 
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 82.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 81.
 
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsb.fd
@@ -890,30 +887,30 @@ al/texlive/2026/texmf-dist/fonts/enc/dvips/tex-gyre/q-ec.enc}] [2
 ]
 Chapter 1.
 LaTeX Font Info:    Trying to load font information for TS1+qtm on input line 1
-05.
+04.
 (/usr/local/texlive/2026/texmf-dist/tex/latex/tex-gyre/ts1qtm.fd
 File: ts1qtm.fd 2009/09/25 v1.2 font definition file for TS1/qtm
 )
-LaTeX Font Info:    Trying to load font information for U+fontawesome7free1 on 
-input line 124.
+LaTeX Font Info:    Trying to load font information for U+fontawesomefree1 on i
+nput line 123.
 
-(/usr/local/texlive/2026/texmf-dist/tex/latex/fontawesome7/ufontawesome7free1.f
-d) [1
+(/usr/local/texlive/2026/texmf-dist/tex/latex/fontawesome5/ufontawesomefree1.fd
+) [1
 
 {/usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/tex-gyre/q-ts1.enc}{/usr/lo
-cal/texlive/2026/texmf-dist/fonts/enc/dvips/fontawesome7/fa7free1_solid.enc}]
-<test_group.png, id=412, 362.10281pt x 422.32782pt>
+cal/texlive/2026/texmf-dist/fonts/enc/dvips/fontawesome5/fa5free1.enc}]
+[2]
+<test_group.png, id=416, 362.10281pt x 422.32782pt>
 LaTeX Font Info:    Trying to load font information for T1+txtt on input line 2
-57.
+56.
  (/usr/local/texlive/2026/texmf-dist/tex/latex/txfonts/t1txtt.fd
 File: t1txtt.fd 2000/12/15 v3.1
 )
 File: test_group.png Graphic file (type png)
 <use test_group.png>
-Package pdftex.def Info: test_group.png  used on input line 257.
+Package pdftex.def Info: test_group.png  used on input line 256.
 (pdftex.def)             Requested size: 301.12305pt x 351.20863pt.
- [2]
-[3 <./test_group.png>] [4
+ [3 <./test_group.png>] [4
 
 ]
 Chapter 2.
@@ -922,269 +919,249 @@ Chapter 2.
 ]
 Chapter 3.
 LaTeX Font Info:    Font shape `T1/txtt/b/n' in size <10> not available
-(Font)              Font shape `T1/txtt/bx/n' tried instead on input line 353.
+(Font)              Font shape `T1/txtt/bx/n' tried instead on input line 352.
 [7] [8]
 Chapter 4.
 LaTeX Font Info:    Font shape `T1/txtt/m/it' in size <10> not available
-(Font)              Font shape `T1/txtt/m/sl' tried instead on input line 414.
+(Font)              Font shape `T1/txtt/m/sl' tried instead on input line 413.
 [9
 
 ]
 LaTeX Font Info:    Trying to load font information for TS1+txtt on input line 
-588.
+547.
  (/usr/local/texlive/2026/texmf-dist/tex/latex/txfonts/ts1txtt.fd
 File: ts1txtt.fd 2000/12/15 v3.1
 ) [10]
 [11]
-LaTeX Font Info:    Trying to load font information for U+fontawesome7free4 on 
-input line 872.
+LaTeX Font Info:    Trying to load font information for U+fontawesomefree2 on i
+nput line 769.
 
-(/usr/local/texlive/2026/texmf-dist/tex/latex/fontawesome7/ufontawesome7free4.f
-d)
-LaTeX Font Info:    Trying to load font information for U+fontawesome7free2 on 
-input line 878.
-
-(/usr/local/texlive/2026/texmf-dist/tex/latex/fontawesome7/ufontawesome7free2.f
-d) [12{/usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/fontawesome7/fa7free4
-_solid.enc}{/usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/fontawesome7/fa7
-free2_regular.enc}] [13]
-Underfull \hbox (badness 10000) in paragraph at lines 1515--1515
+(/usr/local/texlive/2026/texmf-dist/tex/latex/fontawesome5/ufontawesomefree2.fd
+) [12{/usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/fontawesome5/fa5free2.
+enc}] [13]
+Underfull \hbox (badness 10000) in paragraph at lines 1214--1214
 []\T1/qtm/m/n/10 Mod-el-Sim
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1515--1515
+Underfull \hbox (badness 10000) in paragraph at lines 1214--1214
 []\T1/qtm/m/n/10 Mod-el-Sim (Ver-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1515--1515
+Underfull \hbox (badness 10000) in paragraph at lines 1214--1214
 []\T1/qtm/m/n/10 [^^P-2008^^Q, ^^P-nowarn^^Q, ^^PCOMP96_0564^^Q, ^^P-nowarn^^Q,
  ^^PCOMP96_0048^^Q, ^^P-nowarn^^Q,
  []
 
-[14] [15] [16] [17] [18] [19] [20] [21] [22] [23]
+[14] [15] [16] [17] [18] [19] [20] [21] [22] [23] [24]
 Package hyperref Info: bookmark level for unknown literalblock defaults to 0 on
- input line 3677.
- [24]
-Overfull \hbox (20.1075pt too wide) in paragraph at lines 3817--3817
-[]\T1/qtm/m/n/10 ^^PMOD-EL-SIM^^Q/^^QGHDL^^Q/^^QNVC^^Q/^^QRIVIERA_PRO^^Q 
+ input line 2902.
+
+Overfull \hbox (20.1075pt too wide) in paragraph at lines 3010--3010
+[]\T1/qtm/m/n/10 ^^PMOD-EL-SIM^^Q/^^QGHDL^^Q/^^QNVC^^Q/^^QRIVIERA_PRO^^Q| 
  []
 
 
-Overfull \hbox (20.1075pt too wide) detected at line 3817
-[]\T1/qtm/m/n/10 ^^PMOD-EL-SIM^^Q/^^QGHDL^^Q/^^QNVC^^Q/^^QRIVIERA_PRO^^Q 
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 3817--3817
+Underfull \hbox (badness 10000) in paragraph at lines 3010--3010
 []\T1/qtm/b/n/10 manda-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 3817--3817
+Underfull \hbox (badness 10000) in paragraph at lines 3010--3010
 []\T1/qtm/m/n/10 sim-u-la-
  []
 
 
-Underfull \hbox (badness 10000) detected at line 3817
-[]\T1/qtm/m/n/10 sim-u-la-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 3817--3817
+Underfull \hbox (badness 10000) in paragraph at lines 3010--3010
 []\T1/qtm/m/it/10 sim-u-la-tor_executable_path
  []
 
 
-Underfull \hbox (badness 5403) in paragraph at lines 3817--3817
+Underfull \hbox (badness 5403) in paragraph at lines 3010--3010
 []\T1/qtm/m/it/10 com-pile op-tionss \T1/qtm/m/n/10 (string/list of
  []
 
-[25] [26] [27] [28]
+[25] [26] [27] [28] [29] [30
+
+]
 Chapter 5.
 
-Underfull \hbox (badness 10000) in paragraph at lines 4485--4485
+Underfull \hbox (badness 10000) in paragraph at lines 3522--3522
 []\T1/qtm/m/n/10 -tc [LIB] TB_ENTITY
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 4485--4485
+Underfull \hbox (badness 10000) in paragraph at lines 3522--3522
 []\T1/qtm/m/n/10 ^^Utest-Case [LIB] TB_ENTITY
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 4485--4485
+Underfull \hbox (badness 10000) in paragraph at lines 3522--3522
 []\T1/qtm/m/n/10 Save wlf file af-ter sim
  []
 
-[29
-
-]
-<full_regression.png, id=609, 642.90187pt x 922.19531pt>
+[31]
+<full_regression.png, id=617, 642.90187pt x 922.19531pt>
 File: full_regression.png Graphic file (type png)
 <use full_regression.png>
-Package pdftex.def Info: full_regression.png  used on input line 4517.
+Package pdftex.def Info: full_regression.png  used on input line 3554.
 (pdftex.def)             Requested size: 453.44208pt x 650.42923pt.
- [30] [31 <./full_regression.png>]
-<cli_test_case_listing.png, id=619, 800.9925pt x 416.55624pt>
+ [32] [33 <./full_regression.png>]
+<cli_test_case_listing.png, id=628, 800.9925pt x 416.55624pt>
 File: cli_test_case_listing.png Graphic file (type png)
 <use cli_test_case_listing.png>
-Package pdftex.def Info: cli_test_case_listing.png  used on input line 4532.
+Package pdftex.def Info: cli_test_case_listing.png  used on input line 3569.
 (pdftex.def)             Requested size: 469.75816pt x 244.3105pt.
 
-Underfull \hbox (badness 5288) in paragraph at lines 4534--4537
+Underfull \hbox (badness 5288) in paragraph at lines 3571--3574
 []\T1/qtm/m/n/10 Run-ning a se-lected test is done us-ing the []\T1/txtt/m/n/10
  tc <library>:<testbench.architecture.test case> \T1/qtm/m/n/10 or
  []
 
-<cli_test_case_running.png, id=620, 908.39375pt x 506.89375pt>
+<cli_test_case_running.png, id=629, 908.39375pt x 506.89375pt>
 File: cli_test_case_running.png Graphic file (type png)
 <use cli_test_case_running.png>
-Package pdftex.def Info: cli_test_case_running.png  used on input line 4623.
+Package pdftex.def Info: cli_test_case_running.png  used on input line 3640.
 (pdftex.def)             Requested size: 469.76161pt x 262.13991pt.
-[32 <./cli_test_case_listing.png>] [33 <./cli_test_case_running.png>]
-<testgroup_listing.png, id=636, 484.81125pt x 305.64188pt>
+[34 <./cli_test_case_listing.png>] [35 <./cli_test_case_running.png>]
+<testgroup_listing.png, id=644, 484.81125pt x 305.64188pt>
 File: testgroup_listing.png Graphic file (type png)
 <use testgroup_listing.png>
-Package pdftex.def Info: testgroup_listing.png  used on input line 4757.
+Package pdftex.def Info: testgroup_listing.png  used on input line 3754.
 (pdftex.def)             Requested size: 469.77809pt x 296.19708pt.
- [34 <./testgroup_listing.png>]
-<testgroup_running.png, id=642, 642.14906pt x 572.1375pt>
-File: testgroup_running.png Graphic file (type png)
-<use testgroup_running.png>
-Package pdftex.def Info: testgroup_running.png  used on input line 4783.
-(pdftex.def)             Requested size: 469.76436pt x 418.55609pt.
- [35 <./testgroup_running.png>]
-File: testgroup_running.png Graphic file (type png)
-<use testgroup_running.png>
-Package pdftex.def Info: testgroup_running.png  used on input line 4823.
-(pdftex.def)             Requested size: 469.76436pt x 418.55609pt.
  [36]
-<testgroup_threading_1.png, id=652, 643.6547pt x 572.89032pt>
+<testgroup_running.png, id=649, 642.14906pt x 572.1375pt>
+File: testgroup_running.png Graphic file (type png)
+<use testgroup_running.png>
+Package pdftex.def Info: testgroup_running.png  used on input line 3780.
+(pdftex.def)             Requested size: 469.76436pt x 418.55609pt.
+
+[37 <./testgroup_listing.png>] [38 <./testgroup_running.png>]
+File: testgroup_running.png Graphic file (type png)
+<use testgroup_running.png>
+Package pdftex.def Info: testgroup_running.png  used on input line 3820.
+(pdftex.def)             Requested size: 469.76436pt x 418.55609pt.
+<testgroup_threading_1.png, id=660, 643.6547pt x 572.89032pt>
 File: testgroup_threading_1.png Graphic file (type png)
 <use testgroup_threading_1.png>
-Package pdftex.def Info: testgroup_threading_1.png  used on input line 4835.
+Package pdftex.def Info: testgroup_threading_1.png  used on input line 3832.
 (pdftex.def)             Requested size: 469.76581pt x 418.12778pt.
-<testgroup_threading_10.png, id=653, 639.89063pt x 574.39594pt>
+ [39]
+<testgroup_threading_10.png, id=666, 639.89063pt x 574.39594pt>
 File: testgroup_threading_10.png Graphic file (type png)
 <use testgroup_threading_10.png>
-Package pdftex.def Info: testgroup_threading_10.png  used on input line 4847.
+Package pdftex.def Info: testgroup_threading_10.png  used on input line 3844.
 (pdftex.def)             Requested size: 469.7623pt x 421.6895pt.
- [37 <./testgroup_threading_1.png>]
-<regression_run_1.png, id=659, 640.64343pt x 921.4425pt>
+ [40 <./testgroup_threading_1.png>] [41 <./testgroup_threading_10.png>]
+<regression_run_1.png, id=677, 640.64343pt x 921.4425pt>
 File: regression_run_1.png Graphic file (type png)
 <use regression_run_1.png>
-Package pdftex.def Info: regression_run_1.png  used on input line 4859.
+Package pdftex.def Info: regression_run_1.png  used on input line 3856.
 (pdftex.def)             Requested size: 452.21088pt x 650.41849pt.
- [38 <./testgroup_threading_10.png>] [39]
-Overfull \vbox (21.6568pt too high) has occurred while \output is active []
+ [42] [43]
+Overfull \vbox (27.6568pt too high) has occurred while \output is active []
 
 
-[40 <./regression_run_1.png>]
-<regression_run_2.png, id=677, 491.58656pt x 255.20343pt>
+[44 <./regression_run_1.png>]
+<regression_run_2.png, id=693, 491.58656pt x 255.20343pt>
 File: regression_run_2.png Graphic file (type png)
 <use regression_run_2.png>
-Package pdftex.def Info: regression_run_2.png  used on input line 4868.
+Package pdftex.def Info: regression_run_2.png  used on input line 3865.
 (pdftex.def)             Requested size: 469.77245pt x 243.89438pt.
-<failing_testcase.png, id=678, 807.015pt x 909.3975pt>
+<failing_testcase.png, id=694, 807.015pt x 909.3975pt>
 File: failing_testcase.png Graphic file (type png)
 <use failing_testcase.png>
-Package pdftex.def Info: failing_testcase.png  used on input line 4876.
+Package pdftex.def Info: failing_testcase.png  used on input line 3873.
 (pdftex.def)             Requested size: 469.75606pt x 529.36586pt.
- [41 <./regression_run_2.png>] [42 <./failing_testcase.png>]
+ [45 <./regression_run_2.png>] [46 <./failing_testcase.png>]
 Chapter 6.
-<gui_menu.png, id=689, 248.42813pt x 234.8775pt>
+<gui_menu.png, id=706, 248.42813pt x 234.8775pt>
 File: gui_menu.png Graphic file (type png)
 <use gui_menu.png>
-Package pdftex.def Info: gui_menu.png  used on input line 4899.
+Package pdftex.def Info: gui_menu.png  used on input line 3896.
 (pdftex.def)             Requested size: 414.04419pt x 391.4914pt.
-[43
+[47
 
-] [44 <./gui_menu.png>]
+] [48 <./gui_menu.png>]
 Chapter 7.
-[45
+[49
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 4993--4996
+Underfull \hbox (badness 10000) in paragraph at lines 3990--3993
 []\T1/qtm/m/n/10 Note that the \T1/txtt/m/n/10 GC_TESTCASE \T1/qtm/m/n/10 gener
 ic or \T1/txtt/m/n/10 TESTCASE \T1/qtm/m/n/10 pa-ram-e-ter name can be changed 
 us-ing the
  []
 
-[46]
-Underfull \vbox (badness 10000) detected at line 5111
+[50]
+Underfull \vbox (badness 10000) detected at line 4108
  []
 
-[47] [48]
+[51] [52]
 Chapter 8.
-[49
+[53
 
-] [50]
-Underfull \vbox (badness 10000) detected at line 5273
- []
-
-[51]
+] [54] [55]
 LaTeX Font Info:    Font shape `TS1/txtt/m/it' in size <10> not available
-(Font)              Font shape `TS1/txtt/m/sl' tried instead on input line 5291
+(Font)              Font shape `TS1/txtt/m/sl' tried instead on input line 4288
 .
- [52{/usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/base/8r.enc}]
-[53] [54
+ [56{/usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/base/8r.enc}] [57] [58
 
 ]
 Chapter 9.
-<jenkins_ci.png, id=747, 947.54pt x 403.5075pt>
+<jenkins_ci.png, id=764, 947.54pt x 403.5075pt>
 File: jenkins_ci.png Graphic file (type png)
 <use jenkins_ci.png>
-Package pdftex.def Info: jenkins_ci.png  used on input line 5375.
+Package pdftex.def Info: jenkins_ci.png  used on input line 4372.
 (pdftex.def)             Requested size: 469.74944pt x 200.05391pt.
-[55 <./jenkins_ci.png>] [56
+[59 <./jenkins_ci.png>] [60
 
 ]
 Chapter 10.
-[57]
-Underfull \vbox (badness 10000) detected at line 5620
+[61]
+Underfull \vbox (badness 10000) detected at line 4617
  []
 
 
-Underfull \vbox (badness 10000) detected at line 5620
+Underfull \vbox (badness 10000) detected at line 4617
  []
 
-[58]
-Underfull \vbox (badness 10000) detected at line 5620
- []
-
-
-Underfull \vbox (badness 10000) detected at line 5620
- []
-
-[59]
-Underfull \vbox (badness 10000) detected at line 5620
+[62]
+Underfull \vbox (badness 10000) detected at line 4617
  []
 
 
-Underfull \vbox (badness 10000) detected at line 5620
+Underfull \vbox (badness 10000) detected at line 4617
  []
 
-[60] [61] [62
+[63]
+Underfull \vbox (badness 10000) detected at line 4617
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 4617
+ []
+
+[64] [65] [66
 
 ]
 Chapter 11.
-[63]
-Underfull \vbox (badness 10000) detected at line 5764
+[67]
+Underfull \vbox (badness 10000) detected at line 4761
  []
 
 
-Underfull \vbox (badness 10000) detected at line 5764
+Underfull \vbox (badness 10000) detected at line 4761
  []
 
-[64]
-<hdlregression_scaled.png, id=793, 314.67563pt x 174.6525pt>
+[68]
+<hdlregression_scaled.png, id=809, 314.67563pt x 174.6525pt>
 File: hdlregression_scaled.png Graphic file (type png)
 <use hdlregression_scaled.png>
-Package pdftex.def Info: hdlregression_scaled.png  used on input line 5766.
+Package pdftex.def Info: hdlregression_scaled.png  used on input line 4763.
 (pdftex.def)             Requested size: 414.04419pt x 229.81712pt.
- (./hdlregression.ind) [65 <./hdlregression_scaled.png>]
+ (./hdlregression.ind) [69 <./hdlregression_scaled.png>]
 (./hdlregression.aux)
  ***********
 LaTeX2e <2025-11-01>
@@ -1194,16 +1171,16 @@ Package rerunfilecheck Info: File `hdlregression.out' has not changed.
 (rerunfilecheck)             Checksum: 78655D688DADAADF197695CC18FCC507;12777.
  ) 
 Here is how much of TeX's memory you used:
- 21748 strings out of 467525
- 397544 string characters out of 5418982
- 961168 words of memory out of 5000000
- 50052 multiletter control sequences out of 15000+600000
- 688882 words of font info for 91 fonts, out of 8000000 for 9000
+ 20432 strings out of 467525
+ 360003 string characters out of 5418982
+ 940310 words of memory out of 5000000
+ 48732 multiletter control sequences out of 15000+600000
+ 688858 words of font info for 91 fonts, out of 8000000 for 9000
  1142 hyphenation exceptions out of 8191
- 72i,13n,82p,1202b,723s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/local/texlive/2026/texmf-dist/fonts/type1/public/fontawesome7/FontAweso
-me7Free-Regular.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/font
-awesome7/FontAwesome7Free-Solid.pfb></usr/local/texlive/2026/texmf-dist/fonts/t
+ 72i,13n,79p,767b,710s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/local/texlive/2026/texmf-dist/fonts/type1/public/fontawesome5/FontAweso
+me5Free-Regular.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/font
+awesome5/FontAwesome5Free-Solid.pfb></usr/local/texlive/2026/texmf-dist/fonts/t
 ype1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/2026/texmf-dist/fonts/typ
 e1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1
 /public/tex-gyre/qhvb.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/publi
@@ -1216,10 +1193,10 @@ ocal/texlive/2026/texmf-dist/fonts/type1/public/txfonts/t1xtt.pfb></usr/local/t
 exlive/2026/texmf-dist/fonts/type1/public/txfonts/t1xtt.pfb></usr/local/texlive
 /2026/texmf-dist/fonts/type1/public/txfonts/tcxtt.pfb></usr/local/texlive/2026/
 texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
-Output written on hdlregression.pdf (69 pages, 4190592 bytes).
+Output written on hdlregression.pdf (73 pages, 4217902 bytes).
 PDF statistics:
- 906 PDF objects out of 1000 (max. 8388607)
- 768 compressed objects within 8 object streams
- 189 named destinations out of 1000 (max. 500000)
+ 924 PDF objects out of 1000 (max. 8388607)
+ 782 compressed objects within 8 object streams
+ 193 named destinations out of 1000 (max. 500000)
  763 words of extra memory for PDF output out of 10000 (max. 10000000)
 

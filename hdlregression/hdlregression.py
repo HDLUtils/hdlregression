@@ -436,6 +436,8 @@ class HDLRegression:
         v_params_ok = validate_testgroup_parameters(
             testgroup_name, entity, architecture, testcase, generic
         )
+        if generic:
+            generic = adjust_generic_value_paths(generic, self.settings, self.logger)
 
         if v_params_ok is True:
             # Locate testgroup container
