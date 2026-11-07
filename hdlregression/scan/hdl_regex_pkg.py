@@ -17,7 +17,7 @@
 import re
 
 # --------------------------------------------------------------
-#  Simulator regular expressions
+#  Simulator regular expressions warning/error
 # --------------------------------------------------------------
 
 # ID_SIMULATOR_WARNING = r'(?:\*\* Warning:|WARNING:|warn:)\s?(.*)'

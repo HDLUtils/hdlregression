@@ -180,6 +180,74 @@ class VHDLScanner(HDLScanner):
             return True
         return False
 
+    def _clean_strings_except_testcases(self, code):
+        protected_testcases = []
+    
+        def protect_testcase(match):
+            testcase = match.group("testcase")
+            index = len(protected_testcases)
+            protected_testcases.append(testcase)
+    
+            return (
+                match.group("prefix")
+                + f"__HDLREGRESSION_TESTCASE_{index}__"
+                + match.group("suffix")
+            )
+    
+        # Protect IF-style testcases:
+        # GC_TESTCASE = "testcase_1"
+        re_if_testcase = re.compile(
+            rf'''
+            (?P<prefix>
+                \b{re.escape(self.testcase_string)}
+                \s*=\s*
+            )
+            "
+            (?P<testcase>[^"]+)
+            "
+            (?P<suffix>\s*)
+            ''',
+            flags=re.IGNORECASE | re.VERBOSE
+        )
+    
+        code = re_if_testcase.sub(protect_testcase, code)
+    
+        # Protect CASE-style testcases:
+        # when "testcase_1" =>
+        re_case_testcase = re.compile(
+            r'''
+            (?P<prefix>
+                \bwhen\s*
+            )
+            "
+            (?P<testcase>[^"]+)
+            "
+            (?P<suffix>
+                \s*=>
+            )
+            ''',
+            flags=re.IGNORECASE | re.VERBOSE
+        )
+    
+        code = re_case_testcase.sub(protect_testcase, code)
+    
+        # Remove all remaining string contents
+        code = re.sub(
+            r'".*?"',
+            '""',
+            code,
+            flags=re.IGNORECASE
+        )
+    
+        # Restore protected testcase strings
+        for index, testcase in enumerate(protected_testcases):
+            code = code.replace(
+                f"__HDLREGRESSION_TESTCASE_{index}__",
+                f'"{testcase}"'
+            )
+    
+        return code
+
     #
     # Cleaning methods - called from parent
     #
@@ -213,9 +281,7 @@ class VHDLScanner(HDLScanner):
                     append_line += append_line + ';'
 
                 # clear content in strings on this line, except testcases
-                if not re.search(self.testcase_string, append_line, flags=re.IGNORECASE):
-                    append_line = re.sub(
-                        '".*?"', '""', append_line, flags=re.IGNORECASE)
+                append_line = self._clean_strings_except_testcases(append_line)
 
                 # remove comments line, except TB pragma
                 if not re.search(RE_VHDL_TB, append_line.lower()):
@@ -734,20 +800,53 @@ class TestcaseParser(BaseParser):
     '''
 
     def _parse(self, code):
-        # Match testcases
+        # Match testcases with if-structure
         re_tc = re.compile(r'''
-                            \s+
-                            (\(\s*)?                                    # possible bracket start
-                            %s\s*                                       # testcase generic string
-                            =
-                            \s*\"(?P<testcase>[a-zA-Z_\-0-9]+)\"\s*     # testcase name
-                            (\)\s*)?                                    # possible bracket end
+                           \s+
+                           (\(\s*)?                                    # possible bracket start
+                           %s\s*                                       # testcase generic string
+                           =
+                           \s*\"(?P<testcase>[a-zA-Z_\-0-9]+)\"\s*     # testcase name
+                           (\)\s*)?                                    # possible bracket end
         ''' % self.master.testcase_string, flags=self._ALL_FLAGS)
-
+        
         matches = re.finditer(re_tc, code)
         for match in matches:
             self.master.add_testcase(str(match.group('testcase')))
 
+        # Check for case structure: \s*case\s+GC_TESTCASE\sis[\s\S]*end\s+case
+        re_case = re.compile(r'''
+                             \bcase
+                             \s+
+                             %s
+                             \s+
+                             is\b
+                             [\s\S]*?
+                             \bend
+                             \s+
+                             case\b
+        ''' % re.escape(self.master.testcase_string), flags=self._ALL_FLAGS)
+        
+        matches = re.finditer(re_case, code)
+
+        matches = re.finditer(re_case, code)
+        # Check for TC names in case structure: \s+when\s+"<tc_name>"\s*=>
+        re_case_tc = re.compile(r'''
+                                \bwhen
+                                \s*
+                                "
+                                (?P<testcase>[a-zA-Z_0-9-]+)
+                                "
+                                \s*
+                                =>
+        ''', flags=self._ALL_FLAGS)
+        
+        
+        for match in matches:
+            case_matches = re.finditer(re_case_tc, match.group())
+        
+            for tc_match in case_matches:
+                self.master.add_testcase(tc_match.group('testcase'))
 
 class PackageParser(BaseParser):
     '''

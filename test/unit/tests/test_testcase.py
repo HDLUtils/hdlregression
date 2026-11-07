@@ -405,3 +405,21 @@ def test_passing_testcase_failing_in_second_run(sim_env, tb_path):
     assert len(fail_list) == 1, "check number of failing tests"
     assert len(pass_list) == 0, "check number of passing tests"
     assert len(not_run_list) == 0, "check number of not run tests"
+
+def test_case_testcase(sim_env, tb_path):
+    clear_output()
+    hr = HDLRegression(simulator=sim_env["simulator"])
+
+    filename = tb_path + "/tb_testcase_case.vhd"
+    filename = get_file_path(filename)
+    hr.add_files(filename, "testcase_lib")
+    hr.set_result_check_string("testcase_arch: testcase")
+
+    return_code = hr.start()
+
+    (pass_list, fail_list, not_run_list) = hr.get_results()
+
+    assert return_code == 0, "check number of failing tests"
+    assert len(fail_list) == 0, "check number of failing tests"
+    assert len(pass_list) == 7, "check number of passing tests"
+    assert len(not_run_list) == 0, "check number of not run tests"

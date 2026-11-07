@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Template files &mdash; hdlregression 1.6.0 documentation</title>
+  <title>Template files &mdash; hdlregression 1.7.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=72d88caf"></script>
+      <script src="_static/documentation_options.js?v=030dc6f6"></script>
       <script src="_static/doctools.js?v=9a2dae69"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
@@ -123,7 +123,7 @@
 <h3>Basic example<a class="headerlink" href="#basic-example" title="Link to this heading"></a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 <span class="linenos"> 2</span><span class="c1"># User specify HDLRegression install path:</span>
-<span class="linenos"> 3</span><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;c:/tools/hdlregression/&#39;</span><span class="p">)</span>
+<span class="linenos"> 3</span><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'c:/tools/hdlregression/'</span><span class="p">)</span>
 <span class="linenos"> 4</span>
 <span class="linenos"> 5</span><span class="c1"># Import the HDLRegression module to the Python script:</span>
 <span class="linenos"> 6</span><span class="kn">from</span><span class="w"> </span><span class="nn">hdlregression</span><span class="w"> </span><span class="kn">import</span> <span class="n">HDLRegression</span>
@@ -134,10 +134,10 @@
 <span class="linenos">11</span><span class="c1"># ------------ USER CONFIG START ---------------</span>
 <span class="linenos">12</span>
 <span class="linenos">13</span><span class="c1"># Add all .vhd files in the /src directory to library my_dut_lib:</span>
-<span class="linenos">14</span><span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="s2">&quot;./src/*.vhd&quot;</span><span class="p">,</span> <span class="s2">&quot;my_dut_lib&quot;</span><span class="p">)</span>
+<span class="linenos">14</span><span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="s2">"./src/*.vhd"</span><span class="p">,</span> <span class="s2">"my_dut_lib"</span><span class="p">)</span>
 <span class="linenos">15</span>
 <span class="linenos">16</span><span class="c1"># Add testbech file to library my_tb_lib:</span>
-<span class="linenos">17</span><span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="s2">&quot;./tb/my_tb.vhd&quot;</span><span class="p">,</span> <span class="s2">&quot;my_tb_lib&quot;</span><span class="p">)</span>
+<span class="linenos">17</span><span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="s2">"./tb/my_tb.vhd"</span><span class="p">,</span> <span class="s2">"my_tb_lib"</span><span class="p">)</span>
 <span class="linenos">18</span>
 <span class="linenos">19</span><span class="c1"># ------------ USER CONFIG END ---------------</span>
 <span class="linenos">20</span><span class="n">hr</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
@@ -192,7 +192,7 @@ functionality.</p>
 <span class="linenos"> 2</span><span class="kn">from</span><span class="w"> </span><span class="nn">hdlregression</span><span class="w"> </span><span class="kn">import</span> <span class="n">HDLRegression</span>
 <span class="linenos"> 3</span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 <span class="linenos"> 4</span><span class="c1"># User specify HDLRegression install path:</span>
-<span class="linenos"> 5</span><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;c:/tools/hdlregression/&#39;</span><span class="p">)</span>
+<span class="linenos"> 5</span><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'c:/tools/hdlregression/'</span><span class="p">)</span>
 <span class="linenos"> 6</span>
 <span class="linenos"> 7</span><span class="c1"># Import the HDLRegression module to the Python script:</span>
 <span class="linenos"> 8</span>
@@ -212,31 +212,31 @@ functionality.</p>
 <span class="linenos">22</span><span class="k">def</span><span class="w"> </span><span class="nf">create_generics</span><span class="p">(</span><span class="n">bus_width</span><span class="p">,</span> <span class="n">master_mode</span><span class="p">,</span> <span class="n">input_file</span><span class="p">,</span> <span class="n">output_file</span><span class="p">):</span>
 <span class="linenos">23</span>    <span class="n">generics</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="linenos">24</span>    <span class="k">for</span> <span class="n">bus_width</span><span class="p">,</span> <span class="n">master_mode</span><span class="p">,</span> <span class="n">input_file</span><span class="p">,</span> <span class="n">output_file</span> <span class="ow">in</span> <span class="n">product</span><span class="p">(</span><span class="n">bus_width</span><span class="p">,</span> <span class="n">master_mode</span><span class="p">,</span> <span class="n">input_file</span><span class="p">,</span> <span class="n">output_file</span><span class="p">):</span>
-<span class="linenos">25</span>        <span class="n">generics</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s2">&quot;GC_BUS_WIDTH&quot;</span><span class="p">,</span><span class="n">bus_width</span><span class="p">,</span> <span class="s2">&quot;GC_MASTER_MODE&quot;</span><span class="p">,</span><span class="n">master_mode</span><span class="p">,</span> <span class="s2">&quot;GC_INPUT_FILE&quot;</span><span class="p">,</span><span class="n">input_file</span><span class="p">,</span> <span class="s2">&quot;GC_OUTPUT_FILE&quot;</span><span class="p">,</span><span class="n">output_file</span><span class="p">])</span>
+<span class="linenos">25</span>        <span class="n">generics</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s2">"GC_BUS_WIDTH"</span><span class="p">,</span><span class="n">bus_width</span><span class="p">,</span> <span class="s2">"GC_MASTER_MODE"</span><span class="p">,</span><span class="n">master_mode</span><span class="p">,</span> <span class="s2">"GC_INPUT_FILE"</span><span class="p">,</span><span class="n">input_file</span><span class="p">,</span> <span class="s2">"GC_OUTPUT_FILE"</span><span class="p">,</span><span class="n">output_file</span><span class="p">])</span>
 <span class="linenos">26</span>    <span class="k">return</span> <span class="n">generics</span>
 <span class="linenos">27</span>
 <span class="linenos">28</span>
 <span class="linenos">29</span><span class="c1"># Add all source files to library my_dut_lib:</span>
-<span class="linenos">30</span><span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="s2">&quot;./src/*.vhd&quot;</span><span class="p">,</span> <span class="s2">&quot;my_dut_lib&quot;</span><span class="p">)</span>
+<span class="linenos">30</span><span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="s2">"./src/*.vhd"</span><span class="p">,</span> <span class="s2">"my_dut_lib"</span><span class="p">)</span>
 <span class="linenos">31</span>
 <span class="linenos">32</span>
 <span class="linenos">33</span><span class="c1"># Add all testbench related files to library my_tb_lib:</span>
-<span class="linenos">34</span><span class="n">hr</span><span class="o">.</span><span class="n">set_library</span><span class="p">(</span><span class="s2">&quot;my_tb_lib&quot;</span><span class="p">)</span>
-<span class="linenos">35</span><span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="s2">&quot;./tb/my_dut_tb.vhd&quot;</span><span class="p">)</span>
-<span class="linenos">36</span><span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="s2">&quot;./tb/my_dut_th.vhd&quot;</span><span class="p">)</span>
-<span class="linenos">37</span><span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="s2">&quot;./tb/my_dut_if_stuck_tb.vhd&quot;</span><span class="p">)</span>
-<span class="linenos">38</span><span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="s2">&quot;./tb/my_dut_pin_pulse_tb.vhd&quot;</span><span class="p">)</span>
+<span class="linenos">34</span><span class="n">hr</span><span class="o">.</span><span class="n">set_library</span><span class="p">(</span><span class="s2">"my_tb_lib"</span><span class="p">)</span>
+<span class="linenos">35</span><span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="s2">"./tb/my_dut_tb.vhd"</span><span class="p">)</span>
+<span class="linenos">36</span><span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="s2">"./tb/my_dut_th.vhd"</span><span class="p">)</span>
+<span class="linenos">37</span><span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="s2">"./tb/my_dut_if_stuck_tb.vhd"</span><span class="p">)</span>
+<span class="linenos">38</span><span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="s2">"./tb/my_dut_pin_pulse_tb.vhd"</span><span class="p">)</span>
 <span class="linenos">39</span>
 <span class="linenos">40</span>
 <span class="linenos">41</span><span class="c1"># Get a list with the product of selected generics:</span>
 <span class="linenos">42</span><span class="n">generics</span> <span class="o">=</span> <span class="n">create_generics</span><span class="p">(</span><span class="n">bus_width</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">16</span><span class="p">],</span> <span class="n">master_mode</span><span class="o">=</span><span class="p">[</span>
-<span class="linenos">43</span>                           <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">],</span> <span class="n">input_file</span><span class="o">=</span><span class="s2">&quot;in_data.txt&quot;</span><span class="p">,</span> <span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;out_data.txt&quot;</span><span class="p">)</span>
+<span class="linenos">43</span>                           <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">],</span> <span class="n">input_file</span><span class="o">=</span><span class="s2">"in_data.txt"</span><span class="p">,</span> <span class="n">output_file</span><span class="o">=</span><span class="s2">"out_data.txt"</span><span class="p">)</span>
 <span class="linenos">44</span>
 <span class="linenos">45</span><span class="c1"># Add generics for testbench run:</span>
-<span class="linenos">46</span><span class="n">hr</span><span class="o">.</span><span class="n">add_generics</span><span class="p">(</span><span class="n">entity</span><span class="o">=</span><span class="s2">&quot;my_dut_tb&quot;</span><span class="p">,</span> <span class="n">generics</span><span class="o">=</span><span class="n">generics</span><span class="p">)</span>
+<span class="linenos">46</span><span class="n">hr</span><span class="o">.</span><span class="n">add_generics</span><span class="p">(</span><span class="n">entity</span><span class="o">=</span><span class="s2">"my_dut_tb"</span><span class="p">,</span> <span class="n">generics</span><span class="o">=</span><span class="n">generics</span><span class="p">)</span>
 <span class="linenos">47</span>
 <span class="linenos">48</span><span class="c1"># Specify output report as CSV:</span>
-<span class="linenos">49</span><span class="n">hr</span><span class="o">.</span><span class="n">gen_report</span><span class="p">(</span><span class="n">report_file</span><span class="o">=</span><span class="s2">&quot;project_report.csv&quot;</span><span class="p">)</span>
+<span class="linenos">49</span><span class="n">hr</span><span class="o">.</span><span class="n">gen_report</span><span class="p">(</span><span class="n">report_file</span><span class="o">=</span><span class="s2">"project_report.csv"</span><span class="p">)</span>
 <span class="linenos">50</span>
 <span class="linenos">51</span><span class="c1"># ------------ USER CONFIG END ---------------</span>
 <span class="linenos">52</span><span class="n">hr</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">regression_mode</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -257,9 +257,9 @@ functionality.</p>
 <span class="linenos">10</span>
 <span class="linenos">11</span>
 <span class="linenos">12</span><span class="k">def</span><span class="w"> </span><span class="nf">run_rtl</span><span class="p">():</span>
-<span class="linenos">13</span><span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="linenos">13</span><span class="w">    </span><span class="sd">'''</span>
 <span class="linenos">14</span><span class="sd">    Setup test environment for RTL simulations.</span>
-<span class="linenos">15</span><span class="sd">    &#39;&#39;&#39;</span>
+<span class="linenos">15</span><span class="sd">    '''</span>
 <span class="linenos">16</span>    <span class="c1"># Define a HDLRegression item to access the HDLRegression functionality:</span>
 <span class="linenos">17</span>    <span class="n">hr</span> <span class="o">=</span> <span class="n">HDLRegression</span><span class="p">()</span>
 <span class="linenos">18</span>
@@ -273,9 +273,9 @@ functionality.</p>
 <span class="linenos">26</span>
 <span class="linenos">27</span>
 <span class="linenos">28</span><span class="k">def</span><span class="w"> </span><span class="nf">run_netlist</span><span class="p">():</span>
-<span class="linenos">29</span><span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="linenos">29</span><span class="w">    </span><span class="sd">'''</span>
 <span class="linenos">30</span><span class="sd">    Setup test environment for Netlist simulations.</span>
-<span class="linenos">31</span><span class="sd">    &#39;&#39;&#39;</span>
+<span class="linenos">31</span><span class="sd">    '''</span>
 <span class="linenos">32</span>    <span class="c1"># Define a HDLRegression item to access the HDLRegression functionality:</span>
 <span class="linenos">33</span>    <span class="n">hr</span> <span class="o">=</span> <span class="n">HDLRegression</span><span class="p">()</span>
 <span class="linenos">34</span>
@@ -288,9 +288,9 @@ functionality.</p>
 <span class="linenos">41</span>
 <span class="linenos">42</span>
 <span class="linenos">43</span><span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
-<span class="linenos">44</span><span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="linenos">44</span><span class="w">    </span><span class="sd">'''</span>
 <span class="linenos">45</span><span class="sd">    Main method, selecting RTL or Netlist simulations.</span>
-<span class="linenos">46</span><span class="sd">    &#39;&#39;&#39;</span>
+<span class="linenos">46</span><span class="sd">    '''</span>
 <span class="linenos">47</span>
 <span class="linenos">48</span>    <span class="n">args</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
 <span class="linenos">49</span>
@@ -298,17 +298,17 @@ functionality.</p>
 <span class="linenos">51</span>        <span class="n">selection</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
 <span class="linenos">52</span>        <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">selection</span><span class="p">)</span>
 <span class="linenos">53</span>
-<span class="linenos">54</span>        <span class="k">if</span> <span class="s1">&#39;rtl&#39;</span> <span class="o">==</span> <span class="n">selection</span><span class="p">:</span>
+<span class="linenos">54</span>        <span class="k">if</span> <span class="s1">'rtl'</span> <span class="o">==</span> <span class="n">selection</span><span class="p">:</span>
 <span class="linenos">55</span>            <span class="n">run_rtl</span><span class="p">()</span>
-<span class="linenos">56</span>        <span class="k">elif</span> <span class="s1">&#39;netlist&#39;</span> <span class="o">==</span> <span class="n">selection</span><span class="p">:</span>
+<span class="linenos">56</span>        <span class="k">elif</span> <span class="s1">'netlist'</span> <span class="o">==</span> <span class="n">selection</span><span class="p">:</span>
 <span class="linenos">57</span>            <span class="n">run_netlist</span><span class="p">()</span>
 <span class="linenos">58</span>        <span class="k">else</span><span class="p">:</span>
-<span class="linenos">59</span>            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Please select &quot;rtl&quot; or &quot;netlist&quot; run.&#39;</span><span class="p">)</span>
+<span class="linenos">59</span>            <span class="nb">print</span><span class="p">(</span><span class="s1">'Please select "rtl" or "netlist" run.'</span><span class="p">)</span>
 <span class="linenos">60</span>    <span class="k">else</span><span class="p">:</span>
-<span class="linenos">61</span>        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Please select &quot;rtl&quot; or &quot;netlist&quot; run.&#39;</span><span class="p">)</span>
+<span class="linenos">61</span>        <span class="nb">print</span><span class="p">(</span><span class="s1">'Please select "rtl" or "netlist" run.'</span><span class="p">)</span>
 <span class="linenos">62</span>
 <span class="linenos">63</span>
-<span class="linenos">64</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<span class="linenos">64</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
 <span class="linenos">65</span>    <span class="n">main</span><span class="p">()</span>
 </pre></div>
 </div>

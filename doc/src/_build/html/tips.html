@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tips &mdash; hdlregression 1.6.0 documentation</title>
+  <title>Tips &mdash; hdlregression 1.7.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=72d88caf"></script>
+      <script src="_static/documentation_options.js?v=030dc6f6"></script>
       <script src="_static/doctools.js?v=9a2dae69"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
@@ -131,9 +131,9 @@ argument modifications as shown in the example below.</p>
 <span class="linenos">10</span>
 <span class="linenos">11</span>
 <span class="linenos">12</span><span class="k">def</span><span class="w"> </span><span class="nf">run_rtl</span><span class="p">():</span>
-<span class="linenos">13</span><span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="linenos">13</span><span class="w">    </span><span class="sd">'''</span>
 <span class="linenos">14</span><span class="sd">    Setup test environment for RTL simulations.</span>
-<span class="linenos">15</span><span class="sd">    &#39;&#39;&#39;</span>
+<span class="linenos">15</span><span class="sd">    '''</span>
 <span class="linenos">16</span>    <span class="c1"># Define a HDLRegression item to access the HDLRegression functionality:</span>
 <span class="linenos">17</span>    <span class="n">hr</span> <span class="o">=</span> <span class="n">HDLRegression</span><span class="p">()</span>
 <span class="linenos">18</span>
@@ -147,9 +147,9 @@ argument modifications as shown in the example below.</p>
 <span class="linenos">26</span>
 <span class="linenos">27</span>
 <span class="linenos">28</span><span class="k">def</span><span class="w"> </span><span class="nf">run_netlist</span><span class="p">():</span>
-<span class="linenos">29</span><span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="linenos">29</span><span class="w">    </span><span class="sd">'''</span>
 <span class="linenos">30</span><span class="sd">    Setup test environment for Netlist simulations.</span>
-<span class="linenos">31</span><span class="sd">    &#39;&#39;&#39;</span>
+<span class="linenos">31</span><span class="sd">    '''</span>
 <span class="linenos">32</span>    <span class="c1"># Define a HDLRegression item to access the HDLRegression functionality:</span>
 <span class="linenos">33</span>    <span class="n">hr</span> <span class="o">=</span> <span class="n">HDLRegression</span><span class="p">()</span>
 <span class="linenos">34</span>
@@ -162,9 +162,9 @@ argument modifications as shown in the example below.</p>
 <span class="linenos">41</span>
 <span class="linenos">42</span>
 <span class="linenos">43</span><span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
-<span class="linenos">44</span><span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="linenos">44</span><span class="w">    </span><span class="sd">'''</span>
 <span class="linenos">45</span><span class="sd">    Main method, selecting RTL or Netlist simulations.</span>
-<span class="linenos">46</span><span class="sd">    &#39;&#39;&#39;</span>
+<span class="linenos">46</span><span class="sd">    '''</span>
 <span class="linenos">47</span>
 <span class="linenos">48</span>    <span class="n">args</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
 <span class="linenos">49</span>
@@ -172,17 +172,17 @@ argument modifications as shown in the example below.</p>
 <span class="linenos">51</span>        <span class="n">selection</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
 <span class="linenos">52</span>        <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">selection</span><span class="p">)</span>
 <span class="linenos">53</span>
-<span class="linenos">54</span>        <span class="k">if</span> <span class="s1">&#39;rtl&#39;</span> <span class="o">==</span> <span class="n">selection</span><span class="p">:</span>
+<span class="linenos">54</span>        <span class="k">if</span> <span class="s1">'rtl'</span> <span class="o">==</span> <span class="n">selection</span><span class="p">:</span>
 <span class="linenos">55</span>            <span class="n">run_rtl</span><span class="p">()</span>
-<span class="linenos">56</span>        <span class="k">elif</span> <span class="s1">&#39;netlist&#39;</span> <span class="o">==</span> <span class="n">selection</span><span class="p">:</span>
+<span class="linenos">56</span>        <span class="k">elif</span> <span class="s1">'netlist'</span> <span class="o">==</span> <span class="n">selection</span><span class="p">:</span>
 <span class="linenos">57</span>            <span class="n">run_netlist</span><span class="p">()</span>
 <span class="linenos">58</span>        <span class="k">else</span><span class="p">:</span>
-<span class="linenos">59</span>            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Please select &quot;rtl&quot; or &quot;netlist&quot; run.&#39;</span><span class="p">)</span>
+<span class="linenos">59</span>            <span class="nb">print</span><span class="p">(</span><span class="s1">'Please select "rtl" or "netlist" run.'</span><span class="p">)</span>
 <span class="linenos">60</span>    <span class="k">else</span><span class="p">:</span>
-<span class="linenos">61</span>        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Please select &quot;rtl&quot; or &quot;netlist&quot; run.&#39;</span><span class="p">)</span>
+<span class="linenos">61</span>        <span class="nb">print</span><span class="p">(</span><span class="s1">'Please select "rtl" or "netlist" run.'</span><span class="p">)</span>
 <span class="linenos">62</span>
 <span class="linenos">63</span>
-<span class="linenos">64</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<span class="linenos">64</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
 <span class="linenos">65</span>    <span class="n">main</span><span class="p">()</span>
 </pre></div>
 </div>

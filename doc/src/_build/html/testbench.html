@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Testbench &mdash; hdlregression 1.6.0 documentation</title>
+  <title>Testbench &mdash; hdlregression 1.7.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=72d88caf"></script>
+      <script src="_static/documentation_options.js?v=030dc6f6"></script>
       <script src="_static/doctools.js?v=9a2dae69"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
@@ -128,8 +128,8 @@ implementation.</p>
 (Verilog), and these should only be used in the top level testbench entity.</p>
 <p># The testcase names will be included in simulation reports.</p>
 </div>
-<div class="highlight-vhdl notranslate"><div class="highlight"><pre><span></span><span class="n">GC_TESTCASE</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w">  </span><span class="c1">-- VHDL</span>
-<span class="n">parameter</span><span class="w"> </span><span class="n">TESTCASE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w">     </span><span class="o">//</span><span class="w"> </span><span class="n">Verilog</span>
+<div class="highlight-vhdl notranslate"><div class="highlight"><pre><span></span><span class="n">GC_TESTCASE</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="s">""</span><span class="w">  </span><span class="c1">-- VHDL</span>
+<span class="n">parameter</span><span class="w"> </span><span class="n">TESTCASE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">""</span><span class="w">     </span><span class="o">//</span><span class="w"> </span><span class="n">Verilog</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -156,7 +156,7 @@ the <code class="docutils literal notranslate"><span class="pre">--hdlregression
 <span class="linenos">12</span><span class="c1">--hdlregression:tb</span>
 <span class="linenos">13</span><span class="k">entity</span><span class="w"> </span><span class="nc">tb_example</span><span class="w"> </span><span class="k">is</span>
 <span class="linenos">14</span><span class="w">  </span><span class="k">generic</span><span class="w"> </span><span class="p">(</span>
-<span class="linenos">15</span><span class="w">    </span><span class="n">GC_TESTCASE</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="s">&quot;UVVM&quot;</span>
+<span class="linenos">15</span><span class="w">    </span><span class="n">GC_TESTCASE</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="s">"UVVM"</span>
 <span class="linenos">16</span><span class="w">    </span><span class="p">);</span>
 <span class="linenos">17</span><span class="k">end</span><span class="w"> </span><span class="k">entity</span><span class="w"> </span><span class="nc">tb_example</span><span class="p">;</span>
 <span class="linenos">18</span>
@@ -195,17 +195,17 @@ the <code class="docutils literal notranslate"><span class="pre">--hdlregression
 <span class="linenos">51</span><span class="w">    </span><span class="c1">-----------------------------------------------------------------------------</span>
 <span class="linenos">52</span><span class="w">    </span><span class="c1">-- Test sequence</span>
 <span class="linenos">53</span><span class="w">    </span><span class="c1">-----------------------------------------------------------------------------</span>
-<span class="linenos">54</span><span class="w">    </span><span class="n">log</span><span class="p">(</span><span class="n">ID_SEQUENCER</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Running testcase: &quot;</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">GC_TESTCASE</span><span class="p">,</span><span class="w"> </span><span class="n">C_SCOPE</span><span class="p">);</span>
+<span class="linenos">54</span><span class="w">    </span><span class="n">log</span><span class="p">(</span><span class="n">ID_SEQUENCER</span><span class="p">,</span><span class="w"> </span><span class="s">"Running testcase: "</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">GC_TESTCASE</span><span class="p">,</span><span class="w"> </span><span class="n">C_SCOPE</span><span class="p">);</span>
 <span class="linenos">55</span>
-<span class="linenos">56</span><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">GC_TESTCASE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;check_reset_defaults&quot;</span><span class="w"> </span><span class="k">then</span>
+<span class="linenos">56</span><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">GC_TESTCASE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"check_reset_defaults"</span><span class="w"> </span><span class="k">then</span>
 <span class="linenos">57</span>
 <span class="linenos">58</span><span class="w">      </span><span class="c1">-- reset checks</span>
 <span class="linenos">59</span>
-<span class="linenos">60</span><span class="w">    </span><span class="k">elsif</span><span class="w"> </span><span class="n">GC_TESTCASE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;test_dut_write&quot;</span><span class="w"> </span><span class="k">then</span>
+<span class="linenos">60</span><span class="w">    </span><span class="k">elsif</span><span class="w"> </span><span class="n">GC_TESTCASE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"test_dut_write"</span><span class="w"> </span><span class="k">then</span>
 <span class="linenos">61</span>
 <span class="linenos">62</span><span class="w">      </span><span class="c1">-- write checks</span>
 <span class="linenos">63</span>
-<span class="linenos">64</span><span class="w">    </span><span class="k">elsif</span><span class="w"> </span><span class="n">GC_TESTCASE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;test_dut_read&quot;</span><span class="w"> </span><span class="k">then</span>
+<span class="linenos">64</span><span class="w">    </span><span class="k">elsif</span><span class="w"> </span><span class="n">GC_TESTCASE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"test_dut_read"</span><span class="w"> </span><span class="k">then</span>
 <span class="linenos">65</span>
 <span class="linenos">66</span><span class="w">      </span><span class="c1">-- read checks</span>
 <span class="linenos">67</span>
@@ -216,7 +216,7 @@ the <code class="docutils literal notranslate"><span class="pre">--hdlregression
 <span class="linenos">72</span><span class="w">    </span><span class="c1">-----------------------------------------------------------------------------</span>
 <span class="linenos">73</span><span class="w">    </span><span class="k">wait</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="mi">1000</span><span class="w"> </span><span class="n">ns</span><span class="p">;</span><span class="w">             </span><span class="c1">-- to allow some time for completion</span>
 <span class="linenos">74</span><span class="w">    </span><span class="n">report_alert_counters</span><span class="p">(</span><span class="n">FINAL</span><span class="p">);</span><span class="w"> </span><span class="c1">-- Report final counters and print conclusion for simulation (Success/Fail)</span>
-<span class="linenos">75</span><span class="w">    </span><span class="n">log</span><span class="p">(</span><span class="n">ID_LOG_HDR</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;SIMULATION COMPLETED&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">C_SCOPE</span><span class="p">);</span>
+<span class="linenos">75</span><span class="w">    </span><span class="n">log</span><span class="p">(</span><span class="n">ID_LOG_HDR</span><span class="p">,</span><span class="w"> </span><span class="s">"SIMULATION COMPLETED"</span><span class="p">,</span><span class="w"> </span><span class="n">C_SCOPE</span><span class="p">);</span>
 <span class="linenos">76</span>
 <span class="linenos">77</span><span class="w">    </span><span class="c1">-- Finish the simulation</span>
 <span class="linenos">78</span><span class="w">    </span><span class="nn">std.env</span><span class="p">.</span><span class="n">stop</span><span class="p">;</span>
@@ -231,18 +231,18 @@ the <code class="docutils literal notranslate"><span class="pre">--hdlregression
 <div class="code-block-caption"><span class="caption-text">Verilog testbench example</span><a class="headerlink" href="#id2" title="Link to this code"></a></div>
 <div class="highlight-verilog notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">//hdlregression:tb</span>
 <span class="linenos"> 2</span><span class="k">module</span><span class="w"> </span><span class="n">tb_verilog</span><span class="w"> </span><span class="p">#(</span>
-<span class="linenos"> 3</span><span class="w">        </span><span class="k">parameter</span><span class="w"> </span><span class="n">TESTCASE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;DEFAULT&quot;</span>
+<span class="linenos"> 3</span><span class="w">        </span><span class="k">parameter</span><span class="w"> </span><span class="n">TESTCASE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"DEFAULT"</span>
 <span class="linenos"> 4</span><span class="w">    </span><span class="p">);</span>
 <span class="linenos"> 5</span>
 <span class="linenos"> 6</span><span class="w">    </span><span class="k">initial</span>
 <span class="linenos"> 7</span><span class="w">    </span><span class="k">begin</span>
-<span class="linenos"> 8</span><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">TESTCASE</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;reset_test&quot;</span><span class="p">)</span>
+<span class="linenos"> 8</span><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">TESTCASE</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">"reset_test"</span><span class="p">)</span>
 <span class="linenos"> 9</span><span class="w">            </span><span class="c1">// reset checks</span>
 <span class="linenos">10</span>
-<span class="linenos">11</span><span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">TESTCASE</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;write_test&quot;</span><span class="p">)</span>
+<span class="linenos">11</span><span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">TESTCASE</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">"write_test"</span><span class="p">)</span>
 <span class="linenos">12</span><span class="w">            </span><span class="c1">// write tests</span>
 <span class="linenos">13</span>
-<span class="linenos">14</span><span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">TESTCASE</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;read_test&quot;</span><span class="p">)</span>
+<span class="linenos">14</span><span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">TESTCASE</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">"read_test"</span><span class="p">)</span>
 <span class="linenos">15</span><span class="w">            </span><span class="c1">// read tests</span>
 <span class="linenos">16</span>
 <span class="linenos">17</span><span class="w">    </span><span class="k">end</span>

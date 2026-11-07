@@ -64,8 +64,8 @@
 
 
 \title{hdlregression}
-\date{Sep 20, 2026}
-\release{1.6.0}
+\date{Nov 06, 2026}
+\release{1.7.0}
 \author{UVVM}
 \newcommand{\sphinxlogo}{\vbox{}}
 \renewcommand{\releasename}{Release}
@@ -3094,7 +3094,7 @@ string
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{n}{hr}\PYG{o}{.}\PYG{n}{set\PYGZus{}testcase\PYGZus{}identifier\PYGZus{}name}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{GC\PYGZus{}TESTCASE}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
 \end{sphinxVerbatim}
-\sphinxSetupCaptionForVerbatim{Example TB with test case ID generic}
+\sphinxSetupCaptionForVerbatim{Example TB with test case ID generic in if structure}
 \def\sphinxLiteralBlockLabel{\label{\detokenize{api:id2}}}
 \begin{sphinxVerbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{}hdlregression:tb}
@@ -3116,6 +3116,35 @@ string
 \PYG{+w}{        }\PYG{k}{else}
 \PYG{+w}{            }\PYG{n}{report}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}Unknown test \PYGZdq{}}\PYG{+w}{ }\PYG{o}{\PYGZam{}}\PYG{+w}{ }\PYG{n}{GC\PYGZus{}TESTCASE}\PYG{p}{;}
 \PYG{+w}{        }\PYG{k}{end}\PYG{+w}{ }\PYG{k}{if}\PYG{p}{;}
+\PYG{+w}{    }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Finish the simulation}
+\PYG{+w}{    }\PYG{n+nn}{std}\PYG{n+nn}{.env}\PYG{p}{.}\PYG{n}{stop}\PYG{p}{;}
+\PYG{+w}{    }\PYG{k}{wait}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} to stop completely        }
+\PYG{+w}{    }\PYG{k}{end}\PYG{+w}{ }\PYG{k}{process}\PYG{p}{;}
+\PYG{k}{end}\PYG{p}{;}
+\end{sphinxVerbatim}
+\sphinxSetupCaptionForVerbatim{Example TB with test case ID generic in case structure}
+\def\sphinxLiteralBlockLabel{\label{\detokenize{api:id3}}}
+\begin{sphinxVerbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{}hdlregression:tb}
+\PYG{k}{entity}\PYG{+w}{ }\PYG{n+nc}{tb\PYGZus{}top}\PYG{+w}{ }\PYG{k}{is}
+\PYG{+w}{    }\PYG{k}{generic}\PYG{+w}{ }\PYG{p}{(}
+\PYG{+w}{        }\PYG{n}{GC\PYGZus{}TESTCASE}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{k+kt}{string}\PYG{+w}{ }\PYG{o}{:}\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}read\PYGZus{}test\PYGZdq{}}
+\PYG{+w}{    }\PYG{p}{)}\PYG{p}{;}\PYG{+w}{    }
+\PYG{k}{end}\PYG{+w}{ }\PYG{n+nc}{tb\PYGZus{}top}\PYG{p}{;}
+
+\PYG{k}{architecture}\PYG{+w}{ }\PYG{n+nc}{test}\PYG{+w}{ }\PYG{k}{of}\PYG{+w}{ }\PYG{n+nc}{simple\PYGZus{}tb}\PYG{+w}{ }\PYG{k}{is}
+\PYG{+w}{    }\PYG{k}{constant}\PYG{+w}{ }\PYG{n}{C\PYGZus{}SCOPE}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{k+kt}{string}\PYG{+w}{ }\PYG{o}{:}\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}SIMPLE\PYGZus{}TB\PYGZdq{}}\PYG{p}{;}\PYG{+w}{ }
+\PYG{+w}{  }\PYG{k}{begin}
+\PYG{+w}{    }\PYG{n}{p\PYGZus{}main}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{k}{process}\PYG{+w}{  }
+\PYG{+w}{    }\PYG{k}{begin}
+\PYG{+w}{        }\PYG{k}{case}\PYG{+w}{ }\PYG{n}{GC\PYGZus{}TESTCASE}\PYG{+w}{ }\PYG{k}{is}
+\PYG{+w}{          }\PYG{k}{when}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}read\PYGZus{}test\PYGZdq{}}\PYG{+w}{ }\PYG{o}{=}\PYG{o}{\PYGZgt{}}
+\PYG{+w}{            }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} read tests}
+\PYG{+w}{        }\PYG{k}{when}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}write\PYGZus{}test\PYGZdq{}}\PYG{+w}{ }\PYG{o}{=}\PYG{o}{\PYGZgt{}}
+\PYG{+w}{            }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} write tests}
+\PYG{+w}{        }\PYG{k}{when}\PYG{+w}{ }\PYG{k}{others}\PYG{+w}{ }\PYG{o}{=}\PYG{o}{\PYGZgt{}}
+\PYG{+w}{            }\PYG{n}{report}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}Unknown test \PYGZdq{}}\PYG{+w}{ }\PYG{o}{\PYGZam{}}\PYG{+w}{ }\PYG{n}{GC\PYGZus{}TESTCASE}\PYG{p}{;}
+\PYG{+w}{        }\PYG{k}{end}\PYG{+w}{ }\PYG{k}{case}\PYG{p}{;}
 \PYG{+w}{    }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Finish the simulation}
 \PYG{+w}{    }\PYG{n+nn}{std}\PYG{n+nn}{.env}\PYG{p}{.}\PYG{n}{stop}\PYG{p}{;}
 \PYG{+w}{    }\PYG{k}{wait}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} to stop completely        }

@@ -40,13 +40,13 @@
 \contentsline {subsection}{\numberline {4.3.17}set\_result\_check\_string()}{24}{subsection.4.3.17}%
 \contentsline {subsection}{\numberline {4.3.18}set\_simulator()}{25}{subsection.4.3.18}%
 \contentsline {subsection}{\numberline {4.3.19}set\_testcase\_identifier\_name()}{26}{subsection.4.3.19}%
-\contentsline {subsection}{\numberline {4.3.20}set\_simulator\_wave\_file\_format()}{27}{subsection.4.3.20}%
-\contentsline {section}{\numberline {4.4}Statistical methods}{27}{section.4.4}%
-\contentsline {subsection}{\numberline {4.4.1}get\_results()}{27}{subsection.4.4.1}%
-\contentsline {subsection}{\numberline {4.4.2}get\_num\_tests\_run()}{28}{subsection.4.4.2}%
-\contentsline {subsection}{\numberline {4.4.3}get\_num\_pass\_tests()}{28}{subsection.4.4.3}%
-\contentsline {subsection}{\numberline {4.4.4}get\_num\_fail\_tests()}{28}{subsection.4.4.4}%
-\contentsline {subsection}{\numberline {4.4.5}get\_num\_pass\_with\_minor\_alert\_tests()}{28}{subsection.4.4.5}%
+\contentsline {subsection}{\numberline {4.3.20}set\_simulator\_wave\_file\_format()}{28}{subsection.4.3.20}%
+\contentsline {section}{\numberline {4.4}Statistical methods}{28}{section.4.4}%
+\contentsline {subsection}{\numberline {4.4.1}get\_results()}{28}{subsection.4.4.1}%
+\contentsline {subsection}{\numberline {4.4.2}get\_num\_tests\_run()}{29}{subsection.4.4.2}%
+\contentsline {subsection}{\numberline {4.4.3}get\_num\_pass\_tests()}{29}{subsection.4.4.3}%
+\contentsline {subsection}{\numberline {4.4.4}get\_num\_fail\_tests()}{29}{subsection.4.4.4}%
+\contentsline {subsection}{\numberline {4.4.5}get\_num\_pass\_with\_minor\_alert\_tests()}{29}{subsection.4.4.5}%
 \contentsline {chapter}{\numberline {5}Command Line Interface (CLI)}{31}{chapter.5}%
 \contentsline {section}{\numberline {5.1}Examples}{32}{section.5.1}%
 \contentsline {subsection}{\numberline {5.1.1}Selecting simulator}{32}{subsection.5.1.1}%

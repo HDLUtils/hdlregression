@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Application Programming Interface (API) &mdash; hdlregression 1.6.0 documentation</title>
+  <title>Application Programming Interface (API) &mdash; hdlregression 1.7.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=72d88caf"></script>
+      <script src="_static/documentation_options.js?v=030dc6f6"></script>
       <script src="_static/doctools.js?v=9a2dae69"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
@@ -192,7 +192,7 @@ in example 2 or using <a class="reference internal" href="cli.html"><span class=
 <p><strong>Example 1:</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="mf">1.</span> <span class="n">hr</span> <span class="o">=</span> <span class="n">HDLRegression</span><span class="p">()</span>
 
-<span class="mf">2.</span> <span class="n">hr</span> <span class="o">=</span> <span class="n">HDLRegression</span><span class="p">(</span><span class="n">simulator</span><span class="o">=</span><span class="s2">&quot;ghdl&quot;</span><span class="p">)</span>
+<span class="mf">2.</span> <span class="n">hr</span> <span class="o">=</span> <span class="n">HDLRegression</span><span class="p">(</span><span class="n">simulator</span><span class="o">=</span><span class="s2">"ghdl"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>An argparser object can be created in the regression script and passed on to the HDLRegression() object creation to allow
@@ -203,9 +203,9 @@ in example 2.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">argparse</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">hdlregression</span><span class="w"> </span><span class="kn">import</span> <span class="n">HDLRegression</span>
 
-<span class="n">arg_parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Regression script parser&#39;</span><span class="p">)</span>
-<span class="n">arg_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--rtl&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;run RTL simulations&#39;</span><span class="p">)</span>
-<span class="n">arg_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--netlist&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;run netlist simulations&#39;</span><span class="p">)</span>
+<span class="n">arg_parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">'Regression script parser'</span><span class="p">)</span>
+<span class="n">arg_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">'--rtl'</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">'store_true'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">'run RTL simulations'</span><span class="p">)</span>
+<span class="n">arg_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">'--netlist'</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">'store_true'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">'run netlist simulations'</span><span class="p">)</span>
 
 <span class="n">hr</span> <span class="o">=</span> <span class="n">HDLRegression</span><span class="p">(</span><span class="n">arg_parser</span><span class="o">=</span><span class="n">arg_parser</span><span class="p">)</span>
 
@@ -287,32 +287,32 @@ can be called several times in the regressions script, addressing the same or a 
 </tbody>
 </table>
 <p><strong>Example 1:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="s2">&quot;../src/my_testbench.vhd&quot;</span><span class="p">,</span> <span class="s2">&quot;my_testbench_lib&quot;</span><span class="p">,</span> <span class="n">hdl_version</span><span class="o">=</span><span class="s1">&#39;2008&#39;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="s2">"../src/my_testbench.vhd"</span><span class="p">,</span> <span class="s2">"my_testbench_lib"</span><span class="p">,</span> <span class="n">hdl_version</span><span class="o">=</span><span class="s1">'2008'</span><span class="p">)</span>
 
-<span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="s2">&quot;../backend/my_design.sdf&quot;</span><span class="p">,</span> <span class="s2">&quot;my_design_lib&quot;</span><span class="p">,</span> <span class="n">hdl_version</span><span class="o">=</span><span class="s1">&#39;2008&#39;</span><span class="p">,</span> <span class="n">netlist_inst</span><span class="o">=</span><span class="s1">&#39;/my_testnech/i_test_harness/i_dut&#39;</span><span class="p">)</span>
+<span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="s2">"../backend/my_design.sdf"</span><span class="p">,</span> <span class="s2">"my_design_lib"</span><span class="p">,</span> <span class="n">hdl_version</span><span class="o">=</span><span class="s1">'2008'</span><span class="p">,</span> <span class="n">netlist_inst</span><span class="o">=</span><span class="s1">'/my_testnech/i_test_harness/i_dut'</span><span class="p">)</span>
 
-<span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="s2">&quot;../src/*.vhd&quot;</span><span class="p">,</span> <span class="n">code_coverage</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="s2">"../src/*.vhd"</span><span class="p">,</span> <span class="n">code_coverage</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Example 2: with library name</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;c:/tools/uvvm/uvvm_util/src/*.vhd&quot;</span><span class="p">,</span> <span class="n">library_name</span><span class="o">=</span><span class="s2">&quot;uvvm_util&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">"c:/tools/uvvm/uvvm_util/src/*.vhd"</span><span class="p">,</span> <span class="n">library_name</span><span class="o">=</span><span class="s2">"uvvm_util"</span><span class="p">)</span>
 
-<span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;c:/project/design/src/*.vhd&quot;</span><span class="p">,</span> <span class="n">library_name</span><span class="o">=</span><span class="s2">&quot;design_lib&quot;</span><span class="p">)</span>
-<span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;c:/project/design/src/ip/*.vhd&quot;</span><span class="p">,</span> <span class="n">library_name</span><span class="o">=</span><span class="s2">&quot;design_lib&quot;</span><span class="p">)</span>
+<span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">"c:/project/design/src/*.vhd"</span><span class="p">,</span> <span class="n">library_name</span><span class="o">=</span><span class="s2">"design_lib"</span><span class="p">)</span>
+<span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">"c:/project/design/src/ip/*.vhd"</span><span class="p">,</span> <span class="n">library_name</span><span class="o">=</span><span class="s2">"design_lib"</span><span class="p">)</span>
 
-<span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;c:/project/design/tb/*.vhd&quot;</span><span class="p">,</span> <span class="n">library_name</span><span class="o">=</span><span class="s2">&quot;test_lib&quot;</span><span class="p">)</span>
+<span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">"c:/project/design/tb/*.vhd"</span><span class="p">,</span> <span class="n">library_name</span><span class="o">=</span><span class="s2">"test_lib"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Example 3: with set_library()</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">set_library</span><span class="p">(</span><span class="n">library_name</span><span class="o">=</span><span class="s2">&quot;uvvm_util&quot;</span><span class="p">)</span>
-<span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;c:/tools/uvvm/uvvm_util/src/*.vhd&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">set_library</span><span class="p">(</span><span class="n">library_name</span><span class="o">=</span><span class="s2">"uvvm_util"</span><span class="p">)</span>
+<span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">"c:/tools/uvvm/uvvm_util/src/*.vhd"</span><span class="p">)</span>
 
-<span class="n">hr</span><span class="o">.</span><span class="n">set_library</span><span class="p">(</span><span class="n">library_name</span><span class="o">=</span><span class="s2">&quot;design_lib&quot;</span><span class="p">)</span>
-<span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;c:/project/design/src/*.vhd&quot;</span><span class="p">)</span>
-<span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;c:/project/design/ip/src/*.vhd&quot;</span><span class="p">)</span>
+<span class="n">hr</span><span class="o">.</span><span class="n">set_library</span><span class="p">(</span><span class="n">library_name</span><span class="o">=</span><span class="s2">"design_lib"</span><span class="p">)</span>
+<span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">"c:/project/design/src/*.vhd"</span><span class="p">)</span>
+<span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">"c:/project/design/ip/src/*.vhd"</span><span class="p">)</span>
 
-<span class="n">hr</span><span class="o">.</span><span class="n">set_library</span><span class="p">(</span><span class="n">library_name</span><span class="o">=</span><span class="s2">&quot;test_lib&quot;</span><span class="p">)</span>
-<span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;c:/project/design/tb/*.vhd&quot;</span><span class="p">)</span>
+<span class="n">hr</span><span class="o">.</span><span class="n">set_library</span><span class="p">(</span><span class="n">library_name</span><span class="o">=</span><span class="s2">"test_lib"</span><span class="p">)</span>
+<span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">"c:/project/design/tb/*.vhd"</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -387,7 +387,7 @@ compilation order and not compile the file.</p>
 </tbody>
 </table>
 <p><strong>Example:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">set_library</span><span class="p">(</span><span class="s2">&quot;testbench_lib&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">set_library</span><span class="p">(</span><span class="s2">"testbench_lib"</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -511,9 +511,9 @@ yet this can be changed using the available arguments or by using the <a class="
 <p><strong>Example:</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">gui_mode</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">threading</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<span class="n">hr</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">netlist_timing</span><span class="o">=</span><span class="s1">&#39;-sdfmin&#39;</span><span class="p">)</span>
+<span class="n">hr</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">netlist_timing</span><span class="o">=</span><span class="s1">'-sdfmin'</span><span class="p">)</span>
 
-<span class="n">hr</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">sim_options</span><span class="o">=</span><span class="s2">&quot;-t ps -do </span><span class="se">\&quot;</span><span class="s2">quietly set NumericStdNoWarnings 1</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">hr</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">sim_options</span><span class="o">=</span><span class="s2">"-t ps -do </span><span class="se">\"</span><span class="s2">quietly set NumericStdNoWarnings 1</span><span class="se">\"</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p id="table1"><strong>Table 1: Compilation Options</strong></p>
@@ -713,9 +713,9 @@ a subset of tests needs to be rerun to achieve wanted code coverage.</p></li>
 </tbody>
 </table>
 <p><strong>Example:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="mf">1.</span> <span class="n">hr</span><span class="o">.</span><span class="n">add_file_to_run_folder</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;c:/design/tb/input_data.txt&quot;</span><span class="p">,</span> <span class="n">tc_id</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="mf">1.</span> <span class="n">hr</span><span class="o">.</span><span class="n">add_file_to_run_folder</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">"c:/design/tb/input_data.txt"</span><span class="p">,</span> <span class="n">tc_id</span><span class="o">=</span><span class="s2">"1"</span><span class="p">)</span>
 
-<span class="mf">2.</span> <span class="n">hr</span><span class="o">.</span><span class="n">add_file_to_run_folder</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;../tb/input_data.txt&quot;</span><span class="p">,</span> <span class="n">tc_id</span><span class="o">=</span><span class="s2">&quot;7&quot;</span><span class="p">)</span>
+<span class="mf">2.</span> <span class="n">hr</span><span class="o">.</span><span class="n">add_file_to_run_folder</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">"../tb/input_data.txt"</span><span class="p">,</span> <span class="n">tc_id</span><span class="o">=</span><span class="s2">"7"</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -767,11 +767,11 @@ HDLRegression will make the adjustments for the generic paths to match HDLRegres
 </ul>
 </div>
 <p><strong>Example:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="mf">1.</span> <span class="n">hr</span><span class="o">.</span><span class="n">add_generics</span><span class="p">(</span><span class="n">entity</span><span class="o">=</span><span class="s2">&quot;my_dut_tb&quot;</span><span class="p">,</span> <span class="n">generics</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GC_BUS_WIDTH&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="s2">&quot;GC_ADDR_WIDTH&quot;</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="mf">1.</span> <span class="n">hr</span><span class="o">.</span><span class="n">add_generics</span><span class="p">(</span><span class="n">entity</span><span class="o">=</span><span class="s2">"my_dut_tb"</span><span class="p">,</span> <span class="n">generics</span><span class="o">=</span><span class="p">[</span><span class="s2">"GC_BUS_WIDTH"</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="s2">"GC_ADDR_WIDTH"</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span>
 
-<span class="mf">2.</span> <span class="n">hr</span><span class="o">.</span><span class="n">add_generics</span><span class="p">(</span><span class="n">entity</span><span class="o">=</span><span class="s2">&quot;my_dut_tb&quot;</span><span class="p">,</span> <span class="n">architecture</span><span class="o">=</span><span class="s2">&quot;test&quot;</span><span class="p">,</span> <span class="n">generics</span><span class="o">=</span><span class="n">my_generics_list</span><span class="p">)</span>
+<span class="mf">2.</span> <span class="n">hr</span><span class="o">.</span><span class="n">add_generics</span><span class="p">(</span><span class="n">entity</span><span class="o">=</span><span class="s2">"my_dut_tb"</span><span class="p">,</span> <span class="n">architecture</span><span class="o">=</span><span class="s2">"test"</span><span class="p">,</span> <span class="n">generics</span><span class="o">=</span><span class="n">my_generics_list</span><span class="p">)</span>
 
-<span class="mf">3.</span> <span class="n">hr</span><span class="o">.</span><span class="n">add_generics</span><span class="p">(</span><span class="n">entity</span><span class="o">=</span><span class="s2">&quot;my_dut_tb&quot;</span><span class="p">,</span> <span class="n">generics</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GC_DATA_FILE&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;../test_data/input_data.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;PATH&quot;</span><span class="p">),</span> <span class="s2">&quot;GC_MASTER_MODE&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">])</span>
+<span class="mf">3.</span> <span class="n">hr</span><span class="o">.</span><span class="n">add_generics</span><span class="p">(</span><span class="n">entity</span><span class="o">=</span><span class="s2">"my_dut_tb"</span><span class="p">,</span> <span class="n">generics</span><span class="o">=</span><span class="p">[</span><span class="s2">"GC_DATA_FILE"</span><span class="p">,</span> <span class="p">(</span><span class="s2">"../test_data/input_data.txt"</span><span class="p">,</span> <span class="s2">"PATH"</span><span class="p">),</span> <span class="s2">"GC_MASTER_MODE"</span><span class="p">,</span> <span class="kc">True</span><span class="p">])</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -900,13 +900,13 @@ Any test cases selected from the CLI override scripted test case selection.</p>
 </tbody>
 </table>
 <p><strong>Example:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">add_testcase</span><span class="p">(</span><span class="s2">&quot;interface_tb.test_arch.read_test&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">add_testcase</span><span class="p">(</span><span class="s2">"interface_tb.test_arch.read_test"</span><span class="p">)</span>
 
-<span class="n">add_testcase</span><span class="p">(</span><span class="s2">&quot;interface_tb..read_&quot;</span><span class="p">)</span>
+<span class="n">add_testcase</span><span class="p">(</span><span class="s2">"interface_tb..read_"</span><span class="p">)</span>
 
-<span class="n">add_testcase</span><span class="p">(</span><span class="s2">&quot;lib_uart:interface_tb.func.*&quot;</span><span class="p">)</span>
+<span class="n">add_testcase</span><span class="p">(</span><span class="s2">"lib_uart:interface_tb.func.*"</span><span class="p">)</span>
 
-<span class="n">add_testcase</span><span class="p">(</span><span class="s2">&quot;:interface_tb.&quot;</span><span class="p">)</span>
+<span class="n">add_testcase</span><span class="p">(</span><span class="s2">":interface_tb."</span><span class="p">)</span>
 
 <span class="n">add_testcase</span><span class="p">(</span><span class="n">testcase_list</span><span class="p">)</span>
 </pre></div>
@@ -1012,7 +1012,7 @@ via the <a class="reference internal" href="cli.html"><span class="doc">command 
 </tbody>
 </table>
 <p><strong>Example:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">compile_uvvm</span><span class="p">(</span><span class="s2">&quot;c:/development/tools/UVVM&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">compile_uvvm</span><span class="p">(</span><span class="s2">"c:/development/tools/UVVM"</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition important">
@@ -1043,7 +1043,7 @@ via the <a class="reference internal" href="cli.html"><span class="doc">command 
 </tbody>
 </table>
 <p><strong>Example:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">compile_osvvm</span><span class="p">(</span><span class="s2">&quot;c:/development/tools/OSVVM&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">compile_osvvm</span><span class="p">(</span><span class="s2">"c:/development/tools/OSVVM"</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition important">
@@ -1086,7 +1086,7 @@ via the <a class="reference internal" href="cli.html"><span class="doc">command 
 </tbody>
 </table>
 <p><strong>Example:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">configure_library</span><span class="p">(</span><span class="n">library</span><span class="o">=</span><span class="s1">&#39;can_ip_library&#39;</span><span class="p">,</span> <span class="n">never_recompile</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">configure_library</span><span class="p">(</span><span class="n">library</span><span class="o">=</span><span class="s1">'can_ip_library'</span><span class="p">,</span> <span class="n">never_recompile</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -1125,8 +1125,8 @@ should be given to the report name.</p>
 </tbody>
 </table>
 <p><strong>Example:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">gen_report</span><span class="p">(</span><span class="n">report_file</span><span class="o">=</span><span class="s2">&quot;sim_report.csv&quot;</span><span class="p">,</span> <span class="n">compile_order</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">hr</span><span class="o">.</span><span class="n">gen_report</span><span class="p">(</span><span class="n">report_file</span><span class="o">=</span><span class="s2">&quot;sim_report.html&quot;</span><span class="p">,</span> <span class="n">compile_order</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">library</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">gen_report</span><span class="p">(</span><span class="n">report_file</span><span class="o">=</span><span class="s2">"sim_report.csv"</span><span class="p">,</span> <span class="n">compile_order</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">hr</span><span class="o">.</span><span class="n">gen_report</span><span class="p">(</span><span class="n">report_file</span><span class="o">=</span><span class="s2">"sim_report.html"</span><span class="p">,</span> <span class="n">compile_order</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">library</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition important">
@@ -1178,8 +1178,8 @@ All files from all libraries are returned in a list.</p>
 </tbody>
 </table>
 <p><strong>Example:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="s2">&quot;../src/*.vhd&quot;</span><span class="p">,</span> <span class="s2">&quot;testbench_lib&quot;</span><span class="p">)</span>
-<span class="n">hr</span><span class="o">.</span><span class="n">remove_file</span><span class="p">(</span><span class="s2">&quot;unused_file.vhd&quot;</span><span class="p">,</span> <span class="s2">&quot;testbench_lib&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="s2">"../src/*.vhd"</span><span class="p">,</span> <span class="s2">"testbench_lib"</span><span class="p">)</span>
+<span class="n">hr</span><span class="o">.</span><span class="n">remove_file</span><span class="p">(</span><span class="s2">"unused_file.vhd"</span><span class="p">,</span> <span class="s2">"testbench_lib"</span><span class="p">)</span>
 <span class="n">hr</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1219,9 +1219,9 @@ to be called prior to <a class="reference internal" href="#start">start()</a> an
 be changed by setting the <code class="docutils literal notranslate"><span class="pre">verbose</span></code> argument to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
 </div>
 <p><strong>Example:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">run_command</span><span class="p">(</span><span class="s1">&#39;python3 ../script/run_spec_cov.py --config ../script/config.txt&#39;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">run_command</span><span class="p">(</span><span class="s1">'python3 ../script/run_spec_cov.py --config ../script/config.txt'</span><span class="p">)</span>
 
-<span class="n">hr</span><span class="o">.</span><span class="n">run_command</span><span class="p">(</span><span class="s1">&#39;vsim -version&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">hr</span><span class="o">.</span><span class="n">run_command</span><span class="p">(</span><span class="s1">'vsim -version'</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -1283,9 +1283,9 @@ code coverage for the complete test suite.</p></li>
 </ul>
 </div>
 <p><strong>Example:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">set_code_coverage</span><span class="p">(</span><span class="s2">&quot;bcst&quot;</span><span class="p">,</span> <span class="s2">&quot;code_coverage.ucdb&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">set_code_coverage</span><span class="p">(</span><span class="s2">"bcst"</span><span class="p">,</span> <span class="s2">"code_coverage.ucdb"</span><span class="p">)</span>
 
-<span class="n">hr</span><span class="o">.</span><span class="n">set_code_coverage</span><span class="p">(</span><span class="s2">&quot;bcst&quot;</span><span class="p">,</span> <span class="s2">&quot;code_coverage.ucdb&quot;</span><span class="p">,</span> <span class="s2">&quot;exclude.tcl&quot;</span><span class="p">)</span>
+<span class="n">hr</span><span class="o">.</span><span class="n">set_code_coverage</span><span class="p">(</span><span class="s2">"bcst"</span><span class="p">,</span> <span class="s2">"code_coverage.ucdb"</span><span class="p">,</span> <span class="s2">"exclude.tcl"</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -1354,7 +1354,7 @@ may ignore this setting.</p></li>
 </ul>
 </div>
 <p><strong>Example:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">set_pre_sim_tcl_cmd</span><span class="p">(</span><span class="s1">&#39;do ../scripts/pre_sim.do&#39;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">set_pre_sim_tcl_cmd</span><span class="p">(</span><span class="s1">'do ../scripts/pre_sim.do'</span><span class="p">)</span>
 <span class="n">hr</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1387,7 +1387,7 @@ report the check string.</p>
 criteria for a passing test.</p>
 </div>
 <p><strong>Example:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">set_result_check_string</span><span class="p">(</span><span class="s2">&quot;testcase passed&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">set_result_check_string</span><span class="p">(</span><span class="s2">"testcase passed"</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="literal-block-wrapper docutils container" id="id1">
@@ -1396,10 +1396,10 @@ criteria for a passing test.</p>
 <span class="linenos"> 2</span><span class="w">    </span><span class="k">variable</span><span class="w"> </span><span class="n">v_check_ok</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">false</span><span class="p">;</span>
 <span class="linenos"> 3</span><span class="k">begin</span>
 <span class="linenos"> 4</span><span class="w">    </span><span class="c1">-- testcase checks, e.g.</span>
-<span class="linenos"> 5</span><span class="w">    </span><span class="c1">-- v_check_ok := check_value(v_act_data, v_exp_data, error, &quot;checking receive data&quot;, C_SCOPE);</span>
+<span class="linenos"> 5</span><span class="w">    </span><span class="c1">-- v_check_ok := check_value(v_act_data, v_exp_data, error, "checking receive data", C_SCOPE);</span>
 <span class="linenos"> 6</span><span class="w">    </span>
 <span class="linenos"> 7</span><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">v_check_ok</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">true</span><span class="w"> </span><span class="k">then</span>
-<span class="linenos"> 8</span><span class="w">        </span><span class="n">report</span><span class="w"> </span><span class="s">&quot;testcase passed&quot;</span><span class="p">;</span>
+<span class="linenos"> 8</span><span class="w">        </span><span class="n">report</span><span class="w"> </span><span class="s">"testcase passed"</span><span class="p">;</span>
 <span class="linenos"> 9</span><span class="w">    </span><span class="k">end</span><span class="w"> </span><span class="k">if</span><span class="p">;</span>
 <span class="linenos">10</span>
 <span class="linenos">11</span><span class="w">    </span><span class="c1">-- Finish the simulation</span>
@@ -1454,9 +1454,9 @@ compile options and setting simulator executable path, or by using <a class="ref
 </tbody>
 </table>
 <p><strong>Example:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">set_simulator</span><span class="p">(</span><span class="n">simulator</span><span class="o">=</span><span class="s2">&quot;GHDL&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">set_simulator</span><span class="p">(</span><span class="n">simulator</span><span class="o">=</span><span class="s2">"GHDL"</span><span class="p">)</span>
 
-<span class="n">hr</span><span class="o">.</span><span class="n">set_simulator</span><span class="p">(</span><span class="n">simulator</span><span class="o">=</span><span class="s2">&quot;MODELSIM&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;c:/tools/intelFPGA/20.1/modelsim_ase/win32aloem&#39;</span><span class="p">)</span>
+<span class="n">hr</span><span class="o">.</span><span class="n">set_simulator</span><span class="p">(</span><span class="n">simulator</span><span class="o">=</span><span class="s2">"MODELSIM"</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">'c:/tools/intelFPGA/20.1/modelsim_ase/win32aloem'</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition important">
@@ -1500,35 +1500,65 @@ and if-matched strings.</p></li>
 </tbody>
 </table>
 <p><strong>Example:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">set_testcase_identifier_name</span><span class="p">(</span><span class="s2">&quot;GC_TESTCASE&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">set_testcase_identifier_name</span><span class="p">(</span><span class="s2">"GC_TESTCASE"</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="literal-block-wrapper docutils container" id="id2">
-<div class="code-block-caption"><span class="caption-text">Example TB with test case ID generic</span><a class="headerlink" href="#id2" title="Link to this code"></a></div>
+<div class="code-block-caption"><span class="caption-text">Example TB with test case ID generic in if structure</span><a class="headerlink" href="#id2" title="Link to this code"></a></div>
 <div class="highlight-vhdl notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">--hdlregression:tb</span>
 <span class="linenos"> 2</span><span class="k">entity</span><span class="w"> </span><span class="nc">tb_top</span><span class="w"> </span><span class="k">is</span>
 <span class="linenos"> 3</span><span class="w">    </span><span class="k">generic</span><span class="w"> </span><span class="p">(</span>
-<span class="linenos"> 4</span><span class="w">        </span><span class="n">GC_TESTCASE</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="s">&quot;read_test&quot;</span>
+<span class="linenos"> 4</span><span class="w">        </span><span class="n">GC_TESTCASE</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="s">"read_test"</span>
 <span class="linenos"> 5</span><span class="w">    </span><span class="p">);</span><span class="w">    </span>
 <span class="linenos"> 6</span><span class="k">end</span><span class="w"> </span><span class="nc">tb_top</span><span class="p">;</span>
 <span class="linenos"> 7</span>
 <span class="linenos"> 8</span><span class="k">architecture</span><span class="w"> </span><span class="nc">test</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="nc">simple_tb</span><span class="w"> </span><span class="k">is</span>
-<span class="linenos"> 9</span><span class="w">    </span><span class="k">constant</span><span class="w"> </span><span class="n">C_SCOPE</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="s">&quot;SIMPLE_TB&quot;</span><span class="p">;</span><span class="w"> </span>
+<span class="linenos"> 9</span><span class="w">    </span><span class="k">constant</span><span class="w"> </span><span class="n">C_SCOPE</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="s">"SIMPLE_TB"</span><span class="p">;</span><span class="w"> </span>
 <span class="linenos">10</span><span class="w">  </span><span class="k">begin</span>
 <span class="linenos">11</span><span class="w">    </span><span class="n">p_main</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">process</span><span class="w">  </span>
 <span class="linenos">12</span><span class="w">    </span><span class="k">begin</span>
-<span class="linenos">13</span><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">GC_TESTCASE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;read_test&quot;</span><span class="w"> </span><span class="k">then</span>
+<span class="linenos">13</span><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">GC_TESTCASE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"read_test"</span><span class="w"> </span><span class="k">then</span>
 <span class="linenos">14</span><span class="w">            </span><span class="c1">-- read tests</span>
-<span class="linenos">15</span><span class="w">        </span><span class="k">elsif</span><span class="w"> </span><span class="n">GC_TESTCASE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;write_test&quot;</span><span class="w"> </span><span class="k">then</span>
+<span class="linenos">15</span><span class="w">        </span><span class="k">elsif</span><span class="w"> </span><span class="n">GC_TESTCASE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"write_test"</span><span class="w"> </span><span class="k">then</span>
 <span class="linenos">16</span><span class="w">            </span><span class="c1">-- write tests</span>
 <span class="linenos">17</span><span class="w">        </span><span class="k">else</span>
-<span class="linenos">18</span><span class="w">            </span><span class="n">report</span><span class="w"> </span><span class="s">&quot;Unknown test &quot;</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">GC_TESTCASE</span><span class="p">;</span>
+<span class="linenos">18</span><span class="w">            </span><span class="n">report</span><span class="w"> </span><span class="s">"Unknown test "</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">GC_TESTCASE</span><span class="p">;</span>
 <span class="linenos">19</span><span class="w">        </span><span class="k">end</span><span class="w"> </span><span class="k">if</span><span class="p">;</span>
 <span class="linenos">20</span><span class="w">    </span><span class="c1">-- Finish the simulation</span>
 <span class="linenos">21</span><span class="w">    </span><span class="nn">std.env</span><span class="p">.</span><span class="n">stop</span><span class="p">;</span>
 <span class="linenos">22</span><span class="w">    </span><span class="k">wait</span><span class="p">;</span><span class="w">  </span><span class="c1">-- to stop completely        </span>
 <span class="linenos">23</span><span class="w">    </span><span class="k">end</span><span class="w"> </span><span class="k">process</span><span class="p">;</span>
 <span class="linenos">24</span><span class="k">end</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Example TB with test case ID generic in case structure</span><a class="headerlink" href="#id3" title="Link to this code"></a></div>
+<div class="highlight-vhdl notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">--hdlregression:tb</span>
+<span class="linenos"> 2</span><span class="k">entity</span><span class="w"> </span><span class="nc">tb_top</span><span class="w"> </span><span class="k">is</span>
+<span class="linenos"> 3</span><span class="w">    </span><span class="k">generic</span><span class="w"> </span><span class="p">(</span>
+<span class="linenos"> 4</span><span class="w">        </span><span class="n">GC_TESTCASE</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="s">"read_test"</span>
+<span class="linenos"> 5</span><span class="w">    </span><span class="p">);</span><span class="w">    </span>
+<span class="linenos"> 6</span><span class="k">end</span><span class="w"> </span><span class="nc">tb_top</span><span class="p">;</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="k">architecture</span><span class="w"> </span><span class="nc">test</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="nc">simple_tb</span><span class="w"> </span><span class="k">is</span>
+<span class="linenos"> 9</span><span class="w">    </span><span class="k">constant</span><span class="w"> </span><span class="n">C_SCOPE</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="s">"SIMPLE_TB"</span><span class="p">;</span><span class="w"> </span>
+<span class="linenos">10</span><span class="w">  </span><span class="k">begin</span>
+<span class="linenos">11</span><span class="w">    </span><span class="n">p_main</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">process</span><span class="w">  </span>
+<span class="linenos">12</span><span class="w">    </span><span class="k">begin</span>
+<span class="linenos">13</span><span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="n">GC_TESTCASE</span><span class="w"> </span><span class="k">is</span>
+<span class="linenos">14</span><span class="w">          </span><span class="k">when</span><span class="w"> </span><span class="s">"read_test"</span><span class="w"> </span><span class="o">=&gt;</span>
+<span class="linenos">15</span><span class="w">            </span><span class="c1">-- read tests</span>
+<span class="linenos">16</span><span class="w">        </span><span class="k">when</span><span class="w"> </span><span class="s">"write_test"</span><span class="w"> </span><span class="o">=&gt;</span>
+<span class="linenos">17</span><span class="w">            </span><span class="c1">-- write tests</span>
+<span class="linenos">18</span><span class="w">        </span><span class="k">when</span><span class="w"> </span><span class="k">others</span><span class="w"> </span><span class="o">=&gt;</span>
+<span class="linenos">19</span><span class="w">            </span><span class="n">report</span><span class="w"> </span><span class="s">"Unknown test "</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">GC_TESTCASE</span><span class="p">;</span>
+<span class="linenos">20</span><span class="w">        </span><span class="k">end</span><span class="w"> </span><span class="k">case</span><span class="p">;</span>
+<span class="linenos">21</span><span class="w">    </span><span class="c1">-- Finish the simulation</span>
+<span class="linenos">22</span><span class="w">    </span><span class="nn">std.env</span><span class="p">.</span><span class="n">stop</span><span class="p">;</span>
+<span class="linenos">23</span><span class="w">    </span><span class="k">wait</span><span class="p">;</span><span class="w">  </span><span class="c1">-- to stop completely        </span>
+<span class="linenos">24</span><span class="w">    </span><span class="k">end</span><span class="w"> </span><span class="k">process</span><span class="p">;</span>
+<span class="linenos">25</span><span class="k">end</span><span class="p">;</span>
 </pre></div>
 </div>
 </div>
@@ -1562,7 +1592,7 @@ and if-matched strings.</p></li>
 </tbody>
 </table>
 <p><strong>Example:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">set_simulator_wave_file_format</span><span class="p">(</span><span class="s2">&quot;VCD&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hr</span><span class="o">.</span><span class="n">set_simulator_wave_file_format</span><span class="p">(</span><span class="s2">"VCD"</span><span class="p">)</span>
 <span class="n">hr</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">gui_mode</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>

@@ -1111,7 +1111,13 @@ but any name can be given.
 
 
 .. literalinclude:: examples/example_tb_generic.vhd
-  :caption: Example TB with test case ID generic
+  :caption: Example TB with test case ID generic in if structure
+  :linenos:
+  :language: vhdl
+
+
+.. literalinclude:: examples/example_tb_generic_case.vhd
+  :caption: Example TB with test case ID generic in case structure
   :linenos:
   :language: vhdl
 
