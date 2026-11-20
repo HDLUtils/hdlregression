@@ -375,6 +375,23 @@ class HDLRegression:
             return
 
         self.settings.set_simulator_name(simulator)
+
+        # A simulator selected on the command line (-s) overrides the one in the script.
+        # The script's path/com_options belong to the script's simulator, so don't apply
+        # them to a different, CLI-selected simulator (e.g. a ModelSim path to Riviera-PRO).
+        try:
+            requested = self.settings.simulator_detector._validate_simulator_name(simulator.upper())
+        except Exception:
+            requested = None
+        active = self.settings.get_simulator_name()
+        if requested is not None and active is not None and requested != active:
+            self.logger.info(
+                "Simulator {} selected from command line, ignoring set_simulator() settings for {}.".format(
+                    active, requested
+                )
+            )
+            return
+
         self.settings.set_simulator_path(path)
         if com_options is not None:
             self.settings.set_com_options(com_options)

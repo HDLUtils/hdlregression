@@ -184,12 +184,17 @@ def test_dump_wave_file(sim_env, tb_path):
         hr.add_files(filename, "test_lib")
         hr.set_result_check_string("passing testcase")
 
-        result = hr.start() #sim_options=["-wlf", "./tb_eir_debug.wlf"])
+        # Same as the '--wlf' CLI option: logs the testbench signals and saves them to
+        # test.wlf. A bare '-wlf <file>' sim option isn't enough, since ModelSim only
+        # writes a WLF file when something is logged.
+        hr.settings.set_wlf_dump_enable(True)
+
+        result = hr.start()
 
         matches = []
         for root, dirnames, filenames in os.walk("./hdlregression/test/"):
-            for filename in fnmatch.filter(filenames, "tb_eir_debug.wlf"):
+            for filename in fnmatch.filter(filenames, "test.wlf"):
                 matches.append(os.path.join(root, filename))
 
-        assert len(matches) == 1, "checking sim_options for tb_eir_debug.wlf exists."
+        assert len(matches) == 1, "checking WLF dump test.wlf exists."
         assert result == 0, "check return code"

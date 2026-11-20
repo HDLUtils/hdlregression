@@ -286,7 +286,9 @@ class ModelsimRunner(SimRunner):
         pre_sim_tcl_command = self.project.settings.simulator_settings.get_pre_sim_tcl_cmd()
 
         if self.project.settings.get_wlf_dump_enable() is True:
-            wlf_logging = "log -r /{}/*;".format(test.get_tb().get_name())
+            # catch: 'log' errors when the testbench has no objects to log, which would
+            # trigger 'onerror {quit -code 1}' and fail an otherwise passing test.
+            wlf_logging = "catch {{log -r /{}/*}};".format(test.get_tb().get_name())
             wlf_save_call = "-wlf test.wlf"
         else:
             wlf_logging = ""

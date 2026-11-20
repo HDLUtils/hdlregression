@@ -39,6 +39,53 @@ class UnsupportedMethodError(SettingsError):
 class UnavailableSimulatorError(SettingsError):
     pass
 
+
+def _exec_version_output(executable: str, version_call: str = "-version") -> str:
+    """Runs '<executable> <version_call>' and returns its combined output, or '' on failure."""
+    try:
+        result = subprocess.run(
+            [executable, version_call],
+            stdin=subprocess.DEVNULL,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            universal_newlines=True,
+            timeout=30,
+        )
+        return (result.stdout or "") + (result.stderr or "")
+    except (OSError, subprocess.SubprocessError):
+        return ""
+
+
+def find_exec_dir(exec_name: str, ids=None, version_call: str = "-version"):
+    """
+    Returns the directory of the first executable named exec_name found in PATH.
+    If ids is given, only a candidate whose '<exec> <version_call>' output contains
+    one of the ids (case-insensitive) is accepted. This is needed for simulators that
+    share executable names (e.g. 'vsim' in both ModelSim/Questa and Riviera-PRO).
+    Returns None when no match is found.
+    """
+    if not ids:
+        found = shutil.which(exec_name)
+        return os.path.dirname(os.path.abspath(found)) if found else None
+
+    ids = [i.lower() for i in ids]
+    seen = set()
+    for directory in os.environ.get("PATH", "").split(os.pathsep):
+        directory = directory.strip().strip('"')
+        if not directory:
+            continue
+        key = os.path.normcase(os.path.abspath(directory))
+        if key in seen:
+            continue
+        seen.add(key)
+        candidate = shutil.which(exec_name, path=directory)
+        if not candidate:
+            continue
+        output = _exec_version_output(candidate, version_call).lower()
+        if any(i in output for i in ids):
+            return os.path.dirname(os.path.abspath(candidate))
+    return None
+
 class HDLRegressionSettings:
     SIM_WAVE_FILE_FORMAT = ["FST", "VCD", "GHW"]
 
@@ -720,9 +767,9 @@ class SimulatorDetector:
 
     def get_simulators_info(self) -> dict:
         platform_info = platform.system()
-        modelsim_installed = self.is_simulator_installed(
-            simulator_call="vsim", version_call="-version"
-        )
+        # ModelSim/Questa, Riviera-PRO and Active-HDL all provide a 'vsim' executable,
+        # so search every PATH entry instead of only the first 'vsim' found.
+        modelsim_installed = find_exec_dir("vsim", ids=ModelsimSettings.PROBE_ID) is not None
         ghdl_installed = self.is_simulator_installed(
             simulator_call="ghdl", version_call="--version"
         )
@@ -732,8 +779,7 @@ class SimulatorDetector:
         riviera_pro_installed = self.is_simulator_installed(
             simulator_call="vsimsa", version_call="-version", simulator_name="riviera"
         )
-        active_hdl_installed = self.is_simulator_installed(
-            simulator_call="vsim", version_call="-version", simulator_name="active-hdl")
+        active_hdl_installed = find_exec_dir("vsim", ids=ActiveHDLSettings.PROBE_ID) is not None
         vivado_installed = self.is_simulator_installed(
             simulator_call="xsim", version_call="--version", simulator_name="vivado"
         )
@@ -823,6 +869,11 @@ class TestcaseSettings:
 class SimulatorSettings(ABC):
 
     SIMULATOR_NAME = None
+    # Executable used to locate the simulator in PATH when no simulator path is given,
+    # and optional strings expected in its '-version' output. Only needed for simulators
+    # that share executable names (vsim, vcom, vlog, vlib, vmap) with other simulators.
+    PROBE_EXEC = None
+    PROBE_ID = None
     DEF_COM_OPTIONS_VHDL = []
     DEF_COM_OPTIONS_VERILOG = []
     DEF_SIM_OPTIONS = []
@@ -923,11 +974,27 @@ class SimulatorSettings(ABC):
         return self.simulator_path
 
     def get_simulator_exec(self, sim_exec) -> str:
-        if self.simulator_path is not None:
-            sim_exec = os.path.join(self.simulator_path, sim_exec)
-            return sim_exec
-        else:
-            return sim_exec
+        sim_dir = self.simulator_path
+        if sim_dir is None:
+            sim_dir = self._get_auto_simulator_path()
+        if sim_dir is not None:
+            return os.path.join(sim_dir, sim_exec)
+        return sim_exec
+
+    def _get_auto_simulator_path(self):
+        """
+        Locates the simulator bin directory in PATH when no path has been set by the user.
+        Only done for simulators whose executable names clash with other simulators
+        (PROBE_EXEC set). The result is cached; falls back to None (bare executable name).
+        """
+        if self.PROBE_EXEC is None:
+            return None
+        # getattr: settings objects may be loaded from a project file pickled by an older version.
+        cached = getattr(self, "_auto_simulator_path", None)
+        if cached and os.path.isdir(cached):
+            return cached
+        self._auto_simulator_path = find_exec_dir(self.PROBE_EXEC, ids=self.PROBE_ID)
+        return self._auto_simulator_path
 
     def set_modelsim_ini(self, modelsim_ini):
         raise UnsupportedMethodError("Method not supported by simulator '{}'.".format(self.simulator_name))
@@ -944,6 +1011,8 @@ class SimulatorSettings(ABC):
 
 class ModelsimSettings(SimulatorSettings):
     SIMULATOR_NAME = "MODELSIM"
+    PROBE_EXEC = "vsim"
+    PROBE_ID = ("modelsim", "questa", "model technology")
     DEF_COM_OPTIONS_VHDL = ["-suppress", "1346,1236,1090", "-2008"]
     DEF_COM_OPTIONS_VERILOG = ["-vlog01compat"]
 
@@ -1038,6 +1107,9 @@ class GHDLSettings(SimulatorSettings):
 
 class RivieraProSettings(SimulatorSettings):
     SIMULATOR_NAME = "RIVIERA-PRO"
+    # 'vsimsa' only exists in Riviera-PRO, so its directory identifies the right vsim/vcom/vlog.
+    PROBE_EXEC = "vsimsa"
+    PROBE_ID = None
     DEF_COM_OPTIONS_VHDL = [
         "-2008",
         "-nowarn",
@@ -1063,6 +1135,8 @@ class RivieraProSettings(SimulatorSettings):
 
 class ActiveHDLSettings(RivieraProSettings):
     SIMULATOR_NAME = "ACTIVE-HDL"
+    PROBE_EXEC = "vsim"
+    PROBE_ID = ("active-hdl",)
     DEF_COM_OPTIONS_VHDL = [
         "-2008",
         "-nowarn",

@@ -43,13 +43,17 @@ def tear_down_function():
 
 
 def is_simulator_installed(simulator):
-    version = "-version" if simulator == "vsim" else "--version"
+    # vsim/vsimsa only accept '-version'; vsimsa given '--version' opens an interactive
+    # Tcl prompt, so also close stdin and use a timeout to never block the test session.
+    version = "-version" if simulator in ("vsim", "vsimsa") else "--version"
     try:
         subprocess.run([simulator, version], check=True,
+                       stdin=subprocess.DEVNULL,
                        stdout=subprocess.DEVNULL,
-                       stderr=subprocess.DEVNULL)
+                       stderr=subprocess.DEVNULL,
+                       timeout=60)
         return True
-    except (subprocess.CalledProcessError, FileNotFoundError):
+    except (subprocess.CalledProcessError, FileNotFoundError, subprocess.TimeoutExpired):
         return False
 
 
@@ -112,7 +116,11 @@ def create_dummy_sim(tmp_path: Path, tb_path: str) -> Path:
     ent2  = get_file_path(tb_path + "/my_tb_ent.vhd")
     arch2 = get_file_path(tb_path + "/my_tb_arch_2.vhd")
 
-    code = DUMMY_SIM_TEMPLATE.format(ent1, arch1, ent2, arch2)
+    # Paths are inserted into Python string literals; use '/' so Windows backslashes
+    # (e.g. '\t' in '\test\tb') aren't treated as escape sequences.
+    code = DUMMY_SIM_TEMPLATE.format(
+        *(p.replace("\\", "/") for p in (ent1, arch1, ent2, arch2))
+    )
 
     sim_path = tmp_path / "sim_dummy.py"
     sim_path.write_text(code)

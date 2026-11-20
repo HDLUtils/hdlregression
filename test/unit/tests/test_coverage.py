@@ -179,9 +179,13 @@ def test_remove_leading_hyphen(sim_env):
     assert hr.hdlcodecoverage.get_code_coverage_settings() == "bcestx"
 
 
+@pytest.mark.modelsim
 def test_illegal_character(sim_env, capsys):
+    # The legal-character check is done by the ModelSim coverage implementation
+    if not sim_env["modelsim"]:
+        pytest.skip("Modelsim not installed")
     clear_output()
-    hr = HDLRegression()
+    hr = HDLRegression(simulator="modelsim")
     coverage_settings = "bcuestx"  # 'u' is illegal for Modelsim
     hr.set_code_coverage(code_coverage_settings=coverage_settings, code_coverage_file="no_file.ucdb")
     hr.start()
@@ -212,7 +216,10 @@ def test_modelsimplaces_ucdb_in_coverage_folder(tmp_path, sim_env):
 
         cc.set_code_coverage_file("some/dir/coverage.ucdb")
         expect_dir = os.path.join(proj.settings.get_test_path(), "coverage")
-        assert cc.get_code_coverage_file().startswith(os.path.abspath(expect_dir))
+        # get_code_coverage_file() always uses '/' (simulator/Tcl friendly); normalize
+        # both sides so the comparison also holds on Windows.
+        actual = os.path.normcase(os.path.normpath(cc.get_code_coverage_file()))
+        assert actual.startswith(os.path.normcase(os.path.abspath(expect_dir)))
         assert cc.get_code_coverage_file().endswith("coverage.ucdb")
 
 
