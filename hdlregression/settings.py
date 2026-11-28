@@ -847,7 +847,6 @@ class SimulatorDetector:
         elif sim_name == "NVC": return NVCSettings()
         elif sim_name == "GHDL": return GHDLSettings()
         elif sim_name == "VIVADO": return VivadoSettings()
-        elif sim_name == "ACTIVE-HDL": return ActiveHDLSettings()
         else: raise UnavailableSimulatorError("Simulator {} not found.".format(sim_name))
 
 

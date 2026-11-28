@@ -1151,7 +1151,9 @@ class HDLRegression:
             runner_obj = VivadoRunner(project=self)
         else:
             sim_info = self.settings.get_simulators_info()
-            sim_name = sim_info.get("simulator")
+            sim_name = sim_info.get("simulator_name")
+            if sim_name is None or sim_name == simulator:
+                raise UnavailableSimulatorError("Simulator %s not available." % simulator)
             self.logger.warning(
                 "Simulator %s not available. Autodetecting: %s" % (simulator, sim_name)
             )
